@@ -3,7 +3,15 @@
     "name": "hugecms/hugecms",
     "type": "project",
     "description": "An enterprise-grade content management system built on Laravel and Filament, designed for building, managing, and scaling corporate websites.",
-    "keywords": ["hugecms", "cms", "content-management", "enterprise", "corporate-website", "laravel", "filament"],
+    "keywords": [
+        "hugecms",
+        "cms",
+        "content-management",
+        "enterprise",
+        "corporate-website",
+        "laravel",
+        "filament"
+    ],
     "license": "Apache-2.0",
     "require": {
         "php": "^8.3",
@@ -51,7 +59,8 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
