@@ -3,13 +3,13 @@
 namespace App\Filament\Admin\Resources\Articles\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class ArticleForm
 {
@@ -71,10 +71,11 @@ class ArticleForm
 
                 Section::make('封面图')
                     ->schema([
-                        FileUpload::make('cover_image')
+                        SpatieMediaLibraryFileUpload::make('cover')
                             ->label('封面图片')
+                            ->collection('cover')
                             ->image()
-                            ->directory('covers')
+                            ->conversion('medium')
                             ->columnSpanFull(),
                     ]),
 

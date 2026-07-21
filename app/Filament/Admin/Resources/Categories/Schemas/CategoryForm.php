@@ -2,11 +2,12 @@
 
 namespace App\Filament\Admin\Resources\Categories\Schemas;
 
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class CategoryForm
 {
@@ -35,6 +36,16 @@ class CategoryForm
                             ->nullable()
                             ->searchable()
                             ->preload(),
+                    ]),
+
+                Section::make('封面图')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('cover')
+                            ->label('分类封面')
+                            ->collection('cover')
+                            ->image()
+                            ->conversion('medium')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('SEO')

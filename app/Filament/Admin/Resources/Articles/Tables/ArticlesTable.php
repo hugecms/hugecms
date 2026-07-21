@@ -5,10 +5,10 @@ namespace App\Filament\Admin\Resources\Articles\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 
 class ArticlesTable
 {
@@ -16,8 +16,9 @@ class ArticlesTable
     {
         return $table
             ->columns([
-                ImageColumn::make('cover_image')
+                SpatieMediaLibraryImageColumn::make('cover')
                     ->label('封面')
+                    ->conversion('thumb')
                     ->circular(),
                 TextColumn::make('title')
                     ->label('标题')

@@ -3,10 +3,11 @@
 namespace App\Filament\Admin\Resources\Pages\Schemas;
 
 use Filament\Forms\Components\RichEditor;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class PageForm
 {
@@ -38,6 +39,16 @@ class PageForm
                             ->required()
                             ->columnSpanFull()
                             ->fileAttachmentsDirectory('pages'),
+                    ]),
+
+                Section::make('封面图')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('cover')
+                            ->label('页面封面')
+                            ->collection('cover')
+                            ->image()
+                            ->conversion('medium')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('层级与作者')
