@@ -2,12 +2,13 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "hugecms/hugecms",
     "type": "project",
-    "description": "The hugecms.",
-    "keywords": ["laravel", "hugecms"],
+    "description": "An enterprise-grade content management system built on Laravel and Filament, designed for building, managing, and scaling corporate websites.",
+    "keywords": ["hugecms", "cms", "content-management", "enterprise", "corporate-website", "laravel", "filament"],
     "license": "Apache-2.0",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^13.8",
+        "filament/filament": "^5.7",
+        "laravel/framework": "^13.20",
         "laravel/tinker": "^3.0"
     },
     "require-dev": {
