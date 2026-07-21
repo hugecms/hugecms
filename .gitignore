@@ -6,10 +6,12 @@
 .phpactor.json
 .phpunit.result.cache
 /.codex
-/.cursor/
+/.claude
+/.cursor
 /.idea
 /.nova
 /.phpunit.cache
+/.trae
 /.vscode
 /.zed
 /auth.json
