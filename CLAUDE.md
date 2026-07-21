@@ -102,3 +102,13 @@ Filament packages are present in `vendor/` and `artisan` exposes `filament:*` co
 - Eloquent models use PHP 8 attributes for mass-assignment and hidden fields (e.g. `#[Fillable([...])]`, `#[Hidden([...])]`) rather than property arrays.
 - Models live under `App\Models\`, migrations under `database/migrations/`, factories under `database/factories/`, seeders under `database/seeders/`.
 - Tests use the PHPUnit layout in `tests/Unit/` and `tests/Feature/` with the `Tests\` namespace.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as GitHub issues on `hugecms/hugecms`. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` at the repo root, ADRs under `docs/adr/`. See `docs/agents/domain.md`.
