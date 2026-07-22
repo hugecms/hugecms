@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MediaLibrary;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        MediaLibrary::singleton();
+
         $this->call([
             RoleSeeder::class,
         ]);

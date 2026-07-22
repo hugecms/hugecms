@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\Pages\Schemas;
 
 use App\Enums\ContentStatus;
+use App\Models\MediaLibrary;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -55,11 +56,32 @@ class PageForm
 
                 Section::make('封面图')
                     ->schema([
+                        Select::make('media_library_id')
+                            ->label('从媒体库选择')
+                            ->options(fn () => MediaLibrary::singleton()
+                                ->getMedia('media_library')
+                                ->mapWithKeys(fn ($media) => [$media->id => $media->name])
+                            )
+                            ->native(false)
+                            ->searchable()
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $set('cover', null);
+                                }
+                            })
+                            ->nullable(),
                         SpatieMediaLibraryFileUpload::make('cover')
-                            ->label('页面封面')
+                            ->label('或直接上传')
                             ->collection('cover')
                             ->image()
                             ->conversion('medium')
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $set('media_library_id', null);
+                                }
+                            })
                             ->columnSpanFull(),
                     ]),
 
