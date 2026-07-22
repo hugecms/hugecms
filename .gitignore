@@ -11,6 +11,7 @@
 /.idea
 /.nova
 /.phpunit.cache
+/.scratch
 /.trae
 /.vscode
 /.zed
