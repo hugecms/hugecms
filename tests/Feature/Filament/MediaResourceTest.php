@@ -14,7 +14,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class MediaResourceTest extends TestCase
@@ -28,9 +27,7 @@ class MediaResourceTest extends TestCase
         parent::setUp();
 
         Storage::fake('public');
-        Role::create(['name' => 'admin']);
-        $this->admin = User::factory()->create();
-        $this->admin->assignRole('admin');
+        $this->admin = $this->createSuperAdmin();
     }
 
     public function test_can_render_media_list(): void

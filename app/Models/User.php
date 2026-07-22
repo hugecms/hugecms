@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
+use App\Support\Permissions;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -15,7 +17,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'status'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasMedia
 {
@@ -31,6 +33,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => UserStatus::class,
         ];
     }
 
@@ -54,7 +57,13 @@ class User extends Authenticatable implements FilamentUser, HasMedia
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('admin') || $this->hasRole('super_admin');
+        return $this->isActive()
+            && ($this->hasRole('super_admin') || $this->can(Permissions::ACCESS_ADMIN));
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::Active;
     }
 
     public function comments(): HasMany

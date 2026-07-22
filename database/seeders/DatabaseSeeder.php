@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         MediaLibrary::singleton();
 
         $this->call([
+            PermissionSeeder::class,
             RoleSeeder::class,
         ]);
 

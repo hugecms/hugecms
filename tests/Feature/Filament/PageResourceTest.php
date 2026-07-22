@@ -10,7 +10,6 @@ use App\Models\Page;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class PageResourceTest extends TestCase
@@ -23,9 +22,7 @@ class PageResourceTest extends TestCase
     {
         parent::setUp();
 
-        Role::create(['name' => 'admin']);
-        $this->admin = User::factory()->create();
-        $this->admin->assignRole('admin');
+        $this->admin = $this->createSuperAdmin();
     }
 
     public function test_can_render_page_list(): void
