@@ -3,8 +3,10 @@
 namespace App\Filament\Admin\Resources\Categories\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -14,6 +16,10 @@ class CategoriesTable
     {
         return $table
             ->columns([
+                SpatieMediaLibraryImageColumn::make('cover')
+                    ->label('封面')
+                    ->conversion('thumb')
+                    ->circular(),
                 TextColumn::make('name')
                     ->label('名称')
                     ->searchable()
@@ -21,6 +27,9 @@ class CategoriesTable
                 TextColumn::make('slug')
                     ->label('Slug')
                     ->searchable(),
+                TextColumn::make('depth')
+                    ->label('层级')
+                    ->sortable(),
                 TextColumn::make('articles_count')
                     ->label('文章数')
                     ->counts('articles')
@@ -41,6 +50,7 @@ class CategoriesTable
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

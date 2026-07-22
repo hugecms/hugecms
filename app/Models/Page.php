@@ -2,29 +2,52 @@
 
 namespace App\Models;
 
+use App\Enums\ContentStatus;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+#[Fillable([
+    'title',
+    'slug',
+    'content',
+    'template',
+    'status',
+    'user_id',
+    'parent_id',
+    'seo_title',
+    'seo_description',
+    'seo_keywords',
+])]
 class Page extends Model implements HasMedia
 {
+    use HasFactory;
     use InteractsWithMedia;
     use NodeTrait;
+    use SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'slug',
-        'content',
-        'status',
-        'user_id',
-        'parent_id',
-        'seo_title',
-        'seo_description',
-        'seo_keywords',
-    ];
+    protected static function booted(): void
+    {
+        static::saving(function (self $page) {
+            if (blank($page->slug)) {
+                $page->slug = Str::slug($page->title, language: 'zh');
+            }
+        });
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'status' => ContentStatus::class,
+        ];
+    }
 
     public function registerMediaCollections(): void
     {

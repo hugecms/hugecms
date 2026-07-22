@@ -2,34 +2,54 @@
 
 namespace App\Models;
 
+use App\Enums\ContentStatus;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+#[Fillable([
+    'title',
+    'slug',
+    'excerpt',
+    'content',
+    'status',
+    'published_at',
+    'user_id',
+    'is_pinned',
+    'is_recommended',
+    'seo_title',
+    'seo_description',
+    'seo_keywords',
+])]
 class Article extends Model implements HasMedia
 {
+    use HasFactory;
     use InteractsWithMedia;
+    use SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'slug',
-        'excerpt',
-        'content',
-        'status',
-        'published_at',
-        'user_id',
-        'seo_title',
-        'seo_description',
-        'seo_keywords',
-    ];
+    protected static function booted(): void
+    {
+        static::saving(function (self $article) {
+            if (blank($article->slug)) {
+                $article->slug = Str::slug($article->title, language: 'zh');
+            }
+        });
+    }
 
     protected function casts(): array
     {
         return [
             'published_at' => 'datetime',
+            'status' => ContentStatus::class,
+            'is_pinned' => 'boolean',
+            'is_recommended' => 'boolean',
         ];
     }
 

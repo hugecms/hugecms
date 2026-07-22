@@ -2,27 +2,39 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+#[Fillable([
+    'name',
+    'slug',
+    'description',
+    'parent_id',
+    'seo_title',
+    'seo_description',
+    'seo_keywords',
+])]
 class Category extends Model implements HasMedia
 {
+    use HasFactory;
     use InteractsWithMedia;
     use NodeTrait;
 
-    protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'parent_id',
-        'seo_title',
-        'seo_description',
-        'seo_keywords',
-    ];
+    protected static function booted(): void
+    {
+        static::saving(function (self $category) {
+            if (blank($category->slug)) {
+                $category->slug = Str::slug($category->name, language: 'zh');
+            }
+        });
+    }
 
     public function registerMediaCollections(): void
     {

@@ -48,6 +48,7 @@ class ContentSeeder extends Seeder
             'title' => '关于我们',
             'slug' => 'about',
             'content' => '<h2>关于 HugeCMS</h2><p>HugeCMS 专为企业网站打造，提供文章管理、分类管理、标签系统和页面管理。</p>',
+            'template' => 'default',
             'status' => 'published',
             'user_id' => $admin->id,
         ]);
@@ -55,6 +56,7 @@ class ContentSeeder extends Seeder
             'title' => '联系我们',
             'slug' => 'contact',
             'content' => '<h2>联系我们</h2><p>欢迎通过以下方式联系我们。</p>',
+            'template' => 'default',
             'status' => 'published',
             'user_id' => $admin->id,
         ]);
