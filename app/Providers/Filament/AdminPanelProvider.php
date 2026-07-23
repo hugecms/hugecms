@@ -7,9 +7,11 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -28,6 +30,20 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => '#0530ad',
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('内容管理')
+                    ->icon(Heroicon::OutlinedDocumentText),
+                NavigationGroup::make('媒体资源')
+                    ->icon(Heroicon::OutlinedPhoto),
+                NavigationGroup::make('运营工具')
+                    ->icon(Heroicon::OutlinedSparkles),
+                NavigationGroup::make('用户与权限')
+                    ->icon(Heroicon::OutlinedUsers),
+                NavigationGroup::make('数据报表')
+                    ->icon(Heroicon::OutlinedChartPie),
+                NavigationGroup::make('系统设置')
+                    ->icon(Heroicon::OutlinedCog6Tooth),
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')

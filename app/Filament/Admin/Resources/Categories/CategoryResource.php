@@ -23,7 +23,13 @@ class CategoryResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = '内容管理';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 30;
+
+    protected static ?string $navigationLabel = '分类';
+
+    protected static ?string $modelLabel = '分类';
+
+    protected static ?string $pluralModelLabel = '分类';
 
     protected static ?string $recordTitleAttribute = 'name';
 

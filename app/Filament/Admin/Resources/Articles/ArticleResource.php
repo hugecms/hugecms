@@ -23,7 +23,13 @@ class ArticleResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = '内容管理';
 
-    protected static ?int $navigationSort = 30;
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationLabel = '文章';
+
+    protected static ?string $modelLabel = '文章';
+
+    protected static ?string $pluralModelLabel = '文章';
 
     protected static ?string $recordTitleAttribute = 'title';
 
