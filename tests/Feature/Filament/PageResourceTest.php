@@ -41,7 +41,6 @@ class PageResourceTest extends TestCase
             ->fillForm([
                 'title' => '测试页面',
                 'slug' => 'test-page',
-                'content' => '<p>页面内容</p>',
                 'template' => 'default',
                 'status' => ContentStatus::Published->value,
                 'user_id' => $this->admin->id,
@@ -54,6 +53,43 @@ class PageResourceTest extends TestCase
             'slug' => 'test-page',
             'template' => 'default',
         ]);
+    }
+
+    public function test_can_create_page_with_blocks(): void
+    {
+        $this->actingAs($this->admin);
+
+        Livewire::test(CreatePage::class)
+            ->fillForm([
+                'title' => '构建器页面',
+                'slug' => 'builder-page',
+                'template' => 'default',
+                'status' => ContentStatus::Published->value,
+                'user_id' => $this->admin->id,
+                'blocks' => [
+                    [
+                        'type' => 'rich_text',
+                        'data' => [
+                            'content' => '<p>富文本区块内容</p>',
+                            'background_color' => 'white',
+                            'padding_top' => 'md',
+                            'padding_bottom' => 'md',
+                            'container' => true,
+                        ],
+                    ],
+                ],
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('pages', [
+            'slug' => 'builder-page',
+        ]);
+
+        $page = Page::where('slug', 'builder-page')->first();
+        $this->assertNotNull($page->blocks);
+        $this->assertCount(1, $page->blocks);
+        $this->assertSame('rich_text', $page->blocks[0]['type']);
     }
 
     public function test_can_edit_page(): void

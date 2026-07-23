@@ -27,7 +27,7 @@
         @endif
 
         <div class="prose prose-gray dark:prose-invert max-w-none">
-            {!! $page->content !!}
+            {!! \App\Support\Blocks\BlockRegistry::renderPage($page) !!}
         </div>
     </article>
 @endsection

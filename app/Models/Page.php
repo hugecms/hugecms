@@ -19,6 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
     'title',
     'slug',
     'content',
+    'blocks',
     'template',
     'status',
     'user_id',
@@ -47,6 +48,7 @@ class Page extends Model implements HasMedia
     {
         return [
             'status' => ContentStatus::class,
+            'blocks' => 'array',
         ];
     }
 

@@ -4,7 +4,8 @@ namespace App\Filament\Admin\Resources\Pages\Schemas;
 
 use App\Enums\ContentStatus;
 use App\Models\MediaLibrary;
-use Filament\Forms\Components\RichEditor;
+use App\Support\Blocks\BlockRegistry;
+use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
@@ -47,11 +48,12 @@ class PageForm
                             ])
                             ->default('default')
                             ->required(),
-                        RichEditor::make('content')
-                            ->label('正文')
-                            ->required()
-                            ->columnSpanFull()
-                            ->fileAttachmentsDirectory('pages'),
+                        Builder::make('blocks')
+                            ->label('页面区块')
+                            ->blocks(fn () => BlockRegistry::forBuilder())
+                            ->addActionLabel('添加区块')
+                            ->collapsible()
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('封面图')
