@@ -110,6 +110,10 @@ Filament packages are present in `vendor/` and `artisan` exposes `filament:*` co
 
 Issues are tracked as GitHub issues on `hugecms/hugecms`. See `docs/agents/issue-tracker.md`.
 
+### Triage labels
+
+Using the default five canonical labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
 ### Domain docs
 
 Single-context: `CONTEXT.md` at the repo root, ADRs under `docs/adr/`. See `docs/agents/domain.md`.
