@@ -28,15 +28,21 @@ class CommentsTable
                     ->label('内容')
                     ->searchable()
                     ->limit(80),
-                TextColumn::make('article.title')
-                    ->label('文章')
-                    ->searchable()
-                    ->default('留言板'),
+                TextColumn::make('target')
+                    ->label('归属')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(fn (Builder $query) => $query
+                            ->whereHas('article', fn (Builder $q) => $q->where('title', 'like', "%{$search}%"))
+                            ->orWhereHas('page', fn (Builder $q) => $q->where('title', 'like', "%{$search}%"))
+                        );
+                    }),
                 TextColumn::make('author')
                     ->label('作者')
                     ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->whereHas('user', fn (Builder $q) => $q->where('name', 'like', "%{$search}%"))
-                            ->orWhere('guest_name', 'like', "%{$search}%");
+                        return $query->where(fn (Builder $query) => $query
+                            ->whereHas('user', fn (Builder $q) => $q->where('name', 'like', "%{$search}%"))
+                            ->orWhere('guest_name', 'like', "%{$search}%")
+                        );
                     }),
                 TextColumn::make('status')
                     ->label('状态')
@@ -60,6 +66,12 @@ class CommentsTable
                 SelectFilter::make('article')
                     ->label('文章')
                     ->relationship('article', 'title'),
+                SelectFilter::make('page')
+                    ->label('页面')
+                    ->relationship('page', 'title'),
+                SelectFilter::make('user')
+                    ->label('用户')
+                    ->relationship('user', 'name'),
                 Filter::make('author')
                     ->label('作者')
                     ->form([
@@ -68,9 +80,10 @@ class CommentsTable
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['author'] ?? null,
-                            fn (Builder $query, string $author): Builder => $query
+                            fn (Builder $query, string $author): Builder => $query->where(fn (Builder $query) => $query
                                 ->whereHas('user', fn (Builder $q) => $q->where('name', 'like', "%{$author}%"))
                                 ->orWhere('guest_name', 'like', "%{$author}%")
+                            )
                         );
                     }),
             ])
@@ -102,6 +115,7 @@ class CommentsTable
                             'content' => $data['content'],
                             'status' => CommentStatus::Approved,
                             'article_id' => $record->article_id,
+                            'page_id' => $record->page_id,
                             'user_id' => auth()->id(),
                             'parent_id' => $record->id,
                         ]);

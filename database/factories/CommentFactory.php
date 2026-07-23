@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\CommentStatus;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Page;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -65,10 +66,19 @@ class CommentFactory extends Factory
         ]);
     }
 
+    public function forPage(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'article_id' => null,
+            'page_id' => Page::factory(),
+        ]);
+    }
+
     public function reply(Comment $parent): static
     {
         return $this->state(fn (array $attributes) => [
             'article_id' => $parent->article_id,
+            'page_id' => $parent->page_id,
             'parent_id' => $parent->id,
         ]);
     }

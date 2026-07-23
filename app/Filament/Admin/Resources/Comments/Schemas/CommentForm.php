@@ -22,8 +22,14 @@ class CommentForm
                             ->relationship('article', 'title')
                             ->nullable()
                             ->preload()
+                            ->searchable(),
+                        Select::make('page_id')
+                            ->label('所属页面')
+                            ->relationship('page', 'title')
+                            ->nullable()
+                            ->preload()
                             ->searchable()
-                            ->helperText('留空表示留言板留言'),
+                            ->helperText('文章和页面都留空表示留言板留言'),
                         Select::make('status')
                             ->label('状态')
                             ->options(CommentStatus::class)

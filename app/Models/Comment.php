@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'content',
     'status',
     'article_id',
+    'page_id',
     'user_id',
     'parent_id',
     'guest_name',
@@ -34,6 +35,11 @@ class Comment extends Model
         return $this->belongsTo(Article::class);
     }
 
+    public function page(): BelongsTo
+    {
+        return $this->belongsTo(Page::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -52,5 +58,18 @@ class Comment extends Model
     public function getAuthorAttribute(): string
     {
         return $this->user?->name ?? $this->guest_name ?? '匿名';
+    }
+
+    public function getTargetAttribute(): string
+    {
+        if ($this->article) {
+            return '文章：'.$this->article->title;
+        }
+
+        if ($this->page) {
+            return '页面：'.$this->page->title;
+        }
+
+        return '留言板';
     }
 }

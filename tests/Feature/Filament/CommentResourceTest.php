@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\Comments\Pages\EditComment;
 use App\Filament\Admin\Resources\Comments\Pages\ListComments;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Page;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -162,6 +163,83 @@ class CommentResourceTest extends TestCase
             ->filterTable('article', $article->id)
             ->assertCanSeeTableRecords($matching)
             ->assertCanNotSeeTableRecords(Comment::whereNot('article_id', $article->id)->get());
+    }
+
+    public function test_can_create_comment_for_page(): void
+    {
+        $this->actingAs($this->admin);
+        $page = Page::factory()->create();
+
+        Livewire::test(CreateComment::class)
+            ->fillForm([
+                'content' => '页面评论测试',
+                'status' => CommentStatus::Approved->value,
+                'page_id' => $page->id,
+                'user_id' => $this->admin->id,
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('comments', [
+            'content' => '页面评论测试',
+            'status' => CommentStatus::Approved->value,
+            'article_id' => null,
+            'page_id' => $page->id,
+            'user_id' => $this->admin->id,
+        ]);
+    }
+
+    public function test_can_filter_comments_by_page(): void
+    {
+        $this->actingAs($this->admin);
+        $page = Page::factory()->create();
+        $matching = Comment::factory()->count(2)->state([
+            'article_id' => null,
+            'page_id' => $page->id,
+        ])->create();
+        Comment::factory()->count(3)->create();
+
+        Livewire::test(ListComments::class)
+            ->filterTable('page', $page->id)
+            ->assertCanSeeTableRecords($matching)
+            ->assertCanNotSeeTableRecords(Comment::whereNot('page_id', $page->id)->get());
+    }
+
+    public function test_can_filter_comments_by_user(): void
+    {
+        $this->actingAs($this->admin);
+        $user = User::factory()->create();
+        $matching = Comment::factory()->count(2)->for(Article::factory())->create(['user_id' => $user->id]);
+        Comment::factory()->count(3)->create();
+
+        Livewire::test(ListComments::class)
+            ->filterTable('user', $user->id)
+            ->assertCanSeeTableRecords($matching)
+            ->assertCanNotSeeTableRecords(Comment::whereNot('user_id', $user->id)->get());
+    }
+
+    public function test_reply_to_page_comment_inherits_page_id(): void
+    {
+        $this->actingAs($this->admin);
+        $page = Page::factory()->create();
+        $comment = Comment::factory()->approved()->state([
+            'article_id' => null,
+            'page_id' => $page->id,
+        ])->create();
+
+        Livewire::test(ListComments::class)
+            ->callTableAction('reply', $comment->id, [
+                'content' => '页面评论回复',
+            ]);
+
+        $this->assertDatabaseHas('comments', [
+            'content' => '页面评论回复',
+            'parent_id' => $comment->id,
+            'article_id' => null,
+            'page_id' => $page->id,
+            'user_id' => $this->admin->id,
+            'status' => CommentStatus::Approved->value,
+        ]);
     }
 
     public function test_can_filter_comments_by_author(): void
