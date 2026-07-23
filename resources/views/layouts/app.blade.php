@@ -32,41 +32,13 @@
                 </a>
 
                 {{-- Main Nav --}}
-                @php($navCategories = App\Models\Category::whereNull('parent_id')->with('children')->get())
-                @php($navPages = App\Models\Page::whereNull('parent_id')->where('status', 'published')->get())
+                @php($mainMenu = \App\Models\Menu::render('main'))
                 <nav class="flex items-center gap-6 text-sm">
-                    <a href="{{ url('/') }}" class="hover:text-gray-600 dark:hover:text-gray-300">首页</a>
-
-                    @foreach ($navCategories as $category)
-                        <div class="relative group">
-                            <a href="{{ route('category.show', $category->slug) }}"
-                               class="hover:text-gray-600 dark:hover:text-gray-300 inline-flex items-center gap-1">
-                                {{ $category->name }}
-                                @if ($category->children->isNotEmpty())
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                    </svg>
-                                @endif
-                            </a>
-                            @if ($category->children->isNotEmpty())
-                                <div class="absolute left-0 top-full hidden group-hover:block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg min-w-[160px] py-1 z-50">
-                                    @foreach ($category->children as $child)
-                                        <a href="{{ route('category.show', $child->slug) }}"
-                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                            {{ $child->name }}
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                    @endforeach
-
-                    @foreach ($navPages as $page)
-                        <a href="{{ route('page.show', $page->slug) }}"
-                           class="hover:text-gray-600 dark:hover:text-gray-300">
-                            {{ $page->title }}
-                        </a>
-                    @endforeach
+                    @forelse ($mainMenu as $item)
+                        @include('partials.menu-item', ['item' => $item])
+                    @empty
+                        <a href="{{ url('/') }}" class="hover:text-gray-600 dark:hover:text-gray-300">首页</a>
+                    @endforelse
                 </nav>
 
                 <div class="flex items-center gap-4 text-sm ml-4 border-l border-gray-200 dark:border-gray-800 pl-4">
@@ -92,7 +64,19 @@
 
     {{-- Footer --}}
     <footer class="border-t border-gray-200 dark:border-gray-800 mt-12">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400 space-y-2">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400 space-y-4">
+            @php($footerMenu = \App\Models\Menu::render('footer'))
+            @if (! empty($footerMenu))
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    @foreach ($footerMenu as $item)
+                        <a href="{{ $item['url'] }}" target="{{ $item['target'] }}"
+                           class="hover:text-gray-700 dark:hover:text-gray-300">
+                            {{ $item['title'] }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+
             <p>&copy; {{ date('Y') }} {{ \App\Support\SiteSetting::get('site_name', config('app.name')) }}. {{ \App\Support\SiteSetting::get('copyright', 'All rights reserved.') }}</p>
             @if (\App\Support\SiteSetting::get('icp'))
                 <p>{{ \App\Support\SiteSetting::get('icp') }}</p>

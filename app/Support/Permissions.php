@@ -33,6 +33,8 @@ class Permissions
             'link' => ['label' => '友情链接', 'actions' => $standardActions],
             'user' => ['label' => '用户', 'actions' => $standardActions],
             'role' => ['label' => '角色', 'actions' => $standardActions],
+            'menu' => ['label' => '导航菜单', 'actions' => $standardActions],
+            'menu_item' => ['label' => '导航菜单项', 'actions' => $standardActions],
             'operation_log' => ['label' => '操作日志', 'actions' => $standardActions],
             'setting' => ['label' => '站点设置', 'actions' => ['view_any' => '查看', 'manage' => '管理']],
         ];

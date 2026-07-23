@@ -5,6 +5,8 @@ namespace Tests\Feature\Frontend;
 use App\Enums\ContentStatus;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Menu;
+use App\Models\MenuItem;
 use App\Models\Page;
 use App\Models\Tag;
 use App\Support\SiteSetting;
@@ -99,8 +101,22 @@ class PageRenderingTest extends TestCase
 
     public function test_category_hierarchy_shown_in_nav(): void
     {
+        $menu = Menu::factory()->main()->create();
         $parent = Category::factory()->create();
         $child = Category::factory()->create(['parent_id' => $parent->id]);
+
+        $parentItem = MenuItem::factory()
+            ->forMenu($menu)
+            ->category($parent)
+            ->create(['title' => $parent->name]);
+
+        MenuItem::factory()
+            ->forMenu($menu)
+            ->category($child)
+            ->create([
+                'title' => $child->name,
+                'parent_id' => $parentItem->id,
+            ]);
 
         $response = $this->get(route('home'));
 
