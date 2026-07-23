@@ -1,14 +1,13 @@
-@component('blocks._layout', ['data' => $data])
-    <div class="grid gap-8 md:grid-cols-2 items-center {{ ($data['swap_on_mobile'] ?? false) ? 'flex-col-reverse md:flex-row' : '' }}">
-        <div class="prose prose-gray dark:prose-invert max-w-none">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-6">
+    <div class="space-y-4">
+        @if (! empty($data['title']))
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ $data['title'] }}</h3>
+        @endif
+        <div class="prose dark:prose-invert text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
             {!! $data['left_content'] ?? '' !!}
         </div>
-        <div>
-            @if (! empty($data['right_image']))
-                <img src="{{ asset('storage/'.$data['right_image']) }}"
-                     alt=""
-                     class="rounded-lg w-full h-auto">
-            @endif
-        </div>
     </div>
-@endcomponent
+    <div class="prose dark:prose-invert text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+        {!! $data['right_content'] ?? '' !!}
+    </div>
+</div>

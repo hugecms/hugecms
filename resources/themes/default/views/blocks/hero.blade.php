@@ -1,20 +1,27 @@
-@component('blocks._layout', ['data' => $data])
-    <div class="relative rounded-2xl overflow-hidden min-h-[300px] flex items-center justify-center"
-         @if (! empty($data['background_image'])) style="background-image: url('{{ asset('storage/'.$data['background_image']) }}'); background-size: cover; background-position: center;" @endif>
-        @if (! empty($data['background_image']))
-            <div class="absolute inset-0 bg-black/40"></div>
-        @endif
-        <div class="relative z-10 text-center px-4 @if(($data['background_color'] ?? 'white') === 'dark') text-white @endif">
-            <h2 class="text-3xl sm:text-5xl font-bold mb-4">{{ $data['title'] ?? '' }}</h2>
-            @if (! empty($data['subtitle']))
-                <p class="text-lg sm:text-xl mb-6 opacity-90">{{ $data['subtitle'] }}</p>
-            @endif
-            @if (! empty($data['cta_text']) && ! empty($data['cta_url']))
-                <a href="{{ $data['cta_url'] }}"
-                   class="inline-block px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
-                    {{ $data['cta_text'] }}
-                </a>
-            @endif
+<section class="py-12 px-8 rounded-2xl bg-zinc-900 text-white space-y-4 shadow-sm text-center">
+    @if (! empty($data['badge']))
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-mono bg-zinc-800 text-amber-400">
+            {{ $data['badge'] }}
+        </span>
+    @endif
+    
+    @if (! empty($data['title']))
+        <h2 class="text-3xl sm:text-4xl font-serif font-black tracking-tight text-white">
+            {{ $data['title'] }}
+        </h2>
+    @endif
+
+    @if (! empty($data['subtitle']))
+        <p class="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+            {{ $data['subtitle'] }}
+        </p>
+    @endif
+
+    @if (! empty($data['button_text']) && ! empty($data['button_url']))
+        <div class="pt-4">
+            <a href="{{ $data['button_url'] }}" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-white text-zinc-900 font-bold text-xs hover:bg-zinc-100 transition-colors">
+                {{ $data['button_text'] }}
+            </a>
         </div>
-    </div>
-@endcomponent
+    @endif
+</section>

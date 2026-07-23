@@ -1,8 +1,8 @@
 {
     "name": "default",
-    "label": "默认主题",
-    "description": "HugeCMS 默认企业官网风格主题。",
+    "label": "极简风尚博客主题",
+    "description": "为个人专栏、技术博客与内容创作者打造的高品质现代沉浸式博客主题。",
     "version": "1.0.0",
-    "author": "HugeCMS",
+    "author": "HugeCMS Team",
     "preview": null
 }

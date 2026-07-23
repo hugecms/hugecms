@@ -6,6 +6,111 @@
 @source '../../../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Georgia', 'Cambria', "Times New Roman", Times, serif;
+    
+    --color-paper-50: #FBFBF9;
+    --color-paper-100: #F4F4F0;
+    --color-paper-200: #E7E7E1;
+    --color-ink-900: #121215;
+    --color-ink-800: #18181B;
+    --color-ink-700: #27272A;
+    --color-ink-600: #52525B;
+    --color-ink-400: #A1A1AA;
+}
+
+/* Custom Editorial Micro-interactions & Craft Styles */
+@layer utilities {
+    .bg-paper {
+        background-color: #FBFBF9;
+    }
+    .dark .bg-paper {
+        background-color: #09090B;
+    }
+
+    .border-subtle {
+        border-color: rgba(228, 228, 231, 0.8);
+    }
+    .dark .border-subtle {
+        border-color: rgba(39, 39, 42, 0.8);
+    }
+
+    .card-craft {
+        background-color: #ffffff;
+        border: 1px solid rgba(228, 228, 231, 0.9);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .dark .card-craft {
+        background-color: #121215;
+        border: 1px solid rgba(39, 39, 42, 0.9);
+    }
+    .card-craft:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        border-color: rgba(161, 161, 170, 0.4);
+    }
+    .dark .card-craft:hover {
+        border-color: rgba(113, 113, 122, 0.4);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Minimal Reading Progress Indicator */
+#reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background-color: #18181B;
+    z-index: 60;
+    width: 0%;
+    transition: width 0.1s ease-out;
+}
+.dark #reading-progress {
+    background-color: #F4F4F0;
+}
+
+/* Prose Editorial Styling */
+.prose {
+    color: #27272A;
+    line-height: 1.8;
+}
+.dark .prose {
+    color: #D4D4D8;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+    color: #09090B;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    scroll-margin-top: 5rem;
+}
+.dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+    color: #FAFAFA;
+}
+
+.prose blockquote {
+    border-left: 3px solid #D97706;
+    padding-left: 1.25rem;
+    font-style: italic;
+    color: #52525B;
+    margin: 1.5rem 0;
+}
+.dark .prose blockquote {
+    border-left-color: #F59E0B;
+    color: #A1A1AA;
+}
+
+.prose pre {
+    background-color: #18181B;
+    color: #F4F4F6;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+}
+
+.prose img {
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
 }
