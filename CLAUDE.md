@@ -82,13 +82,14 @@ The application is bootstrapped in `bootstrap/app.php` using Laravel 13's fluent
 
 ### Service providers
 
-Only `App\Providers\AppServiceProvider` is registered in `bootstrap/providers.php`. Once Filament panels are created, their panel provider classes should be added here.
+`App\Providers\AppServiceProvider` and `App\Providers\ThemeServiceProvider` are registered in `bootstrap/providers.php`. Filament panel providers (e.g. `App\Providers\Filament\AdminPanelProvider`) are also registered there.
 
 ### Frontend stack
 
 - **Vite** with the `laravel-vite-plugin` (v3) for asset bundling.
 - **Tailwind CSS v4** imported as a Vite plugin (`@tailwindcss/vite`).
-- CSS entry is `resources/css/app.css`, which uses `@import 'tailwindcss'` and defines the `--font-sans` theme variable as `Instrument Sans`.
+- **Theme system**: front-end themes live under `resources/themes/{theme}/`, each with its own `views/`, `css/app.css`, and `js/app.js`. The active theme is resolved at runtime and its view path is prepended to Laravel's view finder; missing views fall back to the `default` theme. Vite scans `resources/themes/*/css/app.css` and `resources/themes/*/js/app.js` automatically.
+- The default theme CSS entry is `resources/themes/default/css/app.css`, which uses `@import 'tailwindcss'` and defines the `--font-sans` theme variable as `Instrument Sans`.
 - The `laravel-vite-plugin/fonts` helper loads `Instrument Sans` weights 400/500/600 from Bunny Fonts.
 - The Vite dev server ignores changes under `storage/framework/views/**` to reduce churn from compiled Blade templates.
 

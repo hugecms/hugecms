@@ -11,7 +11,6 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -32,18 +31,12 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => '#0530ad',
             ])
             ->navigationGroups([
-                NavigationGroup::make('内容管理')
-                    ->icon(Heroicon::OutlinedDocumentText),
-                NavigationGroup::make('媒体资源')
-                    ->icon(Heroicon::OutlinedPhoto),
-                NavigationGroup::make('运营工具')
-                    ->icon(Heroicon::OutlinedSparkles),
-                NavigationGroup::make('用户与权限')
-                    ->icon(Heroicon::OutlinedUsers),
-                NavigationGroup::make('数据报表')
-                    ->icon(Heroicon::OutlinedChartPie),
-                NavigationGroup::make('系统设置')
-                    ->icon(Heroicon::OutlinedCog6Tooth),
+                NavigationGroup::make('内容管理'),
+                NavigationGroup::make('媒体资源'),
+                NavigationGroup::make('运营工具'),
+                NavigationGroup::make('用户与权限'),
+                NavigationGroup::make('数据报表'),
+                NavigationGroup::make('系统设置'),
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
