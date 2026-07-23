@@ -38,7 +38,10 @@ function themeInputs() {
 export default defineConfig({
     plugins: [
         laravel({
-            input: themeInputs(),
+            input: [
+                'resources/css/filament/admin/theme.css',
+                ...themeInputs(),
+            ],
             refresh: [
                 'resources/views/**',
                 'resources/themes/**',
