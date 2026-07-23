@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source '../../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    
+    /* Ant Design 5 Daybreak Blue System */
+    --color-antd-primary: #1677FF;
+    --color-antd-primary-hover: #4096FF;
+    --color-antd-primary-active: #0958D9;
+    --color-antd-primary-bg: #E6F4FF;
+
+    /* Ant Design Neutral Colors */
+    --color-antd-text-main: rgba(0, 0, 0, 0.88);
+    --color-antd-text-secondary: rgba(0, 0, 0, 0.65);
+    --color-antd-text-disabled: rgba(0, 0, 0, 0.25);
+    --color-antd-border: #d9d9d9;
+    --color-antd-border-split: #f0f0f0;
+    --color-antd-bg-layout: #f5f5f5;
+    --color-antd-bg-container: #ffffff;
+}
+
+/* Ant Design 5 Utility & Component Styles */
+@layer utilities {
+    /* AntD Shadows */
+    .shadow-antd-s1 {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+    }
+    .shadow-antd-s2 {
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* AntD Card Component */
+    .antd-card {
+        background-color: #ffffff;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    .dark .antd-card {
+        background-color: #141414;
+        border: 1px solid #303030;
+    }
+    .antd-card:hover {
+        border-color: rgba(22, 119, 255, 0.4);
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    /* AntD Button Primary */
+    .antd-btn-primary {
+        background-color: #1677FF;
+        color: #ffffff;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+    }
+    .antd-btn-primary:hover {
+        background-color: #4096FF;
+    }
+    .antd-btn-primary:active {
+        background-color: #0958D9;
+    }
+
+    /* AntD Button Default */
+    .antd-btn-default {
+        background-color: #ffffff;
+        border: 1px solid #d9d9d9;
+        color: rgba(0, 0, 0, 0.88);
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    .dark .antd-btn-default {
+        background-color: #141414;
+        border-color: #424242;
+        color: rgba(255, 255, 255, 0.85);
+    }
+    .antd-btn-default:hover {
+        border-color: #4096FF;
+        color: #4096FF;
+    }
+
+    /* AntD Tag */
+    .antd-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        font-size: 12px;
+        border-radius: 4px;
+        background-color: #E6F4FF;
+        color: #1677FF;
+        border: 1px solid #91CAFF;
+    }
+    .dark .antd-tag {
+        background-color: #111b26;
+        color: #1677FF;
+        border-color: #15325b;
+    }
+}
+
+#reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background-color: #1677FF;
+    z-index: 60;
+    width: 0%;
+    transition: width 0.1s ease-out;
+}
+
+/* AntD Typography Prose */
+.prose {
+    color: rgba(0, 0, 0, 0.88);
+    line-height: 1.75;
+}
+.dark .prose {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.prose h1, .prose h2, .prose h3 {
+    color: rgba(0, 0, 0, 0.88);
+    font-weight: 600;
+    scroll-margin-top: 5rem;
+}
+.dark .prose h1, .dark .prose h2, .dark .prose h3 {
+    color: rgba(255, 255, 255, 0.85);
+}
