@@ -39,6 +39,9 @@ class ManageSiteSettingsTest extends TestCase
                 'icp' => '京ICP备12345678号',
                 'copyright' => '© 2026 HugeCMS',
                 'contact' => 'contact@example.com',
+                'site_title' => 'HugeCMS 官方站',
+                'site_description' => '企业级 CMS',
+                'site_keywords' => 'CMS,Laravel',
             ])
             ->call('save')
             ->assertHasNoFormErrors();
@@ -47,6 +50,12 @@ class ManageSiteSettingsTest extends TestCase
             'group' => 'site',
             'key' => 'site_name',
             'value' => 'HugeCMS 测试站',
+        ]);
+
+        $this->assertDatabaseHas('settings', [
+            'group' => 'site',
+            'key' => 'site_title',
+            'value' => 'HugeCMS 官方站',
         ]);
     }
 

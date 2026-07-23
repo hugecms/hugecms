@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', config('app.name'))
+@section('title', \App\Support\SiteSetting::get('site_title', config('app.name')))
+@section('description', \App\Support\SiteSetting::get('site_description', ''))
+@section('keywords', \App\Support\SiteSetting::get('site_keywords', ''))
 
 @section('content')
     <div class="space-y-8">

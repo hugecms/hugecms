@@ -12,9 +12,11 @@ use App\Models\Link;
 use App\Models\Media;
 use App\Models\MediaCategory;
 use App\Models\Page;
+use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\User;
 use App\Observers\OperationLogObserver;
+use App\Observers\SitemapCacheObserver;
 use App\Policies\RolePolicy;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -45,6 +47,21 @@ class AppServiceProvider extends ServiceProvider
 
         $this->registerOperationLogObserver();
         $this->registerAuthEventListeners();
+        $this->registerSitemapCacheObserver();
+    }
+
+    protected function registerSitemapCacheObserver(): void
+    {
+        $sitemapModels = [
+            Page::class,
+            Article::class,
+            Category::class,
+            Setting::class,
+        ];
+
+        foreach ($sitemapModels as $model) {
+            $model::observe(SitemapCacheObserver::class);
+        }
     }
 
     protected function registerOperationLogObserver(): void

@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- SEO --}}
-    <title>@yield('title', config('app.name'))</title>
-    <meta name="description" content="@yield('description', '')">
-    <meta name="keywords" content="@yield('keywords', '')">
+    <title>@yield('title', \App\Support\SiteSetting::get('site_title', config('app.name')))</title>
+    <meta name="description" content="@yield('description', \App\Support\SiteSetting::get('site_description', ''))">
+    <meta name="keywords" content="@yield('keywords', \App\Support\SiteSetting::get('site_keywords', ''))">
 
     @stack('meta')
 
