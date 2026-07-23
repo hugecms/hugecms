@@ -33,6 +33,7 @@ class Permissions
             'link' => ['label' => '友情链接', 'actions' => $standardActions],
             'user' => ['label' => '用户', 'actions' => $standardActions],
             'role' => ['label' => '角色', 'actions' => $standardActions],
+            'operation_log' => ['label' => '操作日志', 'actions' => $standardActions],
         ];
     }
 

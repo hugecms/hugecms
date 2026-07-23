@@ -59,6 +59,7 @@ class RoleSeeder extends Seeder
         foreach (array_keys(Permissions::all()) as $model) {
             $auditorPermissions = array_merge($auditorPermissions, Permissions::forModel($model, ['view_any']));
         }
+        $auditorPermissions[] = 'operation_log.view_any';
         Role::findOrCreate('auditor', 'web')
             ->syncPermissions($auditorPermissions);
 
