@@ -29,8 +29,5 @@ Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('cat
 // Tags
 Route::get('/tags/{slug}', [TagController::class, 'show'])->name('tag.show');
 
-// Pages
-Route::get('page/{slug}', [PageController::class, 'show'])->name('page.show');
-
-// Pages fallback (legacy short URL)
-Route::get('/{slug}', [PageController::class, 'show']);
+// Pages (fallback — must be last)
+Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');

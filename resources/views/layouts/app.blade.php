@@ -32,15 +32,36 @@
                 </a>
 
                 {{-- Main Nav --}}
+                @php($navCategories = App\Models\Category::whereNull('parent_id')->with('children')->get())
+                @php($navPages = App\Models\Page::whereNull('parent_id')->where('status', 'published')->get())
                 <nav class="flex items-center gap-6 text-sm">
                     <a href="{{ url('/') }}" class="hover:text-gray-600 dark:hover:text-gray-300">首页</a>
-                    @foreach (App\Models\Category::whereNull('parent_id')->get() as $category)
-                        <a href="{{ route('category.show', $category->slug) }}"
-                           class="hover:text-gray-600 dark:hover:text-gray-300">
-                            {{ $category->name }}
-                        </a>
+
+                    @foreach ($navCategories as $category)
+                        <div class="relative group">
+                            <a href="{{ route('category.show', $category->slug) }}"
+                               class="hover:text-gray-600 dark:hover:text-gray-300 inline-flex items-center gap-1">
+                                {{ $category->name }}
+                                @if ($category->children->isNotEmpty())
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                @endif
+                            </a>
+                            @if ($category->children->isNotEmpty())
+                                <div class="absolute left-0 top-full hidden group-hover:block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg min-w-[160px] py-1 z-50">
+                                    @foreach ($category->children as $child)
+                                        <a href="{{ route('category.show', $child->slug) }}"
+                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                            {{ $child->name }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     @endforeach
-                    @foreach (App\Models\Page::whereNull('parent_id')->where('status', 'published')->get() as $page)
+
+                    @foreach ($navPages as $page)
                         <a href="{{ route('page.show', $page->slug) }}"
                            class="hover:text-gray-600 dark:hover:text-gray-300">
                             {{ $page->title }}

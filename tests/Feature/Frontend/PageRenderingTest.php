@@ -9,6 +9,8 @@ use App\Models\Page;
 use App\Models\Tag;
 use App\Support\SiteSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PageRenderingTest extends TestCase
@@ -74,7 +76,7 @@ class PageRenderingTest extends TestCase
         $response->assertSee($article->title);
     }
 
-    public function test_page_renders_at_page_slug(): void
+    public function test_page_renders_at_fallback_slug(): void
     {
         $page = Page::factory()->create([
             'status' => ContentStatus::Published,
@@ -85,20 +87,69 @@ class PageRenderingTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('关于我们');
-        $response->assertSee('/page/'.$page->slug, false);
     }
 
-    public function test_old_slug_fallback_still_works(): void
+    public function test_draft_page_returns_404(): void
     {
-        $page = Page::factory()->create([
-            'status' => ContentStatus::Published,
-            'title' => '联系',
-        ]);
+        $page = Page::factory()->draft()->create();
 
-        $response = $this->get('/'.$page->slug);
+        $this->get(route('page.show', $page->slug))
+            ->assertNotFound();
+    }
+
+    public function test_category_hierarchy_shown_in_nav(): void
+    {
+        $parent = Category::factory()->create();
+        $child = Category::factory()->create(['parent_id' => $parent->id]);
+
+        $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('联系');
+        $response->assertSee($parent->name);
+        $response->assertSee($child->name);
+    }
+
+    public function test_category_archive_includes_subcategory_articles(): void
+    {
+        $parent = Category::factory()->create();
+        $child = Category::factory()->create(['parent_id' => $parent->id]);
+        $article = Article::factory()->create(['status' => ContentStatus::Published]);
+        $article->categories()->attach($child);
+
+        $response = $this->get(route('category.show', $parent->slug));
+
+        $response->assertOk();
+        $response->assertSee($article->title);
+    }
+
+    public function test_cover_image_urls_rendered(): void
+    {
+        Storage::fake('public');
+
+        $article = Article::factory()->create(['status' => ContentStatus::Published]);
+        $article->addMedia(UploadedFile::fake()->image('cover.jpg'))
+            ->toMediaCollection('cover');
+
+        $mediumUrl = $article->getFirstMediaUrl('cover', 'medium');
+        $largeUrl = $article->getFirstMediaUrl('cover', 'large');
+
+        $this->get(route('home'))
+            ->assertSee($mediumUrl, false);
+
+        $this->get(route('article.show', $article->slug))
+            ->assertSee($largeUrl, false);
+    }
+
+    public function test_drafts_not_shown_in_lists(): void
+    {
+        $draft = Article::factory()->draft()->create();
+        $published = Article::factory()->create(['status' => ContentStatus::Published]);
+
+        $response = $this->get(route('home'));
+
+        $response->assertOk();
+        $response->assertSee($published->title);
+        $response->assertDontSee($draft->title);
     }
 
     public function test_layout_uses_site_settings(): void
