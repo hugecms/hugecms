@@ -68,6 +68,19 @@
                         </a>
                     @endforeach
                 </nav>
+
+                <div class="flex items-center gap-4 text-sm ml-4 border-l border-gray-200 dark:border-gray-800 pl-4">
+                    @guest
+                        <a href="{{ route('login') }}" class="hover:text-gray-600 dark:hover:text-gray-300">登录</a>
+                        <a href="{{ route('register') }}" class="hover:text-gray-600 dark:hover:text-gray-300">注册</a>
+                    @else
+                        <a href="{{ route('member.dashboard') }}" class="hover:text-gray-600 dark:hover:text-gray-300">会员中心</a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="hover:text-gray-600 dark:hover:text-gray-300">退出</button>
+                        </form>
+                    @endguest
+                </div>
             </div>
         </div>
     </header>
