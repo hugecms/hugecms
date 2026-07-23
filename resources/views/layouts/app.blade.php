@@ -23,8 +23,12 @@
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="flex items-center justify-between h-16">
                 {{-- Logo / Site Name --}}
-                <a href="{{ url('/') }}" class="text-lg font-semibold">
-                    {{ config('app.name') }}
+                <a href="{{ url('/') }}" class="text-lg font-semibold flex items-center gap-2">
+                    @php($logo = \App\Support\SiteSetting::get('logo'))
+                    @if ($logo)
+                        <img src="{{ asset('storage/'.$logo) }}" alt="{{ \App\Support\SiteSetting::get('site_name', config('app.name')) }}" class="h-8 w-auto">
+                    @endif
+                    {{ \App\Support\SiteSetting::get('site_name', config('app.name')) }}
                 </a>
 
                 {{-- Main Nav --}}
@@ -54,8 +58,14 @@
 
     {{-- Footer --}}
     <footer class="border-t border-gray-200 dark:border-gray-800 mt-12">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400 space-y-2">
+            <p>&copy; {{ date('Y') }} {{ \App\Support\SiteSetting::get('site_name', config('app.name')) }}. {{ \App\Support\SiteSetting::get('copyright', 'All rights reserved.') }}</p>
+            @if (\App\Support\SiteSetting::get('icp'))
+                <p>{{ \App\Support\SiteSetting::get('icp') }}</p>
+            @endif
+            @if (\App\Support\SiteSetting::get('contact'))
+                <p>{{ \App\Support\SiteSetting::get('contact') }}</p>
+            @endif
         </div>
     </footer>
 </body>
