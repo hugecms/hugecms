@@ -13,11 +13,14 @@
     @stack('meta')
 
     @fonts
+
+    @include('partials.theme-mode-init')
+
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(theme_vite_entries())
     @endif
 </head>
-<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] antialiased">
+<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-gray-100 antialiased">
     {{-- Header / Navigation --}}
     <header class="border-b border-gray-200 dark:border-gray-800">
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
@@ -42,6 +45,8 @@
                 </nav>
 
                 <div class="flex items-center gap-4 text-sm ml-4 border-l border-gray-200 dark:border-gray-800 pl-4">
+                    @include('partials.theme-toggle')
+
                     @guest
                         <a href="{{ route('login') }}" class="hover:text-gray-600 dark:hover:text-gray-300">登录</a>
                         <a href="{{ route('register') }}" class="hover:text-gray-600 dark:hover:text-gray-300">注册</a>
