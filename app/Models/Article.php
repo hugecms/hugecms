@@ -95,4 +95,9 @@ class Article extends Model implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function views(): HasMany
+    {
+        return $this->hasMany(ArticleView::class);
+    }
 }

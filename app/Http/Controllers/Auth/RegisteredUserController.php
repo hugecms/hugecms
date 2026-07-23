@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\StatisticsService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,6 +15,8 @@ use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
+    public function __construct(protected StatisticsService $statistics) {}
+
     public function create(): View
     {
         return view('auth.register');
@@ -40,6 +43,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        $this->statistics->recordNewUser();
 
         return redirect()->route('member.dashboard');
     }

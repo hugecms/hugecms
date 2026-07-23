@@ -49,7 +49,9 @@ class DashboardTest extends TestCase
             ->assertSeeTextInOrder(['文章总数', (string) $expectedArticles])
             ->assertSeeTextInOrder(['用户总数', (string) $expectedUsers])
             ->assertSeeText('今日访问量')
-            ->assertSeeText('未接入')
+            ->assertSeeTextInOrder(['今日访问量', '0'])
+            ->assertSeeText('UV:')
+            ->assertSeeText('今日新增用户')
             ->assertSeeTextInOrder(['待审核内容', '4']);
     }
 
