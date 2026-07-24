@@ -48,7 +48,6 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // 仪表盘 widget 由 discoverWidgets 自动注册，此处留空以移除默认 widget
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

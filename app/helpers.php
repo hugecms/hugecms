@@ -14,20 +14,13 @@ if (! function_exists('theme')) {
     }
 }
 
-if (! function_exists('theme_vite_entries')) {
-    function theme_vite_entries(): array
+if (! function_exists('theme_asset')) {
+    /**
+     * Build a public URL for a static asset inside the active theme
+     * (css/js/images/fonts), served by ThemeAssetController.
+     */
+    function theme_asset(string $path): string
     {
-        $theme = theme();
-        $entries = [];
-
-        if (file_exists($theme->cssPath())) {
-            $entries[] = $theme->cssEntry();
-        }
-
-        if (file_exists($theme->jsPath())) {
-            $entries[] = $theme->jsEntry();
-        }
-
-        return $entries;
+        return route('theme.asset', ['theme' => theme()->id, 'path' => ltrim($path, '/')]);
     }
 }

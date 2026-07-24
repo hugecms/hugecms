@@ -16,8 +16,6 @@ class ManageThemesTest extends TestCase
 
     private Filesystem $files;
 
-    private ?string $originalManifest = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -25,19 +23,11 @@ class ManageThemesTest extends TestCase
         $this->files = new Filesystem;
         $this->ensureTestThemeRemoved();
         $this->createTestTheme();
-        $this->stubManifest();
     }
 
     protected function tearDown(): void
     {
         $this->ensureTestThemeRemoved();
-
-        $manifestPath = public_path('build/manifest.json');
-        if ($this->originalManifest !== null) {
-            $this->files->put($manifestPath, $this->originalManifest);
-        } elseif ($this->files->exists($manifestPath)) {
-            $this->files->delete($manifestPath);
-        }
 
         parent::tearDown();
     }
@@ -70,7 +60,7 @@ class ManageThemesTest extends TestCase
         $response->assertRedirect('/admin/login');
     }
 
-    public function test_super_admin_can_activate_compiled_theme(): void
+    public function test_super_admin_can_activate_theme(): void
     {
         $user = $this->makeSuperAdmin();
 
@@ -80,28 +70,6 @@ class ManageThemesTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseHas('settings', [
-            'group' => 'site',
-            'key' => 'active_theme',
-            'value' => 'test-blog',
-        ]);
-    }
-
-    public function test_uncompiled_theme_cannot_be_activated(): void
-    {
-        $user = $this->makeSuperAdmin();
-
-        $manifestPath = public_path('build/manifest.json');
-        $manifest = json_decode($this->files->get($manifestPath), true);
-        unset($manifest['resources/themes/test-blog/css/app.css']);
-        unset($manifest['resources/themes/test-blog/js/app.js']);
-        $this->files->put($manifestPath, json_encode($manifest, JSON_PRETTY_PRINT));
-
-        Livewire::actingAs($user)
-            ->test(ManageThemes::class)
-            ->call('activate', 'test-blog')
-            ->assertOk();
-
-        $this->assertDatabaseMissing('settings', [
             'group' => 'site',
             'key' => 'active_theme',
             'value' => 'test-blog',
@@ -132,25 +100,6 @@ class ManageThemesTest extends TestCase
             'author' => 'Test',
             'preview' => null,
         ]));
-    }
-
-    private function stubManifest(): void
-    {
-        $manifestPath = public_path('build/manifest.json');
-        $this->originalManifest = $this->files->exists($manifestPath)
-            ? $this->files->get($manifestPath)
-            : null;
-
-        if (! $this->files->isDirectory(public_path('build'))) {
-            $this->files->makeDirectory(public_path('build'), 0755, true);
-        }
-
-        $this->files->put($manifestPath, json_encode([
-            'resources/themes/default/css/app.css' => ['file' => 'assets/default-app.css'],
-            'resources/themes/default/js/app.js' => ['file' => 'assets/default-app.js'],
-            'resources/themes/test-blog/css/app.css' => ['file' => 'assets/test-blog-app.css'],
-            'resources/themes/test-blog/js/app.js' => ['file' => 'assets/test-blog-app.js'],
-        ], JSON_PRETTY_PRINT));
     }
 
     private function ensureTestThemeRemoved(): void

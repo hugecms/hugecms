@@ -5,27 +5,27 @@
 @section('keywords', $page->seo_keywords ?: \App\Support\SiteSetting::get('site_keywords', ''))
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-    
+<div class="container-narrow page-single">
+
     {{-- Header --}}
-    <header class="border-b border-zinc-200 dark:border-zinc-800 pb-6 space-y-2">
-        <h1 class="text-3xl sm:text-4xl font-serif font-black text-zinc-900 dark:text-white tracking-tight">
+    <header class="page-single-header">
+        <h1 class="page-title">
             {{ $page->title }}
         </h1>
-        <p class="text-xs text-zinc-400 font-mono">
+        <p class="page-updated">
             更新于 {{ $page->updated_at ? $page->updated_at->format('Y-m-d') : $page->created_at->format('Y-m-d') }}
         </p>
     </header>
 
     {{-- Page Blocks or Rich Text --}}
     @if ($page->blocks && is_array($page->blocks) && count($page->blocks) > 0)
-        <div class="space-y-10">
+        <div class="page-blocks">
             @foreach ($page->blocks as $block)
                 @includeIf('blocks.' . ($block['type'] ?? 'rich_text'), ['data' => $block['data'] ?? []])
             @endforeach
         </div>
     @else
-        <article class="prose max-w-none text-zinc-800 dark:text-zinc-200 leading-relaxed text-base">
+        <article class="prose">
             {!! $page->content !!}
         </article>
     @endif

@@ -1,3 +1,3 @@
-<div class="py-6">
+<div class="block-wrapper">
     {{ $slot }}
 </div>

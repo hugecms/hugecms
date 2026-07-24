@@ -36,9 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const a = document.createElement('a');
                 a.href = `#${heading.id}`;
                 a.textContent = heading.textContent;
-                a.className = `block text-xs transition-colors duration-150 py-1 ${
-                    heading.tagName.toLowerCase() === 'h3' ? 'pl-3 text-slate-500 dark:text-slate-400' : 'font-medium text-slate-700 dark:text-slate-300'
-                } hover:text-amber-600 dark:hover:text-amber-400`;
+                a.className = heading.tagName.toLowerCase() === 'h3' ? 'toc-link toc-link-sub' : 'toc-link';
 
                 li.appendChild(a);
                 tocList.appendChild(li);
@@ -57,15 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const links = tocList.querySelectorAll('a');
                 links.forEach(link => {
                     if (link.getAttribute('href') === `#${currentId}`) {
-                        link.classList.add('text-amber-600', 'dark:text-amber-400', 'font-bold');
+                        link.classList.add('toc-active');
                     } else {
-                        link.classList.remove('text-amber-600', 'dark:text-amber-400', 'font-bold');
+                        link.classList.remove('toc-active');
                     }
                 });
             });
         } else {
             const emptyNotice = document.createElement('li');
-            emptyNotice.className = 'text-xs text-slate-400 dark:text-slate-500 italic';
+            emptyNotice.className = 'toc-empty';
             emptyNotice.textContent = '本文暂无章节标题';
             tocList.appendChild(emptyNotice);
         }
@@ -80,8 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchTriggers.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                searchModal.classList.remove('hidden');
-                searchModal.classList.add('flex');
+                searchModal.classList.add('is-open');
                 const searchInput = document.getElementById('search-modal-input');
                 if (searchInput) searchInput.focus();
             });
@@ -89,8 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (closeSearchBtn) {
             closeSearchBtn.addEventListener('click', () => {
-                searchModal.classList.add('hidden');
-                searchModal.classList.remove('flex');
+                searchModal.classList.remove('is-open');
             });
         }
 
@@ -98,14 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('keydown', (e) => {
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
-                searchModal.classList.toggle('hidden');
-                searchModal.classList.toggle('flex');
+                searchModal.classList.toggle('is-open');
                 const searchInput = document.getElementById('search-modal-input');
-                if (searchInput && !searchModal.classList.contains('hidden')) searchInput.focus();
+                if (searchInput && searchModal.classList.contains('is-open')) searchInput.focus();
             }
-            if (e.key === 'Escape' && !searchModal.classList.contains('hidden')) {
-                searchModal.classList.add('hidden');
-                searchModal.classList.remove('flex');
+            if (e.key === 'Escape' && searchModal.classList.contains('is-open')) {
+                searchModal.classList.remove('is-open');
             }
         });
     }
@@ -121,12 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!liked) {
                 count += 1;
                 liked = true;
-                likeBtn.classList.add('bg-amber-100', 'text-amber-700', 'dark:bg-amber-950/60', 'dark:text-amber-400');
+                likeBtn.classList.add('is-liked');
                 likeCountSpan.innerText = count;
             } else {
                 count -= 1;
                 liked = false;
-                likeBtn.classList.remove('bg-amber-100', 'text-amber-700', 'dark:bg-amber-950/60', 'dark:text-amber-400');
+                likeBtn.classList.remove('is-liked');
                 likeCountSpan.innerText = count;
             }
         });

@@ -31,26 +31,16 @@
                     <div class="mt-4 space-y-1 text-sm text-gray-500 dark:text-gray-400">
                         <p>版本：{{ $theme->version }}</p>
                         <p>作者：{{ $theme->author }}</p>
-                        <p>
-                            编译状态：
-                            @if ($theme->isCompiled())
-                                <span class="text-green-600 dark:text-green-400">已编译</span>
-                            @else
-                                <span class="text-red-600 dark:text-red-400">未编译</span>
-                            @endif
-                        </p>
                     </div>
 
                     <div class="mt-auto flex items-center gap-2 pt-4">
-                        @if ($theme->isCompiled())
-                            <x-filament::button
-                                wire:click="activate('{{ $theme->id }}')"
-                                :disabled="$theme->id === $activeId"
-                                size="sm"
-                            >
-                                {{ $theme->id === $activeId ? '已启用' : '启用' }}
-                            </x-filament::button>
-                        @endif
+                        <x-filament::button
+                            wire:click="activate('{{ $theme->id }}')"
+                            :disabled="$theme->id === $activeId"
+                            size="sm"
+                        >
+                            {{ $theme->id === $activeId ? '已启用' : '启用' }}
+                        </x-filament::button>
 
                         <a
                             href="{{ route('home', ['theme' => $theme->id]) }}"

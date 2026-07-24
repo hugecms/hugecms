@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\SitemapController;
 use App\Http\Controllers\Frontend\TagController;
+use App\Http\Controllers\ThemeAssetController;
 use App\Http\Middleware\RecordStatistics;
 use Illuminate\Support\Facades\Route;
 
@@ -64,3 +65,8 @@ Route::middleware(RecordStatistics::class)->group(function () {
     // Pages (fallback — must be last)
     Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
 });
+
+// Theme static assets (css/js/images/fonts), no build pipeline required
+Route::get('themes/{theme}/{path}', [ThemeAssetController::class, 'show'])
+    ->where(['theme' => '[A-Za-z0-9_-]+', 'path' => '.+'])
+    ->name('theme.asset');

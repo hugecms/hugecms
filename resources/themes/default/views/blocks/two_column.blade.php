@@ -1,13 +1,13 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-6">
-    <div class="space-y-4">
+<div class="block-two-column">
+    <div class="block-col">
         @if (! empty($data['title']))
-            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ $data['title'] }}</h3>
+            <h3 class="block-col-title">{{ $data['title'] }}</h3>
         @endif
-        <div class="prose dark:prose-invert text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+        <div class="prose block-col-text">
             {!! $data['left_content'] ?? '' !!}
         </div>
     </div>
-    <div class="prose dark:prose-invert text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+    <div class="prose block-col-text">
         {!! $data['right_content'] ?? '' !!}
     </div>
 </div>

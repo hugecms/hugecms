@@ -38,22 +38,20 @@ class ThemeModeToggleTest extends TestCase
         $response->assertOk();
         $response->assertSee('id="theme-toggle"', false);
         $response->assertSee('aria-pressed', false);
-        $response->assertSee('dark:hidden', false);
-        $response->assertSee('hidden dark:block', false);
     }
 
-    public function test_theme_mode_init_script_appears_before_vite_assets(): void
+    public function test_theme_mode_init_script_appears_before_theme_assets(): void
     {
         $response = $this->get(route('home'));
         $content = $response->getContent();
 
         $initScriptPosition = strpos($content, 'localStorage.getItem(\'theme\')');
-        $vitePosition = strpos($content, '/build/assets/');
+        $stylesheetPosition = strpos($content, theme_asset('css/app.css'));
 
         $this->assertNotFalse($initScriptPosition, 'Theme mode init script not found.');
         $this->assertTrue(
-            $vitePosition === false || $initScriptPosition < $vitePosition,
-            'Theme mode init script must appear before Vite assets to prevent FOUC.'
+            $stylesheetPosition === false || $initScriptPosition < $stylesheetPosition,
+            'Theme mode init script must appear before theme assets to prevent FOUC.'
         );
     }
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-HugeCMS is an enterprise content management system built on **Laravel 13.20** and **Filament 5.7**, targeting **PHP ^8.3**. It is currently a freshly initialized Laravel application: Filament is a Composer dependency but no panel provider or resources have been scaffolded yet (`app/Providers/` only contains `AppServiceProvider.php`).
+HugeCMS is an enterprise content management system built on **Laravel 13.20** and **Filament 5.7**, targeting **PHP ^8.3**. The Filament admin panel (`/admin`) is fully implemented under `app/Filament/` but is being migrated to a standalone Vue SPA in `packages/admin/`; the Laravel front end uses server-rendered Blade themes with plain css/js (no build pipeline).
 
 ## Common commands
 
@@ -14,7 +14,7 @@ HugeCMS is an enterprise content management system built on **Laravel 13.20** an
 composer setup
 ```
 
-This runs: `composer install`, copies `.env.example` to `.env`, generates an app key, runs migrations, installs npm dependencies, and builds frontend assets.
+This runs: `composer install`, copies `.env.example` to `.env`, generates an app key, and runs migrations.
 
 ### Development
 
@@ -22,24 +22,20 @@ This runs: `composer install`, copies `.env.example` to `.env`, generates an app
 composer dev
 ```
 
-Runs the PHP dev server, queue listener, log tail (`pail`), and Vite dev server concurrently via `npx concurrently`. All four processes are killed together when any exits.
+Runs `php artisan serve`. There is no frontend build step for the Laravel app — front-end theme assets are plain css/js served directly.
 
-Alternatively run services individually:
+Other services can be run individually as needed:
 
 ```bash
-php artisan serve
 php artisan queue:listen --tries=1 --timeout=0
 php artisan pail --timeout=0
-npm run dev
 ```
 
-### Build
+### Front-end theme assets
 
-```bash
-npm run build
-```
+Themes carry plain, un-built `css/app.css` and `js/app.js` under `resources/themes/{theme}/`. They are served at runtime through the `themes/{theme}/{path}` route (`App\Http\Controllers\ThemeAssetController`); Blade layouts reference them via the `theme_asset()` helper. Do not reintroduce a build pipeline (Vite/Tailwind/npm) for theme assets.
 
-Compiles `resources/css/app.css` and `resources/js/app.js` through Vite. Filament/Livewire assets are served from the vendor directory; run `php artisan filament:assets` if Filament static assets need to be republished.
+Filament/Livewire assets are served from the vendor directory; run `php artisan filament:assets` if Filament static assets need to be republished. (Filament is being phased out in favor of the Vue admin app in `packages/admin/`.)
 
 ### Tests
 
@@ -86,16 +82,16 @@ The application is bootstrapped in `bootstrap/app.php` using Laravel 13's fluent
 
 ### Frontend stack
 
-- **Vite** with the `laravel-vite-plugin` (v3) for asset bundling.
-- **Tailwind CSS v4** imported as a Vite plugin (`@tailwindcss/vite`).
-- **Theme system**: front-end themes live under `resources/themes/{theme}/`, each with its own `views/`, `css/app.css`, and `js/app.js`. The active theme is resolved at runtime and its view path is prepended to Laravel's view finder; missing views fall back to the `default` theme. Vite scans `resources/themes/*/css/app.css` and `resources/themes/*/js/app.js` automatically.
-- The default theme CSS entry is `resources/themes/default/css/app.css`, which uses `@import 'tailwindcss'` and defines the `--font-sans` theme variable as `Instrument Sans`.
-- The `laravel-vite-plugin/fonts` helper loads `Instrument Sans` weights 400/500/600 from Bunny Fonts.
-- The Vite dev server ignores changes under `storage/framework/views/**` to reduce churn from compiled Blade templates.
+- **No build pipeline** for the Laravel front end: no Vite, Tailwind, or npm at the repository root. Theme assets are hand-written, plain CSS/JS.
+- **Theme system**: front-end themes live under `resources/themes/{theme}/`, each with its own `views/`, `css/app.css`, and `js/app.js`. The active theme is resolved at runtime and its view path is prepended to Laravel's view finder; missing views fall back to the `default` theme.
+- Theme assets are served through the `themes/{theme}/{path}` route (`ThemeAssetController`, restricted to `css|js|images|img|fonts|assets` directories); Blade layouts load them with the `theme_asset()` helper in `app/helpers.php`.
+- Pagination uses a semantic, theme-agnostic view at `resources/views/vendor/pagination/default.blade.php` (classes `pagination`, `pagination-item`, `pagination-link`, `active`, `disabled`) — themes style these in their own CSS.
+- `Instrument Sans` (weights 400/500/600) is loaded from Bunny Fonts via a plain `<link>` in the theme layouts.
+- **Admin app**: `packages/admin/` is a standalone Vue 3 + Vite + Element Plus SPA (pnpm) that will replace Filament; it is built and deployed separately, with Laravel serving its `dist` at `/admin`.
 
 ### Filament state
 
-Filament packages are present in `vendor/` and `artisan` exposes `filament:*` commands, but no application-level Filament code exists yet. To create the first admin panel, run `php artisan filament:install`. This will generate the panel provider, resources directory, and service provider registration. After installing or upgrading Filament, run `php artisan filament:assets` to publish/republish static assets.
+The Filament admin panel under `app/Filament/` is the current admin backend, but it is being migrated to the Vue SPA in `packages/admin/` (API-driven, Sanctum cookie auth). Do not scaffold new Filament resources; new admin functionality goes into `packages/admin/` plus API endpoints. After upgrading Filament while it remains, run `php artisan filament:assets` to republish static assets.
 
 ## Conventions
 

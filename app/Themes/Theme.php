@@ -26,16 +26,6 @@ class Theme
         return $this->path('views');
     }
 
-    public function cssEntry(): string
-    {
-        return "resources/themes/{$this->id}/css/app.css";
-    }
-
-    public function jsEntry(): string
-    {
-        return "resources/themes/{$this->id}/js/app.js";
-    }
-
     public function cssPath(): string
     {
         return $this->path('css/app.css');
@@ -44,23 +34,6 @@ class Theme
     public function jsPath(): string
     {
         return $this->path('js/app.js');
-    }
-
-    public function isCompiled(): bool
-    {
-        $manifestPath = public_path('build/manifest.json');
-
-        if (! file_exists($manifestPath)) {
-            return false;
-        }
-
-        $manifest = json_decode(file_get_contents($manifestPath), true);
-
-        if (! is_array($manifest)) {
-            return false;
-        }
-
-        return isset($manifest[$this->cssEntry()]) && isset($manifest[$this->jsEntry()]);
     }
 
     /**

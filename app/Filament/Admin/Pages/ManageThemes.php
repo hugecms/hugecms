@@ -51,16 +51,6 @@ class ManageThemes extends Page
             return;
         }
 
-        if (! $theme->isCompiled()) {
-            Notification::make()
-                ->danger()
-                ->title('主题资源未编译')
-                ->body('请先运行 npm run build 生成该主题的构建产物。')
-                ->send();
-
-            return;
-        }
-
         SiteSetting::set('active_theme', $themeId);
 
         Notification::make()
