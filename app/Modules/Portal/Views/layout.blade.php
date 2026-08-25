@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'HugeCMS')</title>
     <link href="{{ asset('static/bootstrap-5.3.8/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('static/css/hugecms.css') }}" rel="stylesheet" />
 </head>
 <body class="bg-body-secondary">
 @if (session('status'))
