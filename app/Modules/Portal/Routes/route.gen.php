@@ -10,7 +10,11 @@ use App\Modules\Portal\Controllers\AuthController;
 use App\Modules\Portal\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
-// 获取接口
+// 登录页面
 Route::get('login', [AuthController::class, 'login'])->name('login');
+// 提交登录
+Route::post('login', [AuthController::class, 'authenticate']);
+// 退出登录
+Route::post('logout', [AuthController::class, 'logout']);
 // 获取接口
 Route::get('/', [IndexController::class, 'index'])->name('index');
