@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use App\Modules\Portal\Controllers\AuthController;
 use App\Modules\Portal\Controllers\IndexController;
+use App\Modules\Portal\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 // 登录页面
@@ -18,3 +19,7 @@ Route::post('login', [AuthController::class, 'authenticate']);
 Route::post('logout', [AuthController::class, 'logout']);
 // 获取接口
 Route::get('/', [IndexController::class, 'index'])->name('index');
+// 注册页面
+Route::get('register', [RegisterController::class, 'show'])->name('register');
+// 提交注册
+Route::post('register', [RegisterController::class, 'store']);
