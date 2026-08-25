@@ -6,6 +6,12 @@
 
 /* ---------- 全局基准 ---------- */
 :root {
+    /* 中文字体优先：PingFang SC（macOS）→ Microsoft YaHei（Windows）→ Noto Sans SC（Linux/Android）
+       接在 Bootstrap 系统字体之后，西文由前段字体渲染、中文回退到平台最优中文字体 */
+    --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC",
+        sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+
     --bs-body-font-size: 0.875rem;   /* 14px */
     --bs-body-line-height: 1.5;
 
