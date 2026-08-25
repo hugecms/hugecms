@@ -17,3 +17,13 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 Route::get('/', [IndexController::class, 'index'])->name('index');
 // 用户列表页面
 Route::get('user', [UserController::class, 'index'])->name('user');
+// 新建用户页面
+Route::get('user/create', [UserController::class, 'create'])->name('user.create');
+// 保存新建用户
+Route::post('user', [UserController::class, 'store']);
+// 编辑用户页面
+Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit.{id}');
+// 更新用户
+Route::put('user/edit/{id}', [UserController::class, 'update']);
+// 删除用户
+Route::delete('user', [UserController::class, 'destroy']);

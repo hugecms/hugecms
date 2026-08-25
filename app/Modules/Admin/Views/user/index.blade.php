@@ -10,7 +10,7 @@
             <h1 class="h5 mb-1">用户管理</h1>
             <p class="text-muted small mb-0">管理系统注册用户</p>
         </div>
-        <a href="/admin/user/create" class="btn btn-primary btn-sm">+ 新建用户</a>
+        <a href="{{ route('admin.user.create') }}" class="btn btn-primary btn-sm">+ 新建用户</a>
     </div>
 
     {{-- 筛选区 --}}
@@ -77,8 +77,13 @@
                                 </td>
                                 <td>{{ $user['created_at'] }}</td>
                                 <td class="text-end">
-                                    <a href="/admin/user/edit/{{ $user['id'] }}" class="link-primary text-decoration-none me-2">编辑</a>
-                                    <span class="text-muted small">删除</span>
+                                    <a href="{{ route('admin.user.edit.{id}', $user['id']) }}" class="link-primary text-decoration-none me-2">编辑</a>
+                                    <form method="POST" action="/admin/user" class="d-inline" onsubmit="return confirm('确认删除该用户？')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="id" value="{{ $user['id'] }}">
+                                        <button type="submit" class="btn btn-link btn-sm link-danger text-decoration-none p-0">删除</button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
