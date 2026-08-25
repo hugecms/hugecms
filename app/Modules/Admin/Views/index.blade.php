@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-Hans">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-</head>
-<body>
-admin
-</body>
-</html>
+@extends('admin::layout')
+
+@section('content')
+    index page
+@endsection

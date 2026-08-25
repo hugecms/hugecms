@@ -6,11 +6,8 @@
 
 declare(strict_types=1);
 
-use App\Api\Common\Controllers\AuthController;
-use App\Api\Common\Controllers\CaptchaController;
+use App\Modules\User\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 // 获取接口
-Route::post('login', [AuthController::class, 'login']);
-// 获取接口
-Route::get('/', [CaptchaController::class, 'index'])->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');

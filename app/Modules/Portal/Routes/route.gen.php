@@ -6,8 +6,11 @@
 
 declare(strict_types=1);
 
+use App\Modules\Portal\Controllers\AuthController;
 use App\Modules\Portal\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
+// 获取接口
+Route::get('login', [AuthController::class, 'login'])->name('login');
 // 获取接口
 Route::get('/', [IndexController::class, 'index'])->name('index');
