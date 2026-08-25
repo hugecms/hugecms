@@ -32,7 +32,7 @@
     <aside class="admin-sider">
         <div class="admin-brand">
             <span class="admin-brand-dot">H</span>
-            <span>HugeCMS 管理后台</span>
+            <span>HugeCMS</span>
         </div>
         @php
             $menuGroups = app(\App\Services\MenuService::class)->getSidebarMenus();
@@ -42,16 +42,27 @@
                 @if ($group['route'] !== '')
                     <a href="{{ route($group['route']) }}"
                        class="admin-menu-item {{ request()->routeIs($group['route']) ? 'active' : '' }}">
-                        {{ $group['name'] }}
+                        @include('admin::icons', ['name' => $group['icon']])
+                        <span>{{ $group['name'] }}</span>
                     </a>
                 @else
                     <div class="admin-menu-group-title">{{ $group['name'] }}</div>
-                    @foreach ($group['children'] as $child)
-                        <a href="{{ $child['route'] !== '' ? route($child['route']) : '#' }}"
-                           class="admin-menu-item {{ $child['route'] !== '' && request()->routeIs($child['route']) ? 'active' : '' }}">
-                            {{ $child['name'] }}
-                        </a>
-                    @endforeach
+                    <div class="admin-menu-group-items">
+                        @foreach ($group['children'] as $child)
+                            @if ($child['route'] !== '')
+                                <a href="{{ route($child['route']) }}"
+                                   class="admin-menu-item {{ request()->routeIs($child['route']) ? 'active' : '' }}">
+                                    @include('admin::icons', ['name' => $child['icon']])
+                                    <span>{{ $child['name'] }}</span>
+                                </a>
+                            @else
+                                <span class="admin-menu-item disabled" aria-disabled="true" title="未开放">
+                                    @include('admin::icons', ['name' => $child['icon']])
+                                    <span>{{ $child['name'] }}</span>
+                                </span>
+                            @endif
+                        @endforeach
+                    </div>
                 @endif
             @endforeach
         </nav>

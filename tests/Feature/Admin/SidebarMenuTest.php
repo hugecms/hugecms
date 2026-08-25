@@ -8,11 +8,11 @@ uses(RefreshDatabase::class);
 
 function seedSidebarMenus(): void
 {
-    Menu::create(['name' => '仪表盘', 'route' => 'admin.dashboard', 'sort' => 0]);
+    Menu::create(['name' => '仪表盘', 'icon' => 'dashboard', 'route' => 'admin.dashboard', 'sort' => 0]);
 
     $content = Menu::create(['name' => '内容管理', 'sort' => 10]);
-    Menu::create(['parent_id' => $content->id, 'name' => '文章管理', 'sort' => 10]);
-    Menu::create(['parent_id' => $content->id, 'name' => '栏目管理', 'sort' => 20]);
+    Menu::create(['parent_id' => $content->id, 'name' => '文章管理', 'icon' => 'file-text', 'sort' => 10]);
+    Menu::create(['parent_id' => $content->id, 'name' => '栏目管理', 'icon' => 'folder', 'sort' => 20]);
 }
 
 test('后台侧边栏渲染菜单树', function () {

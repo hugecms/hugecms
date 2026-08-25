@@ -63,18 +63,20 @@
     color: var(--admin-text);
     font-size: 0.9375rem;
     white-space: nowrap;
+    border-bottom: 1px solid var(--admin-border);
+    margin: -8px -8px 4px;
 }
 
 .admin-brand .admin-brand-dot {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 6px;
-    background: var(--admin-primary);
+    background: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     flex-shrink: 0;
 }
@@ -84,21 +86,27 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    padding-top: 4px;
 }
 
 .admin-menu-group-title {
-    padding: 10px 12px 4px;
+    padding: 12px 12px 6px;
     font-size: 0.75rem;
     color: var(--admin-text-secondary);
     font-weight: 600;
 }
 
+.admin-menu-group-title:first-child {
+    padding-top: 4px;
+}
+
 .admin-menu-item {
     display: flex;
     align-items: center;
-    height: 32px;
+    gap: 8px;
+    height: 34px;
     padding: 0 12px;
-    border-radius: var(--admin-radius);
+    border-radius: 6px;
     color: var(--admin-text);
     text-decoration: none;
     font-size: 0.875rem;
@@ -126,6 +134,38 @@
     width: 3px;
     border-radius: 2px;
     background: var(--admin-primary);
+}
+
+/* 子项缩进层级：分组下的菜单项相对组标题缩进 */
+.admin-menu-group-items .admin-menu-item {
+    padding-left: 34px;
+}
+
+.admin-menu-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.65;
+}
+
+.admin-menu-icon-empty {
+    display: inline-block;
+}
+
+.admin-menu-item.active .admin-menu-icon {
+    opacity: 1;
+}
+
+/* 未开放项：置灰禁用（替代死链接） */
+.admin-menu-item.disabled {
+    color: var(--admin-text-secondary);
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: transparent;
+}
+
+.admin-menu-item.disabled .admin-menu-icon {
+    opacity: 0.45;
 }
 
 /* ---------- Content ---------- */
