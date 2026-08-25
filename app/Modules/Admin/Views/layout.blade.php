@@ -31,10 +31,30 @@
 
     <div class="d-flex" style="min-height: calc(100vh - 56px);">
         <aside class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 220px;">
+            @php
+                $menuGroups = app(\App\Services\MenuService::class)->getSidebarMenus();
+            @endphp
             <ul class="nav nav-pills flex-column gap-1">
-                <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link text-white">仪表盘</a>
-                </li>
+                @foreach ($menuGroups as $group)
+                    @if ($group['route'] !== '')
+                        <li class="nav-item">
+                            <a href="{{ route($group['route']) }}" class="nav-link text-white">{{ $group['name'] }}</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <div class="text-white-50 small fw-semibold text-uppercase px-2 py-1 mt-2">{{ $group['name'] }}</div>
+                            <ul class="nav nav-pills flex-column gap-1">
+                                @foreach ($group['children'] as $child)
+                                    <li class="nav-item">
+                                        <a href="{{ $child['route'] !== '' ? route($child['route']) : '#' }}" class="nav-link text-white py-1">
+                                            {{ $child['name'] }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endif
+                @endforeach
             </ul>
         </aside>
 
