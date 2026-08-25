@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Portal\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -53,6 +54,15 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 self::getEmail => '邮箱或密码错误',
+            ]);
+        }
+
+        $user = Auth::user();
+        if ($user instanceof User && ! $user->isEnabled()) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                self::getEmail => '账号已被禁用，请联系管理员',
             ]);
         }
 

@@ -59,3 +59,16 @@ test('用户可以退出登录', function () {
     $this->assertGuest();
     $response->assertRedirect('/login');
 });
+
+test('禁用用户不能登录', function () {
+    $user = User::factory()->disabled()->create();
+
+    $response = $this->from('/login')->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertGuest();
+    $response->assertRedirect('/login')
+        ->assertSessionHasErrors('email');
+});
