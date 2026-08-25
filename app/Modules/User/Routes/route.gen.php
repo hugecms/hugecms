@@ -6,8 +6,11 @@
 
 declare(strict_types=1);
 
+use App\Modules\User\Controllers\HomeController;
 use App\Modules\User\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
+// 用户主页
+Route::get('home', [HomeController::class, 'index'])->name('home');
 // 获取接口
 Route::get('/', [IndexController::class, 'index'])->name('index');
