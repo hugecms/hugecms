@@ -8,9 +8,12 @@ declare(strict_types=1);
 
 use App\Modules\Admin\Controllers\DashboardController;
 use App\Modules\Admin\Controllers\IndexController;
+use App\Modules\Admin\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // 仪表盘页面
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 // 获取接口
 Route::get('/', [IndexController::class, 'index'])->name('index');
+// 用户列表页面
+Route::get('user', [UserController::class, 'index'])->name('user');
