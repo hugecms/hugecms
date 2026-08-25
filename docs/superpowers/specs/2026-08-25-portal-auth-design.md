@@ -65,17 +65,20 @@ app/Modules/Portal/
 | POST | /logout | AuthController@logout | — | auth |
 | GET | /register | RegisterController@show | `register` | guest |
 | POST | /register | RegisterController@store | — | guest + throttle:auth |
-| GET | /forgot-password | PasswordResetController@request | `password.request` | guest |
+| GET | /forgot-password | PasswordResetController@request | `forgot-password` | guest |
 | POST | /forgot-password | PasswordResetController@email | — | guest + throttle:auth |
-| GET | /reset-password/{token} | PasswordResetController@edit | `password.reset` | guest |
+| GET | /reset-password | PasswordResetController@edit | `reset-password` | guest |
 | POST | /reset-password | PasswordResetController@update | — | guest + throttle:auth |
 
 **中间件配置**（`bootstrap/app.php`）：
 - `$middleware->redirectGuestsTo(fn () => route('login'))`
 - `$middleware->redirectUsersTo('/')`
 
+- `ResetPassword::createUrlUsing()`（AppServiceProvider）：因路由名非 `password.reset`，须覆盖默认重置链接为 `/reset-password?token=…&email=…`
+- 登录跳转 `redirect()->intended('/')`：`index` 路由名被 Admin/Portal/User 三模块重复注册，不可用 `route('index')`
+
 **限流器定义**（`AppServiceProvider::boot()`）：
-- `RateLimiter::for('login', ...)`：键为 `email|IP`，5 次/分钟，仅供 `AuthController@authenticate` 手动调用
+- `RateLimiter::for('login', ...)`：键为 `email|IP`，5 次/分钟，仅供 `AuthController@authenticate` 手动调用（重置 token 经查询串 `?token=…&email=…` 传入）
 - `RateLimiter::for('auth', ...)`：按 IP，5 次/分钟，供注册/忘记密码路由的 `throttle:auth` 中间件使用
 
 ## 4. 控制器与校验
