@@ -6,68 +6,66 @@
     <title>@yield('title', '管理后台 - HugeCMS')</title>
     <link href="{{ asset('static/bootstrap-5.3.8/css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('static/css/hugecms.css') }}" rel="stylesheet" />
+    <link href="{{ asset('static/css/hugecms-admin.css') }}" rel="stylesheet" />
 </head>
-<body class="bg-body-tertiary">
-    <nav class="navbar navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-semibold" href="{{ route('admin.dashboard') }}">HugeCMS 管理后台</a>
-            <ul class="navbar-nav flex-row align-items-center gap-3">
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" role="button">
-                        {{ auth()->user()?->name }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <form method="POST" action="/logout">
-                                @csrf
-                                <button type="submit" class="dropdown-item">退出登录</button>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+<body class="admin-layout">
+    <header class="admin-header">
+        <div class="admin-page-title">@yield('page-title', '仪表盘')</div>
+        <ul class="navbar-nav flex-row align-items-center gap-2 m-0">
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2 text-body py-1" data-bs-toggle="dropdown" role="button">
+                    <span class="admin-brand-dot">{{ mb_substr(auth()->user()?->name ?? '?', 0, 1) }}</span>
+                    <span>{{ auth()->user()?->name }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="POST" action="/logout">
+                            @csrf
+                            <button type="submit" class="dropdown-item">退出登录</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+
+    <aside class="admin-sider">
+        <div class="admin-brand">
+            <span class="admin-brand-dot">H</span>
+            <span>HugeCMS 管理后台</span>
         </div>
-    </nav>
+        @php
+            $menuGroups = app(\App\Services\MenuService::class)->getSidebarMenus();
+        @endphp
+        <nav class="admin-menu">
+            @foreach ($menuGroups as $group)
+                @if ($group['route'] !== '')
+                    <a href="{{ route($group['route']) }}"
+                       class="admin-menu-item {{ request()->routeIs($group['route']) ? 'active' : '' }}">
+                        {{ $group['name'] }}
+                    </a>
+                @else
+                    <div class="admin-menu-group-title">{{ $group['name'] }}</div>
+                    @foreach ($group['children'] as $child)
+                        <a href="{{ $child['route'] !== '' ? route($child['route']) : '#' }}"
+                           class="admin-menu-item {{ $child['route'] !== '' && request()->routeIs($child['route']) ? 'active' : '' }}">
+                            {{ $child['name'] }}
+                        </a>
+                    @endforeach
+                @endif
+            @endforeach
+        </nav>
+    </aside>
 
-    <div class="d-flex" style="min-height: calc(100vh - 56px);">
-        <aside class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 220px;">
-            @php
-                $menuGroups = app(\App\Services\MenuService::class)->getSidebarMenus();
-            @endphp
-            <ul class="nav nav-pills flex-column gap-1">
-                @foreach ($menuGroups as $group)
-                    @if ($group['route'] !== '')
-                        <li class="nav-item">
-                            <a href="{{ route($group['route']) }}" class="nav-link text-white">{{ $group['name'] }}</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <div class="text-white-50 small fw-semibold text-uppercase px-2 py-1 mt-2">{{ $group['name'] }}</div>
-                            <ul class="nav nav-pills flex-column gap-1">
-                                @foreach ($group['children'] as $child)
-                                    <li class="nav-item">
-                                        <a href="{{ $child['route'] !== '' ? route($child['route']) : '#' }}" class="nav-link text-white py-1">
-                                            {{ $child['name'] }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
-        </aside>
-
-        <main class="flex-grow-1 p-4 overflow-auto">
-            @if (session('status'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('status') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
-                </div>
-            @endif
-            @yield('content')
-        </main>
-    </div>
+    <main class="admin-content">
+        @if (session('status'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+            </div>
+        @endif
+        @yield('content')
+    </main>
 
     <script src="{{ asset('static/jquery-4.0.0/jquery.min.js') }}"></script>
     <script src="{{ asset('static/bootstrap-5.3.8/js/bootstrap.min.js') }}"></script>

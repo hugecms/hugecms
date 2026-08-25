@@ -1,0 +1,161 @@
+/**
+ * HugeCMS Admin — antd v6 设计语言（浅色现代侧栏）
+ * 结构：白底 Header（56px，下边框）+ 白底 Sider（224px，右分隔线）+ #f5f5f5 内容区
+ * 令牌：主色 #1677ff / 选中底 #e6f4ff / hover #0000000a / 边框 #f0f0f0 / 文字 #000000d9、#00000073
+ * 加载顺序：bootstrap.min.css → hugecms.css → 本文件
+ */
+
+.admin-layout {
+    --admin-primary: #1677ff;
+    --admin-primary-bg: #e6f4ff;
+    --admin-hover-bg: rgba(0, 0, 0, 0.04);
+    --admin-border: #f0f0f0;
+    --admin-text: rgba(0, 0, 0, 0.88);
+    --admin-text-secondary: rgba(0, 0, 0, 0.45);
+    --admin-sider-width: 224px;
+    --admin-header-height: 56px;
+    --admin-radius: 8px;
+
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+/* ---------- Header ---------- */
+.admin-header {
+    height: var(--admin-header-height);
+    background: #fff;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.admin-header .admin-page-title {
+    font-size: 0.9375rem;
+    color: var(--admin-text);
+    font-weight: 600;
+}
+
+/* ---------- Sider ---------- */
+.admin-sider {
+    width: var(--admin-sider-width);
+    background: #fff;
+    border-right: 1px solid var(--admin-border);
+    position: fixed;
+    top: var(--admin-header-height);
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: var(--admin-header-height);
+    padding: 0 8px;
+    font-weight: 600;
+    color: var(--admin-text);
+    font-size: 0.9375rem;
+    white-space: nowrap;
+}
+
+.admin-brand .admin-brand-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--admin-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ---------- Menu（内联模式） ---------- */
+.admin-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-menu-group-title {
+    padding: 10px 12px 4px;
+    font-size: 0.75rem;
+    color: var(--admin-text-secondary);
+    font-weight: 600;
+}
+
+.admin-menu-item {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: var(--admin-radius);
+    color: var(--admin-text);
+    text-decoration: none;
+    font-size: 0.875rem;
+    position: relative;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.admin-menu-item:hover {
+    background: var(--admin-hover-bg);
+    color: var(--admin-text);
+}
+
+.admin-menu-item.active {
+    background: var(--admin-primary-bg);
+    color: var(--admin-primary);
+    font-weight: 500;
+}
+
+.admin-menu-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--admin-primary);
+}
+
+/* ---------- Content ---------- */
+.admin-content {
+    margin-left: var(--admin-sider-width);
+    padding: 16px 24px 24px;
+    min-height: calc(100vh - var(--admin-header-height));
+}
+
+/* ---------- Card（antd 风格：边框无阴影） ---------- */
+.admin-layout .card {
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+    box-shadow: none;
+}
+
+.admin-layout .card .card-body {
+    color: var(--admin-text);
+}
+
+/* ---------- 统计卡片数字（antd Statistic 风） ---------- */
+.admin-stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    line-height: 1.4;
+}
+
+.admin-stat-label {
+    font-size: 0.8125rem;
+    color: var(--admin-text-secondary);
+    margin-bottom: 2px;
+}

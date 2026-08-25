@@ -37,3 +37,13 @@ test('不可见菜单不出现在侧边栏', function () {
 
     $response->assertOk()->assertDontSee('栏目管理');
 });
+
+test('当前页菜单项高亮', function () {
+    seedSidebarMenus();
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get('/admin/dashboard');
+
+    $response->assertOk()
+        ->assertSee('class="admin-menu-item active"', false);
+});
