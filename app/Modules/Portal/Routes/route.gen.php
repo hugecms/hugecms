@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use App\Modules\Portal\Controllers\AuthController;
 use App\Modules\Portal\Controllers\IndexController;
+use App\Modules\Portal\Controllers\PasswordResetController;
 use App\Modules\Portal\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ Route::post('login', [AuthController::class, 'authenticate']);
 Route::post('logout', [AuthController::class, 'logout']);
 // 获取接口
 Route::get('/', [IndexController::class, 'index'])->name('index');
+// 忘记密码页面
+Route::get('forgot-password', [PasswordResetController::class, 'request'])->name('forgot-password');
+// 发送密码重置邮件
+Route::post('forgot-password', [PasswordResetController::class, 'email']);
 // 注册页面
 Route::get('register', [RegisterController::class, 'show'])->name('register');
 // 提交注册

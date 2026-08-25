@@ -37,7 +37,7 @@
                             <input type="checkbox" id="remember" name="remember" class="form-check-input">
                             <label for="remember" class="form-check-label">记住我</label>
                         </div>
-                        <a href="/forgot-password" class="small">忘记密码？</a>
+                        <a href="{{ route('forgot-password') }}" class="small">忘记密码？</a>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">登录</button>
