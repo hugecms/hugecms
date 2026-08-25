@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\Portal\Controllers;
 
+use App\Models\User;
 use App\Modules\Portal\Requests\ForgotPasswordRequest;
+use App\Modules\Portal\Requests\ResetPasswordRequest;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -56,6 +58,36 @@ class PasswordResetController extends BaseController implements HasMiddleware
         }
 
         return back()->with('status', $this->statusMessage($status));
+    }
+
+    #[OA\Get(path: '/reset-password', summary: '重置密码页面', tags: ['模块'])]
+    public function edit(): Renderable
+    {
+        return view('portal::reset-password');
+    }
+
+    #[OA\Post(path: '/reset-password', summary: '提交重置密码', tags: ['模块'])]
+    public function update(ResetPasswordRequest $request): RedirectResponse
+    {
+        $status = Password::reset(
+            $request->only(
+                ResetPasswordRequest::getEmail,
+                ResetPasswordRequest::getPassword,
+                ResetPasswordRequest::getPasswordConfirmation,
+                ResetPasswordRequest::getToken,
+            ),
+            function (User $user, string $password): void {
+                $user->forceFill(['password' => $password])->save();
+            }
+        );
+
+        if ($status !== Password::PASSWORD_RESET) {
+            return back()
+                ->withInput($request->only(ResetPasswordRequest::getEmail))
+                ->withErrors(['email' => $this->statusMessage($status)]);
+        }
+
+        return redirect('/login')->with('status', $this->statusMessage($status));
     }
 
     private function statusMessage(string $status): string

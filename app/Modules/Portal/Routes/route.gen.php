@@ -24,6 +24,10 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('forgot-password', [PasswordResetController::class, 'request'])->name('forgot-password');
 // 发送密码重置邮件
 Route::post('forgot-password', [PasswordResetController::class, 'email']);
+// 重置密码页面
+Route::get('reset-password', [PasswordResetController::class, 'edit'])->name('reset-password');
+// 提交重置密码
+Route::post('reset-password', [PasswordResetController::class, 'update']);
 // 注册页面
 Route::get('register', [RegisterController::class, 'show'])->name('register');
 // 提交注册
