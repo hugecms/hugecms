@@ -51,14 +51,14 @@ class SeoMetaUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::getId => 'required',
-            self::getTargetType => 'required',
-            self::getTargetId => 'required',
-            self::getTitle => 'required',
-            self::getKeywords => 'required',
-            self::getDescription => 'required',
-            self::getCanonicalUrl => 'required',
-            self::getRobots => 'required',
+            self::getId => 'required|integer',
+            self::getTargetType => 'required|string|max:20',
+            self::getTargetId => 'required|integer',
+            self::getTitle => 'nullable|string|max:200',
+            self::getKeywords => 'nullable|string|max:255',
+            self::getDescription => 'nullable|string|max:500',
+            self::getCanonicalUrl => 'nullable|string|max:255',
+            self::getRobots => 'nullable|string|max:100',
         ];
     }
 

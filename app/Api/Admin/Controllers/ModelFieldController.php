@@ -100,10 +100,33 @@ class ModelFieldController extends BaseController
         try {
             $input = ModelFieldEntity::from($requestData);
 
-            if ($this->modelFieldService->save($input->toEntity())) {
+            $result = $this->modelFieldService->save($input->toEntity());
+            if ($result) {
+                $fieldId = \is_int($result) ? $result : 0;
+
+                // 物理列名规范 field_{id}：前端无法预知自增ID，由服务端补齐
+                if ($fieldId && empty($requestData[ModelFieldCreateRequest::getColumnName])) {
+                    $requestData[ModelFieldCreateRequest::getColumnName] = 'field_' . $fieldId;
+                    $this->modelFieldService->updateById(ModelFieldEntity::from($requestData)->toEntity(), $fieldId);
+                }
+
                 DB::commit();
 
-                return $this->success();
+                // 同步物理列到模型数据表 data_{alias}（DDL 会隐式提交事务，故置于 commit 之后）
+                if ($fieldId && !empty($requestData[ModelFieldCreateRequest::getColumnName])) {
+                    try {
+                        $this->modelFieldService->addColumnToModelTable(
+                            (int) $requestData[ModelFieldCreateRequest::getModelId],
+                            (string) $requestData[ModelFieldCreateRequest::getColumnName],
+                            (string) ($requestData[ModelFieldCreateRequest::getColumnType] ?? 'varchar(255)'),
+                            (string) ($requestData[ModelFieldCreateRequest::getFieldLabel] ?? ''),
+                        );
+                    } catch (Throwable $ddlError) {
+                        Log::warning('模型字段物理列同步失败：' . $ddlError->getMessage());
+                    }
+                }
+
+                return $this->success(['id' => $fieldId]);
             }
 
             throw new BusinessException(BusinessEnum::CREATE_FAIL);

@@ -67,18 +67,18 @@ class ModelFieldCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::getModelId => 'required',
-            self::getFieldName => 'required',
-            self::getColumnName => 'required',
-            self::getFieldLabel => 'required',
-            self::getFieldType => 'required',
-            self::getColumnType => 'required',
-            self::getDefaultValue => 'required',
-            self::getIsRequired => 'required',
-            self::getIsUnique => 'required',
-            self::getValidationRules => 'required',
-            self::getExtraConfig => 'required',
-            self::getSortOrder => 'required',
+            self::getModelId => 'required|integer',
+            self::getFieldName => 'required|string|max:60',
+            self::getColumnName => 'nullable|string|max:60', // 留空由服务端按规范补齐 field_{id}
+            self::getFieldLabel => 'required|string|max:100',
+            self::getFieldType => 'required|string|max:30',
+            self::getColumnType => 'nullable|string|max:30',
+            self::getDefaultValue => 'nullable|string',
+            self::getIsRequired => 'nullable|integer|in:0,1',
+            self::getIsUnique => 'nullable|integer|in:0,1',
+            self::getValidationRules => 'nullable|string',
+            self::getExtraConfig => 'nullable|string',
+            self::getSortOrder => 'nullable|integer',
         ];
     }
 
