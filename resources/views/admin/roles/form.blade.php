@@ -102,7 +102,7 @@
             const bound = existingPerms.map(p => p.permissionId);
             for (const p of existingPerms) {
                 if (!checked.includes(p.permissionId)) {
-                    await adminApi.post('/api/admin/rolePermission/destroy', {id: p.id});
+                    await adminApi.post('/api/admin/rolePermission/destroy', {ids: [p.id]});
                 }
             }
             for (const permissionId of checked) {

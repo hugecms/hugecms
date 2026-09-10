@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getParentId, description: '父级权限ID（0表示顶级）', type: 'integer'),
         new OA\Property(property: self::getCode, description: '权限代码（如：content:article:edit）', type: 'string'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class PermissionQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getKeyword = 'keyword';
 
     public const string getParentId = 'parentId';
 

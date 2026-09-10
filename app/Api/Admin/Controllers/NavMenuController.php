@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\NavMenuEntity;
-use App\Services\NavMenuService;
 use App\Api\Admin\Requests\NavMenu\NavMenuCreateRequest;
 use App\Api\Admin\Requests\NavMenu\NavMenuDestroyRequest;
 use App\Api\Admin\Requests\NavMenu\NavMenuQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\NavMenu\NavMenuUpdateRequest;
 use App\Api\Admin\Responses\NavMenu\NavMenuDestroyResponse;
 use App\Api\Admin\Responses\NavMenu\NavMenuQueryResponse;
 use App\Api\Admin\Responses\NavMenu\NavMenuResponse;
+use App\Entities\NavMenuEntity;
+use App\Services\NavMenuService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,19 +41,22 @@ class NavMenuController extends BaseController
     ))]
     public function search(NavMenuQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[NavMenuQueryRequest::getKeyword])) {
+                $condition[] = [NavMenuEntity::getName, 'like', '%'.$requestData[NavMenuQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[NavMenuQueryRequest::getAlias])) {
                 $condition[] = [NavMenuEntity::getAlias, '=', $requestData[NavMenuQueryRequest::getAlias]];
             }
             if (isset($requestData[NavMenuQueryRequest::getId])) {
                 $condition[] = [NavMenuEntity::getId, '=', $requestData[NavMenuQueryRequest::getId]];
             }
-            
+
             $result = $this->navMenuService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +93,7 @@ class NavMenuController extends BaseController
     ))]
     public function store(NavMenuCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +165,7 @@ class NavMenuController extends BaseController
     public function update(NavMenuUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +205,7 @@ class NavMenuController extends BaseController
     ))]
     public function destroy(NavMenuDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

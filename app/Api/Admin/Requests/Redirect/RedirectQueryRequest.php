@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getSourcePath, description: '来源路径（站内相对路径，以 / 开头）', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态：0停用，1启用', type: 'integer'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class RedirectQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getKeyword = 'keyword';
 
     public const string getSourcePath = 'sourcePath';
 

@@ -114,7 +114,7 @@
 
     function destroyItem(itemId) {
         if (!confirm('确认删除该菜单项？')) return;
-        adminApi.post('/api/admin/navItem/destroy', {id: itemId}).then(loadItems);
+        adminApi.post('/api/admin/navItem/destroy', {ids: [itemId]}).then(loadItems);
     }
 
     document.getElementById('menu-form').addEventListener('submit', e => {

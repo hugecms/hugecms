@@ -6,7 +6,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name', 'HugeCMS'))</title>
     @yield('meta')
-    <link rel="stylesheet" href="{{ asset('assets/zui/zui.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/@arco-design/web-react@latest/dist/css/arco.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <style>
         .site-header { border-bottom: 1px solid #e5e7eb; background: #fff; }
         .site-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
@@ -90,7 +91,6 @@
     </div>
 </footer>
 
-<script src="{{ asset('assets/zui/zui.js') }}"></script>
 @stack('scripts')
 </body>
 </html>

@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getTargetType, description: '原对象类型：content/term/attachment/user/form_submission/comment', type: 'string'),
         new OA\Property(property: self::getTargetId, description: '原对象ID', type: 'string'),
         new OA\Property(property: self::getExpireAt, description: '过期时间（虚拟生成列）', type: 'string'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class RecycleBinQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getTargetType = 'targetType';
 
     public const string getTargetId = 'targetId';
 

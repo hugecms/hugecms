@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\RoleEntity;
-use App\Services\RoleService;
 use App\Api\Admin\Requests\Role\RoleCreateRequest;
 use App\Api\Admin\Requests\Role\RoleDestroyRequest;
 use App\Api\Admin\Requests\Role\RoleQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Role\RoleUpdateRequest;
 use App\Api\Admin\Responses\Role\RoleDestroyResponse;
 use App\Api\Admin\Responses\Role\RoleQueryResponse;
 use App\Api\Admin\Responses\Role\RoleResponse;
+use App\Entities\RoleEntity;
+use App\Services\RoleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,19 +41,22 @@ class RoleController extends BaseController
     ))]
     public function search(RoleQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[RoleQueryRequest::getKeyword])) {
+                $condition[] = [RoleEntity::getName, 'like', '%'.$requestData[RoleQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[RoleQueryRequest::getId])) {
                 $condition[] = [RoleEntity::getId, '=', $requestData[RoleQueryRequest::getId]];
             }
             if (isset($requestData[RoleQueryRequest::getAlias])) {
                 $condition[] = [RoleEntity::getAlias, '=', $requestData[RoleQueryRequest::getAlias]];
             }
-            
+
             $result = $this->roleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +93,7 @@ class RoleController extends BaseController
     ))]
     public function store(RoleCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +165,7 @@ class RoleController extends BaseController
     public function update(RoleUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +205,7 @@ class RoleController extends BaseController
     ))]
     public function destroy(RoleDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

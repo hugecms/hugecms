@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getSlug, description: 'URL别名（全局唯一，由应用层从标题生成，避免空串重复占位）', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态：draft草稿/pending待发布(定时)/published已发布/archived已归档/trash回收站', type: 'string'),
         new OA\Property(property: self::getPublishedAt, description: '计划/实际发布时间', type: 'string'),
@@ -20,6 +21,8 @@ use OpenApi\Attributes as OA;
 class ContentQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getKeyword = 'keyword';
 
     public const string getSlug = 'slug';
 

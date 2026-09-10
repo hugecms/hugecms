@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\CommentEntity;
-use App\Services\CommentService;
 use App\Api\Admin\Requests\Comment\CommentCreateRequest;
 use App\Api\Admin\Requests\Comment\CommentDestroyRequest;
 use App\Api\Admin\Requests\Comment\CommentQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Comment\CommentUpdateRequest;
 use App\Api\Admin\Responses\Comment\CommentDestroyResponse;
 use App\Api\Admin\Responses\Comment\CommentQueryResponse;
 use App\Api\Admin\Responses\Comment\CommentResponse;
+use App\Entities\CommentEntity;
+use App\Services\CommentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,18 @@ class CommentController extends BaseController
     ))]
     public function search(CommentQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (isset($requestData[CommentQueryRequest::getStatus]) && $requestData[CommentQueryRequest::getStatus] !== '') {
+                $condition[] = [CommentEntity::getStatus, '=', $requestData[CommentQueryRequest::getStatus]];
+            }
+            if (! empty($requestData[CommentQueryRequest::getKeyword])) {
+                $condition[] = [CommentEntity::getContent, 'like', '%'.$requestData[CommentQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[CommentQueryRequest::getCreatedAt])) {
                 $condition[] = [CommentEntity::getCreatedAt, '=', $requestData[CommentQueryRequest::getCreatedAt]];
             }
@@ -63,7 +68,7 @@ class CommentController extends BaseController
             if (isset($requestData[CommentQueryRequest::getId])) {
                 $condition[] = [CommentEntity::getId, '=', $requestData[CommentQueryRequest::getId]];
             }
-            
+
             $result = $this->commentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -100,7 +105,7 @@ class CommentController extends BaseController
     ))]
     public function store(CommentCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -172,7 +177,7 @@ class CommentController extends BaseController
     public function update(CommentUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -212,7 +217,7 @@ class CommentController extends BaseController
     ))]
     public function destroy(CommentDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\TaxonomyEntity;
-use App\Services\TaxonomyService;
 use App\Api\Admin\Requests\Taxonomy\TaxonomyCreateRequest;
 use App\Api\Admin\Requests\Taxonomy\TaxonomyDestroyRequest;
 use App\Api\Admin\Requests\Taxonomy\TaxonomyQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Taxonomy\TaxonomyUpdateRequest;
 use App\Api\Admin\Responses\Taxonomy\TaxonomyDestroyResponse;
 use App\Api\Admin\Responses\Taxonomy\TaxonomyQueryResponse;
 use App\Api\Admin\Responses\Taxonomy\TaxonomyResponse;
+use App\Entities\TaxonomyEntity;
+use App\Services\TaxonomyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class TaxonomyController extends BaseController
     ))]
     public function search(TaxonomyQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[TaxonomyQueryRequest::getKeyword])) {
+                $condition[] = [TaxonomyEntity::getName, 'like', '%'.$requestData[TaxonomyQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[TaxonomyQueryRequest::getId])) {
                 $condition[] = [TaxonomyEntity::getId, '=', $requestData[TaxonomyQueryRequest::getId]];
             }
@@ -57,7 +59,7 @@ class TaxonomyController extends BaseController
             if (isset($requestData[TaxonomyQueryRequest::getModelId])) {
                 $condition[] = [TaxonomyEntity::getModelId, '=', $requestData[TaxonomyQueryRequest::getModelId]];
             }
-            
+
             $result = $this->taxonomyService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class TaxonomyController extends BaseController
     ))]
     public function store(TaxonomyCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class TaxonomyController extends BaseController
     public function update(TaxonomyUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class TaxonomyController extends BaseController
     ))]
     public function destroy(TaxonomyDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

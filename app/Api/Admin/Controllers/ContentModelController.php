@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\ContentModelEntity;
-use App\Services\ContentModelService;
 use App\Api\Admin\Requests\ContentModel\ContentModelCreateRequest;
 use App\Api\Admin\Requests\ContentModel\ContentModelDestroyRequest;
 use App\Api\Admin\Requests\ContentModel\ContentModelQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\ContentModel\ContentModelUpdateRequest;
 use App\Api\Admin\Responses\ContentModel\ContentModelDestroyResponse;
 use App\Api\Admin\Responses\ContentModel\ContentModelQueryResponse;
 use App\Api\Admin\Responses\ContentModel\ContentModelResponse;
+use App\Entities\ContentModelEntity;
+use App\Services\ContentModelService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class ContentModelController extends BaseController
     ))]
     public function search(ContentModelQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[ContentModelQueryRequest::getKeyword])) {
+                $condition[] = [ContentModelEntity::getName, 'like', '%'.$requestData[ContentModelQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[ContentModelQueryRequest::getAlias])) {
                 $condition[] = [ContentModelEntity::getAlias, '=', $requestData[ContentModelQueryRequest::getAlias]];
             }
@@ -57,7 +59,7 @@ class ContentModelController extends BaseController
             if (isset($requestData[ContentModelQueryRequest::getId])) {
                 $condition[] = [ContentModelEntity::getId, '=', $requestData[ContentModelQueryRequest::getId]];
             }
-            
+
             $result = $this->contentModelService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class ContentModelController extends BaseController
     ))]
     public function store(ContentModelCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class ContentModelController extends BaseController
     public function update(ContentModelUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class ContentModelController extends BaseController
     ))]
     public function destroy(ContentModelDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\UserEntity;
-use App\Services\UserService;
 use App\Api\Admin\Requests\User\UserCreateRequest;
 use App\Api\Admin\Requests\User\UserDestroyRequest;
 use App\Api\Admin\Requests\User\UserQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\User\UserUpdateRequest;
 use App\Api\Admin\Responses\User\UserDestroyResponse;
 use App\Api\Admin\Responses\User\UserQueryResponse;
 use App\Api\Admin\Responses\User\UserResponse;
+use App\Entities\UserEntity;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,19 +41,25 @@ class UserController extends BaseController
     ))]
     public function search(UserQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (isset($requestData[UserQueryRequest::getStatus]) && $requestData[UserQueryRequest::getStatus] !== '') {
+                $condition[] = [UserEntity::getStatus, '=', $requestData[UserQueryRequest::getStatus]];
+            }
+            if (! empty($requestData[UserQueryRequest::getKeyword])) {
+                $condition[] = [UserEntity::getName, 'like', '%'.$requestData[UserQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[UserQueryRequest::getId])) {
                 $condition[] = [UserEntity::getId, '=', $requestData[UserQueryRequest::getId]];
             }
             if (isset($requestData[UserQueryRequest::getEmail])) {
                 $condition[] = [UserEntity::getEmail, '=', $requestData[UserQueryRequest::getEmail]];
             }
-            
+
             $result = $this->userService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +96,7 @@ class UserController extends BaseController
     ))]
     public function store(UserCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +168,7 @@ class UserController extends BaseController
     public function update(UserUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +208,7 @@ class UserController extends BaseController
     ))]
     public function destroy(UserDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\AdEntity;
-use App\Services\AdService;
 use App\Api\Admin\Requests\Ad\AdCreateRequest;
 use App\Api\Admin\Requests\Ad\AdDestroyRequest;
 use App\Api\Admin\Requests\Ad\AdQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Ad\AdUpdateRequest;
 use App\Api\Admin\Responses\Ad\AdDestroyResponse;
 use App\Api\Admin\Responses\Ad\AdQueryResponse;
 use App\Api\Admin\Responses\Ad\AdResponse;
+use App\Entities\AdEntity;
+use App\Services\AdService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class AdController extends BaseController
     ))]
     public function search(AdQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[AdQueryRequest::getKeyword])) {
+                $condition[] = [AdEntity::getTitle, 'like', '%'.$requestData[AdQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[AdQueryRequest::getStatus])) {
                 $condition[] = [AdEntity::getStatus, '=', $requestData[AdQueryRequest::getStatus]];
             }
@@ -57,7 +59,7 @@ class AdController extends BaseController
             if (isset($requestData[AdQueryRequest::getId])) {
                 $condition[] = [AdEntity::getId, '=', $requestData[AdQueryRequest::getId]];
             }
-            
+
             $result = $this->adService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class AdController extends BaseController
     ))]
     public function store(AdCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class AdController extends BaseController
     public function update(AdUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class AdController extends BaseController
     ))]
     public function destroy(AdDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

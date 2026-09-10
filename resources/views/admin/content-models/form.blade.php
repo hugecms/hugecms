@@ -152,7 +152,7 @@
 
     function destroyField(fieldId) {
         if (!confirm('确认删除该字段？物理列不会被自动删除（如需清理请手动 ALTER TABLE）。')) return;
-        adminApi.post('/api/admin/modelField/destroy', {id: fieldId}).then(loadFields);
+        adminApi.post('/api/admin/modelField/destroy', {ids: [fieldId]}).then(loadFields);
     }
 
     document.getElementById('model-form').addEventListener('submit', e => {

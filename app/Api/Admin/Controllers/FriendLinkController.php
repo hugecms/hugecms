@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\FriendLinkEntity;
-use App\Services\FriendLinkService;
 use App\Api\Admin\Requests\FriendLink\FriendLinkCreateRequest;
 use App\Api\Admin\Requests\FriendLink\FriendLinkDestroyRequest;
 use App\Api\Admin\Requests\FriendLink\FriendLinkQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\FriendLink\FriendLinkUpdateRequest;
 use App\Api\Admin\Responses\FriendLink\FriendLinkDestroyResponse;
 use App\Api\Admin\Responses\FriendLink\FriendLinkQueryResponse;
 use App\Api\Admin\Responses\FriendLink\FriendLinkResponse;
+use App\Entities\FriendLinkEntity;
+use App\Services\FriendLinkService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class FriendLinkController extends BaseController
     ))]
     public function search(FriendLinkQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[FriendLinkQueryRequest::getKeyword])) {
+                $condition[] = [FriendLinkEntity::getSiteName, 'like', '%'.$requestData[FriendLinkQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[FriendLinkQueryRequest::getCategory])) {
                 $condition[] = [FriendLinkEntity::getCategory, '=', $requestData[FriendLinkQueryRequest::getCategory]];
             }
@@ -57,7 +59,7 @@ class FriendLinkController extends BaseController
             if (isset($requestData[FriendLinkQueryRequest::getId])) {
                 $condition[] = [FriendLinkEntity::getId, '=', $requestData[FriendLinkQueryRequest::getId]];
             }
-            
+
             $result = $this->friendLinkService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class FriendLinkController extends BaseController
     ))]
     public function store(FriendLinkCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class FriendLinkController extends BaseController
     public function update(FriendLinkUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class FriendLinkController extends BaseController
     ))]
     public function destroy(FriendLinkDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

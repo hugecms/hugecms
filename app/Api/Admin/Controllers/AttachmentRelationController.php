@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\AttachmentRelationEntity;
-use App\Services\AttachmentRelationService;
 use App\Api\Admin\Requests\AttachmentRelation\AttachmentRelationCreateRequest;
 use App\Api\Admin\Requests\AttachmentRelation\AttachmentRelationDestroyRequest;
 use App\Api\Admin\Requests\AttachmentRelation\AttachmentRelationQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\AttachmentRelation\AttachmentRelationUpdateRequest;
 use App\Api\Admin\Responses\AttachmentRelation\AttachmentRelationDestroyResponse;
 use App\Api\Admin\Responses\AttachmentRelation\AttachmentRelationQueryResponse;
 use App\Api\Admin\Responses\AttachmentRelation\AttachmentRelationResponse;
+use App\Entities\AttachmentRelationEntity;
+use App\Services\AttachmentRelationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class AttachmentRelationController extends BaseController
     ))]
     public function search(AttachmentRelationQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -57,7 +56,7 @@ class AttachmentRelationController extends BaseController
             if (isset($requestData[AttachmentRelationQueryRequest::getId])) {
                 $condition[] = [AttachmentRelationEntity::getId, '=', $requestData[AttachmentRelationQueryRequest::getId]];
             }
-            
+
             $result = $this->attachmentRelationService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +93,7 @@ class AttachmentRelationController extends BaseController
     ))]
     public function store(AttachmentRelationCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +165,7 @@ class AttachmentRelationController extends BaseController
     public function update(AttachmentRelationUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +205,7 @@ class AttachmentRelationController extends BaseController
     ))]
     public function destroy(AttachmentRelationDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

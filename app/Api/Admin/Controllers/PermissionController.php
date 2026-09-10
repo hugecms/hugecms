@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\PermissionEntity;
-use App\Services\PermissionService;
 use App\Api\Admin\Requests\Permission\PermissionCreateRequest;
 use App\Api\Admin\Requests\Permission\PermissionDestroyRequest;
 use App\Api\Admin\Requests\Permission\PermissionQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Permission\PermissionUpdateRequest;
 use App\Api\Admin\Responses\Permission\PermissionDestroyResponse;
 use App\Api\Admin\Responses\Permission\PermissionQueryResponse;
 use App\Api\Admin\Responses\Permission\PermissionResponse;
+use App\Entities\PermissionEntity;
+use App\Services\PermissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class PermissionController extends BaseController
     ))]
     public function search(PermissionQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[PermissionQueryRequest::getKeyword])) {
+                $condition[] = [PermissionEntity::getName, 'like', '%'.$requestData[PermissionQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[PermissionQueryRequest::getCode])) {
                 $condition[] = [PermissionEntity::getCode, '=', $requestData[PermissionQueryRequest::getCode]];
             }
@@ -57,7 +59,7 @@ class PermissionController extends BaseController
             if (isset($requestData[PermissionQueryRequest::getId])) {
                 $condition[] = [PermissionEntity::getId, '=', $requestData[PermissionQueryRequest::getId]];
             }
-            
+
             $result = $this->permissionService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class PermissionController extends BaseController
     ))]
     public function store(PermissionCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class PermissionController extends BaseController
     public function update(PermissionUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class PermissionController extends BaseController
     ))]
     public function destroy(PermissionDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

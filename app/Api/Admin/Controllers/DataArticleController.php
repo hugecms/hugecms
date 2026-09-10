@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\DataArticleEntity;
-use App\Services\DataArticleService;
 use App\Api\Admin\Requests\DataArticle\DataArticleCreateRequest;
 use App\Api\Admin\Requests\DataArticle\DataArticleDestroyRequest;
 use App\Api\Admin\Requests\DataArticle\DataArticleQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\DataArticle\DataArticleUpdateRequest;
 use App\Api\Admin\Responses\DataArticle\DataArticleDestroyResponse;
 use App\Api\Admin\Responses\DataArticle\DataArticleQueryResponse;
 use App\Api\Admin\Responses\DataArticle\DataArticleResponse;
+use App\Entities\DataArticleEntity;
+use App\Services\DataArticleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class DataArticleController extends BaseController
     ))]
     public function search(DataArticleQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -54,7 +53,7 @@ class DataArticleController extends BaseController
             if (isset($requestData[DataArticleQueryRequest::getId])) {
                 $condition[] = [DataArticleEntity::getId, '=', $requestData[DataArticleQueryRequest::getId]];
             }
-            
+
             $result = $this->dataArticleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +90,7 @@ class DataArticleController extends BaseController
     ))]
     public function store(DataArticleCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +162,7 @@ class DataArticleController extends BaseController
     public function update(DataArticleUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +202,7 @@ class DataArticleController extends BaseController
     ))]
     public function destroy(DataArticleDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

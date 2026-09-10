@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\ShortLinkClickEntity;
-use App\Services\ShortLinkClickService;
 use App\Api\Admin\Requests\ShortLinkClick\ShortLinkClickCreateRequest;
 use App\Api\Admin\Requests\ShortLinkClick\ShortLinkClickDestroyRequest;
 use App\Api\Admin\Requests\ShortLinkClick\ShortLinkClickQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\ShortLinkClick\ShortLinkClickUpdateRequest;
 use App\Api\Admin\Responses\ShortLinkClick\ShortLinkClickDestroyResponse;
 use App\Api\Admin\Responses\ShortLinkClick\ShortLinkClickQueryResponse;
 use App\Api\Admin\Responses\ShortLinkClick\ShortLinkClickResponse;
+use App\Entities\ShortLinkClickEntity;
+use App\Services\ShortLinkClickService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class ShortLinkClickController extends BaseController
     ))]
     public function search(ShortLinkClickQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -57,7 +56,7 @@ class ShortLinkClickController extends BaseController
             if (isset($requestData[ShortLinkClickQueryRequest::getShortLinkId])) {
                 $condition[] = [ShortLinkClickEntity::getShortLinkId, '=', $requestData[ShortLinkClickQueryRequest::getShortLinkId]];
             }
-            
+
             $result = $this->shortLinkClickService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +93,7 @@ class ShortLinkClickController extends BaseController
     ))]
     public function store(ShortLinkClickCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +165,7 @@ class ShortLinkClickController extends BaseController
     public function update(ShortLinkClickUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +205,7 @@ class ShortLinkClickController extends BaseController
     ))]
     public function destroy(ShortLinkClickDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

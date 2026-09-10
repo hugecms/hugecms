@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\StatisticsDailyEntity;
-use App\Services\StatisticsDailyService;
 use App\Api\Admin\Requests\StatisticsDaily\StatisticsDailyCreateRequest;
 use App\Api\Admin\Requests\StatisticsDaily\StatisticsDailyDestroyRequest;
 use App\Api\Admin\Requests\StatisticsDaily\StatisticsDailyQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\StatisticsDaily\StatisticsDailyUpdateRequest;
 use App\Api\Admin\Responses\StatisticsDaily\StatisticsDailyDestroyResponse;
 use App\Api\Admin\Responses\StatisticsDaily\StatisticsDailyQueryResponse;
 use App\Api\Admin\Responses\StatisticsDaily\StatisticsDailyResponse;
+use App\Entities\StatisticsDailyEntity;
+use App\Services\StatisticsDailyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class StatisticsDailyController extends BaseController
     ))]
     public function search(StatisticsDailyQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -54,7 +53,7 @@ class StatisticsDailyController extends BaseController
             if (isset($requestData[StatisticsDailyQueryRequest::getStatDate])) {
                 $condition[] = [StatisticsDailyEntity::getStatDate, '=', $requestData[StatisticsDailyQueryRequest::getStatDate]];
             }
-            
+
             $result = $this->statisticsDailyService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +90,7 @@ class StatisticsDailyController extends BaseController
     ))]
     public function store(StatisticsDailyCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +162,7 @@ class StatisticsDailyController extends BaseController
     public function update(StatisticsDailyUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +202,7 @@ class StatisticsDailyController extends BaseController
     ))]
     public function destroy(StatisticsDailyDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\TermEntity;
-use App\Services\TermService;
 use App\Api\Admin\Requests\Term\TermCreateRequest;
 use App\Api\Admin\Requests\Term\TermDestroyRequest;
 use App\Api\Admin\Requests\Term\TermQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Term\TermUpdateRequest;
 use App\Api\Admin\Responses\Term\TermDestroyResponse;
 use App\Api\Admin\Responses\Term\TermQueryResponse;
 use App\Api\Admin\Responses\Term\TermResponse;
+use App\Entities\TermEntity;
+use App\Services\TermService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class TermController extends BaseController
     ))]
     public function search(TermQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[TermQueryRequest::getKeyword])) {
+                $condition[] = [TermEntity::getName, 'like', '%'.$requestData[TermQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[TermQueryRequest::getId])) {
                 $condition[] = [TermEntity::getId, '=', $requestData[TermQueryRequest::getId]];
             }
@@ -57,7 +59,7 @@ class TermController extends BaseController
             if (isset($requestData[TermQueryRequest::getSlug])) {
                 $condition[] = [TermEntity::getSlug, '=', $requestData[TermQueryRequest::getSlug]];
             }
-            
+
             $result = $this->termService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class TermController extends BaseController
     ))]
     public function store(TermCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class TermController extends BaseController
     public function update(TermUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class TermController extends BaseController
     ))]
     public function destroy(TermDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

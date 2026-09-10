@@ -12,12 +12,18 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getStatus, description: '状态', type: 'string'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getEmail, description: '', type: 'string'),
     ]
 )]
 class UserQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getStatus = 'status';
+
+    public const string getKeyword = 'keyword';
 
     public const string getEmail = 'email';
 

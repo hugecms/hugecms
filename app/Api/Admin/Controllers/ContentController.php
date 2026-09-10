@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\ContentEntity;
-use App\Services\ContentService;
-use App\Services\RecycleBinService;
 use App\Api\Admin\Requests\Content\ContentCreateRequest;
 use App\Api\Admin\Requests\Content\ContentDestroyRequest;
 use App\Api\Admin\Requests\Content\ContentQueryRequest;
@@ -15,6 +11,9 @@ use App\Api\Admin\Requests\Content\ContentUpdateRequest;
 use App\Api\Admin\Responses\Content\ContentDestroyResponse;
 use App\Api\Admin\Responses\Content\ContentQueryResponse;
 use App\Api\Admin\Responses\Content\ContentResponse;
+use App\Entities\ContentEntity;
+use App\Services\ContentService;
+use App\Services\RecycleBinService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,12 +43,15 @@ class ContentController extends BaseController
     ))]
     public function search(ContentQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[ContentQueryRequest::getKeyword])) {
+                $condition[] = [ContentEntity::getTitle, 'like', '%'.$requestData[ContentQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[ContentQueryRequest::getStatus])) {
                 $condition[] = [ContentEntity::getStatus, '=', $requestData[ContentQueryRequest::getStatus]];
             }
@@ -65,7 +67,7 @@ class ContentController extends BaseController
             if (isset($requestData[ContentQueryRequest::getId])) {
                 $condition[] = [ContentEntity::getId, '=', $requestData[ContentQueryRequest::getId]];
             }
-            
+
             $result = $this->contentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -102,7 +104,7 @@ class ContentController extends BaseController
     ))]
     public function store(ContentCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -176,7 +178,7 @@ class ContentController extends BaseController
     public function update(ContentUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -216,7 +218,7 @@ class ContentController extends BaseController
     ))]
     public function destroy(ContentDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

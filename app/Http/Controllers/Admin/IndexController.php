@@ -21,8 +21,9 @@ class IndexController extends Controller
     public static function menu(): array
     {
         return [
-            ['title' => '常用', 'items' => [
+            ['title' => '概览', 'items' => [
                 ['title' => '管理面板', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
+                ['title' => '数据统计', 'route' => 'admin.statistics.index', 'active' => 'admin.statistics.*'],
             ]],
             ['title' => '内容', 'items' => [
                 ['title' => '内容管理', 'route' => 'admin.contents.index', 'active' => 'admin.contents.*'],
@@ -47,19 +48,18 @@ class IndexController extends Controller
                 ['title' => '角色管理', 'route' => 'admin.roles.index', 'active' => 'admin.roles.*'],
                 ['title' => '权限管理', 'route' => 'admin.permissions.index', 'active' => 'admin.permissions.*'],
             ]],
-            ['title' => '推广', 'items' => [
+            ['title' => '运营', 'items' => [
                 ['title' => '广告管理', 'route' => 'admin.ads.index', 'active' => 'admin.ads.*'],
                 ['title' => '广告位', 'route' => 'admin.ad-positions.index', 'active' => 'admin.ad-positions.*'],
                 ['title' => '友情链接', 'route' => 'admin.friend-links.index', 'active' => 'admin.friend-links.*'],
                 ['title' => '短链接', 'route' => 'admin.short-links.index', 'active' => 'admin.short-links.*'],
                 ['title' => '内容推送', 'route' => 'admin.push.index', 'active' => 'admin.push.*'],
             ]],
-            ['title' => '系统', 'items' => [
+            ['title' => '设置', 'items' => [
                 ['title' => '系统设置', 'route' => 'admin.options.index', 'active' => 'admin.options.*'],
-                ['title' => '重定向', 'route' => 'admin.redirects.index', 'active' => 'admin.redirects.*'],
                 ['title' => '站点管理', 'route' => 'admin.sites.index', 'active' => 'admin.sites.*'],
+                ['title' => '重定向', 'route' => 'admin.redirects.index', 'active' => 'admin.redirects.*'],
                 ['title' => '审计日志', 'route' => 'admin.audit.index', 'active' => 'admin.audit.*'],
-                ['title' => '数据统计', 'route' => 'admin.statistics.index', 'active' => 'admin.statistics.*'],
             ]],
         ];
     }

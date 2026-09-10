@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\FormTemplateEntity;
-use App\Services\FormTemplateService;
 use App\Api\Admin\Requests\FormTemplate\FormTemplateCreateRequest;
 use App\Api\Admin\Requests\FormTemplate\FormTemplateDestroyRequest;
 use App\Api\Admin\Requests\FormTemplate\FormTemplateQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\FormTemplate\FormTemplateUpdateRequest;
 use App\Api\Admin\Responses\FormTemplate\FormTemplateDestroyResponse;
 use App\Api\Admin\Responses\FormTemplate\FormTemplateQueryResponse;
 use App\Api\Admin\Responses\FormTemplate\FormTemplateResponse;
+use App\Entities\FormTemplateEntity;
+use App\Services\FormTemplateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,19 +41,22 @@ class FormTemplateController extends BaseController
     ))]
     public function search(FormTemplateQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[FormTemplateQueryRequest::getKeyword])) {
+                $condition[] = [FormTemplateEntity::getName, 'like', '%'.$requestData[FormTemplateQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[FormTemplateQueryRequest::getAlias])) {
                 $condition[] = [FormTemplateEntity::getAlias, '=', $requestData[FormTemplateQueryRequest::getAlias]];
             }
             if (isset($requestData[FormTemplateQueryRequest::getId])) {
                 $condition[] = [FormTemplateEntity::getId, '=', $requestData[FormTemplateQueryRequest::getId]];
             }
-            
+
             $result = $this->formTemplateService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +93,7 @@ class FormTemplateController extends BaseController
     ))]
     public function store(FormTemplateCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +165,7 @@ class FormTemplateController extends BaseController
     public function update(FormTemplateUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +205,7 @@ class FormTemplateController extends BaseController
     ))]
     public function destroy(FormTemplateDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

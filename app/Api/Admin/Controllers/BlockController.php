@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\BlockEntity;
-use App\Services\BlockService;
 use App\Api\Admin\Requests\Block\BlockCreateRequest;
 use App\Api\Admin\Requests\Block\BlockDestroyRequest;
 use App\Api\Admin\Requests\Block\BlockQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Block\BlockUpdateRequest;
 use App\Api\Admin\Responses\Block\BlockDestroyResponse;
 use App\Api\Admin\Responses\Block\BlockQueryResponse;
 use App\Api\Admin\Responses\Block\BlockResponse;
+use App\Entities\BlockEntity;
+use App\Services\BlockService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class BlockController extends BaseController
     ))]
     public function search(BlockQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[BlockQueryRequest::getKeyword])) {
+                $condition[] = [BlockEntity::getBlockName, 'like', '%'.$requestData[BlockQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[BlockQueryRequest::getBlockType])) {
                 $condition[] = [BlockEntity::getBlockType, '=', $requestData[BlockQueryRequest::getBlockType]];
             }
@@ -57,7 +59,7 @@ class BlockController extends BaseController
             if (isset($requestData[BlockQueryRequest::getId])) {
                 $condition[] = [BlockEntity::getId, '=', $requestData[BlockQueryRequest::getId]];
             }
-            
+
             $result = $this->blockService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class BlockController extends BaseController
     ))]
     public function store(BlockCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class BlockController extends BaseController
     public function update(BlockUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class BlockController extends BaseController
     ))]
     public function destroy(BlockDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

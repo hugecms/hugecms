@@ -1,0 +1,496 @@
+/* ============================================================
+ * HugeCMS 后台主题 · Arco Design Token 体系（自包含，无 ZUI 依赖）
+ * ------------------------------------------------------------
+ * 蓝本：https://arco.design/react/docs/token 全局设计变量
+ * 双层结构 = 调色板层（arcoblue/green/orange/red/neutral）
+ *          + 语义层（primary/text/fill/border/bg/radius/size/shadow）
+ * 交互语义：hover = primary-5（更浅），active = primary-7（更深）
+ * 几何：控件圆角 2px（small）、卡片 8px（large）、控件高 32（size-default）
+ * 用法：<link> 直接引入（仅后台与登录页引用，不进前台）
+ * ============================================================ */
+
+/* ------------------------- 调色板层（Arco 默认浅色） ------------------------- */
+:root {
+    --arcoblue-1: #E8F3FF;
+    --arcoblue-5: #4080FF;   /* hover */
+    --arcoblue-6: #165DFF;   /* primary */
+    --arcoblue-7: #0E42D2;   /* active */
+
+    --red-1: #FFECE8;
+    --red-6: #F53F3F;
+
+    --orange-1: #FFF7E8;
+    --orange-6: #FF7D00;
+
+    --green-1: #E8FFEA;
+    --green-6: #00B42A;
+
+    --color-neutral-1: #F7F8FA;
+    --color-neutral-2: #F2F3F5;
+    --color-neutral-3: #E5E6EB;
+    --color-neutral-4: #C9CDD4;
+    --color-neutral-6: #86909C;
+    --color-neutral-8: #4E5969;
+    --color-neutral-10: #1D2129;
+}
+
+/* ------------------------- 语义层（Arco 全局 Token） ------------------------- */
+:root {
+    /* 主色 / 链接色（Arco：primary = arcoblue） */
+    --primary-6: var(--arcoblue-6);
+    --primary-5: var(--arcoblue-5);
+    --primary-7: var(--arcoblue-7);
+    --primary-1: var(--arcoblue-1);
+
+    /* 状态色（Arco：success=green / warning=orange / danger=red） */
+    --success-6: var(--green-6);
+    --success-1: var(--green-1);
+    --warning-6: var(--orange-6);
+    --warning-1: var(--orange-1);
+    --danger-6: var(--red-6);
+    --danger-1: var(--red-1);
+
+    /* 文本色（Arco 四级） */
+    --color-text-1: var(--color-neutral-10);
+    --color-text-2: var(--color-neutral-8);
+    --color-text-3: var(--color-neutral-6);
+    --color-text-4: var(--color-neutral-4);
+
+    /* 边框色 */
+    --color-border-1: var(--color-neutral-2);  /* 浅（分割线） */
+    --color-border-2: var(--color-neutral-3);  /* 一般（控件描边） */
+    --color-border-4: var(--color-neutral-6);  /* 重（按钮描边） */
+
+    /* 填充色 */
+    --color-fill-1: var(--color-neutral-1);    /* 浅/禁用、表头 */
+    --color-fill-2: var(--color-neutral-2);    /* 常规/页面底 */
+
+    /* 字体（用户指定：Inter 优先） */
+    --font-family: Inter, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB',
+        'Noto Sans', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-size-body-3: 14px;
+    --font-size-body-1: 12px;
+    --font-size-title-1: 16px;
+    --font-weight-medium: 500;                 /* Arco：500 即标题"中等加粗" */
+
+    /* 尺寸（size-N = 4 * N px） */
+    --size-3: 12px;
+    --size-4: 16px;
+    --size-5: 20px;
+    --size-default: 32px;                      /* 控件中等 */
+    --size-10: 40px;                           /* 菜单项 */
+
+    /* 边框圆角 */
+    --border-radius-small: 2px;                /* 控件/标签 */
+    --border-radius-medium: 4px;
+    --border-radius-large: 8px;                /* 卡片 */
+
+    /* 阴影（Arco token） */
+    --shadow-special: 0 0 1px rgba(0, 0, 0, .3);
+    --shadow2-center: 0 0 10px rgba(0, 0, 0, .1);
+    --shadow-card: 0 1px 4px rgba(0, 0, 0, .04);
+
+    /* 布局（ProLayout 语义，Arco 暗色菜单） */
+    --sider-bg: #232324;
+    --sider-width: 232px;
+    --header-height: 60px;
+    --content-padding: 20px;
+}
+
+/* ------------------------- 基础 ------------------------- */
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-body-3);
+    color: var(--color-text-1);
+    background: var(--color-fill-2);
+}
+
+::selection { background: var(--primary-1); }
+
+.admin-sidebar::-webkit-scrollbar { width: 6px; }
+.admin-sidebar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .16); border-radius: 3px; }
+
+input[type='checkbox'], input[type='radio'] { accent-color: var(--primary-6); }
+
+:focus-visible { outline: 2px solid var(--primary-6); outline-offset: 1px; }
+
+hr { border: 0; border-top: 1px solid var(--color-border-1); margin: var(--size-5) 0; }
+
+code { padding: 2px 6px; background: var(--color-fill-1); border-radius: var(--border-radius-small); color: var(--danger-6); font-size: .9em; }
+
+h4 { font-size: var(--font-size-title-1); font-weight: var(--font-weight-medium); margin: 16px 0 12px; }
+
+/* ------------------------- 暗色侧栏（Arco menu-dark） ------------------------- */
+.admin-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--sider-width);
+    overflow-y: auto;
+    background: var(--sider-bg);
+    z-index: 100;
+}
+
+.admin-sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: var(--header-height);
+    padding: 0 16px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.admin-sidebar .nav-group { padding: 12px 0 4px; }
+.admin-sidebar .nav-group > .group-title {
+    padding: 4px 16px 6px 24px;
+    font-size: var(--font-size-body-1);
+    color: var(--color-text-4);
+}
+.admin-sidebar .nav-group > ul { list-style: none; margin: 0; padding: 0 8px; }
+.admin-sidebar .nav-group > ul > li > a {
+    display: flex;
+    align-items: center;
+    height: var(--size-10);
+    padding: 0 12px 0 16px;
+    border-radius: var(--border-radius-small);
+    color: var(--color-text-3);
+    text-decoration: none;
+    font-size: var(--font-size-body-3);
+    transition: background .2s, color .2s;
+}
+.admin-sidebar .nav-group > ul > li > a:hover {
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+}
+.admin-sidebar .nav-group > ul > li > a.active {
+    background: var(--primary-6);
+    color: #fff;
+    font-weight: var(--font-weight-medium);
+}
+
+/* ------------------------- 顶栏与内容区 ------------------------- */
+.admin-main { margin-left: var(--sider-width); min-height: 100vh; display: flex; flex-direction: column; }
+
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    padding: 0 var(--content-padding);
+    background: #fff;
+    border-bottom: 1px solid var(--color-border-2);
+    box-shadow: var(--shadow-special);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+.admin-topbar .user-menu { display: flex; align-items: center; gap: 8px; color: var(--color-text-2); }
+
+.admin-content { flex: 1; padding: var(--content-padding); }
+
+/* ------------------------- Panel → Card（Arco Card：radius-medium） ------------------------- */
+.panel {
+    background: #fff;
+    border: 1px solid var(--color-border-2);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--content-padding);
+}
+.panel-heading {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--color-border-1);
+    font-size: 15px;
+    font-weight: var(--font-weight-medium);
+}
+.panel-body { padding: 20px; }
+
+/* ------------------------- Button（radius-small 2，border-4 描边） ------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: var(--size-default);
+    padding: 0 15px;
+    border: 1px solid var(--color-border-4);
+    border-radius: var(--border-radius-small);
+    background: #fff;
+    color: var(--color-text-1);
+    font-size: var(--font-size-body-3);
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: color .2s, border-color .2s, background-color .2s;
+    text-decoration: none;
+}
+/* Arco 语义：hover 主色变浅（primary-5），active 加深（primary-7） */
+.btn:hover { color: var(--primary-6); border-color: var(--primary-6); }
+.btn:active { color: var(--primary-7); border-color: var(--primary-7); }
+
+.btn.btn-default { background: #fff; }
+
+/* 主按钮：视图中以 btn bg-primary-500 text-white 组合出现 */
+.btn.bg-primary-500,
+.btn.bg-primary {
+    background: var(--primary-6);
+    border-color: var(--primary-6);
+    color: #fff;
+}
+.btn.bg-primary-500:hover,
+.btn.bg-primary:hover {
+    background: var(--primary-5);
+    border-color: var(--primary-5);
+    color: #fff;
+}
+.btn.bg-primary-500:active,
+.btn.bg-primary:active {
+    background: var(--primary-7);
+    border-color: var(--primary-7);
+}
+
+.btn.btn-link,
+.btn-link {
+    border-color: transparent;
+    background: transparent;
+    color: var(--primary-6);
+    padding: 4px;
+}
+.btn.btn-link:hover, .btn-link:hover { color: var(--primary-5); border-color: transparent; }
+.btn.btn-link:active, .btn-link:active { color: var(--primary-7); }
+
+.btn:disabled, .btn.disabled { opacity: .4; cursor: not-allowed; }
+
+/* ------------------------- Form ------------------------- */
+.form-group { margin-bottom: 16px; }
+.form-group > label { display: inline-block; margin-bottom: 6px; color: var(--color-text-1); font-weight: 400; }
+
+.form-control {
+    width: 100%;
+    height: var(--size-default);
+    padding: 0 11px;
+    border: 1px solid var(--color-border-2);
+    border-radius: var(--border-radius-small);
+    background: #fff;
+    color: var(--color-text-1);
+    font-size: var(--font-size-body-3);
+    transition: border-color .2s;
+    box-sizing: border-box;
+}
+textarea.form-control { height: auto; padding: 5px 11px; }
+.form-control:hover { border-color: var(--primary-6); }
+.form-control:focus {
+    outline: 0;
+    border-color: var(--primary-6);
+    background-color: var(--primary-1);
+}
+.form-control::placeholder { color: var(--color-text-4); }
+
+select.form-control { appearance: auto; }
+
+/* ------------------------- Table（表头 fill-1） ------------------------- */
+.table { width: 100%; border-collapse: collapse; font-size: var(--font-size-body-3); }
+.table th, .table td {
+    padding: 13px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-1);
+    color: var(--color-text-1);
+}
+.table thead th {
+    background: var(--color-fill-1);
+    color: var(--color-text-2);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+}
+.table tbody tr { transition: background-color .2s; }
+.table.table-hover tbody tr:hover { background: var(--color-fill-1); }
+.table tbody tr:last-child td { border-bottom: 0; }
+
+/* ------------------------- Label → Tag（radius-small） ------------------------- */
+.label {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 8px;
+    border: 1px solid var(--color-border-2);
+    border-radius: var(--border-radius-small);
+    background: var(--color-fill-2);
+    color: var(--color-text-2);
+    font-size: var(--font-size-body-1);
+    line-height: 20px;
+    font-weight: 400;
+}
+.label.bg-primary-500 { border-color: transparent; color: #fff; }
+
+/* ------------------------- Tabs（ink-bar） ------------------------- */
+.nav-tabs { display: flex; list-style: none; margin: 0 0 16px; padding: 0; border-bottom: 1px solid var(--color-border-2); gap: 32px; }
+.nav-tabs > li > a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    color: var(--color-text-2);
+    text-decoration: none;
+    transition: color .2s;
+}
+.nav-tabs > li > a:hover { color: var(--primary-5); }
+.nav-tabs > li.active > a { color: var(--primary-6); font-weight: var(--font-weight-medium); }
+.nav-tabs > li.active > a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--primary-6);
+    border-radius: 2px;
+}
+.tab-content > .tab-pane { display: none; }
+.tab-content > .tab-pane.active { display: block; }
+
+/* ------------------------- Alert（弱底语义色） ------------------------- */
+.alert {
+    position: relative;
+    padding: 9px 12px;
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-body-3);
+    line-height: 22px;
+    margin-bottom: 12px;
+}
+.alert.bg-danger { background: var(--danger-1); border: 1px solid #FDCDC5; color: var(--danger-6); }
+.alert.bg-success { background: var(--success-1); border: 1px solid #AFF0B5; color: var(--success-6); }
+.alert.bg-warning { background: var(--warning-1); border: 1px solid #FFE4BA; color: #D25F00; }
+.alert.text-white { color: inherit; }
+
+/* ------------------------- 其他 ------------------------- */
+.breadcrumb { padding: 0; margin: 0 0 12px; font-size: var(--font-size-body-1); color: var(--color-text-4); }
+
+blockquote { border-left: 3px solid var(--primary-6); background: var(--primary-1); color: var(--color-text-2); }
+
+/* ------------------------- 自包含工具层（前后台共用） ------------------------- */
+.alert-info { background: var(--primary-1); border: 1px solid #BEDAFF; color: var(--primary-6); }
+
+.pull-right { float: right; }
+
+.btn-group { display: inline-flex; }
+.btn-group .btn + .btn { margin-left: -1px; }
+.btn-group .btn:first-child { border-radius: var(--border-radius-small) 0 0 var(--border-radius-small); }
+.btn-group .btn:last-child { border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0; }
+
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1 1 0%; }
+.items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+.mr-3 { margin-right: 12px; }
+.text-center { text-align: center; }
+.text-danger { color: var(--danger-6); }
+.text-gray-500 { color: var(--color-text-2); }
+.text-white { color: #fff; }
+.w-full { width: 100%; }
+
+/* 前台用到的少量补充工具类 */
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 15px; box-sizing: border-box; }
+.bg-white { background: #fff; }
+.bg-gray-100 { background: var(--color-fill-2); }
+.shadow-md { box-shadow: var(--shadow2-center); }
+.text-sm { font-size: var(--font-size-body-1); }
+.font-bold { font-weight: 600; }
+.text-2xl { font-size: 24px; font-weight: 600; }
+
+/* ============================================================
+ * Arco Pro 布局增强（顶栏面包屑/头像、折叠侧栏、页脚、统计卡、分页器）
+ * ============================================================ */
+
+/* 顶栏：面包屑 + 头像 */
+.topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.topbar-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: var(--font-size-body-1); color: var(--color-text-3); white-space: nowrap; overflow: hidden; }
+.topbar-breadcrumb .current { color: var(--color-text-1); font-size: var(--font-size-body-3); }
+.topbar-breadcrumb .sep { color: var(--color-text-4); }
+.collapse-btn { border: 0; background: transparent; cursor: pointer; font-size: 16px; color: var(--color-text-2); padding: 4px 6px; border-radius: var(--border-radius-small); line-height: 1; }
+.collapse-btn:hover { background: var(--color-fill-2); color: var(--color-text-1); }
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary-1);
+    color: var(--primary-6);
+    font-weight: var(--font-weight-medium);
+    flex: none;
+}
+
+/* 折叠侧栏（48px 图标态） */
+.admin-sidebar, .admin-main { transition: width .2s ease, margin-left .2s ease; }
+body.sider-collapsed .admin-sidebar { width: 48px; }
+body.sider-collapsed .admin-main { margin-left: 48px; }
+body.sider-collapsed .admin-sidebar .brand { justify-content: center; padding: 0; }
+body.sider-collapsed .admin-sidebar .brand .brand-name,
+body.sider-collapsed .admin-sidebar .nav-group > .group-title,
+body.sider-collapsed .admin-sidebar .nav-group > ul > li > a .nav-label { display: none; }
+body.sider-collapsed .admin-sidebar .nav-group > ul > li > a { justify-content: center; padding: 0; }
+body.sider-collapsed .admin-sidebar .nav-group > ul > li > a::after {
+    content: '·';
+    color: inherit;
+    font-weight: 700;
+}
+
+/* 页脚 */
+.page-footer {
+    padding: 16px 0;
+    text-align: center;
+    font-size: var(--font-size-body-1);
+    color: var(--color-text-4);
+}
+
+/* 统计卡（Arco Pro 数据卡） */
+.stat-card .panel-body { display: flex; align-items: center; gap: 16px; }
+.stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius-medium);
+    font-size: 20px;
+    font-weight: var(--font-weight-medium);
+    flex: none;
+}
+.stat-value { font-size: 24px; font-weight: var(--font-weight-medium); line-height: 1.2; }
+.stat-label { font-size: var(--font-size-body-1); color: var(--color-text-3); margin-top: 2px; }
+
+/* 分页器（Pro Table 底右） */
+.pager { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.pager-info { font-size: var(--font-size-body-1); color: var(--color-text-3); }
+
+/* 筛选栏（列表页查询区，位于标题栏与表格之间）
+ * 参考 Arco Pro 查询表单：label 左、控件右，查询/重置居右，多条件自动换行 */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--color-border-1);
+    background: var(--color-fill-1);
+}
+.filter-bar .form-group { display: flex; align-items: center; gap: 8px; margin-bottom: 0; }
+.filter-bar .form-group > label {
+    margin-bottom: 0;
+    white-space: nowrap;
+    color: var(--color-text-2);
+    font-size: var(--font-size-body-3);
+}
+.filter-bar > button[type="submit"] { margin-left: auto; }
+
+/* 分页器内的每页条数选择器（紧凑高度，与页码按钮对齐） */
+.pager select.form-control { width: auto; height: 28px; padding: 0 6px; font-size: var(--font-size-body-1); }

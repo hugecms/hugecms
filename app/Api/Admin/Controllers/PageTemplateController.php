@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\PageTemplateEntity;
-use App\Services\PageTemplateService;
 use App\Api\Admin\Requests\PageTemplate\PageTemplateCreateRequest;
 use App\Api\Admin\Requests\PageTemplate\PageTemplateDestroyRequest;
 use App\Api\Admin\Requests\PageTemplate\PageTemplateQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\PageTemplate\PageTemplateUpdateRequest;
 use App\Api\Admin\Responses\PageTemplate\PageTemplateDestroyResponse;
 use App\Api\Admin\Responses\PageTemplate\PageTemplateQueryResponse;
 use App\Api\Admin\Responses\PageTemplate\PageTemplateResponse;
+use App\Entities\PageTemplateEntity;
+use App\Services\PageTemplateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class PageTemplateController extends BaseController
     ))]
     public function search(PageTemplateQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[PageTemplateQueryRequest::getKeyword])) {
+                $condition[] = [PageTemplateEntity::getTemplateName, 'like', '%'.$requestData[PageTemplateQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[PageTemplateQueryRequest::getCategory])) {
                 $condition[] = [PageTemplateEntity::getCategory, '=', $requestData[PageTemplateQueryRequest::getCategory]];
             }
@@ -57,7 +59,7 @@ class PageTemplateController extends BaseController
             if (isset($requestData[PageTemplateQueryRequest::getId])) {
                 $condition[] = [PageTemplateEntity::getId, '=', $requestData[PageTemplateQueryRequest::getId]];
             }
-            
+
             $result = $this->pageTemplateService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class PageTemplateController extends BaseController
     ))]
     public function store(PageTemplateCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class PageTemplateController extends BaseController
     public function update(PageTemplateUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class PageTemplateController extends BaseController
     ))]
     public function destroy(PageTemplateDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

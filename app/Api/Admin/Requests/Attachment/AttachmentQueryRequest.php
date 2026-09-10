@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getUploaderId, description: '上传者ID', type: 'integer'),
         new OA\Property(property: self::getMimeType, description: 'MIME类型（如：image/jpeg）', type: 'string'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class AttachmentQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getKeyword = 'keyword';
 
     public const string getUploaderId = 'uploaderId';
 

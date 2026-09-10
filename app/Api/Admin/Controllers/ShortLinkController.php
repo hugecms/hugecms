@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\ShortLinkEntity;
-use App\Services\ShortLinkService;
 use App\Api\Admin\Requests\ShortLink\ShortLinkCreateRequest;
 use App\Api\Admin\Requests\ShortLink\ShortLinkDestroyRequest;
 use App\Api\Admin\Requests\ShortLink\ShortLinkQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\ShortLink\ShortLinkUpdateRequest;
 use App\Api\Admin\Responses\ShortLink\ShortLinkDestroyResponse;
 use App\Api\Admin\Responses\ShortLink\ShortLinkQueryResponse;
 use App\Api\Admin\Responses\ShortLink\ShortLinkResponse;
+use App\Entities\ShortLinkEntity;
+use App\Services\ShortLinkService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class ShortLinkController extends BaseController
     ))]
     public function search(ShortLinkQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[ShortLinkQueryRequest::getKeyword])) {
+                $condition[] = [ShortLinkEntity::getShortCode, 'like', '%'.$requestData[ShortLinkQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[ShortLinkQueryRequest::getId])) {
                 $condition[] = [ShortLinkEntity::getId, '=', $requestData[ShortLinkQueryRequest::getId]];
             }
@@ -57,7 +59,7 @@ class ShortLinkController extends BaseController
             if (isset($requestData[ShortLinkQueryRequest::getShortCode])) {
                 $condition[] = [ShortLinkEntity::getShortCode, '=', $requestData[ShortLinkQueryRequest::getShortCode]];
             }
-            
+
             $result = $this->shortLinkService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class ShortLinkController extends BaseController
     ))]
     public function store(ShortLinkCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class ShortLinkController extends BaseController
     public function update(ShortLinkUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class ShortLinkController extends BaseController
     ))]
     public function destroy(ShortLinkDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

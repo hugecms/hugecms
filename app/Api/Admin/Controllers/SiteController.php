@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\SiteEntity;
-use App\Services\SiteService;
 use App\Api\Admin\Requests\Site\SiteCreateRequest;
 use App\Api\Admin\Requests\Site\SiteDestroyRequest;
 use App\Api\Admin\Requests\Site\SiteQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Site\SiteUpdateRequest;
 use App\Api\Admin\Responses\Site\SiteDestroyResponse;
 use App\Api\Admin\Responses\Site\SiteQueryResponse;
 use App\Api\Admin\Responses\Site\SiteResponse;
+use App\Entities\SiteEntity;
+use App\Services\SiteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class SiteController extends BaseController
     ))]
     public function search(SiteQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[SiteQueryRequest::getKeyword])) {
+                $condition[] = [SiteEntity::getSiteName, 'like', '%'.$requestData[SiteQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[SiteQueryRequest::getId])) {
                 $condition[] = [SiteEntity::getId, '=', $requestData[SiteQueryRequest::getId]];
             }
@@ -57,7 +59,7 @@ class SiteController extends BaseController
             if (isset($requestData[SiteQueryRequest::getSiteCode])) {
                 $condition[] = [SiteEntity::getSiteCode, '=', $requestData[SiteQueryRequest::getSiteCode]];
             }
-            
+
             $result = $this->siteService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +96,7 @@ class SiteController extends BaseController
     ))]
     public function store(SiteCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +168,7 @@ class SiteController extends BaseController
     public function update(SiteUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +208,7 @@ class SiteController extends BaseController
     ))]
     public function destroy(SiteDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

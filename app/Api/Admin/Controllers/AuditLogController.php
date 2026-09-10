@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\AuditLogEntity;
-use App\Services\AuditLogService;
 use App\Api\Admin\Requests\AuditLog\AuditLogCreateRequest;
 use App\Api\Admin\Requests\AuditLog\AuditLogDestroyRequest;
 use App\Api\Admin\Requests\AuditLog\AuditLogQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\AuditLog\AuditLogUpdateRequest;
 use App\Api\Admin\Responses\AuditLog\AuditLogDestroyResponse;
 use App\Api\Admin\Responses\AuditLog\AuditLogQueryResponse;
 use App\Api\Admin\Responses\AuditLog\AuditLogResponse;
+use App\Entities\AuditLogEntity;
+use App\Services\AuditLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +41,15 @@ class AuditLogController extends BaseController
     ))]
     public function search(AuditLogQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[AuditLogQueryRequest::getKeyword])) {
+                $condition[] = [AuditLogEntity::getTargetName, 'like', '%'.$requestData[AuditLogQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[AuditLogQueryRequest::getCreatedAt])) {
                 $condition[] = [AuditLogEntity::getCreatedAt, '=', $requestData[AuditLogQueryRequest::getCreatedAt]];
             }
@@ -60,7 +62,7 @@ class AuditLogController extends BaseController
             if (isset($requestData[AuditLogQueryRequest::getId])) {
                 $condition[] = [AuditLogEntity::getId, '=', $requestData[AuditLogQueryRequest::getId]];
             }
-            
+
             $result = $this->auditLogService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -97,7 +99,7 @@ class AuditLogController extends BaseController
     ))]
     public function store(AuditLogCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -169,7 +171,7 @@ class AuditLogController extends BaseController
     public function update(AuditLogUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -209,7 +211,7 @@ class AuditLogController extends BaseController
     ))]
     public function destroy(AuditLogDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

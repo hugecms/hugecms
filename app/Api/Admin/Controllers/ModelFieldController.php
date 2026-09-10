@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\ModelFieldEntity;
-use App\Services\ModelFieldService;
 use App\Api\Admin\Requests\ModelField\ModelFieldCreateRequest;
 use App\Api\Admin\Requests\ModelField\ModelFieldDestroyRequest;
 use App\Api\Admin\Requests\ModelField\ModelFieldQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\ModelField\ModelFieldUpdateRequest;
 use App\Api\Admin\Responses\ModelField\ModelFieldDestroyResponse;
 use App\Api\Admin\Responses\ModelField\ModelFieldQueryResponse;
 use App\Api\Admin\Responses\ModelField\ModelFieldResponse;
+use App\Entities\ModelFieldEntity;
+use App\Services\ModelFieldService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class ModelFieldController extends BaseController
     ))]
     public function search(ModelFieldQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -57,7 +56,7 @@ class ModelFieldController extends BaseController
             if (isset($requestData[ModelFieldQueryRequest::getId])) {
                 $condition[] = [ModelFieldEntity::getId, '=', $requestData[ModelFieldQueryRequest::getId]];
             }
-            
+
             $result = $this->modelFieldService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +93,7 @@ class ModelFieldController extends BaseController
     ))]
     public function store(ModelFieldCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -106,14 +105,14 @@ class ModelFieldController extends BaseController
 
                 // 物理列名规范 field_{id}：前端无法预知自增ID，由服务端补齐
                 if ($fieldId && empty($requestData[ModelFieldCreateRequest::getColumnName])) {
-                    $requestData[ModelFieldCreateRequest::getColumnName] = 'field_' . $fieldId;
+                    $requestData[ModelFieldCreateRequest::getColumnName] = 'field_'.$fieldId;
                     $this->modelFieldService->updateById(ModelFieldEntity::from($requestData)->toEntity(), $fieldId);
                 }
 
                 DB::commit();
 
                 // 同步物理列到模型数据表 data_{alias}（DDL 会隐式提交事务，故置于 commit 之后）
-                if ($fieldId && !empty($requestData[ModelFieldCreateRequest::getColumnName])) {
+                if ($fieldId && ! empty($requestData[ModelFieldCreateRequest::getColumnName])) {
                     try {
                         $this->modelFieldService->addColumnToModelTable(
                             (int) $requestData[ModelFieldCreateRequest::getModelId],
@@ -122,7 +121,7 @@ class ModelFieldController extends BaseController
                             (string) ($requestData[ModelFieldCreateRequest::getFieldLabel] ?? ''),
                         );
                     } catch (Throwable $ddlError) {
-                        Log::warning('模型字段物理列同步失败：' . $ddlError->getMessage());
+                        Log::warning('模型字段物理列同步失败：'.$ddlError->getMessage());
                     }
                 }
 
@@ -189,7 +188,7 @@ class ModelFieldController extends BaseController
     public function update(ModelFieldUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -229,7 +228,7 @@ class ModelFieldController extends BaseController
     ))]
     public function destroy(ModelFieldDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

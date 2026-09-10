@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\OptionEntity;
-use App\Services\OptionService;
 use App\Api\Admin\Requests\Option\OptionCreateRequest;
 use App\Api\Admin\Requests\Option\OptionDestroyRequest;
 use App\Api\Admin\Requests\Option\OptionQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Option\OptionUpdateRequest;
 use App\Api\Admin\Responses\Option\OptionDestroyResponse;
 use App\Api\Admin\Responses\Option\OptionQueryResponse;
 use App\Api\Admin\Responses\Option\OptionResponse;
+use App\Entities\OptionEntity;
+use App\Services\OptionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class OptionController extends BaseController
     ))]
     public function search(OptionQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -54,7 +53,7 @@ class OptionController extends BaseController
             if (isset($requestData[OptionQueryRequest::getId])) {
                 $condition[] = [OptionEntity::getId, '=', $requestData[OptionQueryRequest::getId]];
             }
-            
+
             $result = $this->optionService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -91,7 +90,7 @@ class OptionController extends BaseController
     ))]
     public function store(OptionCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -163,7 +162,7 @@ class OptionController extends BaseController
     public function update(OptionUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -203,7 +202,7 @@ class OptionController extends BaseController
     ))]
     public function destroy(OptionDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

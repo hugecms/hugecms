@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>重置密码 - {{ config('app.name', 'HugeCMS') }}</title>
-    <link rel="stylesheet" href="{{ asset('assets/zui/zui.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <style>
         body { background: #2b3548; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
         .login-panel { width: 360px; }

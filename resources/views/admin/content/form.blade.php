@@ -335,7 +335,7 @@
         const bound = termRelations.map(r => Number(r.termId));
         for (const r of termRelations) {
             if (!checked.includes(Number(r.termId))) {
-                await adminApi.post('/api/admin/termRelationship/destroy', {id: r.id});
+                await adminApi.post('/api/admin/termRelationship/destroy', {ids: [r.id]});
             }
         }
         for (const termId of checked) {

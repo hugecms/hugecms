@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getSiteCode, description: '站点代码（子域名或标识）', type: 'string'),
         new OA\Property(property: self::getDomain, description: '主域名（如：www.example.com）', type: 'string'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class SiteQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getKeyword = 'keyword';
 
     public const string getSiteCode = 'siteCode';
 

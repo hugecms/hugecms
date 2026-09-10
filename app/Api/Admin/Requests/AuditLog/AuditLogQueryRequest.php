@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getKeyword, description: '关键词模糊搜索', type: 'string'),
         new OA\Property(property: self::getUserId, description: '操作用户ID', type: 'integer'),
         new OA\Property(property: self::getTargetId, description: '目标ID（可能是数字或UUID）', type: 'string'),
         new OA\Property(property: self::getCreatedAt, description: '创建时间（毫秒精度，只增不改）', type: 'string'),
@@ -20,6 +21,8 @@ use OpenApi\Attributes as OA;
 class AuditLogQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getKeyword = 'keyword';
 
     public const string getUserId = 'userId';
 

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\AttachmentEntity;
-use App\Services\AttachmentService;
 use App\Api\Admin\Requests\Attachment\AttachmentCreateRequest;
 use App\Api\Admin\Requests\Attachment\AttachmentDestroyRequest;
 use App\Api\Admin\Requests\Attachment\AttachmentQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\Attachment\AttachmentUpdateRequest;
 use App\Api\Admin\Responses\Attachment\AttachmentDestroyResponse;
 use App\Api\Admin\Responses\Attachment\AttachmentQueryResponse;
 use App\Api\Admin\Responses\Attachment\AttachmentResponse;
+use App\Entities\AttachmentEntity;
+use App\Services\AttachmentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +44,7 @@ class AttachmentController extends BaseController
 
         try {
             $file = $request->file('file');
-            $path = $file->store('uploads/' . now()->format('Y/m'), 'public');
+            $path = $file->store('uploads/'.now()->format('Y/m'), 'public');
 
             [$width, $height] = $this->imageSize($path);
 
@@ -65,14 +64,14 @@ class AttachmentController extends BaseController
             ]);
 
             $result = $this->attachmentService->save($input->toEntity());
-            if (!$result) {
+            if (! $result) {
                 throw new BusinessException(BusinessEnum::CREATE_FAIL);
             }
 
             return $this->success([
                 'id' => \is_int($result) ? $result : 0,
                 'path' => $path,
-                'url' => asset('storage/' . $path),
+                'url' => asset('storage/'.$path),
             ]);
         } catch (Throwable $e) {
             if ($e instanceof BusinessException) {
@@ -93,7 +92,7 @@ class AttachmentController extends BaseController
     private function imageSize(string $path): array
     {
         try {
-            $info = @\getimagesize(\storage_path('app/public/' . $path));
+            $info = @\getimagesize(\storage_path('app/public/'.$path));
             if (\is_array($info)) {
                 return [(int) $info[0], (int) $info[1]];
             }
@@ -116,12 +115,15 @@ class AttachmentController extends BaseController
     ))]
     public function search(AttachmentQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
+            if (! empty($requestData[AttachmentQueryRequest::getKeyword])) {
+                $condition[] = [AttachmentEntity::getFileName, 'like', '%'.$requestData[AttachmentQueryRequest::getKeyword].'%'];
+            }
             if (isset($requestData[AttachmentQueryRequest::getMimeType])) {
                 $condition[] = [AttachmentEntity::getMimeType, '=', $requestData[AttachmentQueryRequest::getMimeType]];
             }
@@ -131,7 +133,7 @@ class AttachmentController extends BaseController
             if (isset($requestData[AttachmentQueryRequest::getId])) {
                 $condition[] = [AttachmentEntity::getId, '=', $requestData[AttachmentQueryRequest::getId]];
             }
-            
+
             $result = $this->attachmentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -168,7 +170,7 @@ class AttachmentController extends BaseController
     ))]
     public function store(AttachmentCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -240,7 +242,7 @@ class AttachmentController extends BaseController
     public function update(AttachmentUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -280,7 +282,7 @@ class AttachmentController extends BaseController
     ))]
     public function destroy(AttachmentDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

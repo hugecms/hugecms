@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
-use App\Api\Admin\Controllers\BaseController;
-use App\Entities\TermRelationshipEntity;
-use App\Services\TermRelationshipService;
 use App\Api\Admin\Requests\TermRelationship\TermRelationshipCreateRequest;
 use App\Api\Admin\Requests\TermRelationship\TermRelationshipDestroyRequest;
 use App\Api\Admin\Requests\TermRelationship\TermRelationshipQueryRequest;
@@ -14,6 +11,8 @@ use App\Api\Admin\Requests\TermRelationship\TermRelationshipUpdateRequest;
 use App\Api\Admin\Responses\TermRelationship\TermRelationshipDestroyResponse;
 use App\Api\Admin\Responses\TermRelationship\TermRelationshipQueryResponse;
 use App\Api\Admin\Responses\TermRelationship\TermRelationshipResponse;
+use App\Entities\TermRelationshipEntity;
+use App\Services\TermRelationshipService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,9 +41,9 @@ class TermRelationshipController extends BaseController
     ))]
     public function search(TermRelationshipQueryRequest $queryRequest): JsonResponse
     {
-        $page = \intval($queryRequest->query('page', '1'));
-        $pageSize = \intval($queryRequest->query('pageSize', '10'));
-        $requestData = $queryRequest->post();
+        $page = \intval($queryRequest->input('page', '1'));
+        $pageSize = \intval($queryRequest->input('pageSize', '10'));
+        $requestData = $queryRequest->all();
 
         try {
             $condition = [];
@@ -57,7 +56,7 @@ class TermRelationshipController extends BaseController
             if (isset($requestData[TermRelationshipQueryRequest::getTermId])) {
                 $condition[] = [TermRelationshipEntity::getTermId, '=', $requestData[TermRelationshipQueryRequest::getTermId]];
             }
-            
+
             $result = $this->termRelationshipService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -94,7 +93,7 @@ class TermRelationshipController extends BaseController
     ))]
     public function store(TermRelationshipCreateRequest $createRequest): JsonResponse
     {
-        $requestData = $createRequest->post();
+        $requestData = $createRequest->all();
 
         DB::beginTransaction();
         try {
@@ -166,7 +165,7 @@ class TermRelationshipController extends BaseController
     public function update(TermRelationshipUpdateRequest $updateRequest): JsonResponse
     {
         $id = \intval($updateRequest->query('id', '0'));
-        $requestData = $updateRequest->post();
+        $requestData = $updateRequest->all();
 
         DB::beginTransaction();
         try {
@@ -206,7 +205,7 @@ class TermRelationshipController extends BaseController
     ))]
     public function destroy(TermRelationshipDestroyRequest $destroyRequest): JsonResponse
     {
-        $requestData = $destroyRequest->post();
+        $requestData = $destroyRequest->all();
 
         DB::beginTransaction();
         try {

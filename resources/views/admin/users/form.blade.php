@@ -106,7 +106,7 @@
         const bound = existingBindings.map(b => b.role_id);
         for (const b of existingBindings) {
             if (!checked.includes(b.role_id)) {
-                await adminApi.post('/api/admin/userRole/destroy', {id: b.id});
+                await adminApi.post('/api/admin/userRole/destroy', {ids: [b.id]});
             }
         }
         for (const roleId of checked) {
