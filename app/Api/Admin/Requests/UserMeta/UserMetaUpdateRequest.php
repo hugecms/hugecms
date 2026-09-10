@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\Admin\Requests\UserMeta;
+
+use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    schema: 'UserMetaUpdateRequest',
+    required: [
+        self::getId,
+        self::getUserId,
+        self::getMetaKey,
+        self::getMetaValue,
+    ],
+    properties: [
+        new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getUserId, description: '关联用户ID', type: 'integer'),
+        new OA\Property(property: self::getMetaKey, description: '元数据键名', type: 'string'),
+        new OA\Property(property: self::getMetaValue, description: '元数据值（JSON或序列化数据）', type: 'string'),
+    ]
+)]
+class UserMetaUpdateRequest extends FormRequest
+{
+    public const string getId = 'id';
+
+    public const string getUserId = 'userId';
+
+    public const string getMetaKey = 'metaKey';
+
+    public const string getMetaValue = 'metaValue';
+
+    public function rules(): array
+    {
+        return [
+            self::getId => 'required',
+            self::getUserId => 'required',
+            self::getMetaKey => 'required',
+            self::getMetaValue => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            self::getId.'.required' => '请设置ID',
+            self::getUserId.'.required' => '请设置关联用户ID',
+            self::getMetaKey.'.required' => '请设置元数据键名',
+            self::getMetaValue.'.required' => '请设置元数据值（JSON或序列化数据）',
+        ];
+    }
+}

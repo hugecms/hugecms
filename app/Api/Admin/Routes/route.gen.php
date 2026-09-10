@@ -8,3 +8,363 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
+// 查询广告列表接口
+Route::post('ad/search', [\App\Api\Admin\Controllers\AdController::class, 'search']);
+// 新增广告接口
+Route::post('ad/store', [\App\Api\Admin\Controllers\AdController::class, 'store']);
+// 获取广告详情接口
+Route::get('ad/show', [\App\Api\Admin\Controllers\AdController::class, 'show'])->name('ad.show');
+// 更新广告接口
+Route::put('ad/update', [\App\Api\Admin\Controllers\AdController::class, 'update']);
+// 删除广告接口
+Route::post('ad/destroy', [\App\Api\Admin\Controllers\AdController::class, 'destroy']);
+// 查询广告位列表接口
+Route::post('adPosition/search', [\App\Api\Admin\Controllers\AdPositionController::class, 'search']);
+// 新增广告位接口
+Route::post('adPosition/store', [\App\Api\Admin\Controllers\AdPositionController::class, 'store']);
+// 获取广告位详情接口
+Route::get('adPosition/show', [\App\Api\Admin\Controllers\AdPositionController::class, 'show'])->name('adPosition.show');
+// 更新广告位接口
+Route::put('adPosition/update', [\App\Api\Admin\Controllers\AdPositionController::class, 'update']);
+// 删除广告位接口
+Route::post('adPosition/destroy', [\App\Api\Admin\Controllers\AdPositionController::class, 'destroy']);
+// 查询附件列表接口
+Route::post('attachment/search', [\App\Api\Admin\Controllers\AttachmentController::class, 'search']);
+// 新增附件接口
+Route::post('attachment/store', [\App\Api\Admin\Controllers\AttachmentController::class, 'store']);
+// 获取附件详情接口
+Route::get('attachment/show', [\App\Api\Admin\Controllers\AttachmentController::class, 'show'])->name('attachment.show');
+// 更新附件接口
+Route::put('attachment/update', [\App\Api\Admin\Controllers\AttachmentController::class, 'update']);
+// 删除附件接口
+Route::post('attachment/destroy', [\App\Api\Admin\Controllers\AttachmentController::class, 'destroy']);
+// 查询内容附件关联列表接口
+Route::post('attachmentRelation/search', [\App\Api\Admin\Controllers\AttachmentRelationController::class, 'search']);
+// 新增内容附件关联接口
+Route::post('attachmentRelation/store', [\App\Api\Admin\Controllers\AttachmentRelationController::class, 'store']);
+// 获取内容附件关联详情接口
+Route::get('attachmentRelation/show', [\App\Api\Admin\Controllers\AttachmentRelationController::class, 'show'])->name('attachmentRelation.show');
+// 更新内容附件关联接口
+Route::put('attachmentRelation/update', [\App\Api\Admin\Controllers\AttachmentRelationController::class, 'update']);
+// 删除内容附件关联接口
+Route::post('attachmentRelation/destroy', [\App\Api\Admin\Controllers\AttachmentRelationController::class, 'destroy']);
+// 查询审计日志列表接口
+Route::post('auditLog/search', [\App\Api\Admin\Controllers\AuditLogController::class, 'search']);
+// 新增审计日志接口
+Route::post('auditLog/store', [\App\Api\Admin\Controllers\AuditLogController::class, 'store']);
+// 获取审计日志详情接口
+Route::get('auditLog/show', [\App\Api\Admin\Controllers\AuditLogController::class, 'show'])->name('auditLog.show');
+// 更新审计日志接口
+Route::put('auditLog/update', [\App\Api\Admin\Controllers\AuditLogController::class, 'update']);
+// 删除审计日志接口
+Route::post('auditLog/destroy', [\App\Api\Admin\Controllers\AuditLogController::class, 'destroy']);
+// 查询区块列表接口
+Route::post('block/search', [\App\Api\Admin\Controllers\BlockController::class, 'search']);
+// 新增区块接口
+Route::post('block/store', [\App\Api\Admin\Controllers\BlockController::class, 'store']);
+// 获取区块详情接口
+Route::get('block/show', [\App\Api\Admin\Controllers\BlockController::class, 'show'])->name('block.show');
+// 更新区块接口
+Route::put('block/update', [\App\Api\Admin\Controllers\BlockController::class, 'update']);
+// 删除区块接口
+Route::post('block/destroy', [\App\Api\Admin\Controllers\BlockController::class, 'destroy']);
+// 查询评论列表接口
+Route::post('comment/search', [\App\Api\Admin\Controllers\CommentController::class, 'search']);
+// 新增评论接口
+Route::post('comment/store', [\App\Api\Admin\Controllers\CommentController::class, 'store']);
+// 获取评论详情接口
+Route::get('comment/show', [\App\Api\Admin\Controllers\CommentController::class, 'show'])->name('comment.show');
+// 更新评论接口
+Route::put('comment/update', [\App\Api\Admin\Controllers\CommentController::class, 'update']);
+// 删除评论接口
+Route::post('comment/destroy', [\App\Api\Admin\Controllers\CommentController::class, 'destroy']);
+// 查询内容主列表接口
+Route::post('content/search', [\App\Api\Admin\Controllers\ContentController::class, 'search']);
+// 新增内容主接口
+Route::post('content/store', [\App\Api\Admin\Controllers\ContentController::class, 'store']);
+// 获取内容主详情接口
+Route::get('content/show', [\App\Api\Admin\Controllers\ContentController::class, 'show'])->name('content.show');
+// 更新内容主接口
+Route::put('content/update', [\App\Api\Admin\Controllers\ContentController::class, 'update']);
+// 删除内容主接口
+Route::post('content/destroy', [\App\Api\Admin\Controllers\ContentController::class, 'destroy']);
+// 查询内容模型列表接口
+Route::post('contentModel/search', [\App\Api\Admin\Controllers\ContentModelController::class, 'search']);
+// 新增内容模型接口
+Route::post('contentModel/store', [\App\Api\Admin\Controllers\ContentModelController::class, 'store']);
+// 获取内容模型详情接口
+Route::get('contentModel/show', [\App\Api\Admin\Controllers\ContentModelController::class, 'show'])->name('contentModel.show');
+// 更新内容模型接口
+Route::put('contentModel/update', [\App\Api\Admin\Controllers\ContentModelController::class, 'update']);
+// 删除内容模型接口
+Route::post('contentModel/destroy', [\App\Api\Admin\Controllers\ContentModelController::class, 'destroy']);
+// 查询内容推送记录列表接口
+Route::post('contentPushQueue/search', [\App\Api\Admin\Controllers\ContentPushQueueController::class, 'search']);
+// 新增内容推送记录接口
+Route::post('contentPushQueue/store', [\App\Api\Admin\Controllers\ContentPushQueueController::class, 'store']);
+// 获取内容推送记录详情接口
+Route::get('contentPushQueue/show', [\App\Api\Admin\Controllers\ContentPushQueueController::class, 'show'])->name('contentPushQueue.show');
+// 更新内容推送记录接口
+Route::put('contentPushQueue/update', [\App\Api\Admin\Controllers\ContentPushQueueController::class, 'update']);
+// 删除内容推送记录接口
+Route::post('contentPushQueue/destroy', [\App\Api\Admin\Controllers\ContentPushQueueController::class, 'destroy']);
+// 查询内容版本列表接口
+Route::post('contentRevision/search', [\App\Api\Admin\Controllers\ContentRevisionController::class, 'search']);
+// 新增内容版本接口
+Route::post('contentRevision/store', [\App\Api\Admin\Controllers\ContentRevisionController::class, 'store']);
+// 获取内容版本详情接口
+Route::get('contentRevision/show', [\App\Api\Admin\Controllers\ContentRevisionController::class, 'show'])->name('contentRevision.show');
+// 更新内容版本接口
+Route::put('contentRevision/update', [\App\Api\Admin\Controllers\ContentRevisionController::class, 'update']);
+// 删除内容版本接口
+Route::post('contentRevision/destroy', [\App\Api\Admin\Controllers\ContentRevisionController::class, 'destroy']);
+// 查询文章模型数据列表接口
+Route::post('dataArticle/search', [\App\Api\Admin\Controllers\DataArticleController::class, 'search']);
+// 新增文章模型数据接口
+Route::post('dataArticle/store', [\App\Api\Admin\Controllers\DataArticleController::class, 'store']);
+// 获取文章模型数据详情接口
+Route::get('dataArticle/show', [\App\Api\Admin\Controllers\DataArticleController::class, 'show'])->name('dataArticle.show');
+// 更新文章模型数据接口
+Route::put('dataArticle/update', [\App\Api\Admin\Controllers\DataArticleController::class, 'update']);
+// 删除文章模型数据接口
+Route::post('dataArticle/destroy', [\App\Api\Admin\Controllers\DataArticleController::class, 'destroy']);
+// 查询表单提交列表接口
+Route::post('formSubmission/search', [\App\Api\Admin\Controllers\FormSubmissionController::class, 'search']);
+// 新增表单提交接口
+Route::post('formSubmission/store', [\App\Api\Admin\Controllers\FormSubmissionController::class, 'store']);
+// 获取表单提交详情接口
+Route::get('formSubmission/show', [\App\Api\Admin\Controllers\FormSubmissionController::class, 'show'])->name('formSubmission.show');
+// 更新表单提交接口
+Route::put('formSubmission/update', [\App\Api\Admin\Controllers\FormSubmissionController::class, 'update']);
+// 删除表单提交接口
+Route::post('formSubmission/destroy', [\App\Api\Admin\Controllers\FormSubmissionController::class, 'destroy']);
+// 查询表单模板列表接口
+Route::post('formTemplate/search', [\App\Api\Admin\Controllers\FormTemplateController::class, 'search']);
+// 新增表单模板接口
+Route::post('formTemplate/store', [\App\Api\Admin\Controllers\FormTemplateController::class, 'store']);
+// 获取表单模板详情接口
+Route::get('formTemplate/show', [\App\Api\Admin\Controllers\FormTemplateController::class, 'show'])->name('formTemplate.show');
+// 更新表单模板接口
+Route::put('formTemplate/update', [\App\Api\Admin\Controllers\FormTemplateController::class, 'update']);
+// 删除表单模板接口
+Route::post('formTemplate/destroy', [\App\Api\Admin\Controllers\FormTemplateController::class, 'destroy']);
+// 查询友情链接列表接口
+Route::post('friendLink/search', [\App\Api\Admin\Controllers\FriendLinkController::class, 'search']);
+// 新增友情链接接口
+Route::post('friendLink/store', [\App\Api\Admin\Controllers\FriendLinkController::class, 'store']);
+// 获取友情链接详情接口
+Route::get('friendLink/show', [\App\Api\Admin\Controllers\FriendLinkController::class, 'show'])->name('friendLink.show');
+// 更新友情链接接口
+Route::put('friendLink/update', [\App\Api\Admin\Controllers\FriendLinkController::class, 'update']);
+// 删除友情链接接口
+Route::post('friendLink/destroy', [\App\Api\Admin\Controllers\FriendLinkController::class, 'destroy']);
+// 查询模型字段列表接口
+Route::post('modelField/search', [\App\Api\Admin\Controllers\ModelFieldController::class, 'search']);
+// 新增模型字段接口
+Route::post('modelField/store', [\App\Api\Admin\Controllers\ModelFieldController::class, 'store']);
+// 获取模型字段详情接口
+Route::get('modelField/show', [\App\Api\Admin\Controllers\ModelFieldController::class, 'show'])->name('modelField.show');
+// 更新模型字段接口
+Route::put('modelField/update', [\App\Api\Admin\Controllers\ModelFieldController::class, 'update']);
+// 删除模型字段接口
+Route::post('modelField/destroy', [\App\Api\Admin\Controllers\ModelFieldController::class, 'destroy']);
+// 查询菜单项列表接口
+Route::post('navItem/search', [\App\Api\Admin\Controllers\NavItemController::class, 'search']);
+// 新增菜单项接口
+Route::post('navItem/store', [\App\Api\Admin\Controllers\NavItemController::class, 'store']);
+// 获取菜单项详情接口
+Route::get('navItem/show', [\App\Api\Admin\Controllers\NavItemController::class, 'show'])->name('navItem.show');
+// 更新菜单项接口
+Route::put('navItem/update', [\App\Api\Admin\Controllers\NavItemController::class, 'update']);
+// 删除菜单项接口
+Route::post('navItem/destroy', [\App\Api\Admin\Controllers\NavItemController::class, 'destroy']);
+// 查询菜单集列表接口
+Route::post('navMenu/search', [\App\Api\Admin\Controllers\NavMenuController::class, 'search']);
+// 新增菜单集接口
+Route::post('navMenu/store', [\App\Api\Admin\Controllers\NavMenuController::class, 'store']);
+// 获取菜单集详情接口
+Route::get('navMenu/show', [\App\Api\Admin\Controllers\NavMenuController::class, 'show'])->name('navMenu.show');
+// 更新菜单集接口
+Route::put('navMenu/update', [\App\Api\Admin\Controllers\NavMenuController::class, 'update']);
+// 删除菜单集接口
+Route::post('navMenu/destroy', [\App\Api\Admin\Controllers\NavMenuController::class, 'destroy']);
+// 查询全局配置列表接口
+Route::post('option/search', [\App\Api\Admin\Controllers\OptionController::class, 'search']);
+// 新增全局配置接口
+Route::post('option/store', [\App\Api\Admin\Controllers\OptionController::class, 'store']);
+// 获取全局配置详情接口
+Route::get('option/show', [\App\Api\Admin\Controllers\OptionController::class, 'show'])->name('option.show');
+// 更新全局配置接口
+Route::put('option/update', [\App\Api\Admin\Controllers\OptionController::class, 'update']);
+// 删除全局配置接口
+Route::post('option/destroy', [\App\Api\Admin\Controllers\OptionController::class, 'destroy']);
+// 查询页面模板列表接口
+Route::post('pageTemplate/search', [\App\Api\Admin\Controllers\PageTemplateController::class, 'search']);
+// 新增页面模板接口
+Route::post('pageTemplate/store', [\App\Api\Admin\Controllers\PageTemplateController::class, 'store']);
+// 获取页面模板详情接口
+Route::get('pageTemplate/show', [\App\Api\Admin\Controllers\PageTemplateController::class, 'show'])->name('pageTemplate.show');
+// 更新页面模板接口
+Route::put('pageTemplate/update', [\App\Api\Admin\Controllers\PageTemplateController::class, 'update']);
+// 删除页面模板接口
+Route::post('pageTemplate/destroy', [\App\Api\Admin\Controllers\PageTemplateController::class, 'destroy']);
+// 查询权限列表接口
+Route::post('permission/search', [\App\Api\Admin\Controllers\PermissionController::class, 'search']);
+// 新增权限接口
+Route::post('permission/store', [\App\Api\Admin\Controllers\PermissionController::class, 'store']);
+// 获取权限详情接口
+Route::get('permission/show', [\App\Api\Admin\Controllers\PermissionController::class, 'show'])->name('permission.show');
+// 更新权限接口
+Route::put('permission/update', [\App\Api\Admin\Controllers\PermissionController::class, 'update']);
+// 删除权限接口
+Route::post('permission/destroy', [\App\Api\Admin\Controllers\PermissionController::class, 'destroy']);
+// 查询回收站列表接口
+Route::post('recycleBin/search', [\App\Api\Admin\Controllers\RecycleBinController::class, 'search']);
+// 新增回收站接口
+Route::post('recycleBin/store', [\App\Api\Admin\Controllers\RecycleBinController::class, 'store']);
+// 获取回收站详情接口
+Route::get('recycleBin/show', [\App\Api\Admin\Controllers\RecycleBinController::class, 'show'])->name('recycleBin.show');
+// 更新回收站接口
+Route::put('recycleBin/update', [\App\Api\Admin\Controllers\RecycleBinController::class, 'update']);
+// 删除回收站接口
+Route::post('recycleBin/destroy', [\App\Api\Admin\Controllers\RecycleBinController::class, 'destroy']);
+// 查询重定向列表接口
+Route::post('redirect/search', [\App\Api\Admin\Controllers\RedirectController::class, 'search']);
+// 新增重定向接口
+Route::post('redirect/store', [\App\Api\Admin\Controllers\RedirectController::class, 'store']);
+// 获取重定向详情接口
+Route::get('redirect/show', [\App\Api\Admin\Controllers\RedirectController::class, 'show'])->name('redirect.show');
+// 更新重定向接口
+Route::put('redirect/update', [\App\Api\Admin\Controllers\RedirectController::class, 'update']);
+// 删除重定向接口
+Route::post('redirect/destroy', [\App\Api\Admin\Controllers\RedirectController::class, 'destroy']);
+// 查询角色列表接口
+Route::post('role/search', [\App\Api\Admin\Controllers\RoleController::class, 'search']);
+// 新增角色接口
+Route::post('role/store', [\App\Api\Admin\Controllers\RoleController::class, 'store']);
+// 获取角色详情接口
+Route::get('role/show', [\App\Api\Admin\Controllers\RoleController::class, 'show'])->name('role.show');
+// 更新角色接口
+Route::put('role/update', [\App\Api\Admin\Controllers\RoleController::class, 'update']);
+// 删除角色接口
+Route::post('role/destroy', [\App\Api\Admin\Controllers\RoleController::class, 'destroy']);
+// 查询角色权限关联列表接口
+Route::post('rolePermission/search', [\App\Api\Admin\Controllers\RolePermissionController::class, 'search']);
+// 新增角色权限关联接口
+Route::post('rolePermission/store', [\App\Api\Admin\Controllers\RolePermissionController::class, 'store']);
+// 获取角色权限关联详情接口
+Route::get('rolePermission/show', [\App\Api\Admin\Controllers\RolePermissionController::class, 'show'])->name('rolePermission.show');
+// 更新角色权限关联接口
+Route::put('rolePermission/update', [\App\Api\Admin\Controllers\RolePermissionController::class, 'update']);
+// 删除角色权限关联接口
+Route::post('rolePermission/destroy', [\App\Api\Admin\Controllers\RolePermissionController::class, 'destroy']);
+// 查询SEO元数据列表接口
+Route::post('seoMeta/search', [\App\Api\Admin\Controllers\SeoMetaController::class, 'search']);
+// 新增SEO元数据接口
+Route::post('seoMeta/store', [\App\Api\Admin\Controllers\SeoMetaController::class, 'store']);
+// 获取SEO元数据详情接口
+Route::get('seoMeta/show', [\App\Api\Admin\Controllers\SeoMetaController::class, 'show'])->name('seoMeta.show');
+// 更新SEO元数据接口
+Route::put('seoMeta/update', [\App\Api\Admin\Controllers\SeoMetaController::class, 'update']);
+// 删除SEO元数据接口
+Route::post('seoMeta/destroy', [\App\Api\Admin\Controllers\SeoMetaController::class, 'destroy']);
+// 查询短链接点击明细列表接口
+Route::post('shortLinkClick/search', [\App\Api\Admin\Controllers\ShortLinkClickController::class, 'search']);
+// 新增短链接点击明细接口
+Route::post('shortLinkClick/store', [\App\Api\Admin\Controllers\ShortLinkClickController::class, 'store']);
+// 获取短链接点击明细详情接口
+Route::get('shortLinkClick/show', [\App\Api\Admin\Controllers\ShortLinkClickController::class, 'show'])->name('shortLinkClick.show');
+// 更新短链接点击明细接口
+Route::put('shortLinkClick/update', [\App\Api\Admin\Controllers\ShortLinkClickController::class, 'update']);
+// 删除短链接点击明细接口
+Route::post('shortLinkClick/destroy', [\App\Api\Admin\Controllers\ShortLinkClickController::class, 'destroy']);
+// 查询短链接列表接口
+Route::post('shortLink/search', [\App\Api\Admin\Controllers\ShortLinkController::class, 'search']);
+// 新增短链接接口
+Route::post('shortLink/store', [\App\Api\Admin\Controllers\ShortLinkController::class, 'store']);
+// 获取短链接详情接口
+Route::get('shortLink/show', [\App\Api\Admin\Controllers\ShortLinkController::class, 'show'])->name('shortLink.show');
+// 更新短链接接口
+Route::put('shortLink/update', [\App\Api\Admin\Controllers\ShortLinkController::class, 'update']);
+// 删除短链接接口
+Route::post('shortLink/destroy', [\App\Api\Admin\Controllers\ShortLinkController::class, 'destroy']);
+// 查询站点列表接口
+Route::post('site/search', [\App\Api\Admin\Controllers\SiteController::class, 'search']);
+// 新增站点接口
+Route::post('site/store', [\App\Api\Admin\Controllers\SiteController::class, 'store']);
+// 获取站点详情接口
+Route::get('site/show', [\App\Api\Admin\Controllers\SiteController::class, 'show'])->name('site.show');
+// 更新站点接口
+Route::put('site/update', [\App\Api\Admin\Controllers\SiteController::class, 'update']);
+// 删除站点接口
+Route::post('site/destroy', [\App\Api\Admin\Controllers\SiteController::class, 'destroy']);
+// 查询每日统计列表接口
+Route::post('statisticsDaily/search', [\App\Api\Admin\Controllers\StatisticsDailyController::class, 'search']);
+// 新增每日统计接口
+Route::post('statisticsDaily/store', [\App\Api\Admin\Controllers\StatisticsDailyController::class, 'store']);
+// 获取每日统计详情接口
+Route::get('statisticsDaily/show', [\App\Api\Admin\Controllers\StatisticsDailyController::class, 'show'])->name('statisticsDaily.show');
+// 更新每日统计接口
+Route::put('statisticsDaily/update', [\App\Api\Admin\Controllers\StatisticsDailyController::class, 'update']);
+// 删除每日统计接口
+Route::post('statisticsDaily/destroy', [\App\Api\Admin\Controllers\StatisticsDailyController::class, 'destroy']);
+// 查询分类法列表接口
+Route::post('taxonomy/search', [\App\Api\Admin\Controllers\TaxonomyController::class, 'search']);
+// 新增分类法接口
+Route::post('taxonomy/store', [\App\Api\Admin\Controllers\TaxonomyController::class, 'store']);
+// 获取分类法详情接口
+Route::get('taxonomy/show', [\App\Api\Admin\Controllers\TaxonomyController::class, 'show'])->name('taxonomy.show');
+// 更新分类法接口
+Route::put('taxonomy/update', [\App\Api\Admin\Controllers\TaxonomyController::class, 'update']);
+// 删除分类法接口
+Route::post('taxonomy/destroy', [\App\Api\Admin\Controllers\TaxonomyController::class, 'destroy']);
+// 查询分类项列表接口
+Route::post('term/search', [\App\Api\Admin\Controllers\TermController::class, 'search']);
+// 新增分类项接口
+Route::post('term/store', [\App\Api\Admin\Controllers\TermController::class, 'store']);
+// 获取分类项详情接口
+Route::get('term/show', [\App\Api\Admin\Controllers\TermController::class, 'show'])->name('term.show');
+// 更新分类项接口
+Route::put('term/update', [\App\Api\Admin\Controllers\TermController::class, 'update']);
+// 删除分类项接口
+Route::post('term/destroy', [\App\Api\Admin\Controllers\TermController::class, 'destroy']);
+// 查询内容分类关联列表接口
+Route::post('termRelationship/search', [\App\Api\Admin\Controllers\TermRelationshipController::class, 'search']);
+// 新增内容分类关联接口
+Route::post('termRelationship/store', [\App\Api\Admin\Controllers\TermRelationshipController::class, 'store']);
+// 获取内容分类关联详情接口
+Route::get('termRelationship/show', [\App\Api\Admin\Controllers\TermRelationshipController::class, 'show'])->name('termRelationship.show');
+// 更新内容分类关联接口
+Route::put('termRelationship/update', [\App\Api\Admin\Controllers\TermRelationshipController::class, 'update']);
+// 删除内容分类关联接口
+Route::post('termRelationship/destroy', [\App\Api\Admin\Controllers\TermRelationshipController::class, 'destroy']);
+// 查询用户列表接口
+Route::post('user/search', [\App\Api\Admin\Controllers\UserController::class, 'search']);
+// 新增用户接口
+Route::post('user/store', [\App\Api\Admin\Controllers\UserController::class, 'store']);
+// 获取用户详情接口
+Route::get('user/show', [\App\Api\Admin\Controllers\UserController::class, 'show'])->name('user.show');
+// 更新用户接口
+Route::put('user/update', [\App\Api\Admin\Controllers\UserController::class, 'update']);
+// 删除用户接口
+Route::post('user/destroy', [\App\Api\Admin\Controllers\UserController::class, 'destroy']);
+// 查询用户元数据列表接口
+Route::post('userMeta/search', [\App\Api\Admin\Controllers\UserMetaController::class, 'search']);
+// 新增用户元数据接口
+Route::post('userMeta/store', [\App\Api\Admin\Controllers\UserMetaController::class, 'store']);
+// 获取用户元数据详情接口
+Route::get('userMeta/show', [\App\Api\Admin\Controllers\UserMetaController::class, 'show'])->name('userMeta.show');
+// 更新用户元数据接口
+Route::put('userMeta/update', [\App\Api\Admin\Controllers\UserMetaController::class, 'update']);
+// 删除用户元数据接口
+Route::post('userMeta/destroy', [\App\Api\Admin\Controllers\UserMetaController::class, 'destroy']);
+// 查询用户角色关联列表接口
+Route::post('userRole/search', [\App\Api\Admin\Controllers\UserRoleController::class, 'search']);
+// 新增用户角色关联接口
+Route::post('userRole/store', [\App\Api\Admin\Controllers\UserRoleController::class, 'store']);
+// 获取用户角色关联详情接口
+Route::get('userRole/show', [\App\Api\Admin\Controllers\UserRoleController::class, 'show'])->name('userRole.show');
+// 更新用户角色关联接口
+Route::put('userRole/update', [\App\Api\Admin\Controllers\UserRoleController::class, 'update']);
+// 删除用户角色关联接口
+Route::post('userRole/destroy', [\App\Api\Admin\Controllers\UserRoleController::class, 'destroy']);
