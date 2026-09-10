@@ -43,12 +43,12 @@ class DataArticleUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::getId => 'required',
-            self::getContentId => 'required',
-            self::getField1 => 'required',
-            self::getField2 => 'required',
-            self::getField3 => 'required',
-            self::getExtra => 'required',
+            self::getId => 'required|integer',
+            self::getContentId => 'required|integer',
+            self::getField1 => 'nullable|string|max:500',
+            self::getField2 => 'nullable|string',
+            self::getField3 => 'nullable|string|max:255',
+            self::getExtra => 'nullable|string',
         ];
     }
 

@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // 未登录访问后台时跳转后台登录页（系统默认跳 route('login')，本项目未定义该命名路由）
+        $middleware->redirectGuestsTo(fn () => route('admin.auth.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

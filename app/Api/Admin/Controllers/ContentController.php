@@ -106,10 +106,12 @@ class ContentController extends BaseController
         try {
             $input = ContentEntity::from($requestData);
 
-            if ($this->contentService->save($input->toEntity())) {
+            $result = $this->contentService->save($input->toEntity());
+            if ($result) {
                 DB::commit();
 
-                return $this->success();
+                // 返回新建内容ID，供前端继续保存模型动态数据（data_{alias}）
+                return $this->success(['id' => is_int($result) ? $result : 0]);
             }
 
             throw new BusinessException(BusinessEnum::CREATE_FAIL);
