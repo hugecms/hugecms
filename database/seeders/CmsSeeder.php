@@ -52,7 +52,7 @@ class CmsSeeder extends Seeder
         ]));
     }
 
-    /** 二、权限树：9 个一级模块 + 52 个操作项，共 61 条 */
+    /** 二、权限树：9 个一级模块 + 44 个操作项，共 53 条 */
     private function seedPermissions(): void
     {
         // [模块名, 模块标识, [[操作名, 权限代码, 排序], ...]]
@@ -104,18 +104,12 @@ class CmsSeeder extends Seeder
                 ['用户删除', 'user:delete', 40],
                 ['角色查看', 'role:view', 50],
                 ['角色管理', 'role:manage', 60],
-                ['部门管理', 'department:manage', 70],
             ]],
             ['系统管理', 'system', [
                 ['系统设置', 'option:manage', 10],
                 ['审计日志', 'audit:view', 20],
                 ['回收站', 'recycle:manage', 30],
-                ['数据导入', 'import:manage', 40],
-                ['数据导出', 'export:manage', 50],
                 ['站点管理', 'site:manage', 60],
-                ['敏感词管理', 'sensitive:manage', 70],
-                ['IP黑名单', 'ip_blacklist:manage', 80],
-                ['开放API管理', 'api_client:manage', 90],
                 ['数据统计', 'statistics:view', 100],
             ]],
             ['推广管理', 'marketing', [
@@ -125,7 +119,6 @@ class CmsSeeder extends Seeder
                 ['友链管理', 'friend_link:manage', 40],
                 ['短链管理', 'short_link:manage', 50],
                 ['内容推送', 'push:manage', 60],
-                ['站内信管理', 'message:view', 70],
             ]],
         ];
 
@@ -162,7 +155,7 @@ class CmsSeeder extends Seeder
             'menu:view', 'menu:manage',
             'recycle:manage', 'statistics:view',
             'ad:view', 'ad:manage', 'friend_link:view', 'friend_link:manage',
-            'short_link:manage', 'push:manage', 'message:view',
+            'short_link:manage', 'push:manage',
         ];
 
         $authorCodes = [
@@ -201,11 +194,11 @@ class CmsSeeder extends Seeder
         ]);
     }
 
-    /** 四、默认内容模型（文章）：注册模型 → 定义字段（物理列 data_1.field_1~3 已由迁移创建；置顶已上移为 contents.is_top 公共列） */
+    /** 四、默认内容模型（文章）：注册模型 → 定义字段（物理列 data_article.field_1~3 已由迁移创建；置顶已上移为 contents.is_top 公共列） */
     private function seedArticleModel(): void
     {
         DB::table('content_models')->insert($this->stamp([
-            ['id' => 1, 'name' => '文章', 'alias' => 'article', 'table_name' => 'data_1', 'description' => '系统内置的文章模型，对标 WordPress Post', 'is_system' => 1, 'status' => 1, 'sort' => 100],
+            ['id' => 1, 'name' => '文章', 'alias' => 'article', 'table_name' => 'data_article', 'description' => '系统内置的文章模型，对标 WordPress Post', 'is_system' => 1, 'status' => 1, 'sort' => 100],
         ]));
 
         DB::table('model_fields')->insert($this->stamp([
@@ -261,7 +254,6 @@ class CmsSeeder extends Seeder
         DB::table('options')->insert($this->stamp([
             // 站点名称以 sites.site_name 为准，避免双源
             ['option_key' => 'site_info', 'option_value' => '{"slogan":"基于 Laravel 的类 WordPress 建站系统","icp_number":""}', 'autoload' => 1],
-            ['option_key' => 'site_languages', 'option_value' => '["zh_CN"]', 'autoload' => 1],
             ['option_key' => 'permalink', 'option_value' => '{"content":"/{slug}","term":"/{taxonomy_alias}/{slug}"}', 'autoload' => 1],
             ['option_key' => 'comment_config', 'option_value' => '{"require_moderation":true,"guest_allowed":true,"guest_must_fill":["name","email"],"max_links":0}', 'autoload' => 1],
             ['option_key' => 'seo_defaults', 'option_value' => '{"robots":"index,follow","sitemap_enabled":true,"title_separator":"-"}', 'autoload' => 1],

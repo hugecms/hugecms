@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('author_name', 50)->default('')->comment('评论者昵称（游客填写；登录用户冗余，防销号后无记录）');
             $table->string('author_email', 100)->default('')->comment('评论者邮箱（游客填写，用于头像/回复通知）');
             $table->string('author_url')->default('')->comment('评论者主页URL');
-            $table->text('content')->comment('评论内容（纯文本，入库前过敏感词）');
-            $table->string('ip', 45)->default('')->comment('评论者IP（配合IP黑名单反垃圾）');
+            $table->text('content')->comment('评论内容（纯文本；敏感词/反垃圾由插件钩子处理）');
+            $table->string('ip', 45)->default('')->comment('评论者IP（反垃圾由插件处理）');
             $table->string('user_agent')->default('')->comment('评论者UA');
             $table->string('status', 20)->default('pending')->comment('状态：pending待审核/approved已通过/spam垃圾/trash回收站');
             $table->unsignedInteger('like_count')->default(0)->comment('点赞数');

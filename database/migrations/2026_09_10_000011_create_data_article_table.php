@@ -8,12 +8,13 @@ return new class extends Migration
 {
     /**
      * 默认「文章」模型的动态数据表（骨架 + 预置字段列）。
-     * 运行期新建模型时，由程序按 model_fields 定义动态创建 data_2、data_3 …，
-     * 列命名规范 field_{id}，与 fields.column_name 一一对应。
+     * 运行期新建模型时，由程序按 model_fields 定义动态创建 data_{alias}
+     * （如 data_recruitment）；列命名规范 field_{id}，与 model_fields.column_name 一一对应。
+     * 表名在模型创建时由 alias 生成并写入 content_models.table_name，此后不可变。
      */
     public function up(): void
     {
-        Schema::create('data_1', function (Blueprint $table) {
+        Schema::create('data_article', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('content_id')->comment('关联内容主表ID（一对一）');
             $table->string('field_1', 500)->default('')->comment('文章摘要（text）');
@@ -29,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('data_1');
+        Schema::dropIfExists('data_article');
     }
 };

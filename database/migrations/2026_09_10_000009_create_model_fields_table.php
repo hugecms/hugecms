@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('model_id')->comment('所属模型ID');
             $table->string('field_name', 60)->comment('字段业务英文名（如：salary）');
-            $table->string('column_name', 60)->comment('物理表列名（系统生成，规范 field_{id}，与 data_X 列一一对应）');
+            $table->string('column_name', 60)->comment('物理表列名（系统生成，规范 field_{id}，与模型数据表 data_{alias} 的列一一对应）');
             $table->string('field_label', 100)->comment('字段显示标签（如：薪资范围）');
             $table->string('field_type', 30)->comment('字段类型：text/rich_text/number/integer/date/image/file/select/checkbox/radio/json');
             $table->string('column_type', 30)->default('varchar(255)')->comment('数据库列类型：varchar(255)/text/longtext/int/decimal(10,2)/datetime/tinyint(1)/json');
