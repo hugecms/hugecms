@@ -52,7 +52,7 @@ class CmsSeeder extends Seeder
         ]));
     }
 
-    /** 二、权限树：9 个一级模块 + 44 个操作项，共 53 条 */
+    /** 二、权限树：9 个一级模块 + 45 个操作项，共 54 条 */
     private function seedPermissions(): void
     {
         // [模块名, 模块标识, [[操作名, 权限代码, 排序], ...]]

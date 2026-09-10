@@ -12,6 +12,7 @@ use App\Models\RecycleBin;
 use App\Models\SeoMeta;
 use App\Models\TermRelationship;
 use App\Repositories\RecycleBinRepository;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Juling\Foundation\Contracts\ServiceInterface;
@@ -63,6 +64,7 @@ class RecycleBinService extends CommonService implements ServiceInterface
                 if (!empty($row['slug']) && Content::query()->where('slug', $row['slug'])->exists()) {
                     $row['slug'] .= '-r' . $contentId;
                 }
+                $row = $this->normalizeRowDates($row);
                 $row['created_at'] ??= now();
                 $row['updated_at'] ??= now();
                 Content::query()->insert($row);
@@ -72,23 +74,27 @@ class RecycleBinService extends CommonService implements ServiceInterface
                 if (!empty($dataRow)) {
                     $table = ContentModel::query()->where('id', $row['model_id'] ?? 0)->value('table_name');
                     if (!empty($table) && DB::getSchemaBuilder()->hasTable($table)) {
+                        $dataRow = $this->normalizeRowDates($dataRow);
                         $dataRow['created_at'] ??= now();
                         $dataRow['updated_at'] ??= now();
                         DB::table($table)->insert($dataRow);
                     }
                 }
 
+                // 幂等防御：多态表（seo_meta）无外键不随级联清除，可能残留同目标旧记录，先清后插
+                SeoMeta::query()->where('target_type', 'content')->where('target_id', $contentId)->delete();
+
                 foreach (($snapshot['relations']['comments'] ?? []) as $comment) {
-                    Comment::query()->insert($comment);
+                    Comment::query()->insertOrIgnore($this->normalizeRowDates($comment));
                 }
                 foreach (($snapshot['relations']['term_relationships'] ?? []) as $rel) {
-                    TermRelationship::query()->insert($rel);
+                    TermRelationship::query()->insertOrIgnore($this->normalizeRowDates($rel));
                 }
                 foreach (($snapshot['relations']['attachment_relations'] ?? []) as $rel) {
-                    AttachmentRelation::query()->insert($rel);
+                    AttachmentRelation::query()->insertOrIgnore($this->normalizeRowDates($rel));
                 }
                 if (!empty($snapshot['relations']['seo_meta'])) {
-                    SeoMeta::query()->insert($snapshot['relations']['seo_meta']);
+                    SeoMeta::query()->insert($this->normalizeRowDates($snapshot['relations']['seo_meta']));
                 }
             }
 
@@ -111,7 +117,10 @@ class RecycleBinService extends CommonService implements ServiceInterface
                 $snapshot = $this->decodeSnapshot($record->original_data);
                 $contentId = (int) ($snapshot['content']['id'] ?? 0);
                 if ($contentId) {
+                    // 外键级联清除 data_{alias}/评论/分类/附件关联；
+                    // 多态表 seo_meta 无外键，需显式清除，否则残留孤儿记录并阻碍后续恢复
                     Content::query()->where('id', $contentId)->delete();
+                    SeoMeta::query()->where('target_type', 'content')->where('target_id', $contentId)->delete();
                 }
             }
 
@@ -187,6 +196,28 @@ class RecycleBinService extends CommonService implements ServiceInterface
 
             return $contentId;
         });
+    }
+
+    /**
+     * 快照行日期规范化：Eloquent toArray() 会把 datetime 列序列化为 ISO8601
+     * （如 2026-09-10T07:09:20.000000Z），MySQL datetime 列无法直接接收，统一转回 Y-m-d H:i:s。
+     *
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    private function normalizeRowDates(array $row): array
+    {
+        foreach ($row as $key => $value) {
+            if (\is_string($value) && \preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
+                try {
+                    $row[$key] = Carbon::parse($value)->format('Y-m-d H:i:s');
+                } catch (Throwable) {
+                    // 保持原值，交由数据库报错定位
+                }
+            }
+        }
+
+        return $row;
     }
 
     /**
