@@ -7,8 +7,8 @@ namespace App\Entities;
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;
 use OpenApi\Attributes as OA;
 
-#[OA\Schema(schema: 'UserMetumEntity')]
-class UserMetumEntity implements \JsonSerializable
+#[OA\Schema(schema: 'UserMetaEntity')]
+class UserMetaEntity implements \JsonSerializable
 {
     use HasSerializableAttributes;
 
