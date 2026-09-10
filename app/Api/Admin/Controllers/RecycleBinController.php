@@ -29,6 +29,56 @@ class RecycleBinController extends BaseController
         private readonly RecycleBinService $recycleBinService,
     ) {}
 
+    /**
+     * 从回收站恢复（快照流程见 docs/development-conventions.md 第一节）。
+     */
+    #[OA\Post(path: '/recycleBin/restore', summary: '从回收站恢复接口', security: [['bearerAuth' => []]], tags: ['回收站模块'])]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(
+        required: ['id'], properties: [new OA\Property(property: 'id', type: 'integer', example: 1)]))]
+    public function restore(Request $request): JsonResponse
+    {
+        $id = \intval($request->input('id', '0'));
+
+        try {
+            $contentId = $this->recycleBinService->restore($id);
+
+            return $this->success(['contentId' => $contentId]);
+        } catch (Throwable $e) {
+            if ($e instanceof BusinessException) {
+                return $this->error($e);
+            }
+
+            Log::error($e);
+
+            return $this->error(BusinessEnum::UPDATE_ERROR);
+        }
+    }
+
+    /**
+     * 彻底清除：物理删除目标及级联关联，并移除回收站记录。
+     */
+    #[OA\Post(path: '/recycleBin/purge', summary: '彻底清除接口', security: [['bearerAuth' => []]], tags: ['回收站模块'])]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(
+        required: ['id'], properties: [new OA\Property(property: 'id', type: 'integer', example: 1)]))]
+    public function purge(Request $request): JsonResponse
+    {
+        $id = \intval($request->input('id', '0'));
+
+        try {
+            $this->recycleBinService->purge($id);
+
+            return $this->success();
+        } catch (Throwable $e) {
+            if ($e instanceof BusinessException) {
+                return $this->error($e);
+            }
+
+            Log::error($e);
+
+            return $this->error(BusinessEnum::DELETE_ERROR);
+        }
+    }
+
     #[OA\Post(path: '/recycleBin/search', summary: '查询回收站列表接口', security: [['bearerAuth' => []]], tags: ['回收站模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Api\Admin\Controllers\AttachmentController;
+use App\Api\Admin\Controllers\RecycleBinController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->middleware('auth')->group(function () {
     // 附件上传（multipart，独立于生成的 CRUD）
     Route::post('attachment/upload', [AttachmentController::class, 'upload']);
+
+    // 回收站恢复 / 彻底清除（快照流程见 docs/development-conventions.md 第一节）
+    Route::post('recycleBin/restore', [RecycleBinController::class, 'restore']);
+    Route::post('recycleBin/purge', [RecycleBinController::class, 'purge']);
 
     require __DIR__ . '/route.gen.php';
 });

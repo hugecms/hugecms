@@ -7,6 +7,7 @@ namespace App\Api\Admin\Controllers;
 use App\Api\Admin\Controllers\BaseController;
 use App\Entities\ContentEntity;
 use App\Services\ContentService;
+use App\Services\RecycleBinService;
 use App\Api\Admin\Requests\Content\ContentCreateRequest;
 use App\Api\Admin\Requests\Content\ContentDestroyRequest;
 use App\Api\Admin\Requests\Content\ContentQueryRequest;
@@ -27,6 +28,7 @@ class ContentController extends BaseController
 {
     public function __construct(
         private readonly ContentService $contentService,
+        private readonly RecycleBinService $recycleBinService,
     ) {}
 
     #[OA\Post(path: '/content/search', summary: '查询内容主列表接口', security: [['bearerAuth' => []]], tags: ['内容主模块'])]
@@ -218,13 +220,15 @@ class ContentController extends BaseController
 
         DB::beginTransaction();
         try {
-            if ($this->contentService->removeByIds($requestData['ids'])) {
-                DB::commit();
-
-                return $this->success();
+            // 删除入回收站：快照 + status=trash（流程见 docs/development-conventions.md 第一节）。
+            // 彻底清除请走 /api/admin/recycleBin/purge。
+            foreach ((array) ($requestData['ids'] ?? []) as $id) {
+                $this->recycleBinService->snapshotAndTrash((int) $id);
             }
 
-            throw new BusinessException(BusinessEnum::DESTROY_FAIL);
+            DB::commit();
+
+            return $this->success();
         } catch (Throwable $e) {
             DB::rollBack();
 

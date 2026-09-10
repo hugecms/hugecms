@@ -50,13 +50,13 @@
     });
 
     function restoreRow(id) {
-        if (!confirm('确认恢复？将按快照重建主记录及全部关联数据。')) return;
-        adminApi.put('/api/admin/recycleBin/update', {id, action: 'restore'}).then(() => location.reload());
+        if (!confirm('确认恢复？将按快照恢复内容及其关联数据。')) return;
+        adminApi.post('/api/admin/recycleBin/restore', {id}).then(() => location.reload());
     }
 
     function destroyRow(id) {
-        if (!confirm('彻底删除不可恢复，确认继续？')) return;
-        adminApi.post('/api/admin/recycleBin/destroy', {id}).then(() => location.reload());
+        if (!confirm('彻底删除不可恢复（内容、评论、关联将一并物理清除），确认继续？')) return;
+        adminApi.post('/api/admin/recycleBin/purge', {id}).then(() => location.reload());
     }
 </script>
 @endpush
