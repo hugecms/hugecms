@@ -18,7 +18,7 @@ class ContentModelEntity implements \JsonSerializable
 
     public const string getAlias = 'alias'; // 模型别名（代码/URL用，如：recruitment）
 
-    public const string getTableName = 'table_name'; // 对应物理数据表名（如：data_1）
+    public const string getTableName = 'table_name'; // 对应物理数据表名（如：data_article；模型创建时由 alias 生成并固化，此后不可变，alias 变更不联动改名）
 
     public const string getDescription = 'description'; // 模型描述
 
@@ -43,7 +43,7 @@ class ContentModelEntity implements \JsonSerializable
     #[OA\Property(property: 'alias', description: '模型别名（代码/URL用，如：recruitment）', type: 'string')]
     private string $alias;
 
-    #[OA\Property(property: 'tableName', description: '对应物理数据表名（如：data_1）', type: 'string')]
+    #[OA\Property(property: 'tableName', description: '对应物理数据表名（如：data_article；模型创建时由 alias 生成并固化，此后不可变，alias 变更不联动改名）', type: 'string')]
     private string $tableName;
 
     #[OA\Property(property: 'description', description: '模型描述', type: 'string')]
@@ -116,7 +116,7 @@ class ContentModelEntity implements \JsonSerializable
     }
 
     /**
-     * 获取对应物理数据表名（如：data_1）
+     * 获取对应物理数据表名（如：data_article；模型创建时由 alias 生成并固化，此后不可变，alias 变更不联动改名）
      */
     public function getTableName(): string
     {
@@ -124,7 +124,7 @@ class ContentModelEntity implements \JsonSerializable
     }
 
     /**
-     * 设置对应物理数据表名（如：data_1）
+     * 设置对应物理数据表名（如：data_article；模型创建时由 alias 生成并固化，此后不可变，alias 变更不联动改名）
      */
     public function setTableName(string $tableName): void
     {

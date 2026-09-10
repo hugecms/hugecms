@@ -14,7 +14,7 @@ class OptionEntity implements \JsonSerializable
 
     public const string getId = 'id'; // ID
 
-    public const string getOptionKey = 'option_key'; // 配置键名（storage_config/smtp_config/comment_config/site_languages等）
+    public const string getOptionKey = 'option_key'; // 配置键名（storage_config/smtp_config/comment_config等）
 
     public const string getOptionValue = 'option_value'; // 配置值（支持JSON复杂结构）
 
@@ -27,7 +27,7 @@ class OptionEntity implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'optionKey', description: '配置键名（storage_config/smtp_config/comment_config/site_languages等）', type: 'string')]
+    #[OA\Property(property: 'optionKey', description: '配置键名（storage_config/smtp_config/comment_config等）', type: 'string')]
     private string $optionKey;
 
     #[OA\Property(property: 'optionValue', description: '配置值（支持JSON复杂结构）', type: 'string')]
@@ -59,7 +59,7 @@ class OptionEntity implements \JsonSerializable
     }
 
     /**
-     * 获取配置键名（storage_config/smtp_config/comment_config/site_languages等）
+     * 获取配置键名（storage_config/smtp_config/comment_config等）
      */
     public function getOptionKey(): string
     {
@@ -67,7 +67,7 @@ class OptionEntity implements \JsonSerializable
     }
 
     /**
-     * 设置配置键名（storage_config/smtp_config/comment_config/site_languages等）
+     * 设置配置键名（storage_config/smtp_config/comment_config等）
      */
     public function setOptionKey(string $optionKey): void
     {

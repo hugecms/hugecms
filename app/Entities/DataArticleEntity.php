@@ -7,8 +7,8 @@ namespace App\Entities;
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;
 use OpenApi\Attributes as OA;
 
-#[OA\Schema(schema: 'Data1Entity')]
-class Data1Entity implements \JsonSerializable
+#[OA\Schema(schema: 'DataArticleEntity')]
+class DataArticleEntity implements \JsonSerializable
 {
     use HasSerializableAttributes;
 

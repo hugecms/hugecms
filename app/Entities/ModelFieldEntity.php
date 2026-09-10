@@ -18,7 +18,7 @@ class ModelFieldEntity implements \JsonSerializable
 
     public const string getFieldName = 'field_name'; // 字段业务英文名（如：salary）
 
-    public const string getColumnName = 'column_name'; // 物理表列名（系统生成，规范 field_{id}，与 data_X 列一一对应）
+    public const string getColumnName = 'column_name'; // 物理表列名（系统生成，规范 field_{id}，与模型数据表 data_{alias} 的列一一对应）
 
     public const string getFieldLabel = 'field_label'; // 字段显示标签（如：薪资范围）
 
@@ -51,7 +51,7 @@ class ModelFieldEntity implements \JsonSerializable
     #[OA\Property(property: 'fieldName', description: '字段业务英文名（如：salary）', type: 'string')]
     private string $fieldName;
 
-    #[OA\Property(property: 'columnName', description: '物理表列名（系统生成，规范 field_{id}，与 data_X 列一一对应）', type: 'string')]
+    #[OA\Property(property: 'columnName', description: '物理表列名（系统生成，规范 field_{id}，与模型数据表 data_{alias} 的列一一对应）', type: 'string')]
     private string $columnName;
 
     #[OA\Property(property: 'fieldLabel', description: '字段显示标签（如：薪资范围）', type: 'string')]
@@ -136,7 +136,7 @@ class ModelFieldEntity implements \JsonSerializable
     }
 
     /**
-     * 获取物理表列名（系统生成，规范 field_{id}，与 data_X 列一一对应）
+     * 获取物理表列名（系统生成，规范 field_{id}，与模型数据表 data_{alias} 的列一一对应）
      */
     public function getColumnName(): string
     {
@@ -144,7 +144,7 @@ class ModelFieldEntity implements \JsonSerializable
     }
 
     /**
-     * 设置物理表列名（系统生成，规范 field_{id}，与 data_X 列一一对应）
+     * 设置物理表列名（系统生成，规范 field_{id}，与模型数据表 data_{alias} 的列一一对应）
      */
     public function setColumnName(string $columnName): void
     {

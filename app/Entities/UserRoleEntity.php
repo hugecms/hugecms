@@ -18,7 +18,7 @@ class UserRoleEntity implements \JsonSerializable
 
     public const string getRoleId = 'role_id'; // 角色ID
 
-    public const string getDataScope = 'data_scope'; // 数据范围：self仅自己/dept本部门/dept_and_sub本部门及子部门/all全部/custom自定义
+    public const string getDataScope = 'data_scope'; // 数据范围：self仅自己/all全部/custom自定义（部门体系已精简，dept系列待插件化恢复）
 
     public const string getCreatedAt = 'created_at'; // 创建时间
 
@@ -31,7 +31,7 @@ class UserRoleEntity implements \JsonSerializable
     #[OA\Property(property: 'roleId', description: '角色ID', type: 'integer')]
     private int $roleId;
 
-    #[OA\Property(property: 'dataScope', description: '数据范围：self仅自己/dept本部门/dept_and_sub本部门及子部门/all全部/custom自定义', type: 'string')]
+    #[OA\Property(property: 'dataScope', description: '数据范围：self仅自己/all全部/custom自定义（部门体系已精简，dept系列待插件化恢复）', type: 'string')]
     private string $dataScope;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
@@ -86,7 +86,7 @@ class UserRoleEntity implements \JsonSerializable
     }
 
     /**
-     * 获取数据范围：self仅自己/dept本部门/dept_and_sub本部门及子部门/all全部/custom自定义
+     * 获取数据范围：self仅自己/all全部/custom自定义（部门体系已精简，dept系列待插件化恢复）
      */
     public function getDataScope(): string
     {
@@ -94,7 +94,7 @@ class UserRoleEntity implements \JsonSerializable
     }
 
     /**
-     * 设置数据范围：self仅自己/dept本部门/dept_and_sub本部门及子部门/all全部/custom自定义
+     * 设置数据范围：self仅自己/all全部/custom自定义（部门体系已精简，dept系列待插件化恢复）
      */
     public function setDataScope(string $dataScope): void
     {

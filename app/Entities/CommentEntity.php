@@ -28,9 +28,9 @@ class CommentEntity implements \JsonSerializable
 
     public const string getAuthorUrl = 'author_url'; // 评论者主页URL
 
-    public const string getContent = 'content'; // 评论内容（纯文本，入库前过敏感词）
+    public const string getContent = 'content'; // 评论内容（纯文本；敏感词/反垃圾由插件钩子处理）
 
-    public const string getIp = 'ip'; // 评论者IP（配合IP黑名单反垃圾）
+    public const string getIp = 'ip'; // 评论者IP（反垃圾由插件处理）
 
     public const string getUserAgent = 'user_agent'; // 评论者UA
 
@@ -66,10 +66,10 @@ class CommentEntity implements \JsonSerializable
     #[OA\Property(property: 'authorUrl', description: '评论者主页URL', type: 'string')]
     private string $authorUrl;
 
-    #[OA\Property(property: 'content', description: '评论内容（纯文本，入库前过敏感词）', type: 'string')]
+    #[OA\Property(property: 'content', description: '评论内容（纯文本；敏感词/反垃圾由插件钩子处理）', type: 'string')]
     private string $content;
 
-    #[OA\Property(property: 'ip', description: '评论者IP（配合IP黑名单反垃圾）', type: 'string')]
+    #[OA\Property(property: 'ip', description: '评论者IP（反垃圾由插件处理）', type: 'string')]
     private string $ip;
 
     #[OA\Property(property: 'userAgent', description: '评论者UA', type: 'string')]
@@ -216,7 +216,7 @@ class CommentEntity implements \JsonSerializable
     }
 
     /**
-     * 获取评论内容（纯文本，入库前过敏感词）
+     * 获取评论内容（纯文本；敏感词/反垃圾由插件钩子处理）
      */
     public function getContent(): string
     {
@@ -224,7 +224,7 @@ class CommentEntity implements \JsonSerializable
     }
 
     /**
-     * 设置评论内容（纯文本，入库前过敏感词）
+     * 设置评论内容（纯文本；敏感词/反垃圾由插件钩子处理）
      */
     public function setContent(string $content): void
     {
@@ -232,7 +232,7 @@ class CommentEntity implements \JsonSerializable
     }
 
     /**
-     * 获取评论者IP（配合IP黑名单反垃圾）
+     * 获取评论者IP（反垃圾由插件处理）
      */
     public function getIp(): string
     {
@@ -240,7 +240,7 @@ class CommentEntity implements \JsonSerializable
     }
 
     /**
-     * 设置评论者IP（配合IP黑名单反垃圾）
+     * 设置评论者IP（反垃圾由插件处理）
      */
     public function setIp(string $ip): void
     {
