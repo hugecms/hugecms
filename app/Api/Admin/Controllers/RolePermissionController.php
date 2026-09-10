@@ -51,6 +51,9 @@ class RolePermissionController extends BaseController
             if (isset($requestData[RolePermissionQueryRequest::getId])) {
                 $condition[] = [RolePermissionEntity::getId, '=', $requestData[RolePermissionQueryRequest::getId]];
             }
+            if (isset($requestData[RolePermissionQueryRequest::getRoleId])) {
+                $condition[] = [RolePermissionEntity::getRoleId, '=', $requestData[RolePermissionQueryRequest::getRoleId]];
+            }
             if (isset($requestData[RolePermissionQueryRequest::getPermissionId])) {
                 $condition[] = [RolePermissionEntity::getPermissionId, '=', $requestData[RolePermissionQueryRequest::getPermissionId]];
             }

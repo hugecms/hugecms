@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
 /**
  * 后台认证：登录、登出、找回密码、重置密码。
@@ -34,8 +37,16 @@ class AuthController extends Controller
         ]);
         $remember = $request->boolean('remember');
 
-        // TODO: 接入认证（guard web / users 表），并校验 status=1
-        if (auth()->attempt($credentials, $remember)) {
+        /** @var SessionGuard $guard */
+        $guard = auth()->guard('web');
+        if ($guard instanceof SessionGuard && $guard->attempt($credentials, $remember)) {
+            $user = $guard->user();
+            if ($user instanceof User && (int) $user->status !== 1) {
+                $guard->logout();
+
+                return back()->withErrors(['email' => '账号已被禁用'])->onlyInput('email');
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'));
@@ -49,7 +60,10 @@ class AuthController extends Controller
      */
     public function logout(Request $request): RedirectResponse
     {
-        auth()->logout();
+        $guard = auth()->guard('web');
+        if ($guard instanceof SessionGuard) {
+            $guard->logout();
+        }
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -71,8 +85,9 @@ class AuthController extends Controller
     {
         $request->validate(['email' => ['required', 'email']]);
 
-        // TODO: Password::sendResetLink()，邮件通道见 options.smtp_config
-        return back()->with('status', '如果该邮箱存在，重置链接已发送，请查收。');
+        $status = Password::sendResetLink($request->only('email'));
+
+        return back()->with('status', __($status));
     }
 
     /**
@@ -94,7 +109,15 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        // TODO: Password::reset()
-        return redirect()->route('admin.auth.login')->with('status', '密码已重置，请使用新密码登录。');
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password): void {
+                $user->forceFill(['password' => $password])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('admin.auth.login')->with('status', __($status))
+            : back()->withErrors(['email' => __($status)])->onlyInput('email');
     }
 }

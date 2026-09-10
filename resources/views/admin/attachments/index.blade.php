@@ -6,7 +6,8 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="pull-right">
-            <button class="btn btn-primary btn-sm" onclick="alert('上传功能开发中（storage_config 驱动：local/oss/s3）')">上传文件</button>
+            <input type="file" id="upload-input" hidden multiple>
+            <button class="btn btn-primary btn-sm" onclick="document.getElementById('upload-input').click()">上传文件</button>
         </div>
         <strong>媒体库</strong>
     </div>
@@ -37,6 +38,29 @@
         if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / 1048576).toFixed(1) + ' MB';
     }
+
+    // 上传（multipart，不走 adminApi 的 JSON 封装）
+    document.getElementById('upload-input').addEventListener('change', async e => {
+        const files = [...e.target.files];
+        if (!files.length) return;
+        for (const file of files) {
+            const fd = new FormData();
+            fd.append('file', file);
+            const res = await fetch('/api/admin/attachment/upload', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                },
+                body: fd,
+            }).then(r => r.json());
+            if (res.code !== 0) {
+                alert('上传失败（' + file.name + '）：' + (res.message || '未知错误'));
+            }
+        }
+        e.target.value = '';
+        location.reload();
+    });
 
     adminApi.post('/api/admin/attachment/search', {page: 1, pageSize: 20}).then(res => {
         const rows = adminApi.rows(res);

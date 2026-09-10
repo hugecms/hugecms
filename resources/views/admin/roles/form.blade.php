@@ -26,7 +26,7 @@
         @if ($mode === 'edit')
         <hr>
         <h4>权限分配</h4>
-        <div id="permission-tree" class="alert alert-info">权限树加载中…（按模块分组勾选，经 rolePermission 接口保存）</div>
+        <div id="permission-tree"><p class="text-muted">权限树加载中…</p></div>
         <button class="btn btn-primary" id="save-perms">保存权限</button>
         @endif
     </div>
@@ -36,6 +36,8 @@
 @push('scripts')
 <script>
     const id = {{ $id ?? 'null' }};
+    const pick = (o, snake) => o?.[snake] ?? o?.[snake.replace(/_([a-z])/g, (_, c) => c.toUpperCase())];
+    const existingPerms = []; // [{id, permissionId}] 已绑定记录
 
     if (id) {
         adminApi.get('/api/admin/role/show?id=' + id).then(res => {
@@ -46,31 +48,70 @@
             });
         });
 
-        // 权限树：模块节点 + 操作节点
+        // 权限树：模块节点 + 操作节点（与 CmsSeeder 种子树同构）
         adminApi.post('/api/admin/permission/search', {page: 1, pageSize: 200}).then(res => {
-            const perms = adminApi.rows(res).filter(p => !(p.parentId ?? p.parent_id));
-            const children = adminApi.rows(res).filter(p => (p.parentId ?? p.parent_id));
+            const all = adminApi.rows(res);
+            const modules = all.filter(p => !Number(pick(p, 'parent_id') ?? 0));
             const box = document.getElementById('permission-tree');
-            box.className = '';
-            box.innerHTML = perms.map(p => `
-                <div style="margin-bottom:10px">
+            box.innerHTML = modules.map(p => `
+                <div class="perm-group" data-id="${p.id}" style="margin-bottom:10px">
                     <label class="checkbox-inline"><strong>
-                        <input type="checkbox" class="perm-group" data-id="${p.id}"> ${adminApi.esc(p.name)}
+                        <input type="checkbox" class="perm-group-check"> ${adminApi.esc(p.name)}
                     </strong></label>
                     <div style="padding-left:24px">
-                        ${children.filter(c => (c.parentId ?? c.parent_id) === p.id).map(c => `
-                            <label class="checkbox-inline">
-                                <input type="checkbox" class="perm-item" value="${c.id}"> ${adminApi.esc(c.name)}
+                        ${all.filter(c => Number(pick(c, 'parent_id')) === Number(p.id)).map(c => `
+                            <label class="checkbox-inline" style="margin-right:14px">
+                                <input type="checkbox" class="perm-item" value="${c.id}" title="${adminApi.esc(c.code)}"> ${adminApi.esc(c.name)}
                             </label>`).join('')}
                     </div>
                 </div>`).join('');
 
-            // 全选联动
-            box.querySelectorAll('.perm-group').forEach(g => g.addEventListener('change', () => {
-                g.closest('div[style]').querySelectorAll('.perm-item').forEach(i => i.checked = g.checked);
-            }));
+            // 组全选联动 + 子项反查组状态
+            box.querySelectorAll('.perm-group-check').forEach(g => {
+                g.addEventListener('change', () => {
+                    g.closest('.perm-group').querySelectorAll('.perm-item').forEach(i => i.checked = g.checked);
+                });
+            });
+            box.addEventListener('change', e => {
+                if (e.target.classList.contains('perm-item')) {
+                    const group = e.target.closest('.perm-group');
+                    const items = [...group.querySelectorAll('.perm-item')];
+                    group.querySelector('.perm-group-check').checked = items.every(i => i.checked);
+                }
+            });
 
-            // TODO: 回显该角色已授权限（rolePermission/search），保存经 rolePermission/store 批量提交
+            // 回显该角色已授权限（is_denied=1 的拒绝项不勾选）
+            adminApi.post('/api/admin/rolePermission/search', {page: 1, pageSize: 500, role_id: id}).then(res2 => {
+                adminApi.rows(res2).forEach(b => {
+                    const permissionId = Number(pick(b, 'permission_id'));
+                    if (Number(pick(b, 'is_denied') ?? 0) === 1) return;
+                    existingPerms.push({id: b.id, permissionId});
+                    const el = box.querySelector(`.perm-item[value="${permissionId}"]`);
+                    if (el) el.checked = true;
+                });
+                box.querySelectorAll('.perm-group').forEach(group => {
+                    const items = [...group.querySelectorAll('.perm-item')];
+                    if (items.length) group.querySelector('.perm-group-check').checked = items.every(i => i.checked);
+                });
+            });
+        });
+
+        // 保存权限：勾选的追加（is_denied=0），取消的移除
+        document.getElementById('save-perms')?.addEventListener('click', async () => {
+            const checked = [...document.querySelectorAll('.perm-item:checked')].map(i => Number(i.value));
+            const bound = existingPerms.map(p => p.permissionId);
+            for (const p of existingPerms) {
+                if (!checked.includes(p.permissionId)) {
+                    await adminApi.post('/api/admin/rolePermission/destroy', {id: p.id});
+                }
+            }
+            for (const permissionId of checked) {
+                if (!bound.includes(permissionId)) {
+                    await adminApi.post('/api/admin/rolePermission/store', {roleId: id, permissionId, isDenied: 0});
+                }
+            }
+            alert('权限已保存');
+            location.reload();
         });
     }
 

@@ -29,6 +29,80 @@ class AttachmentController extends BaseController
         private readonly AttachmentService $attachmentService,
     ) {}
 
+    /**
+     * 附件上传（multipart/form-data，字段名 file）。
+     * 落 public 磁盘（需 php artisan storage:link）；
+     * 云存储驱动化（oss/cos/s3）待接入 options.storage_config。
+     */
+    #[OA\Post(path: '/attachment/upload', summary: '上传附件接口', security: [['bearerAuth' => []]], tags: ['附件模块'])]
+    #[OA\RequestBody(required: true, content: new OA\MediaType(mediaType: 'multipart/form-data',
+        schema: new OA\Schema(properties: [new OA\Property(property: 'file', type: 'string', format: 'binary')])))]
+    public function upload(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => 'required|file|max:20480', // 20MB
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $path = $file->store('uploads/' . now()->format('Y/m'), 'public');
+
+            [$width, $height] = $this->imageSize($path);
+
+            $input = AttachmentEntity::from([
+                'uploaderId' => $request->user()?->getAuthIdentifier() ?? 0,
+                'fileName' => $file->getClientOriginalName(),
+                'filePath' => $path,
+                'storageDriver' => 'local',
+                'storageBucket' => '',
+                'cdnUrl' => '',
+                'fileSize' => $file->getSize() ?? 0,
+                'mimeType' => $file->getMimeType() ?? 'application/octet-stream',
+                'width' => $width,
+                'height' => $height,
+                'altText' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                'sort' => 0,
+            ]);
+
+            $result = $this->attachmentService->save($input->toEntity());
+            if (!$result) {
+                throw new BusinessException(BusinessEnum::CREATE_FAIL);
+            }
+
+            return $this->success([
+                'id' => \is_int($result) ? $result : 0,
+                'path' => $path,
+                'url' => asset('storage/' . $path),
+            ]);
+        } catch (Throwable $e) {
+            if ($e instanceof BusinessException) {
+                return $this->error($e);
+            }
+
+            Log::error($e);
+
+            return $this->error(BusinessEnum::CREATE_ERROR);
+        }
+    }
+
+    /**
+     * 读取图片尺寸（非图片或失败返回 0×0）。
+     *
+     * @return array{0: int, 1: int}
+     */
+    private function imageSize(string $path): array
+    {
+        try {
+            $info = @\getimagesize(\storage_path('app/public/' . $path));
+            if (\is_array($info)) {
+                return [(int) $info[0], (int) $info[1]];
+            }
+        } catch (Throwable) {
+        }
+
+        return [0, 0];
+    }
+
     #[OA\Post(path: '/attachment/search', summary: '查询附件列表接口', security: [['bearerAuth' => []]], tags: ['附件模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]

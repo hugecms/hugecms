@@ -32,6 +32,9 @@
                             <input type="checkbox" name="remember" value="1"> 记住我
                         </label>
                     </div>
+                    @if (session('status'))
+                        <div class="alert alert-success alert-block">{{ session('status') }}</div>
+                    @endif
                     @if ($errors->any())
                         <div class="alert alert-danger alert-block">{{ $errors->first() }}</div>
                     @endif

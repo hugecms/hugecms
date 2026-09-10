@@ -12,12 +12,15 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getRoleId, description: '角色ID', type: 'integer'),
         new OA\Property(property: self::getPermissionId, description: '权限ID', type: 'integer'),
     ]
 )]
 class RolePermissionQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getRoleId = 'roleId';
 
     public const string getPermissionId = 'permissionId';
 
