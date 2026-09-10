@@ -7,7 +7,7 @@
     <div class="panel-heading">
         <div class="pull-right">
             <input type="file" id="upload-input" hidden multiple>
-            <button class="btn btn-primary btn-sm" onclick="document.getElementById('upload-input').click()">上传文件</button>
+            <button class="btn bg-primary-500 text-white" onclick="document.getElementById('upload-input').click()">上传文件</button>
         </div>
         <strong>媒体库</strong>
     </div>
@@ -24,7 +24,7 @@
                 <th width="90">操作</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="7" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="7" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -65,7 +65,7 @@
     adminApi.post('/api/admin/attachment/search', {page: 1, pageSize: 20}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-muted">暂无数据</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-gray-500">暂无数据</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => `<tr>
             <td>${r.id}</td>
             <td>${adminApi.esc(r.fileName ?? r.file_name)}</td>
@@ -73,7 +73,7 @@
             <td>${formatSize(r.fileSize ?? r.file_size)}</td>
             <td>${adminApi.esc(r.storageDriver ?? r.storage_driver ?? 'local')}</td>
             <td>${adminApi.esc(r.createdAt ?? r.created_at ?? '-')}</td>
-            <td><button class="btn btn-sm" onclick="destroyRow(${r.id})">删除</button></td>
+            <td><button class="btn" onclick="destroyRow(${r.id})">删除</button></td>
         </tr>`).join('');
     });
 

@@ -18,7 +18,7 @@
                 <th width="130">操作</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="7" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="7" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -29,7 +29,7 @@
     adminApi.post('/api/admin/recycleBin/search', {page: 1, pageSize: 20}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-muted">回收站为空</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-gray-500">回收站为空</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => {
             const snap = r.originalData ?? r.original_data ?? {};
             const title = snap.content?.title ?? JSON.stringify(snap).slice(0, 50);
@@ -39,11 +39,11 @@
                 <td>${adminApi.esc(r.targetType ?? r.target_type)}</td>
                 <td>${adminApi.esc(r.targetId ?? r.target_id)}</td>
                 <td>${adminApi.esc(title)}</td>
-                <td>${r.retentionDays ?? r.retention_days ?? 30}${expire ? '<br><span class="text-muted">至 ' + adminApi.esc(expire) + '</span>' : ''}</td>
+                <td>${r.retentionDays ?? r.retention_days ?? 30}${expire ? '<br><span class="text-gray-500">至 ' + adminApi.esc(expire) + '</span>' : ''}</td>
                 <td>${adminApi.esc(r.createdAt ?? r.created_at ?? '-')}</td>
                 <td>
-                    <button class="btn btn-sm" onclick="restoreRow(${r.id})">恢复</button>
-                    <button class="btn btn-sm" onclick="destroyRow(${r.id})">彻底删除</button>
+                    <button class="btn" onclick="restoreRow(${r.id})">恢复</button>
+                    <button class="btn" onclick="destroyRow(${r.id})">彻底删除</button>
                 </td>
             </tr>`;
         }).join('');

@@ -1,14 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Site;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| 前台首页（暂重定向到管理面板）
+| 前台站点（公开访问，服务端渲染）
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn () => redirect()->route('admin.dashboard'));
+Route::get('/', [Site\HomeController::class, 'index'])->name('site.home');
+Route::post('/comment', [Site\CommentController::class, 'store'])->name('site.comment');
 
 /*
 |--------------------------------------------------------------------------
@@ -118,3 +120,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     Route::get('statistics', [Admin\StatisticsController::class, 'index'])->name('statistics.index');
 });
+
+/*
+|--------------------------------------------------------------------------
+| 前台 fallback 路由（必须置于后台之后注册，避免吞掉 /admin）
+| 固定链接规则见 options.permalink：内容 /{slug}，分类 /{taxonomy_alias}/{slug}
+|--------------------------------------------------------------------------
+*/
+Route::get('/category/{taxonomyAlias}/{termSlug}', [Site\HomeController::class, 'category'])->name('site.category');
+Route::get('/{slug}', [Site\HomeController::class, 'show'])->name('site.show')->where('slug', '[a-z0-9_-]+');

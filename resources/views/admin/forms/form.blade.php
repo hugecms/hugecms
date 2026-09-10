@@ -24,9 +24,9 @@
                 <input type="text" class="form-control" id="success_message" name="success_message" value="提交成功！">
             </div>
             <div class="form-group">
-                <label class="checkbox-inline"><input type="checkbox" name="is_active" id="is_active" value="1" checked> 启用</label>
+                <label class="inline-flex items-center mr-3"><input type="checkbox" name="is_active" id="is_active" value="1" checked> 启用</label>
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.forms.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

@@ -35,9 +35,9 @@
                 <textarea class="form-control" id="js" name="js" rows="4"></textarea>
             </div>
             <div class="form-group">
-                <label class="checkbox-inline"><input type="checkbox" name="is_global" id="is_global" value="1"> 全局区块（全站复用）</label>
+                <label class="inline-flex items-center mr-3"><input type="checkbox" name="is_global" id="is_global" value="1"> 全局区块（全站复用）</label>
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.blocks.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

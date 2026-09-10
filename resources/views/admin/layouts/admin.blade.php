@@ -29,12 +29,12 @@
     </aside>
     <div class="admin-main">
         <header class="admin-topbar">
-            <span class="text-muted">@yield('title', '管理面板')</span>
+            <span class="text-gray-500">@yield('title', '管理面板')</span>
             <div class="user-menu">
-                <span class="text-muted">{{ auth()->user()->name ?? '游客' }}</span>
+                <span class="text-gray-500">{{ auth()->user()->name ?? '游客' }}</span>
                 <form method="POST" action="{{ route('admin.auth.logout') }}" style="display:inline">
                     @csrf
-                    <button type="submit" class="btn btn-link btn-sm">退出</button>
+                    <button type="submit" class="btn btn-link">退出</button>
                 </form>
             </div>
         </header>

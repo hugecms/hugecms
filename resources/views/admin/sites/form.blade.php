@@ -38,7 +38,7 @@
                     <option value="0">停用</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.sites.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

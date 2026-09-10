@@ -44,7 +44,7 @@
                 <label for="sort">排序（越小越靠前）</label>
                 <input type="number" class="form-control" id="sort" name="sort" value="0">
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.ads.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

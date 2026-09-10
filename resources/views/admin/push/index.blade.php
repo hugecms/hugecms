@@ -18,7 +18,7 @@
                 <th width="170">完成时间</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="7" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="7" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -29,7 +29,7 @@
     adminApi.post('/api/admin/contentPushQueue/search', {page: 1, pageSize: 20}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-muted">暂无推送记录</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-gray-500">暂无推送记录</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => `<tr>
             <td>${r.id}</td>
             <td>${r.contentId ?? r.content_id}</td>

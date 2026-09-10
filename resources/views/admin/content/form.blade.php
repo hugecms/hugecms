@@ -46,7 +46,7 @@
                 <input type="text" class="form-control" id="password">
             </div>
             <div class="form-group">
-                <label class="checkbox-inline"><input type="checkbox" id="is_top"> 置顶（列表排序优先）</label>
+                <label class="inline-flex items-center mr-3"><input type="checkbox" id="is_top"> 置顶（列表排序优先）</label>
             </div>
             <div class="form-group">
                 <label for="sort">手动排序（越大越靠前）</label>
@@ -55,11 +55,11 @@
 
             <hr>
             <h4>模型字段（data_{alias} 动态表）</h4>
-            <div id="dynamic-fields"><p class="text-muted">字段加载中…</p></div>
+            <div id="dynamic-fields"><p class="text-gray-500">字段加载中…</p></div>
 
             <hr>
             <h4>分类与标签</h4>
-            <div id="taxonomy-section"><p class="text-muted">加载中…</p></div>
+            <div id="taxonomy-section"><p class="text-gray-500">加载中…</p></div>
 
             <hr>
             <h4>SEO 设置（seo_meta）</h4>
@@ -84,7 +84,7 @@
                 <input type="text" class="form-control" id="seo_robots" placeholder="index,follow">
             </div>
 
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.contents.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>
@@ -149,7 +149,7 @@
 
     function renderFields() {
         const box = document.getElementById('dynamic-fields');
-        if (!dynFields.length) { box.innerHTML = '<p class="text-muted">该模型未定义字段</p>'; return; }
+        if (!dynFields.length) { box.innerHTML = '<p class="text-gray-500">该模型未定义字段</p>'; return; }
         box.innerHTML = dynFields.map(f => {
             const type = pick(f, 'field_type');
             const col = pick(f, 'column_name');
@@ -169,10 +169,10 @@
                 if (type === 'select') {
                     control = `<select class="form-control" id="${col}"><option value="">请选择</option>${opts.map(o => `<option value="${adminApi.esc(o)}">${adminApi.esc(o)}</option>`).join('')}</select>`;
                 } else {
-                    control = opts.map(o => `<label class="radio-inline" style="margin-right:14px"><input type="radio" name="${col}" value="${adminApi.esc(o)}"> ${adminApi.esc(o)}</label>`).join('');
+                    control = opts.map(o => `<label class="inline-flex items-center mr-3" style="margin-right:14px"><input type="radio" name="${col}" value="${adminApi.esc(o)}"> ${adminApi.esc(o)}</label>`).join('');
                 }
             } else if (type === 'checkbox') {
-                control = `<label class="checkbox-inline"><input type="checkbox" id="${col}" value="1"></label>`;
+                control = `<label class="inline-flex items-center mr-3"><input type="checkbox" id="${col}" value="1"></label>`;
             } else if (type === 'number' || type === 'integer') {
                 control = `<input type="number" step="${type === 'integer' ? '1' : 'any'}" class="form-control" id="${col}">`;
             } else if (type === 'date') {
@@ -216,7 +216,7 @@
         const box = document.getElementById('taxonomy-section');
         const taxRes = await adminApi.post('/api/admin/taxonomy/search', {page: 1, pageSize: 50, model_id: currentModel.id});
         const taxonomies = adminApi.rows(taxRes);
-        if (!taxonomies.length) { box.innerHTML = '<p class="text-muted">该模型未绑定分类法</p>'; return; }
+        if (!taxonomies.length) { box.innerHTML = '<p class="text-gray-500">该模型未绑定分类法</p>'; return; }
 
         // term 检索不支持 taxonomy_id 条件，全量拉取后前端分组
         const termRes = await adminApi.post('/api/admin/term/search', {page: 1, pageSize: 500});
@@ -227,11 +227,11 @@
             const terms = allTerms.filter(x => Number(pick(x, 'taxonomy_id')) === Number(t.id));
             const items = terms.map(x => {
                 const depth = hierarchical ? countDepth(x, allTerms) : 0;
-                return `<label class="${hierarchical ? 'checkbox-inline' : 'checkbox-inline'}" style="margin:0 16px 6px 0;${hierarchical && depth ? 'padding-left:' + (depth * 20) + 'px' : ''}">
+                return `<label class="${hierarchical ? 'inline-flex items-center mr-3' : 'inline-flex items-center mr-3'}" style="margin:0 16px 6px 0;${hierarchical && depth ? 'padding-left:' + (depth * 20) + 'px' : ''}">
                     <input type="checkbox" class="term-check" value="${x.id}"> ${adminApi.esc(x.name)}
                 </label>`;
             }).join('');
-            return `<div style="margin-bottom:8px"><strong>${adminApi.esc(t.name)}</strong>${hierarchical ? '' : ' <span class="text-muted">（标签）</span>'}<div style="margin-top:4px">${items || '<span class="text-muted">暂无分类项</span>'}</div></div>`;
+            return `<div style="margin-bottom:8px"><strong>${adminApi.esc(t.name)}</strong>${hierarchical ? '' : ' <span class="text-gray-500">（标签）</span>'}<div style="margin-top:4px">${items || '<span class="text-gray-500">暂无分类项</span>'}</div></div>`;
         }).join('');
 
         if (id) await fillTermRelations(allTerms);

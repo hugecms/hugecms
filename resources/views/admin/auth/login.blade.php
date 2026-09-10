@@ -28,17 +28,17 @@
                         <input type="password" id="password" name="password" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label class="checkbox-inline">
+                        <label class="inline-flex items-center mr-3">
                             <input type="checkbox" name="remember" value="1"> 记住我
                         </label>
                     </div>
                     @if (session('status'))
-                        <div class="alert alert-success alert-block">{{ session('status') }}</div>
+                        <div class="alert bg-success text-white">{{ session('status') }}</div>
                     @endif
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-block">{{ $errors->first() }}</div>
+                        <div class="alert bg-danger text-white">{{ $errors->first() }}</div>
                     @endif
-                    <button type="submit" class="btn btn-primary btn-block">登 录</button>
+                    <button type="submit" class="btn bg-primary-500 text-white w-full">登 录</button>
                     <div class="text-center" style="margin-top:10px">
                         <a href="{{ route('admin.password.forgot') }}">忘记密码？</a>
                     </div>

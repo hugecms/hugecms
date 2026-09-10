@@ -33,9 +33,9 @@
                         <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
                     </div>
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-block">{{ $errors->first() }}</div>
+                        <div class="alert bg-danger text-white">{{ $errors->first() }}</div>
                     @endif
-                    <button type="submit" class="btn btn-primary btn-block">重置密码</button>
+                    <button type="submit" class="btn bg-primary-500 text-white w-full">重置密码</button>
                 </form>
             </div>
         </div>

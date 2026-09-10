@@ -18,7 +18,7 @@
                 <th width="170">时间</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="7" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="7" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -29,7 +29,7 @@
     adminApi.post('/api/admin/auditLog/search', {page: 1, pageSize: 20}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-muted">暂无数据</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-gray-500">暂无数据</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => `<tr>
             <td>${r.id}</td>
             <td>${adminApi.esc(r.userName ?? r.user_name ?? (r.userId ?? r.user_id))}</td>

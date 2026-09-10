@@ -19,14 +19,14 @@
                 <label for="description">描述</label>
                 <input type="text" class="form-control" id="description" name="description">
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.menus.index') }}" class="btn btn-default">返回</a>
         </form>
 
         @if ($mode === 'edit')
         <hr>
         <h4>菜单项</h4>
-        <form id="item-form" class="form-inline" style="margin-bottom:12px">
+        <form id="item-form" class="flex flex-wrap gap-2 items-end" style="margin-bottom:12px">
             <div class="form-group">
                 <input type="text" class="form-control" id="item-title" placeholder="标题" required style="width:140px">
             </div>
@@ -43,11 +43,11 @@
             <div class="form-group">
                 <input type="number" class="form-control" id="item-sort" value="0" title="排序" style="width:80px">
             </div>
-            <button type="submit" class="btn btn-primary btn-sm">添加菜单项</button>
+            <button type="submit" class="btn bg-primary-500 text-white">添加菜单项</button>
         </form>
         <table class="table table-hover">
             <thead><tr><th width="60">ID</th><th>标题</th><th width="90">链接类型</th><th>链接值</th><th width="70">排序</th><th width="70">启用</th><th width="90">操作</th></tr></thead>
-            <tbody id="items-tbody"><tr><td colspan="7" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="items-tbody"><tr><td colspan="7" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
         @endif
     </div>
@@ -73,7 +73,7 @@
         adminApi.post('/api/admin/navItem/search', {page: 1, pageSize: 200, menu_id: id}).then(res => {
             const rows = adminApi.rows(res);
             const tbody = document.getElementById('items-tbody');
-            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-muted">暂无菜单项</td></tr>'; return; }
+            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-gray-500">暂无菜单项</td></tr>'; return; }
             tbody.innerHTML = rows.map(r => `<tr>
                 <td>${r.id}</td>
                 <td>${adminApi.esc(r.title)}</td>
@@ -82,8 +82,8 @@
                 <td>${r.sort ?? 0}</td>
                 <td>${(r.isActive ?? r.is_active) ? '是' : '否'}</td>
                 <td>
-                    <button class="btn btn-sm" onclick="toggleItem(${r.id}, ${((r.isActive ?? r.is_active) ? 0 : 1)})">${(r.isActive ?? r.is_active) ? '停用' : '启用'}</button>
-                    <button class="btn btn-sm" onclick="destroyItem(${r.id})">删除</button>
+                    <button class="btn" onclick="toggleItem(${r.id}, ${((r.isActive ?? r.is_active) ? 0 : 1)})">${(r.isActive ?? r.is_active) ? '停用' : '启用'}</button>
+                    <button class="btn" onclick="destroyItem(${r.id})">删除</button>
                 </td>
             </tr>`).join('');
         });

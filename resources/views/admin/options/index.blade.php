@@ -6,11 +6,11 @@
 <div class="panel">
     <div class="panel-heading">
         <ul class="nav nav-tabs" id="option-tabs" style="margin-bottom:10px">
-            <li class="active"><a href="#tab-general" data-toggle="tab">常规</a></li>
-            <li><a href="#tab-comment" data-toggle="tab">评论</a></li>
-            <li><a href="#tab-permalink" data-toggle="tab">固定链接</a></li>
-            <li><a href="#tab-storage" data-toggle="tab">存储</a></li>
-            <li><a href="#tab-mail" data-toggle="tab">邮件</a></li>
+            <li class="active"><a href="#tab-general">常规</a></li>
+            <li><a href="#tab-comment">评论</a></li>
+            <li><a href="#tab-permalink">固定链接</a></li>
+            <li><a href="#tab-storage">存储</a></li>
+            <li><a href="#tab-mail">邮件</a></li>
         </ul>
     </div>
     <div class="panel-body tab-content">
@@ -48,13 +48,23 @@
                 <textarea class="form-control" id="smtp_config" rows="6"></textarea>
             </div>
         </div>
-        <button class="btn btn-primary" id="save-options">保存设置</button>
+        <button class="btn bg-primary-500 text-white" id="save-options">保存设置</button>
     </div>
 </div>
 @endsection
 
 @push('scripts')
 <script>
+    // Tab 切换（zui.js 未内置 tabs 行为，仅有 nav-tabs 样式）
+    document.querySelectorAll('#option-tabs a').forEach(a => a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('#option-tabs li').forEach(li => li.classList.remove('active'));
+        a.parentElement.classList.add('active');
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        const pane = document.querySelector(a.getAttribute('href'));
+        if (pane) pane.classList.add('active');
+    }));
+
     const keys = ['comment_config', 'permalink', 'storage_config', 'smtp_config'];
     const optionIdByKey = {}; // key → options.id，保存时据此走 update 而非 store（避开唯一索引冲突）
     let siteId = null;

@@ -6,7 +6,7 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="pull-right">
-            <a href="{{ route('admin.contents.create') }}" class="btn btn-primary btn-sm">新增内容</a>
+            <a href="{{ route('admin.contents.create') }}" class="btn bg-primary-500 text-white">新增内容</a>
         </div>
         <strong>内容列表</strong>
     </div>
@@ -23,7 +23,7 @@
                 <th width="130">操作</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="7" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="7" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -36,7 +36,7 @@
     adminApi.post('/api/admin/content/search', {page: 1, pageSize: 20}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-muted">暂无数据</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-gray-500">暂无数据</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => `<tr>
             <td>${r.id}</td>
             <td>${adminApi.esc(r.title)}</td>
@@ -45,8 +45,8 @@
             <td>${r.commentCount ?? r.comment_count ?? 0}</td>
             <td>${adminApi.esc(r.publishedAt ?? r.published_at ?? '-')}</td>
             <td>
-                <a class="btn btn-sm" href="${base}/${r.id}/edit">编辑</a>
-                <button class="btn btn-sm" onclick="destroyRow(${r.id})">删除</button>
+                <a class="btn" href="${base}/${r.id}/edit">编辑</a>
+                <button class="btn" onclick="destroyRow(${r.id})">删除</button>
             </td>
         </tr>`).join('');
     });

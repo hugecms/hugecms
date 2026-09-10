@@ -26,7 +26,7 @@
                 <label for="remark">备注</label>
                 <input type="text" class="form-control" id="remark" name="remark" placeholder="如：slug 改版迁移">
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.redirects.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

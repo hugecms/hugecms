@@ -30,7 +30,7 @@
                     <option value="0">禁用</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.users.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>
@@ -40,7 +40,7 @@
     <div class="panel-heading"><strong>角色分配（决定该用户的操作权限与数据范围）</strong></div>
     <div class="panel-body">
         <div id="role-list" class="alert alert-info">角色加载中…</div>
-        <p class="text-muted" style="font-size:12px">数据范围默认 self（仅本人数据）；如需 dept/all 需在绑定后单独调整。</p>
+        <p class="text-gray-500" style="font-size:12px">数据范围默认 self（仅本人数据）；如需 dept/all 需在绑定后单独调整。</p>
     </div>
 </div>
 @endsection
@@ -55,9 +55,9 @@
         const box = document.getElementById('role-list');
         box.className = '';
         adminApi.rows(res).forEach(r => {
-            box.insertAdjacentHTML('beforeend', `<label class="checkbox-inline" style="margin-right:16px">
+            box.insertAdjacentHTML('beforeend', `<label class="inline-flex items-center mr-3" style="margin-right:16px">
                 <input type="checkbox" class="role-item" value="${r.id}"> ${adminApi.esc(r.name)}
-                <span class="text-muted">（${adminApi.esc(r.alias)}）</span>
+                <span class="text-gray-500">（${adminApi.esc(r.alias)}）</span>
             </label>`);
         });
 

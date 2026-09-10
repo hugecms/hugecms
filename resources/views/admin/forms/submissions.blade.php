@@ -6,14 +6,14 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="pull-right">
-            <a href="{{ route('admin.forms.index') }}" class="btn btn-default btn-sm">返回表单列表</a>
+            <a href="{{ route('admin.forms.index') }}" class="btn btn-default">返回表单列表</a>
         </div>
         <strong>表单提交数据（#{{ $id }}）</strong>
     </div>
     <div class="panel-body">
         <table class="table table-hover">
             <thead><tr><th width="60">ID</th><th>提交数据（JSON）</th><th width="140">IP</th><th width="170">提交时间</th></tr></thead>
-            <tbody id="tbody"><tr><td colspan="4" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="4" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -24,7 +24,7 @@
     adminApi.post('/api/admin/formSubmission/search', {page: 1, pageSize: 20, form_id: {{ $id }}}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="text-muted">暂无提交</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4" class="text-gray-500">暂无提交</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => {
             const data = r.submissionData ?? r.submission_data ?? {};
             const pretty = typeof data === 'string' ? data : JSON.stringify(data, null, 2);

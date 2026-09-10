@@ -16,13 +16,13 @@
                 <input type="text" class="form-control" id="alias" name="alias" pattern="[a-z][a-z0-9_]{0,39}" required>
             </div>
             <div class="form-group">
-                <label class="checkbox-inline"><input type="checkbox" name="is_hierarchical" id="is_hierarchical" value="1" checked> 支持层级（分类目录；不勾选则为标签）</label>
+                <label class="inline-flex items-center mr-3"><input type="checkbox" name="is_hierarchical" id="is_hierarchical" value="1" checked> 支持层级（分类目录；不勾选则为标签）</label>
             </div>
             <div class="form-group">
                 <label for="description">描述</label>
                 <input type="text" class="form-control" id="description" name="description">
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.taxonomies.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

@@ -6,10 +6,10 @@
 <div class="panel">
     <div class="panel-heading">
         <div class="btn-group" id="status-filter">
-            <button type="button" class="btn btn-sm btn-primary" data-status="">全部</button>
-            <button type="button" class="btn btn-sm" data-status="pending">待审核</button>
-            <button type="button" class="btn btn-sm" data-status="approved">已通过</button>
-            <button type="button" class="btn btn-sm" data-status="spam">垃圾</button>
+            <button type="button" class="btn bg-primary-500 text-white" data-status="">全部</button>
+            <button type="button" class="btn" data-status="pending">待审核</button>
+            <button type="button" class="btn" data-status="approved">已通过</button>
+            <button type="button" class="btn" data-status="spam">垃圾</button>
         </div>
     </div>
     <div class="panel-body">
@@ -24,7 +24,7 @@
                 <th width="160">操作</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="6" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="6" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -40,7 +40,7 @@
         adminApi.post('/api/admin/comment/search', {page: 1, pageSize: 20, status: currentStatus}).then(res => {
             const rows = adminApi.rows(res);
             const tbody = document.getElementById('tbody');
-            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted">暂无数据</td></tr>'; return; }
+            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-gray-500">暂无数据</td></tr>'; return; }
             tbody.innerHTML = rows.map(r => `<tr>
                 <td>${r.id}</td>
                 <td>${adminApi.esc(r.authorName ?? r.author_name ?? (r.userId ?? r.user_id ?? '游客'))}</td>
@@ -48,10 +48,10 @@
                 <td><span class="label">${adminApi.esc(r.status)}</span></td>
                 <td>${adminApi.esc(r.createdAt ?? r.created_at ?? '-')}</td>
                 <td>
-                    <button class="btn btn-sm" onclick="replyRow(${r.id}, ${r.contentId ?? r.content_id}, ${(r.userId ?? r.user_id) ?? null})">回复</button>
-                    ${r.status === 'pending' ? `<button class="btn btn-sm" onclick="setStatus(${r.id}, 'approved')">通过</button>` : ''}
-                    ${r.status !== 'spam' ? `<button class="btn btn-sm" onclick="setStatus(${r.id}, 'spam')">标垃圾</button>` : ''}
-                    <button class="btn btn-sm" onclick="destroyRow(${r.id})">删除</button>
+                    <button class="btn" onclick="replyRow(${r.id}, ${r.contentId ?? r.content_id}, ${(r.userId ?? r.user_id) ?? null})">回复</button>
+                    ${r.status === 'pending' ? `<button class="btn" onclick="setStatus(${r.id}, 'approved')">通过</button>` : ''}
+                    ${r.status !== 'spam' ? `<button class="btn" onclick="setStatus(${r.id}, 'spam')">标垃圾</button>` : ''}
+                    <button class="btn" onclick="destroyRow(${r.id})">删除</button>
                 </td>
             </tr>`).join('');
         });
@@ -83,8 +83,8 @@
 
     document.querySelectorAll('#status-filter button').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('#status-filter button').forEach(b => b.classList.remove('btn-primary'));
-            btn.classList.add('btn-primary');
+            document.querySelectorAll('#status-filter button').forEach(b => b.classList.remove('btn bg-primary-500 text-white'));
+            btn.classList.add('btn bg-primary-500 text-white');
             currentStatus = btn.dataset.status;
             load();
         });

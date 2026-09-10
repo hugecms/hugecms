@@ -19,15 +19,15 @@
                 <label for="description">描述</label>
                 <input type="text" class="form-control" id="description" name="description">
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.roles.index') }}" class="btn btn-default">返回</a>
         </form>
 
         @if ($mode === 'edit')
         <hr>
         <h4>权限分配</h4>
-        <div id="permission-tree"><p class="text-muted">权限树加载中…</p></div>
-        <button class="btn btn-primary" id="save-perms">保存权限</button>
+        <div id="permission-tree"><p class="text-gray-500">权限树加载中…</p></div>
+        <button class="btn bg-primary-500 text-white" id="save-perms">保存权限</button>
         @endif
     </div>
 </div>
@@ -55,12 +55,12 @@
             const box = document.getElementById('permission-tree');
             box.innerHTML = modules.map(p => `
                 <div class="perm-group" data-id="${p.id}" style="margin-bottom:10px">
-                    <label class="checkbox-inline"><strong>
+                    <label class="inline-flex items-center mr-3"><strong>
                         <input type="checkbox" class="perm-group-check"> ${adminApi.esc(p.name)}
                     </strong></label>
                     <div style="padding-left:24px">
                         ${all.filter(c => Number(pick(c, 'parent_id')) === Number(p.id)).map(c => `
-                            <label class="checkbox-inline" style="margin-right:14px">
+                            <label class="inline-flex items-center mr-3" style="margin-right:14px">
                                 <input type="checkbox" class="perm-item" value="${c.id}" title="${adminApi.esc(c.code)}"> ${adminApi.esc(c.name)}
                             </label>`).join('')}
                     </div>

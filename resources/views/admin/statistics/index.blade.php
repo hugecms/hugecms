@@ -19,7 +19,7 @@
                 <th width="90">活跃用户</th>
             </tr>
             </thead>
-            <tbody id="tbody"><tr><td colspan="8" class="text-muted">加载中…</td></tr></tbody>
+            <tbody id="tbody"><tr><td colspan="8" class="text-gray-500">加载中…</td></tr></tbody>
         </table>
     </div>
 </div>
@@ -30,7 +30,7 @@
     adminApi.post('/api/admin/statisticsDaily/search', {page: 1, pageSize: 30}).then(res => {
         const rows = adminApi.rows(res);
         const tbody = document.getElementById('tbody');
-        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-muted">暂无数据（待 Scheduler 生成）</td></tr>'; return; }
+        if (!rows.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-gray-500">暂无数据（待 Scheduler 生成）</td></tr>'; return; }
         tbody.innerHTML = rows.map(r => `<tr>
             <td>${adminApi.esc(r.statDate ?? r.stat_date)}</td>
             <td>${r.newContents ?? r.new_contents ?? 0}</td>

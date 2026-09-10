@@ -28,9 +28,9 @@
                 <textarea class="form-control" id="content" name="content" rows="10"></textarea>
             </div>
             <div class="form-group">
-                <label class="checkbox-inline"><input type="checkbox" name="is_default" id="is_default" value="1"> 设为该类别默认模板</label>
+                <label class="inline-flex items-center mr-3"><input type="checkbox" name="is_default" id="is_default" value="1"> 设为该类别默认模板</label>
             </div>
-            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn bg-primary-500 text-white">保存</button>
             <a href="{{ route('admin.page-templates.index') }}" class="btn btn-default">返回</a>
         </form>
     </div>

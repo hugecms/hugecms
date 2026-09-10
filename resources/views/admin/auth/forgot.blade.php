@@ -24,12 +24,12 @@
                         <input type="email" id="email" name="email" class="form-control" required autofocus>
                     </div>
                     @if (session('status'))
-                        <div class="alert alert-success alert-block">{{ session('status') }}</div>
+                        <div class="alert bg-success text-white">{{ session('status') }}</div>
                     @endif
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-block">{{ $errors->first() }}</div>
+                        <div class="alert bg-danger text-white">{{ $errors->first() }}</div>
                     @endif
-                    <button type="submit" class="btn btn-primary btn-block">发送重置链接</button>
+                    <button type="submit" class="btn bg-primary-500 text-white w-full">发送重置链接</button>
                     <div class="text-center" style="margin-top:10px">
                         <a href="{{ route('admin.auth.login') }}">返回登录</a>
                     </div>
