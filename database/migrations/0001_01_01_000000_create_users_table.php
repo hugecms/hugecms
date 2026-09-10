@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->default('')->comment('显示昵称');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('avatar')->default('')->comment('头像URL');
+            $table->unsignedTinyInteger('status')->default(1)->comment('状态：0禁用，1启用');
+            $table->string('last_login_ip', 45)->default('')->comment('最后登录IP（支持IPv6）');
+            $table->dateTime('last_login_time')->nullable()->comment('最后登录时间');
             $table->rememberToken();
             $table->timestamps();
+            $table->comment('用户表');
         });
-
-        // user_profile 用户扩展资料
-        // user_address 用户地址表
-        // user_login_log 用户登录日志表
-        // user_balance 用户余额/资产表
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

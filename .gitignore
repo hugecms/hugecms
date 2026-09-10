@@ -11,6 +11,7 @@
 /.nova
 /.phpunit.cache
 /.pi
+/.trae
 /.vscode
 /.zed
 /auth.json
