@@ -702,11 +702,11 @@ gantt
 - [x] 4.5 迁移评论模块（`comments`），支持层级嵌套与敏感审核。
 - [x] 4.6 迁移附件双路径引用跟踪与防误删扫描校验。
 
-### 阶段五：扩展模块与定时运维
-- [ ] 5.1 迁移表单模块（`form_templates`/`form_submissions`）。
-- [ ] 5.2 迁移营销扩展模块（广告 `ads`、友情链接 `friend_links`、短链 `short_links`、内容推送 `content_push_queue`）。
-- [ ] 5.3 基于 GoFrame `gcron` 实现每日 03:30 统计聚合与每日 03:10 过期回收站清理任务。
-- [ ] 5.4 基于 Redis 实现文章浏览量防刷与批量写入机制。
+### 阶段五：扩展模块与定时运维（已全部完成）
+- [x] 5.1 迁移表单模块（`form_templates`/`form_submissions`）。
+- [x] 5.2 迁移营销扩展模块（广告 `ads`、友情链接 `friend_links`、短链 `short_links`、内容推送 `content_push_queue`）。
+- [x] 5.3 基于 GoFrame `gcron` 实现每日 03:30 统计聚合与每日 03:10 过期回收站清理任务。
+- [x] 5.4 基于 Redis 实现文章浏览量防刷与批量写入机制。
 
 ### 阶段六：前后台资源集成、前台站点与综合验收
 - [ ] 6.1 构建并接入 `resource/admin` 后台前端独立工程，将构建产物托管至 `/admin` 路径，打通与 `/api/admin/*` 接口交互。

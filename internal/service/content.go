@@ -24,6 +24,8 @@ type (
 		ChangeStatus(ctx context.Context, in model.ContentStatusInput) error
 		// Trash 移入回收站
 		Trash(ctx context.Context, id int64) error
+		// PublishScheduled 自动发布到期且审核通过的内容
+		PublishScheduled(ctx context.Context) (int, error)
 	}
 )
 

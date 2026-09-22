@@ -558,3 +558,30 @@ func (s *sContent) Trash(ctx context.Context, id int64) error {
 	}
 	return service.RecycleBin().SnapshotAndTrash(ctx, id, deletedBy)
 }
+
+// PublishScheduled 自动发布到期且审核通过的内容
+func (s *sContent) PublishScheduled(ctx context.Context) (int, error) {
+	now := gtime.Now()
+	var contents []entity.Contents
+	err := dao.Contents.Ctx(ctx).
+		Where("status", "pending").
+		Where("audit_status", "approved").
+		WhereLTE("published_at", now).
+		Scan(&contents)
+	if err != nil {
+		return 0, err
+	}
+
+	count := 0
+	for _, c := range contents {
+		err := s.ChangeStatus(ctx, model.ContentStatusInput{
+			Id:     int64(c.Id),
+			Status: "published",
+		})
+		if err == nil {
+			count++
+		}
+	}
+	return count, nil
+}
+

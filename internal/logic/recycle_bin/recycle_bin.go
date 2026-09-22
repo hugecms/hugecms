@@ -389,3 +389,23 @@ func (s *sRecycleBin) Purge(ctx context.Context, recycleId int64) error {
 
 	return nil
 }
+
+// PurgeExpired 批量彻底清除所有超过保留期的回收站记录
+func (s *sRecycleBin) PurgeExpired(ctx context.Context) (int, error) {
+	ids, err := dao.RecycleBin.Ctx(ctx).
+		WhereLT(dao.RecycleBin.Columns().ExpireAt, gtime.Now()).
+		Array(dao.RecycleBin.Columns().Id)
+	if err != nil {
+		return 0, err
+	}
+
+	count := 0
+	for _, idVal := range ids {
+		id := idVal.Int64()
+		if err := s.Purge(ctx, id); err == nil {
+			count++
+		}
+	}
+	return count, nil
+}
+

@@ -20,6 +20,8 @@ type (
 		Restore(ctx context.Context, recycleId int64) (int64, error)
 		// Purge 彻底物理清除（包括级联关联与多态 SEO 元数据）
 		Purge(ctx context.Context, recycleId int64) error
+		// PurgeExpired 批量彻底清除所有超过保留期的回收站记录
+		PurgeExpired(ctx context.Context) (int, error)
 	}
 )
 

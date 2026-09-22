@@ -13,6 +13,9 @@ import (
 	_ "hugecms/internal/logic/content"
 	_ "hugecms/internal/logic/content_model"
 	_ "hugecms/internal/logic/context"
+	_ "hugecms/internal/logic/cron"
+	_ "hugecms/internal/logic/form"
+	_ "hugecms/internal/logic/marketing"
 	_ "hugecms/internal/logic/middleware"
 	_ "hugecms/internal/logic/model_field"
 	_ "hugecms/internal/logic/option"
@@ -20,6 +23,8 @@ import (
 	_ "hugecms/internal/logic/recycle_bin"
 	_ "hugecms/internal/logic/role"
 	_ "hugecms/internal/logic/site"
+	_ "hugecms/internal/logic/statistics"
 	_ "hugecms/internal/logic/taxonomy"
 	_ "hugecms/internal/logic/user"
+	_ "hugecms/internal/logic/view"
 )

@@ -9,6 +9,7 @@ import (
 
 	"hugecms/internal/controller/admin"
 	"hugecms/internal/controller/common"
+	"hugecms/internal/controller/portal"
 	"hugecms/internal/service"
 )
 
@@ -19,6 +20,9 @@ var (
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			s := g.Server()
+
+			// 启动后台常驻定时调度任务
+			service.Cron().Start(ctx)
 
 			// 静态资源目录映射
 			s.AddStaticPath("/upload", "resource/public/upload")
@@ -55,6 +59,8 @@ var (
 						admin.Taxonomy,
 						admin.Comment,
 						admin.RecycleBin,
+						admin.Form,
+						admin.Marketing,
 					)
 				})
 			})
@@ -68,6 +74,24 @@ var (
 				)
 				group.Bind(
 					common.Attachment,
+				)
+			})
+
+			// 前台公共 API (表单提交等)
+			s.Group("/api/portal", func(group *ghttp.RouterGroup) {
+				group.Middleware(
+					service.Middleware().CORS,
+					service.Middleware().HandlerResponse,
+				)
+				group.Bind(
+					portal.Form,
+				)
+			})
+
+			// 短链重定向路由 (/s/:code)
+			s.Group("/", func(group *ghttp.RouterGroup) {
+				group.Bind(
+					portal.ShortLink,
 				)
 			})
 
