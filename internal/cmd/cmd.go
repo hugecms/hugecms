@@ -42,6 +42,13 @@ var (
 					authGroup.Bind(
 						admin.Auth.Logout,
 						admin.Auth.Info,
+						admin.User,
+						admin.Role,
+						admin.Permission,
+						admin.Option,
+						admin.Site,
+						admin.Appearance,
+						admin.AuditLog,
 					)
 				})
 			})

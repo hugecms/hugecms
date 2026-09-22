@@ -688,10 +688,10 @@ gantt
 - [x] 2.4 实现通用附件上传控制器与存储落地（[api/common/v1](file:///d:/code/git/hg/api/common/v1/attachment.go)、[internal/controller/common](file:///d:/code/git/hg/internal/controller/common/attachment.go)、[internal/logic/attachment](file:///d:/code/git/hg/internal/logic/attachment/attachment.go)）。
 
 ### 阶段三：管理后台基础模块
-- [ ] 3.1 迁移用户管理模块（`admin/user`、`admin/role`、`admin/permission`）。
-- [ ] 3.2 迁移系统全局配置（`options`）与多站点（`sites`）配置。
-- [ ] 3.3 迁移外观配置模块（导航菜单 `nav_menus`/`nav_items`、区块 `blocks`、页面模板 `page_templates`）。
-- [ ] 3.4 迁移操作审计日志模块（`audit_logs`，仅记录变更 diff，避免写放大）。
+- [x] 3.1 迁移用户管理模块（`admin/user`、`admin/role`、`admin/permission`）。
+- [x] 3.2 迁移系统全局配置（`options`）与多站点（`sites`）配置。
+- [x] 3.3 迁移外观配置模块（导航菜单 `nav_menus`/`nav_items`、区块 `blocks`、页面模板 `page_templates`）。
+- [x] 3.4 迁移操作审计日志模块（`audit_logs`，仅记录变更 diff，避免写放大）。
 
 ### 阶段四：内容核心与关键业务难点攻坚
 - [ ] 4.0 在 `internal/model/` 目录下按领域定义 Logic 业务 DTO（`content.go`、`recycle_bin.go`、`model_field.go` 等），严格规范 `*Input` / `*Output` 契约。
