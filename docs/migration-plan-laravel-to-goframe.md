@@ -676,7 +676,7 @@ gantt
 ```
 
 ### 阶段一：环境与基础设施搭建
-- [ ] 1.1 整理 38 张表的完整 DDL，输出至 `docs/db.sql`，执行至测试库。
+- [x] 1.1 整理全部 43 张数据表（38 张迁移表、动态表及系统辅助表）的完整 DDL，输出至 [docs/db.sql](file:///d:/code/git/hg/docs/db.sql)（已完成）。
 - [ ] 1.2 配置 `manifest/config/config.yaml`（MySQL、Redis、Server 参数）。
 - [ ] 1.3 编写 `hack/config.yaml` 并执行 `gf gen dao`，生成所有数据表的 DAO/Entity/Do。
 - [ ] 1.4 移植 `CmsSeeder.php` 到 `internal/cmd/seeder.go`，确保新库一键初始化种子数据。
