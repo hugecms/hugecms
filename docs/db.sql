@@ -688,7 +688,7 @@ CREATE TABLE `audit_logs` (
   `new_value` JSON NULL DEFAULT NULL COMMENT '修改后的数据快照（JSON）',
   `operation_result` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '操作结果：0失败，1成功',
   `error_message` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '失败时的错误信息',
-  `created_at` TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（毫秒精度，只增不改）',
+  `created_at` TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间（毫秒精度，只增不改）',
   PRIMARY KEY (`id`),
   KEY `audit_logs_user_id_index` (`user_id`),
   KEY `audit_logs_target_type_target_id_index` (`target_type`, `target_id`),
