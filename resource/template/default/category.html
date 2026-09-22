@@ -1,8 +1,19 @@
 {{ include "default/layouts/header.html" . }}
 
 <div class="container">
-    <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted);">
-        <a href="/">首页</a> / <span>{{ .data.Taxonomy.Name }}</span> / <strong style="color: var(--text-main);">{{ .data.Term.Name }}</strong>
+    <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted); display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+        {{ if .data.Breadcrumbs }}
+            {{ range $idx, $b := .data.Breadcrumbs }}
+                {{ if gt $idx 0 }}<span>/</span>{{ end }}
+                {{ if $b.Url }}
+                    <a href="{{ $b.Url }}">{{ $b.Name }}</a>
+                {{ else }}
+                    <strong style="color: var(--text-main);">{{ $b.Name }}</strong>
+                {{ end }}
+            {{ end }}
+        {{ else }}
+            <a href="/">首页</a> / <span>{{ .data.Taxonomy.Name }}</span> / <strong style="color: var(--text-main);">{{ .data.Term.Name }}</strong>
+        {{ end }}
     </div>
 
     <div class="layout-grid">
@@ -59,6 +70,21 @@
 
         <!-- Sidebar -->
         <div>
+            {{ if .data.SubTerms }}
+            <div class="card">
+                <div class="card-header">
+                    <span>🌿 子分类专栏</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    {{ range $st := .data.SubTerms }}
+                    <a href="/category/{{ $st.Slug }}" class="btn btn-outline" style="font-size: 13px; padding: 6px 12px;">
+                        {{ $st.Name }} <span style="color: var(--text-muted); font-size: 11px;">({{ $st.ContentCount }})</span>
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+
             <div class="card">
                 <div class="card-header">
                     <span>💡 分类导航</span>

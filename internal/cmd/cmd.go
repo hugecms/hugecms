@@ -127,6 +127,8 @@ var (
 				group.GET("/detail/:slug", portal.Site.Detail)
 				group.GET("/a/:slug", portal.Site.Detail)
 				group.POST("/comment", portal.Site.Comment)
+				group.GET("/sitemap.xml", portal.Site.Sitemap)
+				group.GET("/robots.txt", portal.Site.Robots)
 			})
 
 			s.Run()

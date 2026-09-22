@@ -25,6 +25,10 @@ type (
 		PostComment(ctx context.Context, in model.PortalCommentPostInput) error
 		// RenderPortal 统一多主题渲染入口，具备降级回退机制
 		RenderPortal(ctx context.Context, r *ghttp.Request, tplName string, data g.Map)
+		// GetSitemapXml 动态生成 sitemap.xml
+		GetSitemapXml(ctx context.Context, baseUrl string) (string, error)
+		// GetRobotsTxt 动态生成 robots.txt
+		GetRobotsTxt(ctx context.Context, baseUrl string) (string, error)
 	}
 )
 

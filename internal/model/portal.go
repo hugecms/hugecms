@@ -44,20 +44,41 @@ type PortalHomeOutput struct {
 	TotalPages  int                 `json:"total_pages"`
 }
 
+// PortalBreadcrumbItem 面包屑导航项
+type PortalBreadcrumbItem struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
+}
+
+// OpenGraphMeta 社交媒体分享元标签 (Open Graph & Twitter Card)
+type OpenGraphMeta struct {
+	Type        string `json:"type"`        // website / article
+	Title       string `json:"title"`       // 标题
+	Description string `json:"description"` // 摘要/描述
+	Url         string `json:"url"`         // 页面绝对链接
+	Image       string `json:"image"`       // 分享封面图
+	SiteName    string `json:"site_name"`   // 站点名
+	PublishedAt string `json:"published_at"`// 文章发布时间 (ISO 8601)
+	Author      string `json:"author"`      // 文章作者
+}
+
 // PortalCategoryOutput 前台分类列表数据
 type PortalCategoryOutput struct {
-	SiteName    string              `json:"site_name"`
-	SiteInfo    map[string]string   `json:"site_info"`
-	NavItems    []PortalNavMenuItem `json:"nav_items"`
-	FriendLinks []FriendLinkItem    `json:"friend_links"`
-	Taxonomy    *TaxonomyItem       `json:"taxonomy"`
-	Term        *TermItem           `json:"term"`
-	Contents    []PortalContentItem `json:"contents"`
-	Seo         *SeoMetaItem        `json:"seo"`
-	Total       int                 `json:"total"`
-	Page        int                 `json:"page"`
-	Size        int                 `json:"size"`
-	TotalPages  int                 `json:"total_pages"`
+	SiteName    string                 `json:"site_name"`
+	SiteInfo    map[string]string      `json:"site_info"`
+	NavItems    []PortalNavMenuItem    `json:"nav_items"`
+	FriendLinks []FriendLinkItem       `json:"friend_links"`
+	Taxonomy    *TaxonomyItem          `json:"taxonomy"`
+	Term        *TermItem              `json:"term"`
+	Breadcrumbs []PortalBreadcrumbItem `json:"breadcrumbs"`
+	SubTerms    []TermItem             `json:"sub_terms"`
+	Contents    []PortalContentItem    `json:"contents"`
+	Seo         *SeoMetaItem           `json:"seo"`
+	Og          *OpenGraphMeta         `json:"og"`
+	Total       int                    `json:"total"`
+	Page        int                    `json:"page"`
+	Size        int                    `json:"size"`
+	TotalPages  int                    `json:"total_pages"`
 }
 
 // PortalCommentTreeItem 前台评论树条目
@@ -78,7 +99,10 @@ type PortalDetailOutput struct {
 	FriendLinks []FriendLinkItem        `json:"friend_links"`
 	Content     *ContentDetailOutput    `json:"content"`
 	DynamicData map[string]interface{}  `json:"dynamic_data"`
+	Breadcrumbs []PortalBreadcrumbItem  `json:"breadcrumbs"`
+	Category    *TermItem               `json:"category"`
 	Seo         *SeoMetaItem            `json:"seo"`
+	Og          *OpenGraphMeta          `json:"og"`
 	Comments    []PortalCommentTreeItem `json:"comments"`
 	PrevContent *PortalContentItem      `json:"prev_content"`
 	NextContent *PortalContentItem      `json:"next_content"`

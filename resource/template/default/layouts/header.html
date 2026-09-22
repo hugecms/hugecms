@@ -10,6 +10,22 @@
     {{ if .data.Seo.CanonicalUrl }}<link rel="canonical" href="{{ .data.Seo.CanonicalUrl }}">{{ end }}
     {{ if .data.Seo.Robots }}<meta name="robots" content="{{ .data.Seo.Robots }}">{{ end }}
     {{ end }}
+    {{ if .data.Og }}
+    <!-- Open Graph / Facebook / WeChat -->
+    <meta property="og:type" content="{{ if .data.Og.Type }}{{ .data.Og.Type }}{{ else }}website{{ end }}">
+    <meta property="og:site_name" content="{{ if .data.Og.SiteName }}{{ .data.Og.SiteName }}{{ else }}{{ .data.SiteName }}{{ end }}">
+    <meta property="og:title" content="{{ .data.Og.Title }}">
+    {{ if .data.Og.Description }}<meta property="og:description" content="{{ .data.Og.Description }}">{{ end }}
+    {{ if .data.Og.Url }}<meta property="og:url" content="{{ .data.Og.Url }}">{{ end }}
+    {{ if .data.Og.Image }}<meta property="og:image" content="{{ .data.Og.Image }}">{{ end }}
+    {{ if .data.Og.PublishedAt }}<meta property="article:published_time" content="{{ .data.Og.PublishedAt }}">{{ end }}
+    {{ if .data.Og.Author }}<meta property="article:author" content="{{ .data.Og.Author }}">{{ end }}
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="{{ if .data.Og.Image }}summary_large_image{{ else }}summary{{ end }}">
+    <meta name="twitter:title" content="{{ .data.Og.Title }}">
+    {{ if .data.Og.Description }}<meta name="twitter:description" content="{{ .data.Og.Description }}">{{ end }}
+    {{ if .data.Og.Image }}<meta name="twitter:image" content="{{ .data.Og.Image }}">{{ end }}
+    {{ end }}
     <style>
         :root {
             --primary: #2563eb;

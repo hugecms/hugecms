@@ -1,6 +1,8 @@
 package portal
 
 import (
+	"fmt"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 
@@ -102,4 +104,40 @@ func (c *cSite) Comment(r *ghttp.Request) {
 	} else {
 		r.Response.RedirectTo("/")
 	}
+}
+
+// Sitemap 动态输出 XML 站点地图
+func (c *cSite) Sitemap(r *ghttp.Request) {
+	ctx := r.Context()
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	baseUrl := fmt.Sprintf("%s://%s", scheme, r.Host)
+
+	xmlContent, err := service.Portal().GetSitemapXml(ctx, baseUrl)
+	if err != nil {
+		r.Response.WriteStatusExit(500, err.Error())
+		return
+	}
+	r.Response.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	r.Response.Write(xmlContent)
+}
+
+// Robots 动态输出搜索引擎协议文件
+func (c *cSite) Robots(r *ghttp.Request) {
+	ctx := r.Context()
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	baseUrl := fmt.Sprintf("%s://%s", scheme, r.Host)
+
+	robotsContent, err := service.Portal().GetRobotsTxt(ctx, baseUrl)
+	if err != nil {
+		r.Response.WriteStatusExit(500, err.Error())
+		return
+	}
+	r.Response.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	r.Response.Write(robotsContent)
 }

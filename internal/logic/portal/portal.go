@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"strings"
 
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
@@ -271,6 +272,51 @@ func (s *sPortal) GetCategoryData(ctx context.Context, slug string, page, size i
 		Description: term.Description,
 	}
 
+	// 社交分享 Open Graph
+	catOg := &model.OpenGraphMeta{
+		Type:        "website",
+		Title:       term.Name + " - " + siteName,
+		Description: term.Description,
+		Url:         fmt.Sprintf("/category/%s", term.Slug),
+		SiteName:    siteName,
+	}
+
+	// 面包屑导航: 首页 -> 分类法 -> 父分类 (如有) -> 当前分类
+	breadcrumbs := []model.PortalBreadcrumbItem{
+		{Name: "首页", Url: "/"},
+		{Name: taxonomy.Name, Url: ""},
+	}
+	if term.ParentId > 0 {
+		var parentTerm entity.Terms
+		if err := dao.Terms.Ctx(ctx).WherePri(term.ParentId).Scan(&parentTerm); err == nil && parentTerm.Id > 0 {
+			breadcrumbs = append(breadcrumbs, model.PortalBreadcrumbItem{
+				Name: parentTerm.Name,
+				Url:  fmt.Sprintf("/category/%s", parentTerm.Slug),
+			})
+		}
+	}
+	breadcrumbs = append(breadcrumbs, model.PortalBreadcrumbItem{
+		Name: term.Name,
+		Url:  "",
+	})
+
+	// 查询直属子分类
+	var subTermEntities []entity.Terms
+	_ = dao.Terms.Ctx(ctx).
+		Where("parent_id", term.Id).
+		OrderAsc("sort").
+		Scan(&subTermEntities)
+	subTerms := make([]model.TermItem, len(subTermEntities))
+	for i, st := range subTermEntities {
+		subTerms[i] = model.TermItem{
+			Id:           int64(st.Id),
+			Name:         st.Name,
+			Slug:         st.Slug,
+			Description:  st.Description,
+			ContentCount: int(st.ContentCount),
+		}
+	}
+
 	return &model.PortalCategoryOutput{
 		SiteName:    siteName,
 		SiteInfo:    siteInfo,
@@ -288,12 +334,15 @@ func (s *sPortal) GetCategoryData(ctx context.Context, slug string, page, size i
 			Description:  term.Description,
 			ContentCount: int(term.ContentCount),
 		},
-		Contents:   list,
-		Seo:        catSeo,
-		Total:      total,
-		Page:       page,
-		Size:       size,
-		TotalPages: totalPages,
+		Breadcrumbs: breadcrumbs,
+		SubTerms:    subTerms,
+		Contents:    list,
+		Seo:         catSeo,
+		Og:          catOg,
+		Total:       total,
+		Page:        page,
+		Size:        size,
+		TotalPages:  totalPages,
 	}, nil
 }
 
@@ -440,6 +489,68 @@ func (s *sPortal) GetDetailData(ctx context.Context, slug string, clientIp strin
 		CreatedAt:    c.CreatedAt,
 	}
 
+	// 智能补全 SEO 标签：若无专门设置，则使用文章标题、摘要
+	if seo.Title == "" {
+		seo.Title = c.Title
+	}
+	summaryStr := ""
+	if dynamicData["field_1"] != nil {
+		summaryStr = gconv.String(dynamicData["field_1"])
+	}
+	if seo.Description == "" {
+		seo.Description = summaryStr
+	}
+
+	// 查询所属主分类
+	var catItem *model.TermItem
+	var rel entity.TermRelationships
+	if err := dao.TermRelationships.Ctx(ctx).Where("content_id", c.Id).Scan(&rel); err == nil && rel.TermId > 0 {
+		var term entity.Terms
+		if err := dao.Terms.Ctx(ctx).WherePri(rel.TermId).Scan(&term); err == nil && term.Id > 0 {
+			catItem = &model.TermItem{
+				Id:           int64(term.Id),
+				Name:         term.Name,
+				Slug:         term.Slug,
+				Description:  term.Description,
+				ContentCount: int(term.ContentCount),
+			}
+		}
+	}
+
+	// 面包屑导航: 首页 -> 分类 (如有) -> 文章标题
+	breadcrumbs := []model.PortalBreadcrumbItem{
+		{Name: "首页", Url: "/"},
+	}
+	if catItem != nil {
+		breadcrumbs = append(breadcrumbs, model.PortalBreadcrumbItem{
+			Name: catItem.Name,
+			Url:  fmt.Sprintf("/category/%s", catItem.Slug),
+		})
+	}
+	breadcrumbs = append(breadcrumbs, model.PortalBreadcrumbItem{
+		Name: c.Title,
+		Url:  "",
+	})
+
+	// 社交分享 Open Graph
+	pubTimeStr := ""
+	if c.PublishedAt != nil {
+		pubTimeStr = c.PublishedAt.ISO8601()
+	}
+	coverImg := ""
+	if dynamicData["cover"] != nil {
+		coverImg = gconv.String(dynamicData["cover"])
+	}
+	og := &model.OpenGraphMeta{
+		Type:        "article",
+		Title:       c.Title,
+		Description: summaryStr,
+		Url:         fmt.Sprintf("/detail/%s", c.Slug),
+		Image:       coverImg,
+		SiteName:    siteName,
+		PublishedAt: pubTimeStr,
+	}
+
 	return &model.PortalDetailOutput{
 		SiteName:    siteName,
 		SiteInfo:    siteInfo,
@@ -447,7 +558,10 @@ func (s *sPortal) GetDetailData(ctx context.Context, slug string, clientIp strin
 		FriendLinks: friendLinks,
 		Content:     contentDetail,
 		DynamicData: dynamicData,
+		Breadcrumbs: breadcrumbs,
+		Category:    catItem,
 		Seo:         &seo,
+		Og:          og,
 		Comments:    commentTree,
 		PrevContent: prevItem,
 		NextContent: nextItem,
@@ -494,4 +608,73 @@ func (s *sPortal) RenderPortal(ctx context.Context, r *ghttp.Request, tplName st
 	}
 	r.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	r.Response.Write(content)
+}
+
+// GetSitemapXml 动态生成符合规范的 sitemap.xml
+func (s *sPortal) GetSitemapXml(ctx context.Context, baseUrl string) (string, error) {
+	baseUrl = strings.TrimRight(baseUrl, "/")
+
+	var xmlBuilder strings.Builder
+	xmlBuilder.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
+	xmlBuilder.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` + "\n")
+
+	// 1. 首页
+	xmlBuilder.WriteString(fmt.Sprintf("  <url>\n    <loc>%s/</loc>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n", baseUrl))
+
+	// 2. 全部公开分类
+	var terms []entity.Terms
+	_ = dao.Terms.Ctx(ctx).Scan(&terms)
+	for _, term := range terms {
+		if term.Slug != "" {
+			xmlBuilder.WriteString(fmt.Sprintf("  <url>\n    <loc>%s/category/%s</loc>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n", baseUrl, term.Slug))
+		}
+	}
+
+	// 3. 全部已审核公开内容
+	var contents []entity.Contents
+	_ = dao.Contents.Ctx(ctx).
+		Where("status", "published").
+		Where("audit_status", "approved").
+		Where("visibility", "public").
+		OrderDesc("id").
+		Scan(&contents)
+
+	for _, c := range contents {
+		if c.Slug != "" {
+			lastmod := ""
+			if c.UpdatedAt != nil {
+				lastmod = c.UpdatedAt.Format("Y-m-d")
+			} else if c.PublishedAt != nil {
+				lastmod = c.PublishedAt.Format("Y-m-d")
+			}
+			lastmodXml := ""
+			if lastmod != "" {
+				lastmodXml = fmt.Sprintf("    <lastmod>%s</lastmod>\n", lastmod)
+			}
+			priority := "0.6"
+			if c.IsTop == 1 {
+				priority = "0.9"
+			}
+			xmlBuilder.WriteString(fmt.Sprintf("  <url>\n    <loc>%s/detail/%s</loc>\n%s    <changefreq>weekly</changefreq>\n    <priority>%s</priority>\n  </url>\n", baseUrl, c.Slug, lastmodXml, priority))
+		}
+	}
+
+	xmlBuilder.WriteString(`</urlset>`)
+	return xmlBuilder.String(), nil
+}
+
+// GetRobotsTxt 动态生成搜索引擎规范 robots.txt
+func (s *sPortal) GetRobotsTxt(ctx context.Context, baseUrl string) (string, error) {
+	baseUrl = strings.TrimRight(baseUrl, "/")
+
+	var builder strings.Builder
+	builder.WriteString("# Robots.txt generated automatically by HugeCMS\n")
+	builder.WriteString("User-agent: *\n")
+	builder.WriteString("Disallow: /api/\n")
+	builder.WriteString("Disallow: /admin/\n")
+	builder.WriteString("Disallow: /upload/temp/\n")
+	builder.WriteString("Allow: /\n\n")
+	builder.WriteString(fmt.Sprintf("Sitemap: %s/sitemap.xml\n", baseUrl))
+
+	return builder.String(), nil
 }

@@ -1,8 +1,19 @@
 {{ include "default/layouts/header.html" . }}
 
 <div class="container">
-    <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted);">
-        <a href="/">首页</a> / <strong style="color: var(--text-main);">{{ .data.Content.Title }}</strong>
+    <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted); display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+        {{ if .data.Breadcrumbs }}
+            {{ range $idx, $b := .data.Breadcrumbs }}
+                {{ if gt $idx 0 }}<span>/</span>{{ end }}
+                {{ if $b.Url }}
+                    <a href="{{ $b.Url }}">{{ $b.Name }}</a>
+                {{ else }}
+                    <strong style="color: var(--text-main);">{{ $b.Name }}</strong>
+                {{ end }}
+            {{ end }}
+        {{ else }}
+            <a href="/">首页</a> / <strong style="color: var(--text-main);">{{ .data.Content.Title }}</strong>
+        {{ end }}
     </div>
 
     <div class="layout-grid">
