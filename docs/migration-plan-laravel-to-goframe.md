@@ -694,13 +694,13 @@ gantt
 - [x] 3.4 迁移操作审计日志模块（`audit_logs`，仅记录变更 diff，避免写放大）。
 
 ### 阶段四：内容核心与关键业务难点攻坚
-- [ ] 4.0 在 `internal/model/` 目录下按领域定义 Logic 业务 DTO（`content.go`、`recycle_bin.go`、`model_field.go` 等），严格规范 `*Input` / `*Output` 契约。
-- [ ] 4.1 迁移动态模型定义（`content_models`）与动态字段 DDL 服务（`model_fields`，严格校验列名正则与类型映射）。
-- [ ] 4.2 迁移内容主业务（`contents`），严格执行 `status` × `audit_status` × `visibility` 三维状态机逻辑。
-- [ ] 4.3 迁移回收站模块（`recycle_bin`）：实现完整 JSON 快照提取、还原重建（含 `slug` 碰撞加后缀、多态 `seo_meta` 幂等清理）、彻底清空物理级联。
-- [ ] 4.4 迁移分类与标签模块（`taxonomies`/`terms`/`term_relationships`），事务维护内容计数。
-- [ ] 4.5 迁移评论模块（`comments`），支持层级嵌套与敏感审核。
-- [ ] 4.6 迁移附件双路径引用跟踪与防误删扫描校验。
+- [x] 4.0 在 `internal/model/` 目录下按领域定义 Logic 业务 DTO（`content.go`、`recycle_bin.go`、`model_field.go` 等），严格规范 `*Input` / `*Output` 契约。
+- [x] 4.1 迁移动态模型定义（`content_models`）与动态字段 DDL 服务（`model_fields`，严格校验列名正则与类型映射）。
+- [x] 4.2 迁移内容主业务（`contents`），严格执行 `status` × `audit_status` × `visibility` 三维状态机逻辑。
+- [x] 4.3 迁移回收站模块（`recycle_bin`）：实现完整 JSON 快照提取、还原重建（含 `slug` 碰撞加后缀、多态 `seo_meta` 幂等清理）、彻底清空物理级联。
+- [x] 4.4 迁移分类与标签模块（`taxonomies`/`terms`/`term_relationships`），事务维护内容计数。
+- [x] 4.5 迁移评论模块（`comments`），支持层级嵌套与敏感审核。
+- [x] 4.6 迁移附件双路径引用跟踪与防误删扫描校验。
 
 ### 阶段五：扩展模块与定时运维
 - [ ] 5.1 迁移表单模块（`form_templates`/`form_submissions`）。

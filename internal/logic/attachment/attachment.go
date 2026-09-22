@@ -14,6 +14,7 @@ import (
 
 	"hugecms/internal/dao"
 	"hugecms/internal/model"
+	"hugecms/internal/model/entity"
 	"hugecms/internal/service"
 )
 
@@ -94,4 +95,34 @@ func (s *sAttachment) Upload(ctx context.Context, in model.AttachmentUploadInput
 		MimeType:      in.File.Header.Get("Content-Type"),
 		StorageDriver: "local",
 	}, nil
+}
+
+// Delete 删除附件（含双路径引用跟踪校验保护）
+func (s *sAttachment) Delete(ctx context.Context, id int64) error {
+	// 1. 检查 attachment_relations 引用计数
+	relCount, err := dao.AttachmentRelations.Ctx(ctx).Where("attachment_id", id).Count()
+	if err != nil {
+		return err
+	}
+	if relCount > 0 {
+		return gerror.New("该附件已被内容图集关联引用，禁止删除")
+	}
+
+	// 2. 检查物理文件路径并删除
+	var att entity.Attachments
+	if err := dao.Attachments.Ctx(ctx).WherePri(id).Scan(&att); err != nil {
+		return err
+	}
+	if att.Id == 0 {
+		return gerror.New("附件不存在")
+	}
+
+	// 物理清理本地文件
+	if att.StorageDriver == "local" && att.FilePath != "" {
+		fullPath := filepath.Join("resource", "public", att.FilePath)
+		_ = gfile.Remove(fullPath)
+	}
+
+	_, err = dao.Attachments.Ctx(ctx).WherePri(id).Delete()
+	return err
 }

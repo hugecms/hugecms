@@ -49,6 +49,12 @@ var (
 						admin.Site,
 						admin.Appearance,
 						admin.AuditLog,
+						admin.ContentModel,
+						admin.ModelField,
+						admin.Content,
+						admin.Taxonomy,
+						admin.Comment,
+						admin.RecycleBin,
 					)
 				})
 			})
