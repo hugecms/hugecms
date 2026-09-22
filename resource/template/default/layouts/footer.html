@@ -1,0 +1,28 @@
+</div><!-- end main-wrapper -->
+
+<footer style="background: #fff; border-top: 1px solid var(--border-color); padding: 32px 0 24px; margin-top: auto; font-size: 13px; color: var(--text-muted);">
+    <div class="container">
+        {{ if .data.FriendLinks }}
+        <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border-color); display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+            <span style="font-weight: 600; color: var(--text-main);">友情链接：</span>
+            {{ range $idx, $link := .data.FriendLinks }}
+            <a href="{{ $link.SiteUrl }}" target="_blank" rel="noopener">{{ $link.SiteName }}</a>
+            {{ end }}
+        </div>
+        {{ end }}
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;">
+            <p>© {{ now | date "Y" }} {{ .data.SiteName }} 版权所有。{{ if .data.SiteInfo.icp_number }} · <a href="https://beian.miit.gov.cn" target="_blank" rel="nofollow">{{ .data.SiteInfo.icp_number }}</a>{{ end }}</p>
+            <p>Powered by <strong style="color: var(--primary);">HugeCMS</strong></p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const drawer = document.getElementById('mobileDrawer');
+        drawer.classList.toggle('active');
+    }
+</script>
+</body>
+</html>

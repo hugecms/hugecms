@@ -1,0 +1,77 @@
+{{ include "default/layouts/header.html" . }}
+
+<div class="container">
+    <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted);">
+        <a href="/">首页</a> / <span>{{ .data.Taxonomy.Name }}</span> / <strong style="color: var(--text-main);">{{ .data.Term.Name }}</strong>
+    </div>
+
+    <div class="layout-grid">
+        <!-- Main Content -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2>📁 {{ .data.Term.Name }}</h2>
+                        {{ if .data.Term.Description }}
+                        <p style="font-size: 13px; font-weight: normal; color: var(--text-muted); margin-top: 4px;">{{ .data.Term.Description }}</p>
+                        {{ end }}
+                    </div>
+                    <span style="font-size: 13px; font-weight: normal; color: var(--text-muted);">共 {{ .data.Total }} 篇</span>
+                </div>
+
+                {{ if .data.Contents }}
+                    {{ range $c := .data.Contents }}
+                    <article class="article-card">
+                        <h2 class="article-title">
+                            <a href="/detail/{{ $c.Slug }}">
+                                {{ if eq $c.IsTop 1 }}<span class="badge-top">置顶</span>{{ end }}
+                                {{ $c.Title }}
+                            </a>
+                        </h2>
+                        {{ if $c.Summary }}
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">{{ $c.Summary }}</p>
+                        {{ end }}
+                        <div class="article-meta">
+                            <span>📅 {{ if $c.PublishedAt }}{{ $c.PublishedAt | date "Y-m-d" }}{{ end }}</span>
+                            <span>👁️ {{ $c.Views }} 次阅读</span>
+                            <span>💬 {{ $c.CommentCount }} 条评论</span>
+                        </div>
+                    </article>
+                    {{ end }}
+
+                    <!-- Pagination -->
+                    {{ if gt .data.TotalPages 1 }}
+                    <div class="pagination">
+                        {{ if gt .data.Page 1 }}
+                        <a href="/category/{{ .data.Term.Slug }}?page={{ sub .data.Page 1 }}" class="btn btn-outline">上一页</a>
+                        {{ end }}
+                        <span style="font-size: 14px; color: var(--text-muted);">第 {{ .data.Page }} / {{ .data.TotalPages }} 页</span>
+                        {{ if lt .data.Page .data.TotalPages }}
+                        <a href="/category/{{ .data.Term.Slug }}?page={{ add .data.Page 1 }}" class="btn btn-outline">下一页</a>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                {{ else }}
+                    <p style="text-align: center; color: var(--text-muted); padding: 40px 0;">该分类下暂无已发布文章。</p>
+                {{ end }}
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <span>💡 分类导航</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">
+                    您正在浏览 <strong>{{ .data.Term.Name }}</strong> 专栏。点击顶部导航或返回首页发现更多精彩内容。
+                </p>
+                <div style="margin-top: 14px;">
+                    <a href="/" class="btn btn-outline" style="width: 100%;">返回首页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ include "default/layouts/footer.html" . }}

@@ -1,0 +1,153 @@
+{{ include "default/layouts/header.html" . }}
+
+<div class="container">
+    <div style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted);">
+        <a href="/">首页</a> / <strong style="color: var(--text-main);">{{ .data.Content.Title }}</strong>
+    </div>
+
+    <div class="layout-grid">
+        <!-- Main Article & Comments -->
+        <div>
+            <!-- Article Card -->
+            <article class="card">
+                <h1 style="font-size: 26px; font-weight: 800; line-height: 1.4; margin-bottom: 14px; color: var(--text-main);">
+                    {{ .data.Content.Title }}
+                </h1>
+
+                <div class="article-meta" style="padding-bottom: 18px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color);">
+                    <span>📅 发布时间：{{ if .data.Content.PublishedAt }}{{ .data.Content.PublishedAt | date "Y-m-d H:i" }}{{ end }}</span>
+                    <span>👁️ {{ .data.Content.Views }} 次阅读</span>
+                    <span>💬 {{ .data.Content.CommentCount }} 条评论</span>
+                </div>
+
+                {{ if .data.Locked }}
+                <div style="background: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 18px; border-radius: 8px; font-size: 14px;">
+                    ⚠️ 该内容受访问保护（密码保护或仅登录可见），暂未开放游客直接浏览。
+                </div>
+                {{ else }}
+                    <!-- Summary Blockquote -->
+                    {{ if .data.DynamicData.field_1 }}
+                    <blockquote style="background: #f8fafc; border-left: 4px solid var(--primary); padding: 12px 18px; margin-bottom: 24px; color: var(--text-muted); font-size: 15px; border-radius: 0 6px 6px 0;">
+                        {{ .data.DynamicData.field_1 }}
+                    </blockquote>
+                    {{ end }}
+
+                    <!-- Body Content -->
+                    <div style="font-size: 16px; line-height: 1.85; color: #334155; word-break: break-word;">
+                        {{ if .data.DynamicData.field_2 }}
+                            {{ .data.DynamicData.field_2 | noescape }}
+                        {{ else }}
+                            <p style="color: var(--text-muted);">（暂无详细正文）</p>
+                        {{ end }}
+                    </div>
+                {{ end }}
+
+                <!-- Prev & Next Navigation -->
+                <div style="margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+                    {{ if .data.PrevContent }}
+                    <div>👈 上一篇：<a href="/detail/{{ .data.PrevContent.Slug }}">{{ .data.PrevContent.Title }}</a></div>
+                    {{ end }}
+                    {{ if .data.NextContent }}
+                    <div>👉 下一篇：<a href="/detail/{{ .data.NextContent.Slug }}">{{ .data.NextContent.Title }}</a></div>
+                    {{ end }}
+                </div>
+            </article>
+
+            <!-- Comments Card -->
+            <section id="comments" class="card">
+                <div class="card-header">
+                    <span>💬 全部评论（{{ len .data.Comments }}）</span>
+                </div>
+
+                {{ if .data.Comments }}
+                    {{ range $com := .data.Comments }}
+                    <div class="comment-node">
+                        <div class="comment-header">
+                            <strong style="color: var(--text-main);">{{ $com.AuthorName }}</strong>
+                            <span style="color: var(--text-muted);">{{ if $com.CreatedAt }}{{ $com.CreatedAt | date "Y-m-d H:i" }}{{ end }}</span>
+                        </div>
+                        <p style="font-size: 14px; margin-top: 4px; color: #334155;">{{ $com.Content }}</p>
+                        <div style="margin-top: 6px;">
+                            <button type="button" class="btn btn-outline" style="padding: 2px 8px; font-size: 12px;" onclick="replyTo({{ $com.Id }}, '{{ $com.AuthorName }}')">回复</button>
+                        </div>
+
+                        <!-- Nested Replies -->
+                        {{ if $com.Replies }}
+                        <div class="reply-box">
+                            {{ range $rep := $com.Replies }}
+                            <div style="padding: 6px 0; font-size: 13px;">
+                                <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                                    <span><strong>{{ $rep.AuthorName }}</strong></span>
+                                    <span>{{ if $rep.CreatedAt }}{{ $rep.CreatedAt | date "m-d H:i" }}{{ end }}</span>
+                                </div>
+                                <p style="color: #334155; margin-top: 2px;">{{ $rep.Content }}</p>
+                            </div>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                {{ else }}
+                    <p style="color: var(--text-muted); font-size: 14px; padding: 12px 0;">暂无评论，快来抢占沙发吧！</p>
+                {{ end }}
+
+                <!-- Comment Form -->
+                <form method="POST" action="/comment" style="margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--border-color);">
+                    <input type="hidden" name="content_id" value="{{ .data.Content.Id }}">
+                    <input type="hidden" name="parent_id" id="parentId" value="0">
+
+                    <div id="replyNotice" style="display: none; background: var(--primary-light); color: var(--primary); padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 12px; align-items: center; justify-content: space-between;">
+                        <span>正在回复 <strong id="replyTarget"></strong>：</span>
+                        <button type="button" onclick="cancelReply()" style="background: none; border: none; color: var(--primary); cursor: pointer; text-decoration: underline;">取消回复</button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <input type="text" name="author_name" class="form-control" placeholder="您的昵称 *" required>
+                        <input type="email" name="author_email" class="form-control" placeholder="您的邮箱（不公开）">
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <textarea name="content" id="commentText" class="form-control" rows="4" placeholder="友善发言，共同探讨…" required style="resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">发表评论</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <span>💡 快捷分享</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 14px;">
+                    觉得本文有收获？欢迎复制链接分享给身边好友。
+                </p>
+                <button type="button" class="btn btn-outline" style="width: 100%;" onclick="copyLink()">📋 复制文章链接</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function replyTo(id, name) {
+        document.getElementById('parentId').value = id;
+        document.getElementById('replyTarget').innerText = '@' + name;
+        document.getElementById('replyNotice').style.display = 'flex';
+        const txt = document.getElementById('commentText');
+        txt.focus();
+        txt.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelReply() {
+        document.getElementById('parentId').value = '0';
+        document.getElementById('replyNotice').style.display = 'none';
+    }
+
+    function copyLink() {
+        navigator.clipboard.writeText(window.location.href).then(function() {
+            alert('文章链接已成功复制到剪贴板！');
+        });
+    }
+</script>
+
+{{ include "default/layouts/footer.html" . }}

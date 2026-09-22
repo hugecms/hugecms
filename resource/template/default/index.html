@@ -1,0 +1,87 @@
+{{ include "default/layouts/header.html" . }}
+
+<div class="container">
+    <div class="layout-grid">
+        <!-- Main Column -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <span>📰 最新资讯与内容</span>
+                    <span style="font-size: 13px; font-weight: normal; color: var(--text-muted);">共 {{ .data.Total }} 篇文章</span>
+                </div>
+
+                {{ if .data.Contents }}
+                    {{ range $c := .data.Contents }}
+                    <article class="article-card">
+                        <h2 class="article-title">
+                            <a href="/detail/{{ $c.Slug }}">
+                                {{ if eq $c.IsTop 1 }}<span class="badge-top">置顶</span>{{ end }}
+                                {{ $c.Title }}
+                            </a>
+                        </h2>
+                        {{ if $c.Summary }}
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">{{ $c.Summary }}</p>
+                        {{ end }}
+                        <div class="article-meta">
+                            <span>📅 {{ if $c.PublishedAt }}{{ $c.PublishedAt | date "Y-m-d" }}{{ end }}</span>
+                            <span>👁️ {{ $c.Views }} 次阅读</span>
+                            <span>💬 {{ $c.CommentCount }} 条评论</span>
+                        </div>
+                    </article>
+                    {{ end }}
+
+                    <!-- Pagination -->
+                    {{ if gt .data.TotalPages 1 }}
+                    <div class="pagination">
+                        {{ if gt .data.Page 1 }}
+                        <a href="/?page={{ sub .data.Page 1 }}" class="btn btn-outline">上一页</a>
+                        {{ end }}
+                        <span style="font-size: 14px; color: var(--text-muted);">第 {{ .data.Page }} / {{ .data.TotalPages }} 页</span>
+                        {{ if lt .data.Page .data.TotalPages }}
+                        <a href="/?page={{ add .data.Page 1 }}" class="btn btn-outline">下一页</a>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                {{ else }}
+                    <p style="text-align: center; color: var(--text-muted); padding: 40px 0;">暂无已发布内容，请前往管理后台发布第一篇文章。</p>
+                {{ end }}
+            </div>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div>
+            <!-- Categories Card -->
+            {{ if .data.Categories }}
+            <div class="card">
+                <div class="card-header">
+                    <span>🏷️ 分类专栏</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    {{ range $cat := .data.Categories }}
+                    <a href="/category/{{ $cat.Slug }}" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-radius: 6px; background: #f8fafc; font-size: 14px;">
+                        <span>{{ $cat.Name }}</span>
+                        <span style="background: #e2e8f0; color: #475569; font-size: 11px; padding: 2px 6px; border-radius: 10px;">{{ $cat.ContentCount }} 篇</span>
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+
+            <!-- Site Intro Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span>💡 关于本站</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">
+                    {{ if .data.SiteInfo.description }}
+                    {{ .data.SiteInfo.description }}
+                    {{ else }}
+                    欢迎访问 {{ .data.SiteName }}，本站基于企业级高性能内容管理系统搭建，提供极速响应的 SSR 服务端渲染与丰富的内容创作管理体验。
+                    {{ end }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ include "default/layouts/footer.html" . }}

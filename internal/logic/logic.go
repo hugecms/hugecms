@@ -20,6 +20,7 @@ import (
 	_ "hugecms/internal/logic/model_field"
 	_ "hugecms/internal/logic/option"
 	_ "hugecms/internal/logic/permission"
+	_ "hugecms/internal/logic/portal"
 	_ "hugecms/internal/logic/recycle_bin"
 	_ "hugecms/internal/logic/role"
 	_ "hugecms/internal/logic/site"
