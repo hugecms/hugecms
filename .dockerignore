@@ -1,0 +1,26 @@
+# Git and IDE
+.git
+.gitignore
+.idea
+.vscode
+*.swp
+*.orig
+
+# Binaries and outputs
+*.exe
+main
+hugecms
+bin/
+output/
+temp/
+manifest/output/
+
+# Frontend build caches
+**/node_modules/
+**/.vite/
+resource/admin/node_modules/
+
+# Test and docs
+test/
+docs/
+*.md

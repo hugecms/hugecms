@@ -1,0 +1,25 @@
+# HugeCMS 生产环境配置文件参考模版
+# 线上部署建议将此文件重命名为 config.yaml 或挂载到容器中
+
+server:
+  address:     ":8000"
+  openapiPath: "/api.json"
+  swaggerPath: "/swagger"
+  clientMaxBodySize: "100MB"  # 支持大附件上传
+  accessLogEnabled:  true
+
+logger:
+  path:   "resource/log"
+  level:  "warn"              # 生产环境推荐 warn/error
+  stdout: true                # 容器环境下输出到 stdout 便于 docker logs 抓取
+  rotateSize: "50MB"
+  rotateBackupLimit: 10
+  rotateBackupExpire: "30d"
+
+database:
+  default:
+    link: "mysql:root:root123456@tcp(127.0.0.1:3306)/hugecms?charset=utf8mb4&parseTime=True&loc=Local"
+    maxIdle: 20
+    maxOpen: 100
+    maxLifetime: "30m"
+    debug: false              # 生产环境关闭 SQL 详细输出

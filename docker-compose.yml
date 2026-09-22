@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  # -------------------------------------------------------------
+  # HugeCMS Web Application Service
+  # -------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hugecms:latest
+    container_name: hugecms-app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=Asia/Shanghai
+      # GF 环境变量支持覆写配置文件
+      - GF_DATABASE_DEFAULT_LINK=mysql:root:root123456@tcp(db:3306)/hugecms?charset=utf8mb4&parseTime=True&loc=Local
+    volumes:
+      # 持久化附件上传目录
+      - ./data/upload:/app/resource/public/upload
+      # 可选：自定义外挂配置文件
+      # - ./manifest/config/config.prod.yaml:/app/manifest/config/config.yaml:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - hugecms-net
+
+  # -------------------------------------------------------------
+  # MySQL 8.0 Database Service
+  # -------------------------------------------------------------
+  db:
+    image: mysql:8.0
+    container_name: hugecms-mysql
+    restart: always
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+      - --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    environment:
+      MYSQL_ROOT_PASSWORD: root123456
+      MYSQL_DATABASE: hugecms
+      TZ: Asia/Shanghai
+    volumes:
+      # 数据库持久化存储
+      - ./data/mysql:/var/lib/mysql
+      # 首次启动自动初始化数据库结构与演示数据
+      - ./docs/db.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    ports:
+      # 若不需要对外暴露数据库端口，可注释下行
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - hugecms-net
+
+networks:
+  hugecms-net:
+    driver: bridge
