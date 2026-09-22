@@ -681,11 +681,11 @@ gantt
 - [x] 1.3 编写 `hack/config.yaml` 并成功执行 `gf gen dao`，已生成全部数据表的 DAO/Entity/Do（已完成）。
 - [x] 1.4 移植 `CmsSeeder.php` 到 [internal/cmd/seeder.go](file:///d:/code/git/hg/internal/cmd/seeder.go)，已成功执行一键种子数据填充（管理员、内置角色、54条权限树、默认文章模型、分类、导航与全局配置已就绪）。
 
-### 阶段二：通用基础设施与安全
-- [ ] 2.1 封装统一的 JSON Response 结构与全局异常捕获中间件。
-- [ ] 2.2 实现基于 `bcrypt` 的密码验证器与 JWT 签发/校验中间件。
-- [ ] 2.3 实现 RBAC 权限拦截中间件，严格复刻超管免检旁路。
-- [ ] 2.4 实现通用附件上传控制器（`common/v1/attachment`），支持文件本地与对象存储。
+### 阶段二：通用基础设施与安全（已全部完成）
+- [x] 2.1 封装统一的 JSON Response 结构与全局异常捕获中间件（[utility/response](file:///d:/code/git/hg/utility/response/response.go) 与 [internal/logic/middleware](file:///d:/code/git/hg/internal/logic/middleware/middleware.go)）。
+- [x] 2.2 实现基于 `bcrypt` 的密码验证器与 JWT 签发/校验中间件（[utility/password](file:///d:/code/git/hg/utility/password/password.go)、[utility/jwt](file:///d:/code/git/hg/utility/jwt/jwt.go)、[internal/logic/auth](file:///d:/code/git/hg/internal/logic/auth/auth.go)）。
+- [x] 2.3 实现 RBAC 权限拦截中间件，严格复刻超管免检旁路（[internal/logic/middleware](file:///d:/code/git/hg/internal/logic/middleware/middleware.go) 的 `RequirePermission` 与 `ContextUser.HasPermission`）。
+- [x] 2.4 实现通用附件上传控制器与存储落地（[api/common/v1](file:///d:/code/git/hg/api/common/v1/attachment.go)、[internal/controller/common](file:///d:/code/git/hg/internal/controller/common/attachment.go)、[internal/logic/attachment](file:///d:/code/git/hg/internal/logic/attachment/attachment.go)）。
 
 ### 阶段三：管理后台基础模块
 - [ ] 3.1 迁移用户管理模块（`admin/user`、`admin/role`、`admin/permission`）。
