@@ -37,6 +37,7 @@ type PortalHomeOutput struct {
 	TopContents []PortalContentItem `json:"top_contents"`
 	Contents    []PortalContentItem `json:"contents"`
 	Categories  []TermItem          `json:"categories"`
+	Seo         *SeoMetaItem        `json:"seo"`
 	Total       int                 `json:"total"`
 	Page        int                 `json:"page"`
 	Size        int                 `json:"size"`
@@ -52,6 +53,7 @@ type PortalCategoryOutput struct {
 	Taxonomy    *TaxonomyItem       `json:"taxonomy"`
 	Term        *TermItem           `json:"term"`
 	Contents    []PortalContentItem `json:"contents"`
+	Seo         *SeoMetaItem        `json:"seo"`
 	Total       int                 `json:"total"`
 	Page        int                 `json:"page"`
 	Size        int                 `json:"size"`

@@ -177,6 +177,12 @@ func (s *sPortal) GetHomeData(ctx context.Context, page, size int) (*model.Porta
 		totalPages = 1
 	}
 
+	homeSeo := &model.SeoMetaItem{
+		Title:       siteName,
+		Keywords:    siteInfo["keywords"],
+		Description: siteInfo["description"],
+	}
+
 	return &model.PortalHomeOutput{
 		SiteName:    siteName,
 		SiteInfo:    siteInfo,
@@ -184,6 +190,7 @@ func (s *sPortal) GetHomeData(ctx context.Context, page, size int) (*model.Porta
 		FriendLinks: friendLinks,
 		Contents:    list,
 		Categories:  categories,
+		Seo:         homeSeo,
 		Total:       total,
 		Page:        page,
 		Size:        size,
@@ -259,6 +266,11 @@ func (s *sPortal) GetCategoryData(ctx context.Context, slug string, page, size i
 		totalPages = 1
 	}
 
+	catSeo := &model.SeoMetaItem{
+		Title:       term.Name + " - " + taxonomy.Name,
+		Description: term.Description,
+	}
+
 	return &model.PortalCategoryOutput{
 		SiteName:    siteName,
 		SiteInfo:    siteInfo,
@@ -277,6 +289,7 @@ func (s *sPortal) GetCategoryData(ctx context.Context, slug string, page, size i
 			ContentCount: int(term.ContentCount),
 		},
 		Contents:   list,
+		Seo:        catSeo,
 		Total:      total,
 		Page:       page,
 		Size:       size,
@@ -474,5 +487,11 @@ func (s *sPortal) RenderPortal(ctx context.Context, r *ghttp.Request, tplName st
 	if !gfile.Exists(fmt.Sprintf("resource/template/%s", tplPath)) {
 		tplPath = fmt.Sprintf("default/%s", tplName)
 	}
-	_ = r.Response.WriteTpl(tplPath, data)
+	content, err := g.View().Parse(ctx, tplPath, data)
+	if err != nil {
+		r.Response.WriteStatusExit(500, fmt.Sprintf("template parsing failed: %v", err))
+		return
+	}
+	r.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	r.Response.Write(content)
 }

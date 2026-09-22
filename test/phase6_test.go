@@ -195,4 +195,10 @@ func TestPhase6PortalAndResources(t *testing.T) {
 		}
 		t.Log("Admin SPA build and static hosting validated successfully.")
 	})
+
+	t.Run("CheckServerView", func(t *testing.T) {
+		s := g.Server("test_server")
+		_ = s
+	})
 }
+
