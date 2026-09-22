@@ -38,6 +38,7 @@ type PortalHomeOutput struct {
 	Contents    []PortalContentItem `json:"contents"`
 	Categories  []TermItem          `json:"categories"`
 	Seo         *SeoMetaItem        `json:"seo"`
+	Og          *OpenGraphMeta      `json:"og"`
 	Total       int                 `json:"total"`
 	Page        int                 `json:"page"`
 	Size        int                 `json:"size"`

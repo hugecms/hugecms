@@ -184,6 +184,14 @@ func (s *sPortal) GetHomeData(ctx context.Context, page, size int) (*model.Porta
 		Description: siteInfo["description"],
 	}
 
+	homeOg := &model.OpenGraphMeta{
+		Type:        "website",
+		Title:       siteName,
+		Description: siteInfo["description"],
+		Url:         "/",
+		SiteName:    siteName,
+	}
+
 	return &model.PortalHomeOutput{
 		SiteName:    siteName,
 		SiteInfo:    siteInfo,
@@ -192,6 +200,7 @@ func (s *sPortal) GetHomeData(ctx context.Context, page, size int) (*model.Porta
 		Contents:    list,
 		Categories:  categories,
 		Seo:         homeSeo,
+		Og:          homeOg,
 		Total:       total,
 		Page:        page,
 		Size:        size,
