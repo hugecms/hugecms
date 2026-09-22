@@ -675,11 +675,11 @@ gantt
     文档完善与上线平滑切换                 :2026-10-25, 1d
 ```
 
-### 阶段一：环境与基础设施搭建
-- [x] 1.1 整理全部 43 张数据表（38 张迁移表、动态表及系统辅助表）的完整 DDL，输出至 [docs/db.sql](file:///d:/code/git/hg/docs/db.sql)（已完成）。
-- [ ] 1.2 配置 `manifest/config/config.yaml`（MySQL、Redis、Server 参数）。
-- [ ] 1.3 编写 `hack/config.yaml` 并执行 `gf gen dao`，生成所有数据表的 DAO/Entity/Do。
-- [ ] 1.4 移植 `CmsSeeder.php` 到 `internal/cmd/seeder.go`，确保新库一键初始化种子数据。
+### 阶段一：环境与基础设施搭建（已全部完成）
+- [x] 1.1 整理全部 36 张业务表与动态表的完整 DDL，输出至 [docs/db.sql](file:///d:/code/git/hg/docs/db.sql)（已完成）。
+- [x] 1.2 配置 `manifest/config/config.yaml`（MySQL 连接与 Server 参数已配置完成）。
+- [x] 1.3 编写 `hack/config.yaml` 并成功执行 `gf gen dao`，已生成全部数据表的 DAO/Entity/Do（已完成）。
+- [x] 1.4 移植 `CmsSeeder.php` 到 [internal/cmd/seeder.go](file:///d:/code/git/hg/internal/cmd/seeder.go)，已成功执行一键种子数据填充（管理员、内置角色、54条权限树、默认文章模型、分类、导航与全局配置已就绪）。
 
 ### 阶段二：通用基础设施与安全
 - [ ] 2.1 封装统一的 JSON Response 结构与全局异常捕获中间件。
