@@ -10,33 +10,193 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppearanceMenusRouteImport } from './routes/appearance/menus'
+import { Route as AppearanceSeoRouteImport } from './routes/appearance/seo'
+import { Route as AssetsAttachmentsRouteImport } from './routes/assets/attachments'
+import { Route as ContentsIndexRouteImport } from './routes/contents/index'
+import { Route as ContentsModelsRouteImport } from './routes/contents/models'
+import { Route as ContentsRecycleRouteImport } from './routes/contents/recycle'
+import { Route as OperationsCommentsRouteImport } from './routes/operations/comments'
+import { Route as OperationsFormsRouteImport } from './routes/operations/forms'
+import { Route as OperationsLinksRouteImport } from './routes/operations/links'
+import { Route as SystemUsersRouteImport } from './routes/system/users'
+import { Route as TaxonomiesCategoriesRouteImport } from './routes/taxonomies/categories'
+import { Route as TaxonomiesTagsRouteImport } from './routes/taxonomies/tags'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppearanceMenusRoute = AppearanceMenusRouteImport.update({
+  id: '/appearance/menus',
+  path: '/appearance/menus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppearanceSeoRoute = AppearanceSeoRouteImport.update({
+  id: '/appearance/seo',
+  path: '/appearance/seo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssetsAttachmentsRoute = AssetsAttachmentsRouteImport.update({
+  id: '/assets/attachments',
+  path: '/assets/attachments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContentsIndexRoute = ContentsIndexRouteImport.update({
+  id: '/contents/',
+  path: '/contents/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContentsModelsRoute = ContentsModelsRouteImport.update({
+  id: '/contents/models',
+  path: '/contents/models',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContentsRecycleRoute = ContentsRecycleRouteImport.update({
+  id: '/contents/recycle',
+  path: '/contents/recycle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperationsCommentsRoute = OperationsCommentsRouteImport.update({
+  id: '/operations/comments',
+  path: '/operations/comments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperationsFormsRoute = OperationsFormsRouteImport.update({
+  id: '/operations/forms',
+  path: '/operations/forms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OperationsLinksRoute = OperationsLinksRouteImport.update({
+  id: '/operations/links',
+  path: '/operations/links',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemUsersRoute = SystemUsersRouteImport.update({
+  id: '/system/users',
+  path: '/system/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaxonomiesCategoriesRoute = TaxonomiesCategoriesRouteImport.update({
+  id: '/taxonomies/categories',
+  path: '/taxonomies/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaxonomiesTagsRoute = TaxonomiesTagsRouteImport.update({
+  id: '/taxonomies/tags',
+  path: '/taxonomies/tags',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/appearance/menus': typeof AppearanceMenusRoute
+  '/appearance/seo': typeof AppearanceSeoRoute
+  '/assets/attachments': typeof AssetsAttachmentsRoute
+  '/contents/models': typeof ContentsModelsRoute
+  '/contents/recycle': typeof ContentsRecycleRoute
+  '/operations/comments': typeof OperationsCommentsRoute
+  '/operations/forms': typeof OperationsFormsRoute
+  '/operations/links': typeof OperationsLinksRoute
+  '/system/users': typeof SystemUsersRoute
+  '/taxonomies/categories': typeof TaxonomiesCategoriesRoute
+  '/taxonomies/tags': typeof TaxonomiesTagsRoute
+  '/contents/': typeof ContentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/appearance/menus': typeof AppearanceMenusRoute
+  '/appearance/seo': typeof AppearanceSeoRoute
+  '/assets/attachments': typeof AssetsAttachmentsRoute
+  '/contents/models': typeof ContentsModelsRoute
+  '/contents/recycle': typeof ContentsRecycleRoute
+  '/operations/comments': typeof OperationsCommentsRoute
+  '/operations/forms': typeof OperationsFormsRoute
+  '/operations/links': typeof OperationsLinksRoute
+  '/system/users': typeof SystemUsersRoute
+  '/taxonomies/categories': typeof TaxonomiesCategoriesRoute
+  '/taxonomies/tags': typeof TaxonomiesTagsRoute
+  '/contents': typeof ContentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/appearance/menus': typeof AppearanceMenusRoute
+  '/appearance/seo': typeof AppearanceSeoRoute
+  '/assets/attachments': typeof AssetsAttachmentsRoute
+  '/contents/models': typeof ContentsModelsRoute
+  '/contents/recycle': typeof ContentsRecycleRoute
+  '/operations/comments': typeof OperationsCommentsRoute
+  '/operations/forms': typeof OperationsFormsRoute
+  '/operations/links': typeof OperationsLinksRoute
+  '/system/users': typeof SystemUsersRoute
+  '/taxonomies/categories': typeof TaxonomiesCategoriesRoute
+  '/taxonomies/tags': typeof TaxonomiesTagsRoute
+  '/contents/': typeof ContentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/appearance/menus'
+    | '/appearance/seo'
+    | '/assets/attachments'
+    | '/contents/models'
+    | '/contents/recycle'
+    | '/operations/comments'
+    | '/operations/forms'
+    | '/operations/links'
+    | '/system/users'
+    | '/taxonomies/categories'
+    | '/taxonomies/tags'
+    | '/contents/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/appearance/menus'
+    | '/appearance/seo'
+    | '/assets/attachments'
+    | '/contents/models'
+    | '/contents/recycle'
+    | '/operations/comments'
+    | '/operations/forms'
+    | '/operations/links'
+    | '/system/users'
+    | '/taxonomies/categories'
+    | '/taxonomies/tags'
+    | '/contents'
+  id:
+    | '__root__'
+    | '/'
+    | '/appearance/menus'
+    | '/appearance/seo'
+    | '/assets/attachments'
+    | '/contents/models'
+    | '/contents/recycle'
+    | '/operations/comments'
+    | '/operations/forms'
+    | '/operations/links'
+    | '/system/users'
+    | '/taxonomies/categories'
+    | '/taxonomies/tags'
+    | '/contents/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppearanceMenusRoute: typeof AppearanceMenusRoute
+  AppearanceSeoRoute: typeof AppearanceSeoRoute
+  AssetsAttachmentsRoute: typeof AssetsAttachmentsRoute
+  ContentsModelsRoute: typeof ContentsModelsRoute
+  ContentsRecycleRoute: typeof ContentsRecycleRoute
+  OperationsCommentsRoute: typeof OperationsCommentsRoute
+  OperationsFormsRoute: typeof OperationsFormsRoute
+  OperationsLinksRoute: typeof OperationsLinksRoute
+  SystemUsersRoute: typeof SystemUsersRoute
+  TaxonomiesCategoriesRoute: typeof TaxonomiesCategoriesRoute
+  TaxonomiesTagsRoute: typeof TaxonomiesTagsRoute
+  ContentsIndexRoute: typeof ContentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +208,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/appearance/menus': {
+      id: '/appearance/menus'
+      path: '/appearance/menus'
+      fullPath: '/appearance/menus'
+      preLoaderRoute: typeof AppearanceMenusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/appearance/seo': {
+      id: '/appearance/seo'
+      path: '/appearance/seo'
+      fullPath: '/appearance/seo'
+      preLoaderRoute: typeof AppearanceSeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assets/attachments': {
+      id: '/assets/attachments'
+      path: '/assets/attachments'
+      fullPath: '/assets/attachments'
+      preLoaderRoute: typeof AssetsAttachmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contents/': {
+      id: '/contents/'
+      path: '/contents'
+      fullPath: '/contents/'
+      preLoaderRoute: typeof ContentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contents/models': {
+      id: '/contents/models'
+      path: '/contents/models'
+      fullPath: '/contents/models'
+      preLoaderRoute: typeof ContentsModelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contents/recycle': {
+      id: '/contents/recycle'
+      path: '/contents/recycle'
+      fullPath: '/contents/recycle'
+      preLoaderRoute: typeof ContentsRecycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operations/comments': {
+      id: '/operations/comments'
+      path: '/operations/comments'
+      fullPath: '/operations/comments'
+      preLoaderRoute: typeof OperationsCommentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operations/forms': {
+      id: '/operations/forms'
+      path: '/operations/forms'
+      fullPath: '/operations/forms'
+      preLoaderRoute: typeof OperationsFormsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operations/links': {
+      id: '/operations/links'
+      path: '/operations/links'
+      fullPath: '/operations/links'
+      preLoaderRoute: typeof OperationsLinksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system/users': {
+      id: '/system/users'
+      path: '/system/users'
+      fullPath: '/system/users'
+      preLoaderRoute: typeof SystemUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taxonomies/categories': {
+      id: '/taxonomies/categories'
+      path: '/taxonomies/categories'
+      fullPath: '/taxonomies/categories'
+      preLoaderRoute: typeof TaxonomiesCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taxonomies/tags': {
+      id: '/taxonomies/tags'
+      path: '/taxonomies/tags'
+      fullPath: '/taxonomies/tags'
+      preLoaderRoute: typeof TaxonomiesTagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppearanceMenusRoute: AppearanceMenusRoute,
+  AppearanceSeoRoute: AppearanceSeoRoute,
+  AssetsAttachmentsRoute: AssetsAttachmentsRoute,
+  ContentsModelsRoute: ContentsModelsRoute,
+  ContentsRecycleRoute: ContentsRecycleRoute,
+  OperationsCommentsRoute: OperationsCommentsRoute,
+  OperationsFormsRoute: OperationsFormsRoute,
+  OperationsLinksRoute: OperationsLinksRoute,
+  SystemUsersRoute: SystemUsersRoute,
+  TaxonomiesCategoriesRoute: TaxonomiesCategoriesRoute,
+  TaxonomiesTagsRoute: TaxonomiesTagsRoute,
+  ContentsIndexRoute: ContentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

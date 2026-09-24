@@ -50,6 +50,16 @@ var (
 			s.AddStaticPath("/static", "resource/public")
 			if gfile.Exists("resource/admin/dist/client") {
 				s.AddStaticPath("/admin", "resource/admin/dist/client")
+				s.BindHookHandler("/admin/*", ghttp.HookBeforeServe, func(r *ghttp.Request) {
+					ext := gfile.Ext(r.URL.Path)
+					if ext == "" || ext == ".html" {
+						indexPath := "resource/admin/dist/client/index.html"
+						if gfile.Exists(indexPath) {
+							r.Response.ServeFile(indexPath)
+							r.ExitAll()
+						}
+					}
+				})
 			}
 
 			// 管理后台 Admin API
