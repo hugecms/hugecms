@@ -26,6 +26,23 @@ interface CartState {
   getTotalPrice: () => number
   getDiscountAmount: () => number
   getFinalPayAmount: () => number
+
+  // 添加商品到购物车
+  addItem: (item: {
+    goodsId?: string | number
+    id?: string | number
+    title?: string
+    name?: string
+    price: number
+    quantity?: number
+    image?: string
+    imageUrl?: string
+    sku?: string
+    shopName?: string
+    shop?: string
+    tag?: string
+    isSelfOperated?: boolean
+  }) => void
 }
 
 const initialCartItems: CartItem[] = [
@@ -161,4 +178,32 @@ export const useCartStore = create<CartState>((set, get) => ({
     const discount = get().getDiscountAmount()
     return Math.max(0, total - discount)
   },
+
+  addItem: (newItem) =>
+    set((state) => {
+      const goodsIdStr = String(newItem.goodsId || newItem.id || newItem.name || Date.now())
+      const existing = state.items.find((i) => i.goodsId === goodsIdStr)
+      if (existing) {
+        return {
+          items: state.items.map((i) =>
+            i.goodsId === goodsIdStr
+              ? { ...i, quantity: i.quantity + (newItem.quantity || 1) }
+              : i
+          ),
+        }
+      }
+      const item: CartItem = {
+        id: `c_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+        goodsId: goodsIdStr,
+        title: newItem.title || newItem.name || '京东优选精选商品',
+        sku: newItem.sku || '官方标配',
+        imageUrl: newItem.imageUrl || newItem.image || 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=160&q=80',
+        price: newItem.price,
+        quantity: newItem.quantity || 1,
+        selected: true,
+        isSelfOperated: newItem.isSelfOperated ?? true,
+        shopName: newItem.shopName || newItem.shop || '京东自营旗舰店',
+      }
+      return { items: [item, ...state.items] }
+    }),
 }))

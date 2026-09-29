@@ -9,40 +9,47 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as B2bRouteImport } from './routes/b2b'
-import { Route as CartRouteImport } from './routes/cart'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as MallRouteImport } from './routes/_mall'
+import { Route as TradeRouteImport } from './routes/_trade'
+import { Route as UserRouteImport } from './routes/_user'
 import { Route as ChatRouteImport } from './routes/chat'
-import { Route as CheckoutRouteImport } from './routes/checkout'
-import { Route as CouponRouteImport } from './routes/coupon'
-import { Route as ListRouteImport } from './routes/list'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as PayRouteImport } from './routes/pay'
-import { Route as PlusRouteImport } from './routes/plus'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as SeckillRouteImport } from './routes/seckill'
 import { Route as SellerRouteRouteImport } from './routes/seller/route'
-import { Route as ShopRouteImport } from './routes/shop'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as MallIndexRouteImport } from './routes/_mall/index'
+import { Route as MallB2bRouteImport } from './routes/_mall/b2b'
+import { Route as MallCouponRouteImport } from './routes/_mall/coupon'
+import { Route as MallListRouteImport } from './routes/_mall/list'
+import { Route as MallPlusRouteImport } from './routes/_mall/plus'
+import { Route as MallSeckillRouteImport } from './routes/_mall/seckill'
+import { Route as MallShopRouteImport } from './routes/_mall/shop'
+import { Route as TradeCartRouteImport } from './routes/_trade/cart'
+import { Route as TradeCheckoutRouteImport } from './routes/_trade/checkout'
+import { Route as TradePayRouteImport } from './routes/_trade/pay'
+import { Route as UserUserRouteImport } from './routes/_user/user'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as ItemIdRouteImport } from './routes/item.$id'
-import { Route as MerchantSettleRouteImport } from './routes/merchant.settle'
 import { Route as SellerIndexRouteImport } from './routes/seller/index'
-import { Route as UserIndexRouteImport } from './routes/user/index'
-import { Route as UserOrderRouteImport } from './routes/user/order'
+import { Route as SellerGoodsRouteImport } from './routes/seller/goods'
+import { Route as SellerOrdersRouteImport } from './routes/seller/orders'
+import { Route as MallItemIdRouteImport } from './routes/_mall/item.$id'
+import { Route as MallMerchantSettleRouteImport } from './routes/_mall/merchant.settle'
+import { Route as UserUserOrderRouteImport } from './routes/_user/user/order'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const B2bRoute = B2bRouteImport.update({
-  id: '/b2b',
-  path: '/b2b',
+const MallRoute = MallRouteImport.update({
+  id: '/_mall',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CartRoute = CartRouteImport.update({
-  id: '/cart',
-  path: '/cart',
+const TradeRoute = TradeRouteImport.update({
+  id: '/_trade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserRoute = UserRouteImport.update({
+  id: '/_user',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -50,69 +57,79 @@ const ChatRoute = ChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CouponRoute = CouponRouteImport.update({
-  id: '/coupon',
-  path: '/coupon',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ListRoute = ListRouteImport.update({
-  id: '/list',
-  path: '/list',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PayRoute = PayRouteImport.update({
-  id: '/pay',
-  path: '/pay',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlusRoute = PlusRouteImport.update({
-  id: '/plus',
-  path: '/plus',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SeckillRoute = SeckillRouteImport.update({
-  id: '/seckill',
-  path: '/seckill',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SellerRouteRoute = SellerRouteRouteImport.update({
   id: '/seller',
   path: '/seller',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShopRoute = ShopRouteImport.update({
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+const MallIndexRoute = MallIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallB2bRoute = MallB2bRouteImport.update({
+  id: '/b2b',
+  path: '/b2b',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallCouponRoute = MallCouponRouteImport.update({
+  id: '/coupon',
+  path: '/coupon',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallListRoute = MallListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallPlusRoute = MallPlusRouteImport.update({
+  id: '/plus',
+  path: '/plus',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallSeckillRoute = MallSeckillRouteImport.update({
+  id: '/seckill',
+  path: '/seckill',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallShopRoute = MallShopRouteImport.update({
   id: '/shop',
   path: '/shop',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => MallRoute,
+} as any)
+const TradeCartRoute = TradeCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => TradeRoute,
+} as any)
+const TradeCheckoutRoute = TradeCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => TradeRoute,
+} as any)
+const TradePayRoute = TradePayRouteImport.update({
+  id: '/pay',
+  path: '/pay',
+  getParentRoute: () => TradeRoute,
+} as any)
+const UserUserRoute = UserUserRouteImport.update({
+  id: '/user',
+  path: '/user',
+  getParentRoute: () => UserRoute,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ItemIdRoute = ItemIdRouteImport.update({
-  id: '/item/$id',
-  path: '/item/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MerchantSettleRoute = MerchantSettleRouteImport.update({
-  id: '/merchant/settle',
-  path: '/merchant/settle',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SellerIndexRoute = SellerIndexRouteImport.update({
@@ -120,194 +137,224 @@ const SellerIndexRoute = SellerIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SellerRouteRoute,
 } as any)
-const UserIndexRoute = UserIndexRouteImport.update({
-  id: '/user/',
-  path: '/user/',
-  getParentRoute: () => rootRouteImport,
+const SellerGoodsRoute = SellerGoodsRouteImport.update({
+  id: '/goods',
+  path: '/goods',
+  getParentRoute: () => SellerRouteRoute,
 } as any)
-const UserOrderRoute = UserOrderRouteImport.update({
-  id: '/user/order',
-  path: '/user/order',
-  getParentRoute: () => rootRouteImport,
+const SellerOrdersRoute = SellerOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => SellerRouteRoute,
+} as any)
+const MallItemIdRoute = MallItemIdRouteImport.update({
+  id: '/item/$id',
+  path: '/item/$id',
+  getParentRoute: () => MallRoute,
+} as any)
+const MallMerchantSettleRoute = MallMerchantSettleRouteImport.update({
+  id: '/merchant/settle',
+  path: '/merchant/settle',
+  getParentRoute: () => MallRoute,
+} as any)
+const UserUserOrderRoute = UserUserOrderRouteImport.update({
+  id: '/order',
+  path: '/order',
+  getParentRoute: () => UserUserRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/seller': typeof SellerRouteRouteWithChildren
-  '/b2b': typeof B2bRoute
-  '/cart': typeof CartRoute
+  '/': typeof MallIndexRoute
   '/chat': typeof ChatRoute
-  '/checkout': typeof CheckoutRoute
-  '/coupon': typeof CouponRoute
-  '/list': typeof ListRoute
-  '/login': typeof LoginRoute
-  '/pay': typeof PayRoute
-  '/plus': typeof PlusRoute
-  '/register': typeof RegisterRoute
-  '/seckill': typeof SeckillRoute
-  '/shop': typeof ShopRoute
-  '/item/$id': typeof ItemIdRoute
-  '/merchant/settle': typeof MerchantSettleRoute
-  '/user/order': typeof UserOrderRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/b2b': typeof MallB2bRoute
+  '/coupon': typeof MallCouponRoute
+  '/list': typeof MallListRoute
+  '/plus': typeof MallPlusRoute
+  '/seckill': typeof MallSeckillRoute
+  '/shop': typeof MallShopRoute
+  '/cart': typeof TradeCartRoute
+  '/checkout': typeof TradeCheckoutRoute
+  '/pay': typeof TradePayRoute
+  '/user': typeof UserUserRouteWithChildren
+  '/seller/goods': typeof SellerGoodsRoute
+  '/seller/orders': typeof SellerOrdersRoute
   '/admin/': typeof AdminIndexRoute
   '/seller/': typeof SellerIndexRoute
-  '/user/': typeof UserIndexRoute
+  '/item/$id': typeof MallItemIdRoute
+  '/merchant/settle': typeof MallMerchantSettleRoute
+  '/user/order': typeof UserUserOrderRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/b2b': typeof B2bRoute
-  '/cart': typeof CartRoute
+  '/': typeof MallIndexRoute
   '/chat': typeof ChatRoute
-  '/checkout': typeof CheckoutRoute
-  '/coupon': typeof CouponRoute
-  '/list': typeof ListRoute
-  '/login': typeof LoginRoute
-  '/pay': typeof PayRoute
-  '/plus': typeof PlusRoute
-  '/register': typeof RegisterRoute
-  '/seckill': typeof SeckillRoute
-  '/shop': typeof ShopRoute
-  '/item/$id': typeof ItemIdRoute
-  '/merchant/settle': typeof MerchantSettleRoute
-  '/user/order': typeof UserOrderRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/b2b': typeof MallB2bRoute
+  '/coupon': typeof MallCouponRoute
+  '/list': typeof MallListRoute
+  '/plus': typeof MallPlusRoute
+  '/seckill': typeof MallSeckillRoute
+  '/shop': typeof MallShopRoute
+  '/cart': typeof TradeCartRoute
+  '/checkout': typeof TradeCheckoutRoute
+  '/pay': typeof TradePayRoute
+  '/user': typeof UserUserRouteWithChildren
+  '/seller/goods': typeof SellerGoodsRoute
+  '/seller/orders': typeof SellerOrdersRoute
   '/admin': typeof AdminIndexRoute
   '/seller': typeof SellerIndexRoute
-  '/user': typeof UserIndexRoute
+  '/item/$id': typeof MallItemIdRoute
+  '/merchant/settle': typeof MallMerchantSettleRoute
+  '/user/order': typeof UserUserOrderRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/seller': typeof SellerRouteRouteWithChildren
-  '/b2b': typeof B2bRoute
-  '/cart': typeof CartRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_mall': typeof MallRouteWithChildren
+  '/_trade': typeof TradeRouteWithChildren
+  '/_user': typeof UserRouteWithChildren
   '/chat': typeof ChatRoute
-  '/checkout': typeof CheckoutRoute
-  '/coupon': typeof CouponRoute
-  '/list': typeof ListRoute
-  '/login': typeof LoginRoute
-  '/pay': typeof PayRoute
-  '/plus': typeof PlusRoute
-  '/register': typeof RegisterRoute
-  '/seckill': typeof SeckillRoute
-  '/shop': typeof ShopRoute
-  '/item/$id': typeof ItemIdRoute
-  '/merchant/settle': typeof MerchantSettleRoute
-  '/user/order': typeof UserOrderRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_mall/b2b': typeof MallB2bRoute
+  '/_mall/coupon': typeof MallCouponRoute
+  '/_mall/list': typeof MallListRoute
+  '/_mall/plus': typeof MallPlusRoute
+  '/_mall/seckill': typeof MallSeckillRoute
+  '/_mall/shop': typeof MallShopRoute
+  '/_trade/cart': typeof TradeCartRoute
+  '/_trade/checkout': typeof TradeCheckoutRoute
+  '/_trade/pay': typeof TradePayRoute
+  '/_user/user': typeof UserUserRouteWithChildren
+  '/seller/goods': typeof SellerGoodsRoute
+  '/seller/orders': typeof SellerOrdersRoute
+  '/_mall/': typeof MallIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/seller/': typeof SellerIndexRoute
-  '/user/': typeof UserIndexRoute
+  '/_mall/item/$id': typeof MallItemIdRoute
+  '/_mall/merchant/settle': typeof MallMerchantSettleRoute
+  '/_user/user/order': typeof UserUserOrderRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/seller'
-    | '/b2b'
-    | '/cart'
+    | '/'
     | '/chat'
-    | '/checkout'
+    | '/login'
+    | '/register'
+    | '/b2b'
     | '/coupon'
     | '/list'
-    | '/login'
-    | '/pay'
     | '/plus'
-    | '/register'
     | '/seckill'
     | '/shop'
+    | '/cart'
+    | '/checkout'
+    | '/pay'
+    | '/user'
+    | '/seller/goods'
+    | '/seller/orders'
+    | '/admin/'
+    | '/seller/'
     | '/item/$id'
     | '/merchant/settle'
     | '/user/order'
-    | '/admin/'
-    | '/seller/'
-    | '/user/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/b2b'
-    | '/cart'
     | '/chat'
-    | '/checkout'
+    | '/login'
+    | '/register'
+    | '/b2b'
     | '/coupon'
     | '/list'
-    | '/login'
-    | '/pay'
     | '/plus'
-    | '/register'
     | '/seckill'
     | '/shop'
-    | '/item/$id'
-    | '/merchant/settle'
-    | '/user/order'
+    | '/cart'
+    | '/checkout'
+    | '/pay'
+    | '/user'
+    | '/seller/goods'
+    | '/seller/orders'
     | '/admin'
     | '/seller'
-    | '/user'
-  id:
-    | '__root__'
-    | '/'
-    | '/seller'
-    | '/b2b'
-    | '/cart'
-    | '/chat'
-    | '/checkout'
-    | '/coupon'
-    | '/list'
-    | '/login'
-    | '/pay'
-    | '/plus'
-    | '/register'
-    | '/seckill'
-    | '/shop'
     | '/item/$id'
     | '/merchant/settle'
     | '/user/order'
+  id:
+    | '__root__'
+    | '/seller'
+    | '/_auth'
+    | '/_mall'
+    | '/_trade'
+    | '/_user'
+    | '/chat'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_mall/b2b'
+    | '/_mall/coupon'
+    | '/_mall/list'
+    | '/_mall/plus'
+    | '/_mall/seckill'
+    | '/_mall/shop'
+    | '/_trade/cart'
+    | '/_trade/checkout'
+    | '/_trade/pay'
+    | '/_user/user'
+    | '/seller/goods'
+    | '/seller/orders'
+    | '/_mall/'
     | '/admin/'
     | '/seller/'
-    | '/user/'
+    | '/_mall/item/$id'
+    | '/_mall/merchant/settle'
+    | '/_user/user/order'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   SellerRouteRoute: typeof SellerRouteRouteWithChildren
-  B2bRoute: typeof B2bRoute
-  CartRoute: typeof CartRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  MallRoute: typeof MallRouteWithChildren
+  TradeRoute: typeof TradeRouteWithChildren
+  UserRoute: typeof UserRouteWithChildren
   ChatRoute: typeof ChatRoute
-  CheckoutRoute: typeof CheckoutRoute
-  CouponRoute: typeof CouponRoute
-  ListRoute: typeof ListRoute
-  LoginRoute: typeof LoginRoute
-  PayRoute: typeof PayRoute
-  PlusRoute: typeof PlusRoute
-  RegisterRoute: typeof RegisterRoute
-  SeckillRoute: typeof SeckillRoute
-  ShopRoute: typeof ShopRoute
-  ItemIdRoute: typeof ItemIdRoute
-  MerchantSettleRoute: typeof MerchantSettleRoute
-  UserOrderRoute: typeof UserOrderRoute
   AdminIndexRoute: typeof AdminIndexRoute
-  UserIndexRoute: typeof UserIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/b2b': {
-      id: '/b2b'
-      path: '/b2b'
-      fullPath: '/b2b'
-      preLoaderRoute: typeof B2bRouteImport
+    '/_mall': {
+      id: '/_mall'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof MallRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cart': {
-      id: '/cart'
-      path: '/cart'
-      fullPath: '/cart'
-      preLoaderRoute: typeof CartRouteImport
+    '/_trade': {
+      id: '/_trade'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof TradeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof UserRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -317,62 +364,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/coupon': {
-      id: '/coupon'
-      path: '/coupon'
-      fullPath: '/coupon'
-      preLoaderRoute: typeof CouponRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/list': {
-      id: '/list'
-      path: '/list'
-      fullPath: '/list'
-      preLoaderRoute: typeof ListRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pay': {
-      id: '/pay'
-      path: '/pay'
-      fullPath: '/pay'
-      preLoaderRoute: typeof PayRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/plus': {
-      id: '/plus'
-      path: '/plus'
-      fullPath: '/plus'
-      preLoaderRoute: typeof PlusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seckill': {
-      id: '/seckill'
-      path: '/seckill'
-      fullPath: '/seckill'
-      preLoaderRoute: typeof SeckillRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/seller': {
       id: '/seller'
       path: '/seller'
@@ -380,32 +371,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/shop': {
-      id: '/shop'
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/register': {
+      id: '/_auth/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_mall/': {
+      id: '/_mall/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof MallIndexRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/b2b': {
+      id: '/_mall/b2b'
+      path: '/b2b'
+      fullPath: '/b2b'
+      preLoaderRoute: typeof MallB2bRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/coupon': {
+      id: '/_mall/coupon'
+      path: '/coupon'
+      fullPath: '/coupon'
+      preLoaderRoute: typeof MallCouponRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/list': {
+      id: '/_mall/list'
+      path: '/list'
+      fullPath: '/list'
+      preLoaderRoute: typeof MallListRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/plus': {
+      id: '/_mall/plus'
+      path: '/plus'
+      fullPath: '/plus'
+      preLoaderRoute: typeof MallPlusRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/seckill': {
+      id: '/_mall/seckill'
+      path: '/seckill'
+      fullPath: '/seckill'
+      preLoaderRoute: typeof MallSeckillRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/shop': {
+      id: '/_mall/shop'
       path: '/shop'
       fullPath: '/shop'
-      preLoaderRoute: typeof ShopRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof MallShopRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_trade/cart': {
+      id: '/_trade/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof TradeCartRouteImport
+      parentRoute: typeof TradeRoute
+    }
+    '/_trade/checkout': {
+      id: '/_trade/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof TradeCheckoutRouteImport
+      parentRoute: typeof TradeRoute
+    }
+    '/_trade/pay': {
+      id: '/_trade/pay'
+      path: '/pay'
+      fullPath: '/pay'
+      preLoaderRoute: typeof TradePayRouteImport
+      parentRoute: typeof TradeRoute
+    }
+    '/_user/user': {
+      id: '/_user/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof UserUserRouteImport
+      parentRoute: typeof UserRoute
     }
     '/admin/': {
       id: '/admin/'
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/item/$id': {
-      id: '/item/$id'
-      path: '/item/$id'
-      fullPath: '/item/$id'
-      preLoaderRoute: typeof ItemIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/merchant/settle': {
-      id: '/merchant/settle'
-      path: '/merchant/settle'
-      fullPath: '/merchant/settle'
-      preLoaderRoute: typeof MerchantSettleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seller/': {
@@ -415,28 +476,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerIndexRouteImport
       parentRoute: typeof SellerRouteRoute
     }
-    '/user/': {
-      id: '/user/'
-      path: '/user'
-      fullPath: '/user/'
-      preLoaderRoute: typeof UserIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/seller/goods': {
+      id: '/seller/goods'
+      path: '/goods'
+      fullPath: '/seller/goods'
+      preLoaderRoute: typeof SellerGoodsRouteImport
+      parentRoute: typeof SellerRouteRoute
     }
-    '/user/order': {
-      id: '/user/order'
-      path: '/user/order'
+    '/seller/orders': {
+      id: '/seller/orders'
+      path: '/orders'
+      fullPath: '/seller/orders'
+      preLoaderRoute: typeof SellerOrdersRouteImport
+      parentRoute: typeof SellerRouteRoute
+    }
+    '/_mall/item/$id': {
+      id: '/_mall/item/$id'
+      path: '/item/$id'
+      fullPath: '/item/$id'
+      preLoaderRoute: typeof MallItemIdRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_mall/merchant/settle': {
+      id: '/_mall/merchant/settle'
+      path: '/merchant/settle'
+      fullPath: '/merchant/settle'
+      preLoaderRoute: typeof MallMerchantSettleRouteImport
+      parentRoute: typeof MallRoute
+    }
+    '/_user/user/order': {
+      id: '/_user/user/order'
+      path: '/order'
       fullPath: '/user/order'
-      preLoaderRoute: typeof UserOrderRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserUserOrderRouteImport
+      parentRoute: typeof UserUserRoute
     }
   }
 }
 
 interface SellerRouteRouteChildren {
+  SellerGoodsRoute: typeof SellerGoodsRoute
+  SellerOrdersRoute: typeof SellerOrdersRoute
   SellerIndexRoute: typeof SellerIndexRoute
 }
 
 const SellerRouteRouteChildren: SellerRouteRouteChildren = {
+  SellerGoodsRoute: SellerGoodsRoute,
+  SellerOrdersRoute: SellerOrdersRoute,
   SellerIndexRoute: SellerIndexRoute,
 }
 
@@ -444,26 +530,88 @@ const SellerRouteRouteWithChildren = SellerRouteRoute._addFileChildren(
   SellerRouteRouteChildren,
 )
 
+interface AuthRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface MallRouteChildren {
+  MallB2bRoute: typeof MallB2bRoute
+  MallCouponRoute: typeof MallCouponRoute
+  MallListRoute: typeof MallListRoute
+  MallPlusRoute: typeof MallPlusRoute
+  MallSeckillRoute: typeof MallSeckillRoute
+  MallShopRoute: typeof MallShopRoute
+  MallIndexRoute: typeof MallIndexRoute
+  MallItemIdRoute: typeof MallItemIdRoute
+  MallMerchantSettleRoute: typeof MallMerchantSettleRoute
+}
+
+const MallRouteChildren: MallRouteChildren = {
+  MallB2bRoute: MallB2bRoute,
+  MallCouponRoute: MallCouponRoute,
+  MallListRoute: MallListRoute,
+  MallPlusRoute: MallPlusRoute,
+  MallSeckillRoute: MallSeckillRoute,
+  MallShopRoute: MallShopRoute,
+  MallIndexRoute: MallIndexRoute,
+  MallItemIdRoute: MallItemIdRoute,
+  MallMerchantSettleRoute: MallMerchantSettleRoute,
+}
+
+const MallRouteWithChildren = MallRoute._addFileChildren(MallRouteChildren)
+
+interface TradeRouteChildren {
+  TradeCartRoute: typeof TradeCartRoute
+  TradeCheckoutRoute: typeof TradeCheckoutRoute
+  TradePayRoute: typeof TradePayRoute
+}
+
+const TradeRouteChildren: TradeRouteChildren = {
+  TradeCartRoute: TradeCartRoute,
+  TradeCheckoutRoute: TradeCheckoutRoute,
+  TradePayRoute: TradePayRoute,
+}
+
+const TradeRouteWithChildren = TradeRoute._addFileChildren(TradeRouteChildren)
+
+interface UserUserRouteChildren {
+  UserUserOrderRoute: typeof UserUserOrderRoute
+}
+
+const UserUserRouteChildren: UserUserRouteChildren = {
+  UserUserOrderRoute: UserUserOrderRoute,
+}
+
+const UserUserRouteWithChildren = UserUserRoute._addFileChildren(
+  UserUserRouteChildren,
+)
+
+interface UserRouteChildren {
+  UserUserRoute: typeof UserUserRouteWithChildren
+}
+
+const UserRouteChildren: UserRouteChildren = {
+  UserUserRoute: UserUserRouteWithChildren,
+}
+
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   SellerRouteRoute: SellerRouteRouteWithChildren,
-  B2bRoute: B2bRoute,
-  CartRoute: CartRoute,
+  AuthRoute: AuthRouteWithChildren,
+  MallRoute: MallRouteWithChildren,
+  TradeRoute: TradeRouteWithChildren,
+  UserRoute: UserRouteWithChildren,
   ChatRoute: ChatRoute,
-  CheckoutRoute: CheckoutRoute,
-  CouponRoute: CouponRoute,
-  ListRoute: ListRoute,
-  LoginRoute: LoginRoute,
-  PayRoute: PayRoute,
-  PlusRoute: PlusRoute,
-  RegisterRoute: RegisterRoute,
-  SeckillRoute: SeckillRoute,
-  ShopRoute: ShopRoute,
-  ItemIdRoute: ItemIdRoute,
-  MerchantSettleRoute: MerchantSettleRoute,
-  UserOrderRoute: UserOrderRoute,
   AdminIndexRoute: AdminIndexRoute,
-  UserIndexRoute: UserIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

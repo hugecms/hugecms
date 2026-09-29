@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Outlet } from '@tanstack/react-router'
+import { Link, Outlet, useRouterState } from '@tanstack/react-router'
 
 interface AuthLayoutProps {
   pageTitle?: string
@@ -7,9 +7,15 @@ interface AuthLayoutProps {
 }
 
 export const AuthLayout: React.FC<AuthLayoutProps> = ({
-  pageTitle = '欢迎登录',
+  pageTitle,
   children,
 }) => {
+  const routerState = useRouterState()
+  const pathname = routerState.location.pathname
+
+  const resolvedTitle =
+    pageTitle || (pathname.includes('/register') ? '欢迎注册' : '欢迎登录')
+
   return (
     <div className="auth-layout min-h-screen flex flex-col bg-white">
       {/* 头部简约Logo区 */}
@@ -32,7 +38,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
               JD
             </div>
           </Link>
-          <span style={{ fontSize: '24px', color: '#333', fontWeight: 500 }}>{pageTitle}</span>
+          <span style={{ fontSize: '24px', color: '#333', fontWeight: 500 }}>{resolvedTitle}</span>
         </div>
         <Link to="/" style={{ color: '#999', fontSize: '12px' }}>返回商城首页 ›</Link>
       </div>
@@ -48,7 +54,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
           <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>关于我们</a>|
           <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>联系我们</a>|
           <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>人才招聘</a>|
-          <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>商家入驻</a>|
+          <Link to="/merchant/settle" style={{ color: '#666', margin: '0 8px' }}>商家入驻</Link>|
           <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>广告服务</a>|
           <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>手机京东</a>|
           <a href="javascript:;" style={{ color: '#666', margin: '0 8px' }}>友情链接</a>|

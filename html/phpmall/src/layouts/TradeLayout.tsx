@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link, Outlet } from '@tanstack/react-router'
+import { Outlet, useRouterState } from '@tanstack/react-router'
 import { MallShortcutNav } from '../features/mall/components/MallShortcutNav'
 import { MallFooter } from '../features/mall/components/MallFooter'
+import { TradeHeader } from '../features/trade/components/TradeHeader'
 
 interface TradeLayoutProps {
   title?: string
@@ -11,63 +12,32 @@ interface TradeLayoutProps {
 }
 
 export const TradeLayout: React.FC<TradeLayoutProps> = ({
-  title = '购物车',
-  showSearch = true,
   children,
 }) => {
+  const routerState = useRouterState()
+  const pathname = routerState.location.pathname
+
+  let type: 'cart' | 'checkout' | 'pay' = 'cart'
+  let step = 1
+
+  if (pathname.includes('/pay')) {
+    type = 'pay'
+    step = 3
+  } else if (pathname.includes('/checkout')) {
+    type = 'checkout'
+    step = 2
+  } else {
+    type = 'cart'
+    step = 1
+  }
+
   return (
     <div className="trade-layout min-h-screen flex flex-col bg-[#f4f4f4]">
       {/* 顶部快捷导航 */}
       <MallShortcutNav />
 
-      {/* 交易专属Header */}
-      <div className="w header-trade" style={{ padding: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <div style={{
-              width: '100px',
-              height: '36px',
-              background: '#e1251b',
-              borderRadius: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontSize: '20px',
-              fontWeight: 900,
-            }}>
-              JD
-            </div>
-          </Link>
-          <span style={{ fontSize: '20px', color: '#333', fontWeight: 'bold' }}>{title}</span>
-        </div>
-
-        {showSearch && (
-          <div style={{ display: 'flex', width: '320px', height: '34px' }}>
-            <input
-              type="text"
-              placeholder="自营好物 爆款秒杀"
-              style={{
-                flex: 1,
-                border: '2px solid #e1251b',
-                borderRight: 'none',
-                padding: '0 12px',
-                fontSize: '12px',
-              }}
-            />
-            <button style={{
-              background: '#e1251b',
-              color: '#fff',
-              border: 'none',
-              padding: '0 18px',
-              cursor: 'pointer',
-              fontSize: '13px',
-            }}>
-              搜索
-            </button>
-          </div>
-        )}
-      </div>
+      {/* 交易专属统一 Header */}
+      <TradeHeader type={type} currentStep={step} />
 
       {/* 交易主体内容 */}
       <main className="flex-1 w-full">
