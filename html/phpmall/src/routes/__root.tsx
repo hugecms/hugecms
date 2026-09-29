@@ -5,12 +5,18 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
+import { ConfigProvider } from 'antd'
+import zhCN from 'antd/locale/zh_CN'
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-
+import { antdTheme } from '../styles/antdTheme'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+
+dayjs.locale('zh-cn')
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -27,7 +33,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: '京麦商家工作台 - 京东商城',
       },
     ],
     links: [
@@ -42,12 +48,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ConfigProvider locale={zhCN} theme={antdTheme}>
+          {children}
+        </ConfigProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
@@ -65,3 +73,4 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     </html>
   )
 }
+

@@ -10,33 +10,190 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as B2bRouteImport } from './routes/b2b'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as ChatRouteImport } from './routes/chat'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ListRouteImport } from './routes/list'
+import { Route as PayRouteImport } from './routes/pay'
+import { Route as SellerRouteRouteImport } from './routes/seller/route'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as ItemIdRouteImport } from './routes/item.$id'
+import { Route as SellerIndexRouteImport } from './routes/seller/index'
+import { Route as UserIndexRouteImport } from './routes/user/index'
+import { Route as UserOrderRouteImport } from './routes/user/order'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const B2bRoute = B2bRouteImport.update({
+  id: '/b2b',
+  path: '/b2b',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListRoute = ListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PayRoute = PayRouteImport.update({
+  id: '/pay',
+  path: '/pay',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerRouteRoute = SellerRouteRouteImport.update({
+  id: '/seller',
+  path: '/seller',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ItemIdRoute = ItemIdRouteImport.update({
+  id: '/item/$id',
+  path: '/item/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerIndexRoute = SellerIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SellerRouteRoute,
+} as any)
+const UserIndexRoute = UserIndexRouteImport.update({
+  id: '/user/',
+  path: '/user/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserOrderRoute = UserOrderRouteImport.update({
+  id: '/user/order',
+  path: '/user/order',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/seller': typeof SellerRouteRouteWithChildren
+  '/b2b': typeof B2bRoute
+  '/cart': typeof CartRoute
+  '/chat': typeof ChatRoute
+  '/checkout': typeof CheckoutRoute
+  '/list': typeof ListRoute
+  '/pay': typeof PayRoute
+  '/item/$id': typeof ItemIdRoute
+  '/user/order': typeof UserOrderRoute
+  '/admin/': typeof AdminIndexRoute
+  '/seller/': typeof SellerIndexRoute
+  '/user/': typeof UserIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/b2b': typeof B2bRoute
+  '/cart': typeof CartRoute
+  '/chat': typeof ChatRoute
+  '/checkout': typeof CheckoutRoute
+  '/list': typeof ListRoute
+  '/pay': typeof PayRoute
+  '/item/$id': typeof ItemIdRoute
+  '/user/order': typeof UserOrderRoute
+  '/admin': typeof AdminIndexRoute
+  '/seller': typeof SellerIndexRoute
+  '/user': typeof UserIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/seller': typeof SellerRouteRouteWithChildren
+  '/b2b': typeof B2bRoute
+  '/cart': typeof CartRoute
+  '/chat': typeof ChatRoute
+  '/checkout': typeof CheckoutRoute
+  '/list': typeof ListRoute
+  '/pay': typeof PayRoute
+  '/item/$id': typeof ItemIdRoute
+  '/user/order': typeof UserOrderRoute
+  '/admin/': typeof AdminIndexRoute
+  '/seller/': typeof SellerIndexRoute
+  '/user/': typeof UserIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/seller'
+    | '/b2b'
+    | '/cart'
+    | '/chat'
+    | '/checkout'
+    | '/list'
+    | '/pay'
+    | '/item/$id'
+    | '/user/order'
+    | '/admin/'
+    | '/seller/'
+    | '/user/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/b2b'
+    | '/cart'
+    | '/chat'
+    | '/checkout'
+    | '/list'
+    | '/pay'
+    | '/item/$id'
+    | '/user/order'
+    | '/admin'
+    | '/seller'
+    | '/user'
+  id:
+    | '__root__'
+    | '/'
+    | '/seller'
+    | '/b2b'
+    | '/cart'
+    | '/chat'
+    | '/checkout'
+    | '/list'
+    | '/pay'
+    | '/item/$id'
+    | '/user/order'
+    | '/admin/'
+    | '/seller/'
+    | '/user/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SellerRouteRoute: typeof SellerRouteRouteWithChildren
+  B2bRoute: typeof B2bRoute
+  CartRoute: typeof CartRoute
+  ChatRoute: typeof ChatRoute
+  CheckoutRoute: typeof CheckoutRoute
+  ListRoute: typeof ListRoute
+  PayRoute: typeof PayRoute
+  ItemIdRoute: typeof ItemIdRoute
+  UserOrderRoute: typeof UserOrderRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  UserIndexRoute: typeof UserIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +205,118 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/b2b': {
+      id: '/b2b'
+      path: '/b2b'
+      fullPath: '/b2b'
+      preLoaderRoute: typeof B2bRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list': {
+      id: '/list'
+      path: '/list'
+      fullPath: '/list'
+      preLoaderRoute: typeof ListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pay': {
+      id: '/pay'
+      path: '/pay'
+      fullPath: '/pay'
+      preLoaderRoute: typeof PayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller': {
+      id: '/seller'
+      path: '/seller'
+      fullPath: '/seller'
+      preLoaderRoute: typeof SellerRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/item/$id': {
+      id: '/item/$id'
+      path: '/item/$id'
+      fullPath: '/item/$id'
+      preLoaderRoute: typeof ItemIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/': {
+      id: '/seller/'
+      path: '/'
+      fullPath: '/seller/'
+      preLoaderRoute: typeof SellerIndexRouteImport
+      parentRoute: typeof SellerRouteRoute
+    }
+    '/user/': {
+      id: '/user/'
+      path: '/user'
+      fullPath: '/user/'
+      preLoaderRoute: typeof UserIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user/order': {
+      id: '/user/order'
+      path: '/user/order'
+      fullPath: '/user/order'
+      preLoaderRoute: typeof UserOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface SellerRouteRouteChildren {
+  SellerIndexRoute: typeof SellerIndexRoute
+}
+
+const SellerRouteRouteChildren: SellerRouteRouteChildren = {
+  SellerIndexRoute: SellerIndexRoute,
+}
+
+const SellerRouteRouteWithChildren = SellerRouteRoute._addFileChildren(
+  SellerRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SellerRouteRoute: SellerRouteRouteWithChildren,
+  B2bRoute: B2bRoute,
+  CartRoute: CartRoute,
+  ChatRoute: ChatRoute,
+  CheckoutRoute: CheckoutRoute,
+  ListRoute: ListRoute,
+  PayRoute: PayRoute,
+  ItemIdRoute: ItemIdRoute,
+  UserOrderRoute: UserOrderRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  UserIndexRoute: UserIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
