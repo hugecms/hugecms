@@ -45,56 +45,178 @@
 
   <!-- 商家工作台主体布局 (Sidebar + Dashboard) -->
   <div class="seller-layout">
-    <!-- 左侧菜单树导航 -->
-    <aside class="seller-sidebar">
-      <div class="menu-group">
-        <h4 class="group-title">常用首页</h4>
-        <ul class="nav-tree">
-          <li class="active"><a href="index.html"><i>📊</i> 工作台总览</a></li>
-        </ul>
+    <!-- 左侧管理菜单 (Ant Design Sider 风格) -->
+    <aside class="seller-sidebar ant-layout-sider" id="sellerSidebar">
+      <!-- AntD 风格菜单检索 -->
+      <div class="sidebar-search-box">
+        <div class="ant-input-affix-wrapper">
+          <span class="ant-input-prefix">🔍</span>
+          <input type="text" id="menuSearchInput" placeholder="搜索功能 / 菜单" autocomplete="off">
+          <span class="ant-input-suffix"><kbd class="ant-kbd">Ctrl K</kbd></span>
+        </div>
       </div>
 
-      <div class="menu-group">
-        <h4 class="group-title">商品管理</h4>
-        <ul class="nav-tree">
-          <li><a href="javascript:;" id="btnOpenAddGoods"><i>➕</i> 发布新商品</a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="在售商品管理"><i>📦</i> 在售商品列表 (48)</a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="库存预警监控"><i>⚠️</i> 库存预警 (2)</a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="草稿与待审核"><i>📝</i> 审核中商品 (1)</a></li>
-        </ul>
-      </div>
+      <!-- AntD Menu (扁平化清晰两级结构) -->
+      <ul class="ant-menu ant-menu-root ant-menu-inline ant-menu-light nav-tree" role="menu">
+        <!-- 常用直达项 (无子级，直接点击跳转) -->
+        <li class="ant-menu-item active" role="menuitem">
+          <a href="index.html" class="nav-link">
+            <span class="ant-menu-item-icon m-icon">📊</span>
+            <span class="m-txt">工作台总览</span>
+          </a>
+        </li>
+        <li class="ant-menu-item" role="menuitem">
+          <a href="javascript:;" class="nav-link menu-item-link" data-title="待办预警中心">
+            <span class="ant-menu-item-icon m-icon">🚨</span>
+            <span class="m-txt">待办中心与预警</span>
+            <span class="ant-badge-count badge-num">4</span>
+          </a>
+        </li>
 
-      <div class="menu-group">
-        <h4 class="group-title">订单履约</h4>
-        <ul class="nav-tree">
-          <li><a href="javascript:;" class="menu-item-link" data-title="待发货订单管理"><i>🚚</i> 待发货订单 <span class="badge-num">3</span></a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="历史发货记录"><i>📋</i> 已发货与归档</a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="批量面单打印"><i>🖨️</i> 电子面单打印</a></li>
-        </ul>
-      </div>
+        <!-- 1. 商品管理 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">📦</span>
+            <span class="m-txt">商品管理</span>
+            <span class="ant-badge-count badge-num badge-warn">2</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" id="btnOpenAddGoods" class="sub-link">发布新商品</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="在售商品管理">在售商品列表 (48)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="库存预警监控">库存监控与预警 (2)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="审核与草稿箱">审核中与草稿箱 (1)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="商品资质与品控认证">商品资质与品控认证</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="运费模板配置">运费模板与地址库</a></li>
+          </ul>
+        </li>
 
-      <div class="menu-group">
-        <h4 class="group-title">售后与服务</h4>
-        <ul class="nav-tree">
-          <li><a href="javascript:;" class="menu-item-link" data-title="退换货售后审核"><i>🔄</i> 退款售后审核 <span class="badge-num">1</span></a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="买家评价管理"><i>⭐</i> 评价与回评</a></li>
-        </ul>
-      </div>
+        <!-- 2. 订单履约 (当前默认展开) -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent open">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">🚚</span>
+            <span class="m-txt">订单履约</span>
+            <span class="ant-badge-count badge-num">3</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item active"><a href="javascript:;" class="sub-link menu-item-link" data-title="待发货订单管理">待发货订单处理 (3)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="全部订单综合查询">全部订单综合查询</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="批量面单打印">批量面单与打单</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="物流异常与时效监控">物流异常与拦截预警 (1)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="历史发货记录">已发货与归档记录</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="多仓与自提履约">多仓库存调拨与自提</a></li>
+          </ul>
+        </li>
 
-      <div class="menu-group">
-        <h4 class="group-title">营销与促销</h4>
-        <ul class="nav-tree">
-          <li><a href="javascript:;" class="menu-item-link" data-title="平台大促活动提报"><i>🎯</i> 京东大促活动报名</a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="店铺优惠券设置"><i>🎟️</i> 店铺优惠券配置</a></li>
-        </ul>
-      </div>
+        <!-- 3. 售后与客诉 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">🔄</span>
+            <span class="m-txt">售后与客诉</span>
+            <span class="ant-badge-count badge-num">1</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="退换货售后审核">退款/退货退款审核 (1)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="换货与补发管理">换货与补发管理</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="平台小二仲裁与举证">平台纠纷与举证申诉</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="买家评价管理">评价管理与官方回评</a></li>
+          </ul>
+        </li>
 
-      <div class="menu-group">
-        <h4 class="group-title">财务与结算</h4>
-        <ul class="nav-tree">
-          <li><a href="javascript:;" class="menu-item-link" data-title="财务账单对账"><i>💰</i> 营业收入结算</a></li>
-          <li><a href="javascript:;" class="menu-item-link" data-title="保证金账户管理"><i>🔒</i> 店铺保证金账户</a></li>
-        </ul>
+        <!-- 4. 营销与大促 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">🎯</span>
+            <span class="m-txt">营销与促销</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="平台大促活动提报">官方大促/百亿补贴报名</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="店铺优惠券设置">店铺优惠券配置</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="满减满折与搭配套餐">满减满折/搭配套餐</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="会员中心与私域运营">会员体系与私域运营</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="达人带货与分销联盟">京粉/达人分销佣金</a></li>
+          </ul>
+        </li>
+
+        <!-- 5. 客服协同 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">🎧</span>
+            <span class="m-txt">客服管理</span>
+            <i class="arrow-icon ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="在线客服接待台">在线客服接待台</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="常用话术与知识库">快捷短语与智能应答</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="客服质检与排班统计">接待质检与绩效统计</a></li>
+          </ul>
+        </li>
+
+        <!-- 6. 店铺与素材 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">🎨</span>
+            <span class="m-txt">店铺运营</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="店铺可视化装修">PC/移动端微页面装修</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="素材中心">素材中心 (图片与视频)</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="店铺商品分类">店铺自定义商品分类</a></li>
+          </ul>
+        </li>
+
+        <!-- 7. 数据中心 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">📈</span>
+            <span class="m-txt">数据中心</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="实时经营大屏">实时经营监控大屏</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="单品与流量诊断">商品流量与转化诊断</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="交易漏斗与客群分析">交易转化漏斗与客群</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="店铺体验分诊断">店铺服务体验分 (DSR)</a></li>
+          </ul>
+        </li>
+
+        <!-- 8. 财务结算 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">💰</span>
+            <span class="m-txt">财务结算</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="财务账单对账">营业收入结算对账</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="保证金账户管理">店铺保证金账户</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="全电发票管理">数电发票开具与管理</a></li>
+          </ul>
+        </li>
+
+        <!-- 9. 系统与设置 -->
+        <li class="ant-menu-submenu ant-menu-submenu-inline menu-item-parent">
+          <div class="ant-menu-submenu-title parent-title">
+            <span class="ant-menu-item-icon m-icon">⚙️</span>
+            <span class="m-txt">店铺设置</span>
+            <i class="ant-menu-submenu-arrow"></i>
+          </div>
+          <ul class="ant-menu ant-menu-sub ant-menu-inline submenu-list">
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="店铺基本信息">店铺基本信息与主体资质</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="子账号与岗位权限">子账号与角色权限分配</a></li>
+            <li class="ant-menu-item"><a href="javascript:;" class="sub-link menu-item-link" data-title="操作日志安全审计">关键操作日志与安全审计</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- AntD Sider 底部收缩触发条 -->
+      <div class="ant-sider-trigger" id="siderTrigger" title="收起 / 展开侧边栏">
+        <span class="trigger-icon" id="triggerIcon">◀</span>
+        <span class="trigger-text">收起侧边栏</span>
       </div>
     </aside>
 

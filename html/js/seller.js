@@ -229,16 +229,130 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 7. 侧边栏菜单点击模拟
-  const menuLinks = document.querySelectorAll('.seller-sidebar .menu-item-link');
-  menuLinks.forEach((link) => {
-    link.addEventListener('click', () => {
+  // 7. 侧边栏折叠/展开与 Ant Design 手风琴交互 (单项展开模式)
+  const parentItems = document.querySelectorAll('.seller-sidebar .menu-item-parent');
+  parentItems.forEach((item) => {
+    // 初始状态同步
+    if (item.classList.contains('open')) {
+      item.classList.add('ant-menu-submenu-open');
+    }
+    const titleEl = item.querySelector('.parent-title');
+    if (titleEl) {
+      titleEl.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = !item.classList.contains('open');
+
+        // 手风琴模式：展开当前项时，自动折叠同级其他子菜单
+        if (willOpen) {
+          parentItems.forEach((other) => {
+            if (other !== item) {
+              other.classList.remove('open', 'ant-menu-submenu-open');
+            }
+          });
+        }
+
+        item.classList.toggle('open', willOpen);
+        item.classList.toggle('ant-menu-submenu-open', willOpen);
+      });
+    }
+  });
+
+  // 二级子菜单及一级普通链接点击高亮 (AntD ant-menu-item-selected 联动)
+  const allNavLinks = document.querySelectorAll('.seller-sidebar .sub-link, .seller-sidebar .nav-link');
+  allNavLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      // 避免阻止新增商品弹窗
+      if (link.id === 'btnOpenAddGoods') return;
+
+      // 清除其他菜单项 active / selected
+      document.querySelectorAll('.seller-sidebar li.active, .seller-sidebar .ant-menu-item-selected').forEach((el) => {
+        el.classList.remove('active', 'ant-menu-item-selected');
+      });
+
+      const parentLi = link.closest('li');
+      if (parentLi) {
+        parentLi.classList.add('active', 'ant-menu-item-selected');
+      }
+
       const title = link.getAttribute('data-title') || link.innerText.trim();
       showToast(`已切换至【${title}】控制台`);
     });
   });
 
-  // 8. 顶部通知与客服
+  // Ant Design Sider 底部收起 / 展开触发条交互
+  const siderTrigger = document.getElementById('siderTrigger');
+  const sellerSidebar = document.getElementById('sellerSidebar');
+  const triggerIcon = document.getElementById('triggerIcon');
+  const triggerText = siderTrigger ? siderTrigger.querySelector('.trigger-text') : null;
+
+  if (siderTrigger && sellerSidebar) {
+    siderTrigger.addEventListener('click', () => {
+      const isCollapsed = sellerSidebar.classList.toggle('ant-sider-collapsed');
+      if (triggerIcon) {
+        triggerIcon.innerText = isCollapsed ? '▶' : '◀';
+      }
+      if (triggerText) {
+        triggerText.innerText = isCollapsed ? '展开' : '收起侧边栏';
+      }
+      showToast(isCollapsed ? '已收起侧边栏 (紧凑图标模式)' : '已展开侧边栏');
+    });
+  }
+
+  // 8. 侧边栏菜单快捷搜索过滤与 Ctrl+K
+  const menuSearchInput = document.getElementById('menuSearchInput');
+  if (menuSearchInput) {
+    menuSearchInput.addEventListener('input', (e) => {
+      const keyword = e.target.value.trim().toLowerCase();
+      const menuItems = document.querySelectorAll('.seller-sidebar .nav-tree > li');
+
+      menuItems.forEach((item) => {
+        if (!keyword) {
+          item.style.display = '';
+          const subLis = item.querySelectorAll('.submenu-list li');
+          subLis.forEach((sub) => sub.style.display = '');
+          return;
+        }
+
+        // 如果是带子菜单的父级
+        if (item.classList.contains('menu-item-parent')) {
+          let hasMatchInSub = false;
+          const subLis = item.querySelectorAll('.submenu-list li');
+          subLis.forEach((sub) => {
+            const txt = sub.innerText.toLowerCase();
+            if (txt.includes(keyword)) {
+              sub.style.display = '';
+              hasMatchInSub = true;
+            } else {
+              sub.style.display = 'none';
+            }
+          });
+
+          const parentTxt = item.querySelector('.parent-title') ? item.querySelector('.parent-title').innerText.toLowerCase() : '';
+          if (hasMatchInSub || parentTxt.includes(keyword)) {
+            item.style.display = '';
+            item.classList.add('open', 'ant-menu-submenu-open');
+          } else {
+            item.style.display = 'none';
+          }
+        } else {
+          // 普通独立项
+          const txt = item.innerText.toLowerCase();
+          item.style.display = txt.includes(keyword) ? '' : 'none';
+        }
+      });
+    });
+
+    // 快捷键 Ctrl+K 聚焦
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        menuSearchInput.focus();
+        menuSearchInput.select();
+      }
+    });
+  }
+
+  // 9. 顶部通知与客服
   const btnNotice = document.getElementById('btnNotice');
   const btnSellerIm = document.getElementById('btnSellerIm');
   if (btnNotice) {
