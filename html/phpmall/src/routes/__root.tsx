@@ -33,7 +33,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: '京麦商家工作台 - 京东商城',
+        title: '京东(JD.COM)-正品低价、品质保障、配送及时、轻松购物！',
       },
     ],
     links: [

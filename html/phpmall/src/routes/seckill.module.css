@@ -1,0 +1,294 @@
+/* ========================================================
+   秒杀专场专属 CSS Module (seckill.module.css)
+   ======================================================== */
+
+.seckillBody {
+  background-color: #f6f6f6;
+  min-height: 100vh;
+}
+
+/* 红金大顶通 */
+.seckillHeader {
+  background: linear-gradient(90deg, #e1251b 0%, #b3140d 100%);
+  color: #fff;
+  padding: 14px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.seckillHeaderInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skBrandLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.skLogoTag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.skLogoIcon {
+  background: #fff;
+  color: #e1251b;
+  font-weight: 900;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.skLogoTitle {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.skSubTag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffe6e6;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 场次吸顶导航 */
+.seckillTimelineBar {
+  background: #fff;
+  border-bottom: 2px solid #e1251b;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.skTimelineInner {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.timelineSlots {
+  display: flex;
+  flex: 1;
+  height: 100%;
+}
+
+.timelineItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: #f7f7f7;
+  border-right: 1px solid #eee;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.timelineItem.active {
+  background-color: #e1251b;
+  color: #fff;
+}
+
+.timelineTime {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.timelineState {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.timelineCountdown {
+  padding-left: 20px;
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cdBox {
+  background-color: #333;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+/* 品类导航条 */
+.seckillCategoryBar {
+  background-color: #fff;
+  padding: 12px 0;
+  margin-top: 14px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.catList {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+  list-style: none;
+  margin: 0;
+}
+
+.catItem {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 14px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.catItem.active {
+  background-color: #e1251b;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 秒杀商品卡片网格 */
+.seckillGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+  padding-bottom: 50px;
+}
+
+.seckillCard {
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.seckillCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.skImgWrap {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.skImgWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.skDiscountBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: #e1251b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.skTitle {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+  height: 38px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.skTitle:hover {
+  color: #e1251b;
+}
+
+.skPriceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+
+.curPrice {
+  color: #e1251b;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.origPrice {
+  color: #bbb;
+  font-size: 12px;
+  text-decoration: line-through;
+}
+
+.skProgressWrap {
+  margin-bottom: 12px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff7875 0%, #e1251b 100%);
+}
+
+.progressTxt {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.btnSkBuy {
+  width: 100%;
+  height: 36px;
+  background-color: #e1251b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btnSkBuy:hover {
+  background-color: #c81623;
+}

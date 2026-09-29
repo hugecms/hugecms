@@ -15,7 +15,7 @@ export const antdTheme: ThemeConfig = {
     borderRadius: 8,
     borderRadiusSM: 6,
     fontFamily:
-      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif',
     fontSize: 14,
     wireframe: false,
   },

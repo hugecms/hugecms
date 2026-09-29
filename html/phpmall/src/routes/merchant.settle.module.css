@@ -1,0 +1,383 @@
+/* ========================================================
+   商家入驻申请门户样式表 (CSS Module)
+   ======================================================== */
+
+.settleBody {
+  background-color: #f7f9fa;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 招商 Header */
+.settleHeader {
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.settleHeaderInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.logoSettleTitle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.logoText {
+  background-color: var(--primary-red, #e1251b);
+  color: #fff;
+  font-weight: 900;
+  font-size: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoSub {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary-red, #e1251b);
+}
+
+.settleTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  border-left: 2px solid #ddd;
+  padding-left: 16px;
+  margin: 0;
+}
+
+.settleNav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.navLink {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--primary-red, #e1251b);
+}
+
+.btnStartSettle {
+  background-color: var(--primary-red, #e1251b);
+  color: #fff;
+  padding: 8px 22px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s ease;
+}
+
+.btnStartSettle:hover {
+  opacity: 0.9;
+}
+
+/* 招商大 Banner */
+.settleHeroBanner {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #fff;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+.settleHeroContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.heroLeft {
+  max-width: 540px;
+}
+
+.heroSubTag {
+  background-color: rgba(225, 37, 27, 0.2);
+  border: 1px solid rgba(225, 37, 27, 0.5);
+  color: #ff6b6b;
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.heroLeft h1 {
+  font-size: 38px;
+  font-weight: 900;
+  margin: 16px 0 12px;
+  letter-spacing: -0.5px;
+  color: #fff;
+}
+
+.heroDesc {
+  font-size: 15px;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.heroHighlights {
+  display: flex;
+  gap: 36px;
+  margin-bottom: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.hlItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.hlItem strong {
+  font-size: 26px;
+  color: #ffde94;
+  font-weight: 900;
+}
+
+.hlItem span {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.btnHeroSettle {
+  background: linear-gradient(90deg, #f10215 0%, #e1251b 100%);
+  color: #fff;
+  padding: 12px 36px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 14px rgba(225, 37, 27, 0.4);
+  transition: opacity 0.15s ease;
+}
+
+.btnHeroSettle:hover {
+  opacity: 0.92;
+}
+
+.heroBannerImg {
+  width: 480px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* 标题通用组件 */
+.secTitleBox {
+  text-align: center;
+  margin: 50px 0 30px;
+}
+
+.secTitleBox h3 {
+  font-size: 26px;
+  font-weight: 800;
+  color: #222;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #777;
+  margin: 0;
+}
+
+/* 4步骤网格 */
+.processStepsGrid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stepCard {
+  flex: 1;
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.stepIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #fdf1f1;
+  color: var(--primary-red, #e1251b);
+  font-size: 20px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.stepCard h4 {
+  font-size: 16px;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.stepCard p {
+  font-size: 12px;
+  color: #777;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.stepArrow {
+  font-size: 24px;
+  color: #ccc;
+  padding: 0 12px;
+  font-weight: bold;
+}
+
+/* 店铺形态网格 */
+.storeTypesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.typeCard {
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.typeHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.typeIcon {
+  font-size: 24px;
+}
+
+.typeHeader h4 {
+  font-size: 16px;
+  color: #222;
+  margin: 0;
+}
+
+.typeDesc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.typeFeatures {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 14px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.typeFeatures li {
+  font-size: 12px;
+  color: #555;
+  line-height: 24px;
+}
+
+/* 资费明细表格 */
+.feesTableWrap {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e8e8e8;
+}
+
+.feesTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.feesTable th, .feesTable td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+
+.feesTable th {
+  background-color: #fafafa;
+  color: #555;
+  font-weight: 600;
+}
+
+.feesTable tbody tr:hover {
+  background-color: #fffdfd;
+}
+
+/* FAQ 网格 */
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.faqItem {
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.faqItem h4 {
+  font-size: 14px;
+  color: #222;
+  margin: 0 0 8px;
+}
+
+.faqItem p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}

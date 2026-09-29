@@ -1,0 +1,624 @@
+/* ========================================================
+   购物车专属 CSS Module (cart.module.css)
+   ======================================================== */
+
+.cartBody {
+  background-color: #fff;
+}
+
+.cartMainContent {
+  margin-top: 16px;
+  padding-bottom: 50px;
+}
+
+/* 顶部状态选项卡 */
+.cartTabsBar {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #e6e6e6;
+  position: relative;
+}
+
+.tabItem {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.tabItem.active {
+  color: #e1251b;
+}
+
+.tabItem.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e1251b;
+}
+
+.tabNum {
+  font-size: 13px;
+}
+
+.deliverTip {
+  margin-left: auto;
+  font-size: 12px;
+  color: #666;
+}
+
+.deliverTip strong {
+  color: #333;
+}
+
+/* 购物车表格列表 */
+.cartTable {
+  margin-top: 16px;
+}
+
+/* 表头 */
+.cartThead {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  background-color: #f3f3f3;
+  border: 1px solid #e9e9e9;
+  border-top: none;
+  color: #666;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+.thChk {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.thGoods {
+  flex: 1;
+}
+
+.thProps {
+  width: 140px;
+  padding-left: 10px;
+}
+
+.thPrice {
+  width: 110px;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.thQuantity {
+  width: 120px;
+  text-align: center;
+}
+
+.thSum {
+  width: 110px;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.thOps {
+  width: 90px;
+  text-align: center;
+}
+
+/* 自定义 Checkbox */
+.customCheckbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+}
+
+.customCheckbox input {
+  display: none;
+}
+
+.chkBox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  display: inline-block;
+  position: relative;
+  background-color: #fff;
+  transition: background-color 0.15s ease;
+}
+
+.customCheckbox input:checked + .chkBox {
+  background-color: #e1251b;
+  border-color: #e1251b;
+}
+
+.customCheckbox input:checked + .chkBox::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* 店铺分组 */
+.shopGroup {
+  margin-top: 16px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.shopTitleBar {
+  padding: 12px 16px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.shopName {
+  font-weight: bold;
+  font-size: 13px;
+  color: #333;
+}
+
+.badgeZy {
+  background-color: #e1251b;
+  color: #fff;
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
+
+.freeShippingTag {
+  margin-left: auto;
+  font-size: 11px;
+  color: #52c41a;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* 满减优惠条 */
+.promoAlertBar {
+  background-color: #fffbf0;
+  border-bottom: 1px dashed #ffd591;
+  padding: 8px 16px 8px 46px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.promoLabel {
+  background-color: #e1251b;
+  color: #fff;
+  padding: 0 4px;
+  font-size: 11px;
+  border-radius: 2px;
+}
+
+.promoDesc {
+  color: #666;
+}
+
+.goCoudan {
+  color: #e1251b;
+  margin-left: auto;
+  text-decoration: none;
+}
+
+.goCoudan:hover {
+  text-decoration: underline;
+}
+
+/* 商品卡片行 */
+.cartRow {
+  display: flex;
+  align-items: center;
+  padding: 18px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  background-color: #fff;
+}
+
+.cartRow.selected {
+  background-color: #fffdfb;
+}
+
+.cellChk {
+  width: 30px;
+}
+
+.cellGoods {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+}
+
+.goodsImg {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.goodsImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.goodsDetail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.goodsTitle {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.5;
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.15s ease;
+}
+
+.goodsTitle:hover {
+  color: #e1251b;
+}
+
+.serviceTags {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tagZy {
+  color: #e1251b;
+  border: 1px solid #ffa39e;
+  background-color: #fff1f0;
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.tagSafe {
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+  background-color: #f6ffed;
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.cellProps {
+  width: 140px;
+  padding-left: 10px;
+  font-size: 12px;
+  color: #999;
+}
+
+.cellProps p {
+  margin-bottom: 4px;
+}
+
+.cellPrice {
+  width: 110px;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.curPrice {
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+}
+
+.origPrice {
+  font-size: 11px;
+  color: #bbb;
+  margin-top: 2px;
+}
+
+.cellQuantity {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  overflow: hidden;
+  height: 24px;
+}
+
+.stepBtn {
+  width: 22px;
+  height: 100%;
+  background-color: #f5f5f5;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepBtn:hover:not(:disabled) {
+  background-color: #e8e8e8;
+  color: #333;
+}
+
+.stepBtn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.stepVal {
+  width: 36px;
+  height: 100%;
+  border: none;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.stockTip {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.cellSum {
+  width: 110px;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.sumPrice {
+  font-size: 14px;
+  font-weight: bold;
+  color: #e1251b;
+}
+
+.cellOps {
+  width: 90px;
+  text-align: center;
+}
+
+.btnOp {
+  display: block;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 2px auto;
+  transition: color 0.15s ease;
+}
+
+.btnOp:hover {
+  color: #e1251b;
+}
+
+/* 吸底结算栏 (Sticky Floatbar) */
+.cartFloatbar {
+  margin-top: 20px;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 52px;
+  background-color: #fff;
+  border: 1px solid #e9e9e9;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.floatbarLeft {
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  gap: 16px;
+}
+
+.barLinkBtn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.barLinkBtn:hover {
+  color: #e1251b;
+}
+
+.floatbarRight {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.selectedAmount {
+  font-size: 12px;
+  color: #666;
+  margin-right: 20px;
+}
+
+.hlCount {
+  color: #e1251b;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.totalPriceBox {
+  text-align: right;
+  margin-right: 20px;
+}
+
+.totalRow {
+  font-size: 12px;
+  color: #666;
+}
+
+.priceVal {
+  color: #e1251b;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.discountRow {
+  font-size: 11px;
+  color: #999;
+}
+
+.btnCheckout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 100%;
+  background-color: #e1251b;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s ease;
+}
+
+.btnCheckout:hover {
+  background-color: #c81623;
+}
+
+.btnCheckout:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 猜你喜欢推荐 */
+.cartGuessLike {
+  margin-top: 40px;
+}
+
+.guessTitle {
+  border-bottom: 2px solid #e6e6e6;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.guessTitle h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.guessGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.guessItem {
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.guessItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.guessImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.guessInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.guessItemTitle {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.guessPriceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guessPrice {
+  color: #e1251b;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.btnGuessAdd {
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+  color: #e1251b;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btnGuessAdd:hover {
+  background-color: #e1251b;
+  color: #fff;
+}

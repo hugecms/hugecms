@@ -1,15 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Avatar, Input, Button, Tag, Card, message } from 'antd'
-import {
-  RobotOutlined,
-  UserOutlined,
-  SendOutlined,
-  HomeOutlined,
-  ShoppingOutlined,
-  QuestionCircleOutlined,
-  CustomerServiceOutlined,
-} from '@ant-design/icons'
+import { message } from 'antd'
+import styles from './chat.module.css'
 
 export const Route = createFileRoute('/chat')({
   component: CustomerChatPage,
@@ -33,7 +25,7 @@ function CustomerChatPage() {
     {
       id: '1',
       sender: 'bot',
-      text: '您好，尊敬的张三 (PLUS会员)！我是京东智能在线助理 Joy 🐶。请问有什么可以帮您？您可以在下方直接提问，或选择快捷问题。',
+      text: '您好，尊敬的张三 (PLUS会员)！我是京东智能在线助理 Joy 🐶。请问有什么可以帮您？您可以在下方直接提问，或选择快捷问题：',
       time: '刚刚',
     },
   ])
@@ -61,7 +53,6 @@ function CustomerChatPage() {
     setMessages((prev) => [...prev, userMsg])
     if (!textToSend) setInputVal('')
 
-    // 智能机器人模拟回复
     setTimeout(() => {
       let replyText = '收到您的问题，正在为您查询相关信息，请稍候...'
       if (content.includes('送达') || content.includes('物流')) {
@@ -100,238 +91,228 @@ function CustomerChatPage() {
         orderId: 'JD2026092800101',
         title: 'Apple iPhone 16 Pro 256GB 原色钛金属',
         price: 7999,
-        image: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=100&q=80',
+        image: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=80&q=80',
       },
     }
     setMessages((prev) => [...prev, userMsg])
-
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
         {
           id: String(Date.now() + 1),
           sender: 'bot',
-          text: '已为您锁定订单 JD2026092800101。该订单已出库并在派送途中，如需修改收货时间请随时告诉我。',
+          text: '已为您定位订单【JD2026092800101】。该订单状态为【运输中】，京东快递员正在加速配送中，预计将于今日 14:00 前送达！',
           time: '刚刚',
         },
       ])
-    }, 600)
+    }, 500)
   }
 
-  const quickQuestions = [
-    '🚚 这笔订单什么时候能送达？',
-    '🧾 如何申请开具增值税发票？',
-    '🔄 7天无理由退货流程',
-    '👨‍💼 转接人工客服专员',
-  ]
-
   return (
-    <div className="h-screen flex flex-col bg-slate-100">
-      {/* 顶部客服 Header */}
-      <header className="bg-slate-900 text-white px-6 py-3.5 flex items-center justify-between shrink-0 shadow-md">
-        <div className="flex items-center gap-3">
-          <Avatar size={36} className="bg-rose-600 font-bold">
-            Joy
-          </Avatar>
+    <div className={styles.chatBody}>
+      {/* 1. 顶部 Header */}
+      <header className={styles.chatHeaderBar}>
+        <div className={styles.chatBrandTitle}>
+          <div className={styles.botAvatar}>Joy</div>
           <div>
-            <div className="font-bold text-sm flex items-center gap-2">
-              <span>京东智能客服机器人 (Joy)</span>
-              <span className="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded-full font-normal">
-                ● 7×24小时专属服务中
-              </span>
-            </div>
-            <div className="text-[11px] text-slate-400">解答购物、物流、发票与售后问题</div>
+            <h3>京东智能客服机器人 (Joy)</h3>
           </div>
+          <span className={styles.serviceStatus}>● 7×24小时专属服务中</span>
         </div>
-
-        <div className="flex items-center gap-4 text-xs">
-          <Link to="/" className="text-slate-300 hover:text-white flex items-center gap-1">
-            <HomeOutlined /> 返回商城首页
-          </Link>
-          <Link to="/user/order" className="text-slate-300 hover:text-white flex items-center gap-1">
-            <ShoppingOutlined /> 我的订单
-          </Link>
+        <div className={styles.chatTopLinks}>
+          <Link to="/">🏠 返回商城首页</Link>
+          <Link to="/user/order">📋 我的订单</Link>
+          <Link to="/user">👤 个人中心</Link>
         </div>
       </header>
 
-      {/* 客服工作台三栏主体 */}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-4 flex gap-4 overflow-hidden">
-        {/* 左侧：关联订单与快捷入口 */}
-        <aside className="w-72 bg-white rounded-xl border border-slate-200/80 shadow-xs p-4 flex flex-col justify-between shrink-0">
-          <div>
-            <h4 className="text-xs font-bold text-slate-700 pb-2 border-b border-slate-100 flex items-center gap-1">
-              📦 咨询关联订单
-            </h4>
-
-            <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-slate-700">JD2026092800101</span>
-                <Tag color="processing">运输中</Tag>
+      {/* 2. IM 三栏工作台 */}
+      <div className={styles.chatWorkbench}>
+        {/* 左侧：关联近期订单 */}
+        <aside className={styles.chatLeftSide}>
+          <div className={styles.sideBlockHead}>📦 咨询关联订单</div>
+          <div className={styles.recentOrderBox}>
+            <div className={styles.orderMiniCard} onClick={handleSendOrder}>
+              <div className={styles.omTop}>
+                <span>订单号：JD2026092800101</span>
+                <span className={styles.statusTransporting}>运输中</span>
               </div>
-              <div className="flex gap-2 items-center">
+              <div className={styles.omBody}>
                 <img
                   src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=80&q=80"
-                  alt="goods"
-                  className="w-12 h-12 rounded object-cover border border-slate-200"
+                  alt="iPhone 16 Pro"
                 />
-                <div className="flex-1 min-w-0">
-                  <p className="truncate font-medium text-slate-800">
-                    Apple iPhone 16 Pro 256GB
-                  </p>
-                  <p className="text-rose-600 font-bold mt-1">¥7,999.00</p>
+                <div className={styles.omInfo}>
+                  <h5>Apple iPhone 16 Pro 256GB 原色钛金属</h5>
+                  <div className={styles.omPrice}>¥7,999.00</div>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={handleSendOrder}
-                className="mt-3 w-full py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold rounded transition text-center cursor-pointer"
-              >
-                发送此订单给客服咨询 &gt;
+              <button type="button" className={styles.btnSendOrder}>
+                发送此订单给客服咨询 ›
               </button>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 space-y-2 text-xs">
-            <div className="text-[11px] font-bold text-slate-400">⚡ 自助快捷服务</div>
-            <Link to="/user/order" className="block text-slate-600 hover:text-rose-600">
-              • 实时物流轨迹时间轴 &gt;
-            </Link>
-            <Link to="/user" className="block text-slate-600 hover:text-rose-600">
-              • 修改默认收货地址 &gt;
-            </Link>
-            <Link to="/cart" className="block text-slate-600 hover:text-rose-600">
-              • 查看我的购物车商品 &gt;
-            </Link>
+          <div className={styles.sideBlockHead} style={{ marginTop: 10 }}>
+            ⚡ 自助快捷服务通道
+          </div>
+          <div className={styles.quickServiceList}>
+            <Link to="/user">• 申请退款 / 7天退货 ›</Link>
+            <Link to="/user/order">• 实时物流轨迹时间轴 ›</Link>
+            <Link to="/user">• 修改默认收货地址 ›</Link>
+            <Link to="/coupon">• 领券中心与大额满减 ›</Link>
           </div>
         </aside>
 
-        {/* 中间：聊天消息流 */}
-        <main className="flex-1 bg-white rounded-xl border border-slate-200/80 shadow-xs flex flex-col overflow-hidden">
-          {/* 消息历史滚动区 */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4">
-            {messages.map((m) => {
-              const isBot = m.sender === 'bot'
-              return (
+        {/* 中间：核心聊天流 */}
+        <main className={styles.chatMainArea}>
+          {/* 消息列表 */}
+          <div className={styles.chatMessageList}>
+            {messages.map((m) => (
+              <div
+                key={m.id}
+                className={`${styles.msgRow} ${m.sender === 'bot' ? styles.msgRowBot : styles.msgRowUser}`}
+              >
                 <div
-                  key={m.id}
-                  className={`flex gap-3 items-start ${isBot ? '' : 'flex-row-reverse'}`}
+                  className={`${styles.msgAvatar} ${m.sender === 'user' ? styles.msgAvatarUser : ''}`}
                 >
-                  <Avatar
-                    size={32}
-                    icon={isBot ? <RobotOutlined /> : <UserOutlined />}
-                    className={isBot ? 'bg-rose-600' : 'bg-slate-700'}
-                  />
-                  <div className={`max-w-[70%] ${isBot ? '' : 'text-right'}`}>
-                    <div
-                      className={`inline-block p-3 rounded-2xl text-xs leading-relaxed ${
-                        isBot
-                          ? 'bg-slate-100 text-slate-800 rounded-tl-none shadow-2xs'
-                          : 'bg-rose-600 text-white rounded-tr-none shadow-sm'
-                      }`}
-                    >
-                      {m.text}
-
-                      {m.orderCard && (
-                        <div className="mt-2 p-2 bg-white text-slate-800 rounded border border-rose-200 flex gap-2 items-center text-left">
-                          <img
-                            src={m.orderCard.image}
-                            alt=""
-                            className="w-10 h-10 object-cover rounded"
-                          />
-                          <div className="min-w-0 flex-1">
-                            <p className="font-bold text-[11px] truncate">
-                              {m.orderCard.title}
-                            </p>
-                            <span className="text-rose-600 font-bold text-xs">
-                              ¥{m.orderCard.price.toFixed(2)}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-[10px] text-slate-400 mt-1">{m.time}</div>
-                  </div>
+                  {m.sender === 'bot' ? 'Joy' : '您'}
                 </div>
-              )
-            })}
+                <div>
+                  <div
+                    className={`${styles.msgBubble} ${m.sender === 'user' ? styles.msgBubbleUser : ''}`}
+                  >
+                    <div>{m.text}</div>
+                    {m.orderCard && (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          padding: 8,
+                          background: 'rgba(255,255,255,0.15)',
+                          borderRadius: 4,
+                          display: 'flex',
+                          gap: 8,
+                          alignItems: 'center',
+                        }}
+                      >
+                        <img
+                          src={m.orderCard.image}
+                          alt={m.orderCard.title}
+                          style={{ width: 40, height: 40, borderRadius: 4, objectFit: 'cover' }}
+                        />
+                        <div style={{ fontSize: 11 }}>
+                          <div>{m.orderCard.title}</div>
+                          <div style={{ fontWeight: 'bold' }}>¥{m.orderCard.price}</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles.msgTime}>{m.time}</div>
+                </div>
+              </div>
+            ))}
             <div ref={msgEndRef} />
           </div>
 
-          {/* 快捷问题选项胶囊 */}
-          <div className="px-4 py-2 bg-slate-50/80 border-t border-slate-100 flex flex-wrap gap-2">
-            {quickQuestions.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => handleSend(q)}
-                className="px-2.5 py-1 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-xs text-slate-700 hover:text-rose-600 rounded-full transition cursor-pointer"
-              >
-                {q}
-              </button>
-            ))}
+          {/* 快捷问题药丸 */}
+          <div className={styles.chatQuickPills}>
+            <span
+              className={styles.quickPill}
+              onClick={() => handleSend('这笔订单什么时候能送达？')}
+            >
+              🚚 订单什么时候送达？
+            </span>
+            <span
+              className={styles.quickPill}
+              onClick={() => handleSend('如何申请开具增值税发票？')}
+            >
+              🧾 如何开具发票？
+            </span>
+            <span
+              className={styles.quickPill}
+              onClick={() => handleSend('不喜欢能支持七天无理由退货吗？')}
+            >
+              🔄 7天无理由退货流程
+            </span>
+            <span
+              className={`${styles.quickPill} ${styles.quickPillDanger}`}
+              onClick={() => handleSend('转接人工客服专员')}
+            >
+              👨‍💼 转人工客服
+            </span>
           </div>
 
-          {/* 输入框与工具条 */}
-          <div className="p-3 border-t border-slate-200 bg-white">
-            <div className="flex gap-2">
-              <Input.TextArea
-                value={inputVal}
-                onChange={(e) => setInputVal(e.target.value)}
-                onPressEnter={(e) => {
-                  if (!e.shiftKey) {
-                    e.preventDefault()
-                    handleSend()
-                  }
-                }}
-                placeholder="输入您的问题，按 Enter 发送..."
-                autoSize={{ minRows: 2, maxRows: 3 }}
-                className="text-xs"
-              />
-              <Button
-                type="primary"
-                danger
-                icon={<SendOutlined />}
-                onClick={() => handleSend()}
-                className="h-auto px-5 font-semibold"
-              >
+          {/* 底部输入框 */}
+          <div className={styles.chatInputBox}>
+            <textarea
+              placeholder="输入您的问题，按回车或点击发送..."
+              value={inputVal}
+              onChange={(e) => setInputVal(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault()
+                  handleSend()
+                }
+              }}
+            />
+            <div className={styles.chatBottomTools}>
+              <div className={styles.toolIcons}>
+                <span title="发送表情" onClick={() => setInputVal((prev) => prev + '😊')}>
+                  😊
+                </span>
+                <span
+                  title="上传图片"
+                  onClick={() => message.info('已开启图片上传通道，请选择本地凭证截图')}
+                >
+                  🖼️
+                </span>
+                <span title="发送订单" onClick={handleSendOrder}>
+                  📦
+                </span>
+              </div>
+              <button type="button" onClick={() => handleSend()} className={styles.btnSendMsg}>
                 发送
-              </Button>
+              </button>
             </div>
           </div>
         </main>
 
-        {/* 右侧：常见 FAQ */}
-        <aside className="w-64 bg-white rounded-xl border border-slate-200/80 shadow-xs p-4 shrink-0 hidden lg:block">
-          <h4 className="text-xs font-bold text-slate-700 pb-2 border-b border-slate-100 flex items-center gap-1">
-            <QuestionCircleOutlined className="text-rose-600" /> 常见问题与帮助
-          </h4>
+        {/* 右侧：常见 FAQ 与帮助 */}
+        <aside className={styles.chatRightSide}>
+          <div className={styles.faqCard}>
+            <h4>❓ 热门常见问题</h4>
+            <ul className={styles.faqList}>
+              <li>
+                <a href="javascript:;" onClick={() => handleSend('为什么我的订单还没有发货？')}>
+                  • 订单已支付为何未发货？
+                </a>
+              </li>
+              <li>
+                <a href="javascript:;" onClick={() => handleSend('京豆如何抵扣现金？')}>
+                  • 购物返还的京豆怎么使用？
+                </a>
+              </li>
+              <li>
+                <a href="javascript:;" onClick={() => handleSend('支持换货或保修吗？')}>
+                  • 商品出现质量故障如何保修？
+                </a>
+              </li>
+              <li>
+                <a href="javascript:;" onClick={() => handleSend('价保申请规则是什么？')}>
+                  • 购买后降价如何申请一键价保？
+                </a>
+              </li>
+            </ul>
+          </div>
 
-          <ul className="mt-3 space-y-2.5 text-xs text-slate-600">
-            <li
-              onClick={() => handleSend('下单后多久发货？')}
-              className="hover:text-rose-600 cursor-pointer p-1.5 hover:bg-slate-50 rounded"
-            >
-              • 下单后多长时间能发货？
-            </li>
-            <li
-              onClick={() => handleSend('如何查询电子发票？')}
-              className="hover:text-rose-600 cursor-pointer p-1.5 hover:bg-slate-50 rounded"
-            >
-              • 如何开具和查询电子发票？
-            </li>
-            <li
-              onClick={() => handleSend('商品支持七天无理由退货吗？')}
-              className="hover:text-rose-600 cursor-pointer p-1.5 hover:bg-slate-50 rounded"
-            >
-              • 七天无理由退货运费谁承担？
-            </li>
-            <li
-              onClick={() => handleSend('PLUS 会员专属退换货权益是什么？')}
-              className="hover:text-rose-600 cursor-pointer p-1.5 hover:bg-slate-50 rounded"
-            >
-              • PLUS 会员双向免费上门取退换
-            </li>
-          </ul>
+          <div className={styles.faqCard}>
+            <h4>📞 专属热线服务</h4>
+            <p style={{ fontSize: 12, color: '#666', lineHeight: 1.6, margin: 0 }}>
+              PLUS 会员服务专线：<strong style={{ color: '#e1251b' }}>950618</strong>
+              <br />
+              企业采购专属通道：<strong style={{ color: '#005ea7' }}>400-606-5500</strong>
+            </p>
+          </div>
         </aside>
       </div>
     </div>

@@ -1,0 +1,396 @@
+/* ========================================================
+   商品搜索与品类筛选列表页样式 (CSS Module)
+   ======================================================== */
+
+.listCrumb {
+  padding: 14px 0 10px;
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.listCrumb a {
+  color: #666;
+  text-decoration: none;
+}
+
+.listCrumb a:hover {
+  color: var(--primary-red, #e1251b);
+}
+
+.sep {
+  margin: 0 6px;
+  color: #bbb;
+}
+
+.current {
+  color: #333;
+}
+
+.totalRes {
+  margin-left: 20px;
+  color: #999;
+}
+
+.totalRes strong {
+  color: var(--primary-red, #e1251b);
+}
+
+/* 多维筛选器 (Selector Box) */
+.selectorBox {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.selectorRow {
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 1px dashed #eee;
+  padding: 10px 16px;
+}
+
+.selectorRow:last-child {
+  border-bottom: none;
+}
+
+.sKey {
+  width: 80px;
+  color: #777;
+  font-size: 12px;
+  padding-top: 4px;
+  flex-shrink: 0;
+}
+
+.sValues {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+}
+
+.sValues a,
+.sValues button {
+  font-size: 12px;
+  color: #333;
+  padding: 2px 6px;
+  border-radius: 2px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.sValues a:hover,
+.sValues a.active,
+.sValues button:hover,
+.sValues button.active {
+  color: #fff;
+  background-color: var(--primary-red, #e1251b);
+}
+
+.priceInputRange {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+}
+
+.priceInputRange input {
+  width: 50px;
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 12px;
+  outline: none;
+}
+
+.btnPriceOk {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btnPriceOk:hover {
+  background-color: var(--primary-red, #e1251b);
+  color: #fff;
+  border-color: var(--primary-red, #e1251b);
+}
+
+/* 排序与过滤条 (Filter Bar) */
+.filterBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f7f7f7;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin-bottom: 16px;
+}
+
+.filterSortGroup {
+  display: flex;
+}
+
+.sortBtn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-right: -1px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.sortBtn:first-child {
+  border-radius: 2px 0 0 2px;
+}
+
+.sortBtn:last-child {
+  border-radius: 0 2px 2px 0;
+}
+
+.sortBtnActive, .sortBtn:hover {
+  background-color: var(--primary-red, #e1251b);
+  color: #fff;
+  border-color: var(--primary-red, #e1251b);
+  z-index: 2;
+}
+
+.filterExtraCheckboxes {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #555;
+}
+
+.filterPagerMini {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.pageNum {
+  color: #666;
+  margin-right: 6px;
+}
+
+.btnPageStep {
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnPageStepDisabled {
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: #f7f7f7;
+}
+
+/* 商品矩阵网格 (5列) */
+.goodsGrid5cols {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.itemCard {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.itemCard:hover {
+  border-color: #ffccd0;
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumb img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itemBody {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.itemPrice {
+  color: var(--primary-red, #e1251b);
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.yen { font-size: 13px; }
+.amount { font-size: 20px; font-weight: 800; }
+.dec { font-size: 12px; }
+
+.itemTitle {
+  font-size: 12px;
+  color: #444;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+  height: 36px;
+  text-decoration: none;
+}
+
+.itemTitle:hover {
+  color: var(--primary-red, #e1251b);
+}
+
+.itemCommit {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 6px;
+}
+
+.cNum {
+  color: #1474af;
+}
+
+.rate {
+  margin-left: 6px;
+  color: var(--primary-red, #e1251b);
+}
+
+.itemTags {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tBadge {
+  border: 1px solid var(--primary-red, #e1251b);
+  color: var(--primary-red, #e1251b);
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.itemShop {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemActionBtns {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.btnViewDetail {
+  flex: 1;
+  height: 28px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-size: 11px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.btnViewDetail:hover {
+  border-color: var(--primary-red, #e1251b);
+  color: var(--primary-red, #e1251b);
+}
+
+.btnListAddCart {
+  flex: 1;
+  height: 28px;
+  background-color: #fdf1f1;
+  border: 1px solid var(--primary-red, #e1251b);
+  color: var(--primary-red, #e1251b);
+  border-radius: 2px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btnListAddCart:hover {
+  background-color: var(--primary-red, #e1251b);
+  color: #fff;
+}
+
+/* 分页器 */
+.listPagination {
+  margin: 36px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.pageBtn {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.pageBtn:hover {
+  border-color: var(--primary-red, #e1251b);
+  color: var(--primary-red, #e1251b);
+}
+
+.pageBtnActive {
+  background-color: var(--primary-red, #e1251b);
+  border-color: var(--primary-red, #e1251b);
+  color: #fff;
+  font-weight: bold;
+}
+
+.pageBtnDisabled {
+  color: #bbb;
+  cursor: not-allowed;
+  border-color: #eee;
+  background-color: #fafafa;
+}

@@ -1,17 +1,12 @@
 import React, { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Tabs, Tag, Button, Modal, Timeline, Empty, message } from 'antd'
-import {
-  CarOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  ShoppingOutlined,
-} from '@ant-design/icons'
+import { Modal, Timeline, Empty, message } from 'antd'
 import { MallShortcutNav } from '../../features/mall/components/MallShortcutNav'
 import { MallFooter } from '../../features/mall/components/MallFooter'
 import { UserHeader } from '../../features/user/components/UserHeader'
 import { UserSidebar } from '../../features/user/components/UserSidebar'
 import { useCartStore } from '../../stores/cartStore'
+import styles from './order.module.css'
 
 export const Route = createFileRoute('/user/order')({
   component: UserOrdersPage,
@@ -24,7 +19,7 @@ const INITIAL_ORDERS = [
     shopName: 'Apple产品京东自营旗舰店',
     receiver: '张三 (138****0001)',
     totalPrice: 7999,
-    status: 'shipping', // shipping, completed, unpaid
+    status: 'shipping',
     statusText: '京东快递 运输中',
     items: [
       {
@@ -105,150 +100,104 @@ function UserOrdersPage() {
       quantity: 1,
       image: item.image,
       sku: item.sku,
-      shopName: '京东自营旗舰店',
+      shopName: '京东自营官方旗舰店',
     })
     message.success(`已将「${item.title}」重新加入购物车！`)
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+    <div className={styles.orderBody}>
       <div>
         <MallShortcutNav />
-        <UserHeader title="订单中心 - 我的订单" />
+        <UserHeader title="我的京东 - 我的订单" />
 
-        <div className="max-w-7xl mx-auto px-4 py-6 flex gap-6">
+        <div className={`w ${styles.orderLayout}`}>
           <UserSidebar />
 
-          <main className="flex-1 bg-white rounded-xl border border-slate-200/80 shadow-xs p-6">
-            <h3 className="text-base font-bold text-slate-800 mb-4">订单中心</h3>
-
-            <Tabs
-              activeKey={activeTab}
-              onChange={setActiveTab}
-              items={[
-                { key: 'all', label: `全部订单 (${INITIAL_ORDERS.length})` },
-                { key: 'unpaid', label: '待付款 (0)' },
-                { key: 'shipping', label: '待收货 (1)' },
-                { key: 'comment', label: '待评价 (1)' },
-              ]}
-            />
-
-            {/* 订单表格表头 */}
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 grid grid-cols-12 text-xs font-semibold text-slate-500 mb-4 text-center">
-              <span className="col-span-5 text-left pl-2">订单商品详情</span>
-              <span className="col-span-2">收货人</span>
-              <span className="col-span-2">订单金额</span>
-              <span className="col-span-1">状态</span>
-              <span className="col-span-2">操作</span>
+          <main className={styles.orderMain}>
+            <div className={styles.orderNavTabs}>
+              <button
+                type="button"
+                className={`${styles.orderNavTab} ${activeTab === 'all' ? styles.orderNavTabActive : ''}`}
+                onClick={() => setActiveTab('all')}
+              >
+                全部有效订单
+              </button>
+              <button
+                type="button"
+                className={`${styles.orderNavTab} ${activeTab === 'shipping' ? styles.orderNavTabActive : ''}`}
+                onClick={() => setActiveTab('shipping')}
+              >
+                待收货 (1)
+              </button>
+              <button
+                type="button"
+                className={`${styles.orderNavTab} ${activeTab === 'comment' ? styles.orderNavTabActive : ''}`}
+                onClick={() => setActiveTab('comment')}
+              >
+                待评价 (1)
+              </button>
             </div>
 
-            {/* 订单列表 */}
             {filteredOrders.length === 0 ? (
-              <div className="py-12 text-center">
-                <Empty description="暂无符合条件的订单" />
-              </div>
+              <Empty description="暂无符合条件的订单" />
             ) : (
-              <div className="space-y-4">
+              <div className={styles.orderList}>
                 {filteredOrders.map((order) => (
-                  <div
-                    key={order.orderId}
-                    className="border border-slate-200 rounded-xl overflow-hidden shadow-2xs hover:border-slate-300 transition"
-                  >
-                    {/* 订单头部条 */}
-                    <div className="bg-slate-50/80 px-4 py-2.5 text-xs text-slate-500 flex items-center justify-between border-b border-slate-200">
-                      <div className="flex items-center gap-4">
-                        <span className="font-semibold text-slate-800">
-                          {order.createTime}
-                        </span>
+                  <div key={order.orderId} className={styles.orderCard}>
+                    <div className={styles.orderHead}>
+                      <div className={styles.orderHeadLeft}>
+                        <span>{order.createTime}</span>
                         <span>订单号：{order.orderId}</span>
-                        <span className="text-slate-700 font-medium">{order.shopName}</span>
+                        <span style={{ color: '#005ea7' }}>{order.shopName}</span>
                       </div>
-                      <Link to="/chat" className="text-rose-600 hover:underline">
-                        联系客服
+                      <Link to="/chat" style={{ color: '#666', textDecoration: 'none' }}>
+                        💬 联系客服
                       </Link>
                     </div>
 
-                    {/* 订单主内容网格 */}
-                    <div className="p-4 grid grid-cols-12 items-center text-xs">
-                      {/* 商品列 */}
-                      <div className="col-span-5 space-y-3">
-                        {order.items.map((it) => (
-                          <div key={it.id} className="flex gap-3 items-center">
-                            <img
-                              src={it.image}
-                              alt={it.title}
-                              className="w-14 h-14 object-cover rounded-lg border border-slate-200 shrink-0"
-                            />
-                            <div>
-                              <Link
-                                to="/item/$id"
-                                params={{ id: String(it.id) }}
-                                className="font-medium text-slate-800 hover:text-rose-600 line-clamp-1"
-                              >
-                                {it.title}
-                              </Link>
-                              <p className="text-slate-400 mt-0.5">{it.sku}</p>
-                              <span className="text-rose-600 font-semibold">
-                                ¥{it.price.toFixed(2)} x {it.quantity}
-                              </span>
-                            </div>
+                    {order.items.map((item) => (
+                      <div key={item.id} className={styles.orderBodyRow}>
+                        <div className={styles.goodsCol}>
+                          <img src={item.image} alt={item.title} className={styles.goodsImg} />
+                          <div>
+                            <Link to="/item/$id" params={{ id: String(item.id) }} className={styles.goodsTitle}>
+                              {item.title}
+                            </Link>
+                            <div className={styles.goodsSku}>{item.sku}</div>
                           </div>
-                        ))}
-                      </div>
+                        </div>
 
-                      {/* 收货人 */}
-                      <div className="col-span-2 text-center text-slate-700">
-                        {order.receiver}
-                      </div>
+                        <div className={styles.priceCol}>
+                          ¥{item.price.toFixed(2)} × {item.quantity}
+                        </div>
 
-                      {/* 总额 */}
-                      <div className="col-span-2 text-center">
-                        <span className="text-sm font-bold text-slate-900 block">
-                          ¥{order.totalPrice.toFixed(2)}
-                        </span>
-                        <span className="text-[11px] text-slate-400">在线支付</span>
-                      </div>
+                        <div className={styles.receiverCol}>
+                          {order.receiver}
+                        </div>
 
-                      {/* 履约状态 */}
-                      <div className="col-span-1 text-center">
-                        <Tag
-                          color={
-                            order.status === 'shipping'
-                              ? 'processing'
-                              : order.status === 'comment'
-                                ? 'success'
-                                : 'default'
-                          }
-                        >
-                          {order.statusText}
-                        </Tag>
-                      </div>
-
-                      {/* 操作 */}
-                      <div className="col-span-2 flex flex-col items-center gap-2">
-                        {order.status === 'shipping' && (
-                          <Button
-                            size="small"
-                            type="primary"
-                            danger
+                        <div className={styles.statusCol}>
+                          <span className={styles.statusText}>{order.statusText}</span>
+                          <button
+                            type="button"
+                            className={styles.btnTrack}
                             onClick={() => setSelectedOrderForLogistics(order)}
                           >
-                            跟踪物流
-                          </Button>
-                        )}
-                        {order.status === 'comment' && (
-                          <Button size="small" type="primary" danger ghost>
-                            立即评价
-                          </Button>
-                        )}
-                        <Button
-                          size="small"
-                          onClick={() => handleRebuy(order.items[0])}
-                        >
-                          再次购买
-                        </Button>
+                            查看物流轨迹
+                          </button>
+                        </div>
+
+                        <div className={styles.actionCol}>
+                          <button
+                            type="button"
+                            className={styles.btnRebuy}
+                            onClick={() => handleRebuy(item)}
+                          >
+                            再次购买
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -257,37 +206,37 @@ function UserOrdersPage() {
         </div>
       </div>
 
-      {/* 物流轨迹弹窗 */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-rose-600 font-bold">
-            <CarOutlined />
-            <span>京东物流轨迹时间轴 (订单号: {selectedOrderForLogistics?.orderId})</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🚚 京东自营物流实时轨迹</span>
+            <span style={{ fontSize: 12, color: '#888' }}>
+              订单号：{selectedOrderForLogistics?.orderId}
+            </span>
           </div>
         }
-        open={!!selectedOrderForLogistics}
+        open={Boolean(selectedOrderForLogistics)}
         onCancel={() => setSelectedOrderForLogistics(null)}
-        footer={[
-          <Button key="close" onClick={() => setSelectedOrderForLogistics(null)}>
-            关闭
-          </Button>,
-        ]}
+        footer={null}
+        width={560}
       >
-        <div className="py-4">
-          <Timeline
-            items={
-              selectedOrderForLogistics?.timeline.map((t: any, idx: number) => ({
+        {selectedOrderForLogistics && (
+          <div style={{ padding: '16px 8px 8px' }}>
+            <Timeline
+              items={selectedOrderForLogistics.timeline.map((t: any, idx: number) => ({
                 color: idx === 0 ? 'red' : 'gray',
                 children: (
                   <div>
-                    <div className="font-bold text-xs text-slate-800">{t.desc}</div>
-                    <div className="text-[11px] text-slate-400 mt-1">{t.time}</div>
+                    <div style={{ fontWeight: idx === 0 ? 'bold' : 'normal', color: idx === 0 ? '#e1251b' : '#333' }}>
+                      {t.status} - {t.desc}
+                    </div>
+                    <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>{t.time}</div>
                   </div>
                 ),
-              })) || []
-            }
-          />
-        </div>
+              }))}
+            />
+          </div>
+        )}
       </Modal>
 
       <MallFooter />

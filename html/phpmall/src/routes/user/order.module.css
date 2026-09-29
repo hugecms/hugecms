@@ -1,0 +1,191 @@
+/* ========================================================
+   用户订单中心 (CSS Module)
+   ======================================================== */
+
+.orderBody {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.orderLayout {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding-bottom: 50px;
+}
+
+.orderMain {
+  flex: 1;
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 20px 24px;
+}
+
+.orderNavTabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 2px solid #e8e8e8;
+  margin-bottom: 20px;
+}
+
+.orderNavTab {
+  padding: 10px 0;
+  font-size: 14px;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s ease;
+}
+
+.orderNavTab:hover {
+  color: var(--primary-red, #e1251b);
+}
+
+.orderNavTabActive {
+  color: var(--primary-red, #e1251b);
+  font-weight: bold;
+  border-bottom-color: var(--primary-red, #e1251b);
+}
+
+/* 订单卡片 */
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.orderCard {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.orderCard:hover {
+  border-color: #ccc;
+}
+
+.orderHead {
+  background-color: #f5f5f5;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.orderHeadLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.orderBodyRow {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.goodsCol {
+  flex: 2;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.goodsImg {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.goodsTitle {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  text-decoration: none;
+}
+
+.goodsTitle:hover {
+  color: var(--primary-red, #e1251b);
+}
+
+.goodsSku {
+  font-size: 11px;
+  color: #999;
+}
+
+.priceCol {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+}
+
+.receiverCol {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.statusCol {
+  flex: 1;
+  text-align: center;
+}
+
+.statusText {
+  font-size: 12px;
+  font-weight: bold;
+  color: #52c41a;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.btnTrack {
+  font-size: 11px;
+  color: #005ea7;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btnTrack:hover {
+  color: var(--primary-red, #e1251b);
+}
+
+.actionCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.btnRebuy {
+  background-color: #fdf1f1;
+  border: 1px solid var(--primary-red, #e1251b);
+  color: var(--primary-red, #e1251b);
+  padding: 4px 14px;
+  border-radius: 2px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btnRebuy:hover {
+  background-color: var(--primary-red, #e1251b);
+  color: #fff;
+}

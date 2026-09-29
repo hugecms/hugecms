@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Form, Input, Select, Button, Tag, Card, message } from 'antd'
-import {
-  BankOutlined,
-  CheckCircleOutlined,
-  AuditOutlined,
-  SafetyCertificateOutlined,
-  ThunderboltFilled,
-  HomeOutlined,
-} from '@ant-design/icons'
+import { message } from 'antd'
 import { MallShortcutNav } from '../features/mall/components/MallShortcutNav'
 import { MallFooter } from '../features/mall/components/MallFooter'
+import { useCartStore } from '../stores/cartStore'
+import styles from './b2b.module.css'
 
 export const Route = createFileRoute('/b2b')({
   component: B2BProcurementPage,
@@ -19,213 +13,304 @@ export const Route = createFileRoute('/b2b')({
 const B2B_PRODUCTS = [
   {
     id: 101,
-    title: 'ThinkPad T14p 高性能商务轻薄本 (i7/32G/1TB)',
+    title: '联想 ThinkPad T14p 商务轻薄笔记本电脑 (i7 32G 1TB 集成大宗授权)',
     retailPrice: 8999,
-    b2bTiers: [
-      { min: 5, price: 8299 },
-      { min: 20, price: 7799 },
-      { min: 50, price: 7299 },
+    tag: '大宗起采: 5台起',
+    tiers: [
+      { count: '5~19 台', price: '¥8,299 /台' },
+      { count: '20~49 台', price: '¥7,799 /台' },
+      { count: '≥ 50 台 (企业底价)', price: '¥7,299 /台', isBottom: true },
     ],
-    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&q=80',
-    tag: '办公首选',
+    lowestPrice: '¥7,299.00',
+    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=360&q=80',
+    sku: 'i7 32G 1TB',
   },
   {
     id: 102,
-    title: 'MAXHUB 75英寸 4K 智能会议平板一体机 (无线投屏+白板)',
+    title: 'MAXHUB 75英寸 4K 智能会议平板一体机 (无线投屏/视频会议双系统)',
     retailPrice: 15999,
-    b2bTiers: [
-      { min: 2, price: 14200 },
-      { min: 5, price: 13500 },
-      { min: 10, price: 12800 },
+    tag: '大宗起采: 2台起',
+    tiers: [
+      { count: '2~4 台', price: '¥14,200 /台' },
+      { count: '5~9 台', price: '¥13,500 /台' },
+      { count: '≥ 10 台 (企业底价)', price: '¥12,800 /台', isBottom: true },
     ],
-    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=300&q=80',
-    tag: '会议智能',
+    lowestPrice: '¥12,800.00',
+    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=360&q=80',
+    sku: '75英寸 4K',
   },
   {
     id: 103,
-    title: '京东E卡 经典电子卡 500元面值 (员工中秋/年节福利)',
-    retailPrice: 500,
-    b2bTiers: [
-      { min: 50, price: 492 },
-      { min: 200, price: 485 },
-      { min: 500, price: 475 },
+    title: '得力（deli）多功能商务激光一体打印机 (双面打印/复印/高速扫描)',
+    retailPrice: 2499,
+    tag: '大宗起采: 3台起',
+    tiers: [
+      { count: '3~9 台', price: '¥2,199 /台' },
+      { count: '10~29 台', price: '¥1,999 /台' },
+      { count: '≥ 30 台 (企业底价)', price: '¥1,799 /台', isBottom: true },
     ],
-    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&q=80',
-    tag: '员工福利',
+    lowestPrice: '¥1,799.00',
+    image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=360&q=80',
+    sku: '全功能旗舰款',
+  },
+  {
+    id: 104,
+    title: '京东E卡 经典电子卡 500元面值 (员工中秋/年节福利/即时绑定可用)',
+    retailPrice: 500,
+    tag: '大宗起采: 50张起',
+    tiers: [
+      { count: '50~199 张', price: '¥492 /张 (9.84折)' },
+      { count: '200~499 张', price: '¥485 /张 (9.70折)' },
+      { count: '≥ 500 张 (批量专属)', price: '¥475 /张 (9.50折)', isBottom: true },
+    ],
+    lowestPrice: '¥475.00',
+    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=360&q=80',
+    sku: '500元面值',
   },
 ]
 
 function B2BProcurementPage() {
-  const [form] = Form.useForm()
+  const [company, setCompany] = useState('')
+  const [cat, setCat] = useState('商用办公数码')
+  const [budget, setBudget] = useState('10万~50万元')
+  const [phone, setPhone] = useState('')
+  const addItem = useCartStore((state) => state.addItem)
 
-  const handleFinish = (values: any) => {
-    message.success(
-      `感谢您提报采购意向！我们已指派资深客户经理对接 ${values.company}，将在 2 小时内致电联系。`
-    )
-    form.resetFields()
+  const handleSubmitQuote = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!company || !phone) {
+      message.error('请填写完整企业名称与联系手机')
+      return
+    }
+    message.success(`采购意向已提报成功！资深客户经理将在 2 小时内联系 ${phone}`)
+    setCompany('')
+    setPhone('')
+  }
+
+  const handleOrder = (item: (typeof B2B_PRODUCTS)[0]) => {
+    addItem({
+      goodsId: item.id,
+      title: `[企业集采] ${item.title}`,
+      price: item.retailPrice,
+      quantity: 5,
+      image: item.image,
+      sku: item.sku,
+      shopName: '京东企业购大宗直发中心',
+    })
+    message.success(`已按阶梯起购量将「${item.title}」加入企业采购车！`)
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+    <div className={styles.b2bBody}>
       <div>
         <MallShortcutNav />
 
-        {/* 企业购专享 Header */}
-        <header className="bg-slate-900 text-white border-b border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/" className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center font-black text-xl shadow">
+        {/* 顶部企业购专属 Header */}
+        <header className={styles.b2bHeader}>
+          <div className={`w ${styles.b2bHeaderInner}`}>
+            <div className={styles.b2bLogoBrand}>
+              <Link to="/b2b" className={styles.b2bLogoIcon}>
                 JD
               </Link>
-              <div>
-                <h1 className="text-xl font-black text-white tracking-wide">京东企业购</h1>
-                <p className="text-[10px] text-blue-300 font-mono tracking-wider">
-                  ENTERPRISE PROCUREMENT · 数字化大宗集采解决方案
-                </p>
+              <div className={styles.b2bLogoText}>
+                <h2>京东企业购</h2>
+                <p>ENTERPRISE PROCUREMENT · 数字化采购一站式综合解决方案</p>
               </div>
             </div>
-
-            <div className="flex items-center gap-6 text-xs text-slate-300">
-              <Link to="/" className="hover:text-white flex items-center gap-1">
-                <HomeOutlined /> 返回个人商城
-              </Link>
-              <Link to="/seller" className="hover:text-white">
-                商家入驻
-              </Link>
-              <span className="text-blue-400 font-bold">客服专线: 400-606-5500</span>
-            </div>
+            <nav className={styles.b2bNavLinks}>
+              <Link to="/b2b" className="active">企业购首页</Link>
+              <button type="button">商用办公</button>
+              <button type="button">员工福利与礼品卡</button>
+              <button type="button">工业品 MRO</button>
+              <button type="button">企业金采账期</button>
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById('b2bQuoteForm')
+                  el?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className={styles.btnB2bQuoteTop}
+              >
+                提报大宗采购单
+              </button>
+            </nav>
           </div>
         </header>
 
-        {/* Hero Banner 与 快捷询价卡片 */}
-        <section className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white py-12 border-b border-blue-900">
-          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* 左侧标语与指标 */}
-            <div className="lg:col-span-7 space-y-4">
-              <Tag color="blue" className="text-xs px-2.5 py-0.5 font-bold">
-                2026年度企业数字化采购扶持专项
-              </Tag>
-              <h2 className="text-3xl font-black tracking-tight leading-tight">
-                全品类大宗集采 • 直享阶梯出厂底价
-              </h2>
-              <p className="text-xs text-blue-200 leading-relaxed max-w-xl">
-                为中小企业、集团客户及事业单位打造。正规 13% 增值税专票一键开具、支持 30-90 天对公免息账期，京东全国八大总仓一体化智能配送上门。
+        {/* 企业采购 Hero 大屏 Banner */}
+        <section className={styles.b2bHeroBanner}>
+          <div className={`w ${styles.heroContent}`}>
+            <div className={styles.heroText}>
+              <span className={styles.heroTag}>2026 年度企业数字化采购专项扶持</span>
+              <h1 className={styles.heroTitle}>全品类大宗集采 直享阶梯出厂底价</h1>
+              <p className={styles.heroDesc}>
+                专为中小企业、集团客户及事业单位打造。正规 13% 增值税专票一键开具、支持 30-90 天对公免息账期，京东全国八大仓一体化智能配送上门。
               </p>
-
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-blue-800/80">
-                <div>
-                  <div className="text-2xl font-black text-blue-400">800万+</div>
-                  <div className="text-xs text-slate-300 mt-0.5">认证注册企业</div>
+              <div className={styles.heroStatsRow}>
+                <div className={styles.statItem}>
+                  <div className={styles.num}>800万+</div>
+                  <div className={styles.label}>入驻注册认证企业</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-black text-blue-400">15%~35%</div>
-                  <div className="text-xs text-slate-300 mt-0.5">平均采购降本</div>
+                <div className={styles.statItem}>
+                  <div className={styles.num}>15%~35%</div>
+                  <div className={styles.label}>大宗集采平均综合降本</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-black text-blue-400">1对1</div>
-                  <div className="text-xs text-slate-300 mt-0.5">资深客户经理履约</div>
+                <div className={styles.statItem}>
+                  <div className={styles.num}>1对1</div>
+                  <div className={styles.label}>专属资深客户经理履约</div>
                 </div>
               </div>
             </div>
 
-            {/* 右侧询价表单 */}
-            <div className="lg:col-span-5 bg-white text-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-100">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-                <h3 className="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-                  <AuditOutlined className="text-blue-600" /> 企业大宗采购极速询价
-                </h3>
-                <span className="text-[11px] text-emerald-600 font-semibold">2小时内专人回电</span>
+            {/* 右侧快捷询价单卡片 */}
+            <div className={styles.heroQuoteCard}>
+              <div className={styles.quoteCardHead}>
+                <h4>企业大宗采购极速询价</h4>
+                <span>2小时内专人回电</span>
               </div>
-
-              <Form form={form} layout="vertical" onFinish={handleFinish} size="middle">
-                <Form.Item
-                  label={<span className="text-xs font-semibold">企业名称</span>}
-                  name="company"
-                  rules={[{ required: true, message: '请输入企业名称' }]}
-                >
-                  <Input placeholder="如：北京科技有限公司" className="text-xs" />
-                </Form.Item>
-
-                <Form.Item
-                  label={<span className="text-xs font-semibold">意向采购品类</span>}
-                  name="category"
-                  initialValue="办公电脑"
-                  rules={[{ required: true }]}
-                >
-                  <Select
-                    options={[
-                      { label: '商用办公电脑与会议平板', value: '办公电脑' },
-                      { label: '员工福利与京东E卡', value: '员工福利' },
-                      { label: '工业品 MRO 与劳保五金', value: '工业品' },
-                    ]}
+              <form id="b2bQuoteForm" onSubmit={handleSubmitQuote}>
+                <div className={styles.quoteFormItem}>
+                  <label>企业主体名称 *</label>
+                  <input
+                    type="text"
+                    className={styles.quoteInput}
+                    placeholder="如：北京科技有限公司"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    required
                   />
-                </Form.Item>
-
-                <Form.Item
-                  label={<span className="text-xs font-semibold">联系电话</span>}
-                  name="phone"
-                  rules={[{ required: true, message: '请输入联系电话' }]}
-                >
-                  <Input placeholder="我们将严格保密您的联系信息" className="text-xs" />
-                </Form.Item>
-
-                <Button type="primary" htmlType="submit" block className="bg-blue-600 font-bold h-10 mt-2">
-                  提交大宗集采需求
-                </Button>
-              </Form>
+                </div>
+                <div className={styles.quoteFormItem}>
+                  <label>采购品类意向 *</label>
+                  <select
+                    className={styles.quoteSelect}
+                    value={cat}
+                    onChange={(e) => setCat(e.target.value)}
+                  >
+                    <option value="商用办公数码">商用办公数码 / 电脑会议大屏</option>
+                    <option value="员工福利年节卡券">员工福利 / 京东E卡与节日礼品</option>
+                    <option value="工业品与五金劳保">工业品 / MRO 与工具劳保</option>
+                    <option value="企业日常消耗耗材">日常行政 / 打印纸与保洁日化</option>
+                  </select>
+                </div>
+                <div className={styles.quoteFormItem}>
+                  <label>预估采购预算 *</label>
+                  <select
+                    className={styles.quoteSelect}
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                  >
+                    <option value="5万~10万元">5万 ~ 10 万元</option>
+                    <option value="10万~50万元">10万 ~ 50 万元</option>
+                    <option value="50万~200万元">50万 ~ 200 万元</option>
+                    <option value="200万元以上">200 万元以上 (战略大客户专线)</option>
+                  </select>
+                </div>
+                <div className={styles.quoteFormItem}>
+                  <label>联系人对接手机 *</label>
+                  <input
+                    type="tel"
+                    className={styles.quoteInput}
+                    placeholder="请输入采购对接人手机号"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit" className={styles.btnSubmitQuote}>
+                  提交询价意向 · 享专属折扣
+                </button>
+              </form>
             </div>
           </div>
         </section>
 
-        {/* 阶梯报价热采商品 */}
-        <section className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between pb-3 border-b-2 border-blue-900 mb-6">
-            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
-              <BankOutlined className="text-blue-600" /> 阶梯批量集采专区
-            </h3>
-            <span className="text-xs text-slate-500">数量越多 单价越优</span>
+        {/* 4大专享权益金刚区 */}
+        <div className={`w ${styles.b2bBenefitsStrip}`}>
+          <div className={styles.benefitBox}>
+            <div className={styles.bIcon}>📑</div>
+            <div className={styles.bText}>
+              <h5>合规 13% 专票</h5>
+              <p>增值税专用发票一键开具，业财税一体化智能报销</p>
+            </div>
+          </div>
+          <div className={styles.benefitBox}>
+            <div className={styles.bIcon}>💳</div>
+            <div className={styles.bText}>
+              <h5>企业金采账期</h5>
+              <p>先采购后付款，最高 500 万授信，最长 90 天对公免息</p>
+            </div>
+          </div>
+          <div className={styles.benefitBox}>
+            <div className={styles.bIcon}>🚚</div>
+            <div className={styles.bText}>
+              <h5>全国多点直发</h5>
+              <p>京东全国物流仓储统配，支持一单分发全国各分支机构</p>
+            </div>
+          </div>
+          <div className={styles.benefitBox}>
+            <div className={styles.bIcon}>🤝</div>
+            <div className={styles.bText}>
+              <h5>1对1 专属经理</h5>
+              <p>全国 200+ 城市本地化服务团队，上门勘测与方案定制</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 场景采购展厅 */}
+        <section className={`w ${styles.sceneSection}`}>
+          <div className={styles.sceneHead}>
+            <div className={styles.sceneTitleGroup}>
+              <h3>🏢 场景化大宗集采 · 阶梯采购专区</h3>
+              <p>按采购量直连厂商直发阶梯价，采购量越大单价越低</p>
+            </div>
+            <Link to="/list" className={styles.sceneMoreLink}>
+              查看全部集采品类 ›
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {B2B_PRODUCTS.map((p) => (
-              <div
-                key={p.id}
-                className="bg-white rounded-xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between hover:shadow-md transition"
-              >
-                <div>
-                  <div className="aspect-video bg-slate-50 rounded-lg overflow-hidden mb-3 relative">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
-                    <span className="absolute top-2 left-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
-                      {p.tag}
-                    </span>
-                  </div>
+          <div className={styles.b2bGoodsGrid}>
+            {B2B_PRODUCTS.map((prod) => (
+              <div key={prod.id} className={styles.b2bItemCard}>
+                <div className={styles.b2bThumbBox}>
+                  <img src={prod.image} alt={prod.title} />
+                  <span className={styles.b2bBatchTag}>{prod.tag}</span>
+                </div>
+                <div className={styles.b2bInfoBody}>
+                  <Link
+                    to="/item/$id"
+                    params={{ id: '1' }}
+                    className={styles.b2bItemTitle}
+                    title={prod.title}
+                  >
+                    {prod.title}
+                  </Link>
 
-                  <h4 className="text-xs font-bold text-slate-800 line-clamp-2 h-8">{p.title}</h4>
-                  <div className="text-xs text-slate-400 mt-1">
-                    个人零售价：<del>¥{p.retailPrice}</del>
-                  </div>
-
-                  {/* 阶梯价格阶梯展示 */}
-                  <div className="mt-3 bg-blue-50/60 rounded-lg p-2.5 space-y-1.5 text-xs">
-                    <div className="text-[11px] font-bold text-blue-900">企业阶梯专享价：</div>
-                    {p.b2bTiers.map((t) => (
-                      <div key={t.min} className="flex justify-between items-center text-slate-700">
-                        <span>≥ {t.min} 件：</span>
-                        <span className="font-bold text-blue-700">¥{t.price} / 件</span>
+                  <div className={styles.ladderPriceBox}>
+                    {prod.tiers.map((t) => (
+                      <div
+                        key={t.count}
+                        className={`${styles.ladderRow} ${t.isBottom ? styles.highlight : ''}`}
+                      >
+                        <span>{t.count}</span>
+                        <span>{t.price}</span>
                       </div>
                     ))}
                   </div>
-                </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100">
-                  <Button
-                    type="primary"
-                    block
-                    className="bg-blue-600 hover:bg-blue-700 text-xs font-semibold"
-                    onClick={() => message.success(`已加入 ${p.title} 的批量询价清单！`)}
-                  >
-                    加入批量询价单
-                  </Button>
+                  <div className={styles.b2bActionRow}>
+                    <div className={styles.b2bUnitPrice}>
+                      {prod.lowestPrice}
+                      <small>底价起</small>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleOrder(prod)}
+                      className={styles.btnBatchOrder}
+                    >
+                      大宗起订
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

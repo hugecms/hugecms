@@ -1,0 +1,292 @@
+/* ========================================================
+   结算页专属 CSS Module (checkout.module.css)
+   ======================================================== */
+
+.checkoutMain {
+  margin-top: 20px;
+  padding-bottom: 50px;
+}
+
+.checkoutBoxTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.checkoutFormContainer {
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 0 24px;
+}
+
+.checkoutSection {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.checkoutSection:last-child {
+  border-bottom: none;
+}
+
+.secHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.secTitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.btnNewAddress {
+  background: none;
+  border: none;
+  color: #005ea7;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.btnNewAddress:hover {
+  color: #e1251b;
+}
+
+/* 地址列表 */
+.addrList {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.addrCard {
+  width: 280px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding: 12px 14px;
+  cursor: pointer;
+  position: relative;
+  background-color: #fff;
+}
+
+.addrCard:hover {
+  border-color: #aaa;
+}
+
+.addrCard.active {
+  border-color: #e1251b;
+}
+
+.addrCard.active::after {
+  content: "✔";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #e1251b;
+  color: #fff;
+  font-size: 10px;
+  padding: 0 4px;
+  line-height: 14px;
+}
+
+.addrHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.uname {
+  font-weight: bold;
+  font-size: 13px;
+  color: #333;
+}
+
+.addrTag {
+  background-color: #e5f6ff;
+  color: #0077cc;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.addrDetail {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.phone {
+  font-size: 12px;
+  color: #888;
+}
+
+/* 支付方式 */
+.payOptions {
+  display: flex;
+  gap: 14px;
+}
+
+.payBtn {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 8px 24px;
+  border-radius: 2px;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+}
+
+.payBtn:hover {
+  border-color: #aaa;
+}
+
+.payBtn.active {
+  border: 2px solid #e1251b;
+  padding: 7px 23px;
+  color: #e1251b;
+  font-weight: bold;
+}
+
+/* 送货清单 */
+.deliveryList {
+  background-color: #f7f7f7;
+  border: 1px solid #eee;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.goodsItemRow {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.goodsItemRow:last-child {
+  border-bottom: none;
+}
+
+.goodsThumb {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  object-fit: cover;
+  margin-right: 14px;
+}
+
+.goodsName {
+  flex: 1;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.4;
+  text-decoration: none;
+  padding-right: 20px;
+}
+
+.goodsSku {
+  width: 180px;
+  font-size: 12px;
+  color: #999;
+}
+
+.goodsPrice {
+  width: 100px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: bold;
+  color: #e1251b;
+}
+
+.goodsNum {
+  width: 60px;
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+}
+
+/* 汇总统计面板 */
+.orderSummaryBox {
+  margin-top: 20px;
+  border: 1px solid #f0f0f0;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.sumRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 13px;
+  color: #666;
+  width: 320px;
+}
+
+.sumVal {
+  color: #333;
+  font-weight: bold;
+  text-align: right;
+  min-width: 90px;
+}
+
+.sumValHighlight {
+  color: #e1251b;
+  font-weight: bold;
+  text-align: right;
+  min-width: 90px;
+}
+
+.submitBar {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  width: 100%;
+}
+
+.finalAmountBox {
+  font-size: 13px;
+  color: #666;
+  text-align: right;
+}
+
+.finalAmount {
+  color: #e1251b;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.btnSubmitOrder {
+  background-color: #e1251b;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 36px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btnSubmitOrder:hover {
+  background-color: #c81623;
+}
+
+.btnSubmitOrder:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

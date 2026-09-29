@@ -1,0 +1,218 @@
+/* ========================================================
+   收银台专属 CSS Module (pay.module.css)
+   ======================================================== */
+
+.payMain {
+  margin-top: 20px;
+  padding-bottom: 60px;
+}
+
+/* 订单摘要卡片 */
+.payOrderSummary {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.orderPrimaryInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.checkIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #eaf8ea;
+  color: #28a745;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.orderInfoText h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.orderMeta {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  gap: 8px;
+}
+
+.orderPayPrice {
+  text-align: right;
+}
+
+.orderPayPrice .txt {
+  font-size: 12px;
+  color: #666;
+}
+
+.orderPayPrice .num {
+  font-size: 26px;
+  font-weight: 900;
+  color: #e1251b;
+}
+
+/* 支付渠道选择区 */
+.payChannelBox {
+  margin-top: 16px;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.channelTabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+.channelTab {
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  border-right: 1px solid #eee;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.channelTab.active {
+  background-color: #fff;
+  color: #e1251b;
+  border-bottom-color: #e1251b;
+}
+
+.channelBody {
+  padding: 30px;
+}
+
+/* 白条分期网格 */
+.baitiaoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.baitiaoCard {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 16px;
+  cursor: pointer;
+  position: relative;
+  background-color: #fff;
+}
+
+.baitiaoCard:hover {
+  border-color: #aaa;
+}
+
+.baitiaoCard.active {
+  border: 2px solid #e1251b;
+  padding: 15px;
+}
+
+.baitiaoCard.active::after {
+  content: "✔";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #e1251b;
+  color: #fff;
+  font-size: 10px;
+  padding: 0 4px;
+  line-height: 14px;
+}
+
+.planPeriods {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+.planAmount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e1251b;
+  margin: 6px 0;
+}
+
+.planFee {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 扫码支付区 */
+.qrcodeArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.qrcodeBox {
+  width: 180px;
+  height: 180px;
+  border: 1px solid #eee;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.qrcodeImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.qrcodeTip {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 立即支付提交按钮 */
+.btnPaySubmit {
+  margin-top: 24px;
+  background-color: #e1251b;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 48px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btnPaySubmit:hover {
+  background-color: #c81623;
+}
+
+.btnPaySubmit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

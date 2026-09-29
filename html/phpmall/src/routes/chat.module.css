@@ -1,0 +1,406 @@
+/* ========================================================
+   京东智能在线客服 (IM) 样式表 (CSS Module)
+   ======================================================== */
+
+.chatBody {
+  background-color: #eef2f8;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 顶部 IM 通栏 */
+.chatHeaderBar {
+  background: #fff;
+  height: 54px;
+  border-bottom: 1px solid #e5e9f2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.chatBrandTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.botAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e1251b;
+  color: #fff;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.chatBrandTitle h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+
+.serviceStatus {
+  font-size: 11px;
+  color: #52c41a;
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.chatTopLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.chatTopLinks a {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+
+.chatTopLinks a:hover {
+  color: #e1251b;
+}
+
+/* IM 三栏工作台主体 */
+.chatWorkbench {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  max-width: 1400px;
+  width: 100%;
+  margin: 16px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* 左侧：关联最近订单与会话历史 */
+.chatLeftSide {
+  width: 300px;
+  background: #fafbfc;
+  border-right: 1px solid #edf0f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideBlockHead {
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.recentOrderBox {
+  padding: 14px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.orderMiniCard {
+  background: #fff;
+  border: 1px solid #e2e7f0;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  cursor: pointer;
+}
+
+.orderMiniCard:hover {
+  border-color: #e1251b;
+}
+
+.omTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.statusTransporting {
+  color: #52c41a;
+  font-weight: bold;
+}
+
+.omBody {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.omBody img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.omInfo h5 {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.omPrice {
+  font-size: 13px;
+  font-weight: bold;
+  color: #e1251b;
+  margin-top: 4px;
+}
+
+.btnSendOrder {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  background: #fff1f0;
+  color: #e1251b;
+  border: 1px solid #ffa39e;
+  border-radius: 4px;
+  font-size: 11px;
+  padding: 4px 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btnSendOrder:hover {
+  background: #e1251b;
+  color: #fff;
+}
+
+.quickServiceList {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quickServiceList a {
+  font-size: 12px;
+  color: #005ea7;
+  text-decoration: none;
+}
+
+.quickServiceList a:hover {
+  color: #e1251b;
+}
+
+/* 中间：主聊天对话流 */
+.chatMainArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.chatMessageList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 消息气泡 */
+.msgRow {
+  display: flex;
+  gap: 12px;
+  max-width: 80%;
+}
+
+.msgRowBot {
+  align-self: flex-start;
+}
+
+.msgRowUser {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.msgAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e1251b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.msgAvatarUser {
+  background: #1890ff;
+}
+
+.msgBubble {
+  background: #f4f6fa;
+  color: #333;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.msgBubbleUser {
+  background: #e1251b;
+  color: #fff;
+}
+
+.msgTime {
+  font-size: 10px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* 快捷问答药丸列表 */
+.chatQuickPills {
+  padding: 10px 20px;
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid #f0f2f5;
+  overflow-x: auto;
+  background: #fafbfc;
+}
+
+.quickPill {
+  white-space: nowrap;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  font-size: 12px;
+  color: #555;
+  padding: 4px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.quickPill:hover {
+  border-color: #e1251b;
+  color: #e1251b;
+}
+
+.quickPillDanger {
+  color: #e1251b;
+  border-color: #ffa39e;
+}
+
+/* 底部输入框 */
+.chatInputBox {
+  border-top: 1px solid #edf0f5;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatInputBox textarea {
+  width: 100%;
+  height: 60px;
+  border: none;
+  resize: none;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.chatBottomTools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.toolIcons {
+  display: flex;
+  gap: 12px;
+  color: #888;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btnSendMsg {
+  background: #e1251b;
+  color: #fff;
+  border: none;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 7px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btnSendMsg:hover {
+  background: #c41810;
+}
+
+/* 右侧：常见 FAQ 与服务直达 */
+.chatRightSide {
+  width: 280px;
+  background: #fafbfc;
+  border-left: 1px solid #edf0f5;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faqCard {
+  background: #fff;
+  border: 1px solid #e2e7f0;
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.faqCard h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 10px;
+}
+
+.faqList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.faqList li {
+  margin-bottom: 8px;
+}
+
+.faqList a {
+  font-size: 12px;
+  color: #555;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s ease;
+}
+
+.faqList a:hover {
+  color: #e1251b;
+}

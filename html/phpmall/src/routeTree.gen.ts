@@ -14,11 +14,18 @@ import { Route as B2bRouteImport } from './routes/b2b'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CouponRouteImport } from './routes/coupon'
 import { Route as ListRouteImport } from './routes/list'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PayRouteImport } from './routes/pay'
+import { Route as PlusRouteImport } from './routes/plus'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as SeckillRouteImport } from './routes/seckill'
 import { Route as SellerRouteRouteImport } from './routes/seller/route'
+import { Route as ShopRouteImport } from './routes/shop'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
+import { Route as MerchantSettleRouteImport } from './routes/merchant.settle'
 import { Route as SellerIndexRouteImport } from './routes/seller/index'
 import { Route as UserIndexRouteImport } from './routes/user/index'
 import { Route as UserOrderRouteImport } from './routes/user/order'
@@ -48,9 +55,19 @@ const CheckoutRoute = CheckoutRouteImport.update({
   path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CouponRoute = CouponRouteImport.update({
+  id: '/coupon',
+  path: '/coupon',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ListRoute = ListRouteImport.update({
   id: '/list',
   path: '/list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PayRoute = PayRouteImport.update({
@@ -58,9 +75,29 @@ const PayRoute = PayRouteImport.update({
   path: '/pay',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlusRoute = PlusRouteImport.update({
+  id: '/plus',
+  path: '/plus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeckillRoute = SeckillRouteImport.update({
+  id: '/seckill',
+  path: '/seckill',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellerRouteRoute = SellerRouteRouteImport.update({
   id: '/seller',
   path: '/seller',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -71,6 +108,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const ItemIdRoute = ItemIdRouteImport.update({
   id: '/item/$id',
   path: '/item/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MerchantSettleRoute = MerchantSettleRouteImport.update({
+  id: '/merchant/settle',
+  path: '/merchant/settle',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SellerIndexRoute = SellerIndexRouteImport.update({
@@ -96,9 +138,16 @@ export interface FileRoutesByFullPath {
   '/cart': typeof CartRoute
   '/chat': typeof ChatRoute
   '/checkout': typeof CheckoutRoute
+  '/coupon': typeof CouponRoute
   '/list': typeof ListRoute
+  '/login': typeof LoginRoute
   '/pay': typeof PayRoute
+  '/plus': typeof PlusRoute
+  '/register': typeof RegisterRoute
+  '/seckill': typeof SeckillRoute
+  '/shop': typeof ShopRoute
   '/item/$id': typeof ItemIdRoute
+  '/merchant/settle': typeof MerchantSettleRoute
   '/user/order': typeof UserOrderRoute
   '/admin/': typeof AdminIndexRoute
   '/seller/': typeof SellerIndexRoute
@@ -110,9 +159,16 @@ export interface FileRoutesByTo {
   '/cart': typeof CartRoute
   '/chat': typeof ChatRoute
   '/checkout': typeof CheckoutRoute
+  '/coupon': typeof CouponRoute
   '/list': typeof ListRoute
+  '/login': typeof LoginRoute
   '/pay': typeof PayRoute
+  '/plus': typeof PlusRoute
+  '/register': typeof RegisterRoute
+  '/seckill': typeof SeckillRoute
+  '/shop': typeof ShopRoute
   '/item/$id': typeof ItemIdRoute
+  '/merchant/settle': typeof MerchantSettleRoute
   '/user/order': typeof UserOrderRoute
   '/admin': typeof AdminIndexRoute
   '/seller': typeof SellerIndexRoute
@@ -126,9 +182,16 @@ export interface FileRoutesById {
   '/cart': typeof CartRoute
   '/chat': typeof ChatRoute
   '/checkout': typeof CheckoutRoute
+  '/coupon': typeof CouponRoute
   '/list': typeof ListRoute
+  '/login': typeof LoginRoute
   '/pay': typeof PayRoute
+  '/plus': typeof PlusRoute
+  '/register': typeof RegisterRoute
+  '/seckill': typeof SeckillRoute
+  '/shop': typeof ShopRoute
   '/item/$id': typeof ItemIdRoute
+  '/merchant/settle': typeof MerchantSettleRoute
   '/user/order': typeof UserOrderRoute
   '/admin/': typeof AdminIndexRoute
   '/seller/': typeof SellerIndexRoute
@@ -143,9 +206,16 @@ export interface FileRouteTypes {
     | '/cart'
     | '/chat'
     | '/checkout'
+    | '/coupon'
     | '/list'
+    | '/login'
     | '/pay'
+    | '/plus'
+    | '/register'
+    | '/seckill'
+    | '/shop'
     | '/item/$id'
+    | '/merchant/settle'
     | '/user/order'
     | '/admin/'
     | '/seller/'
@@ -157,9 +227,16 @@ export interface FileRouteTypes {
     | '/cart'
     | '/chat'
     | '/checkout'
+    | '/coupon'
     | '/list'
+    | '/login'
     | '/pay'
+    | '/plus'
+    | '/register'
+    | '/seckill'
+    | '/shop'
     | '/item/$id'
+    | '/merchant/settle'
     | '/user/order'
     | '/admin'
     | '/seller'
@@ -172,9 +249,16 @@ export interface FileRouteTypes {
     | '/cart'
     | '/chat'
     | '/checkout'
+    | '/coupon'
     | '/list'
+    | '/login'
     | '/pay'
+    | '/plus'
+    | '/register'
+    | '/seckill'
+    | '/shop'
     | '/item/$id'
+    | '/merchant/settle'
     | '/user/order'
     | '/admin/'
     | '/seller/'
@@ -188,9 +272,16 @@ export interface RootRouteChildren {
   CartRoute: typeof CartRoute
   ChatRoute: typeof ChatRoute
   CheckoutRoute: typeof CheckoutRoute
+  CouponRoute: typeof CouponRoute
   ListRoute: typeof ListRoute
+  LoginRoute: typeof LoginRoute
   PayRoute: typeof PayRoute
+  PlusRoute: typeof PlusRoute
+  RegisterRoute: typeof RegisterRoute
+  SeckillRoute: typeof SeckillRoute
+  ShopRoute: typeof ShopRoute
   ItemIdRoute: typeof ItemIdRoute
+  MerchantSettleRoute: typeof MerchantSettleRoute
   UserOrderRoute: typeof UserOrderRoute
   AdminIndexRoute: typeof AdminIndexRoute
   UserIndexRoute: typeof UserIndexRoute
@@ -233,11 +324,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/coupon': {
+      id: '/coupon'
+      path: '/coupon'
+      fullPath: '/coupon'
+      preLoaderRoute: typeof CouponRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/list': {
       id: '/list'
       path: '/list'
       fullPath: '/list'
       preLoaderRoute: typeof ListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pay': {
@@ -247,11 +352,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PayRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/plus': {
+      id: '/plus'
+      path: '/plus'
+      fullPath: '/plus'
+      preLoaderRoute: typeof PlusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seckill': {
+      id: '/seckill'
+      path: '/seckill'
+      fullPath: '/seckill'
+      preLoaderRoute: typeof SeckillRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/seller': {
       id: '/seller'
       path: '/seller'
       fullPath: '/seller'
       preLoaderRoute: typeof SellerRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -266,6 +399,13 @@ declare module '@tanstack/react-router' {
       path: '/item/$id'
       fullPath: '/item/$id'
       preLoaderRoute: typeof ItemIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/merchant/settle': {
+      id: '/merchant/settle'
+      path: '/merchant/settle'
+      fullPath: '/merchant/settle'
+      preLoaderRoute: typeof MerchantSettleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seller/': {
@@ -311,9 +451,16 @@ const rootRouteChildren: RootRouteChildren = {
   CartRoute: CartRoute,
   ChatRoute: ChatRoute,
   CheckoutRoute: CheckoutRoute,
+  CouponRoute: CouponRoute,
   ListRoute: ListRoute,
+  LoginRoute: LoginRoute,
   PayRoute: PayRoute,
+  PlusRoute: PlusRoute,
+  RegisterRoute: RegisterRoute,
+  SeckillRoute: SeckillRoute,
+  ShopRoute: ShopRoute,
   ItemIdRoute: ItemIdRoute,
+  MerchantSettleRoute: MerchantSettleRoute,
   UserOrderRoute: UserOrderRoute,
   AdminIndexRoute: AdminIndexRoute,
   UserIndexRoute: UserIndexRoute,
