@@ -23,7 +23,7 @@ export const AddGoodsModal: React.FC = () => {
       okText="审核并上架到前台店铺"
       cancelText="取消"
       width={620}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form
         form={form}

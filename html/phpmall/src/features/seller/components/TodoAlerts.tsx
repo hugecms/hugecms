@@ -20,7 +20,7 @@ export const TodoAlerts: React.FC = () => {
         type="error"
         showIcon
         icon={<AlertOutlined className="text-base" />}
-        message={
+        title={
           <div className="flex items-center justify-between text-xs">
             <span>
               <strong>{pendingDeliverCount} 笔</strong> 待发货订单需在 24 小时内发出
@@ -37,7 +37,7 @@ export const TodoAlerts: React.FC = () => {
         type="warning"
         showIcon
         icon={<WarningOutlined className="text-base" />}
-        message={
+        title={
           <div className="flex items-center justify-between text-xs">
             <span>
               <strong>1 笔</strong> 买家申请仅退款待审核
@@ -58,7 +58,7 @@ export const TodoAlerts: React.FC = () => {
         type="info"
         showIcon
         icon={<GiftOutlined className="text-base" />}
-        message={
+        title={
           <div className="flex items-center justify-between text-xs">
             <span>
               年终大促数码专场招商开启，可提报 <strong>5款</strong>

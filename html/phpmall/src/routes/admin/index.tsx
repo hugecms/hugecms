@@ -368,7 +368,7 @@ function SuperAdminDashboard() {
                 value={128490200}
                 precision={2}
                 prefix="¥"
-                valueStyle={{ color: '#38bdf8', fontWeight: 800 }}
+                styles={{ content: { color: '#38bdf8', fontWeight: 800 } }}
               />
               <div className="mt-2 text-xs text-slate-400 flex justify-between">
                 <span>较昨日同期增长</span>
@@ -381,7 +381,7 @@ function SuperAdminDashboard() {
                 title={<span className="text-slate-400 text-xs font-semibold">全网有效订单总量</span>}
                 value={385210}
                 suffix="单"
-                valueStyle={{ color: '#f43f5e', fontWeight: 800 }}
+                styles={{ content: { color: '#f43f5e', fontWeight: 800 } }}
               />
               <div className="mt-2 text-xs text-slate-400 flex justify-between">
                 <span>自营仓配履约率</span>
@@ -394,7 +394,7 @@ function SuperAdminDashboard() {
                 title={<span className="text-slate-400 text-xs font-semibold">入驻在册合作商家</span>}
                 value={42850}
                 suffix="家"
-                valueStyle={{ color: '#34d399', fontWeight: 800 }}
+                styles={{ content: { color: '#34d399', fontWeight: 800 } }}
               />
               <div className="mt-2 text-xs text-slate-400 flex justify-between">
                 <span>今日新入驻</span>
@@ -408,7 +408,7 @@ function SuperAdminDashboard() {
                 value={6424510}
                 precision={2}
                 prefix="¥"
-                valueStyle={{ color: '#fbbf24', fontWeight: 800 }}
+                styles={{ content: { color: '#fbbf24', fontWeight: 800 } }}
               />
               <div className="mt-2 text-xs text-slate-400 flex justify-between">
                 <span>质保金监管池</span>
