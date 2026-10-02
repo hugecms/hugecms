@@ -3,7 +3,7 @@
 | 项目 | 内容 |
 | --- | --- |
 | 产品名称 | HugeCMS 内容管理系统 |
-| 文档版本 | V1.0（草稿） |
+| 文档版本 | V1.1（草稿） |
 | 上游文档 | [产品需求文档 PRD](./prd.md) |
 | 创建日期 | 2026-10-02 |
 | 文档状态 | 待评审（评审人：研发 / 架构 / 产品） |
@@ -14,6 +14,7 @@
 | 版本 | 日期 | 变更内容 | 作者 |
 | --- | --- | --- | --- |
 | V1.0 | 2026-10-02 | 初稿：领域划分、数据表设计、模块与路由、横切设计、编码军规收录 | 研发组 |
+| V1.1 | 2026-10-02 | 对齐工具链落地现状：双交付层（app/Api + app/Modules）、users 表命名例外、laravel-foundation 基础设施、路由装载点、双 User 模型、gen:enums 命令更正 | 研发组 |
 
 ---
 
@@ -22,7 +23,7 @@
 本文档基于 [PRD](./prd.md) 自底向上完成技术实现设计，范围覆盖 V1.0（MVP）全部功能与 V1.1/V1.2 的结构性预留。核心设计决策：
 
 1. **领域驱动的前后端组织**：业务按领域（Domain）划分为 User / Content / Taxonomy / Media / Setting / Comment / Workflow / Stat / System 九个领域，数据表以领域为前缀命名；
-2. **模块化交付界面**：HTTP 入口按模块（Module）组织为 Portal（前台）/ Admin（后台）/ User（个人中心，V1.1）/ Api（开放接口，V1.2）；
+2. **双交付层模块化**：Web 层 `app/Modules/{Admin,Portal,User}`（Blade 页面）与 API 层 `app/Api/{Admin,Common,Portal,User}`（JSON 接口，`{code,message,data}` 契约）并行，经 `routes/web.php` 与 `routes/api.php` 自动装载（已落地）；
 3. **生成代码与手工代码防腐隔离**：DevTools 生成 `app/Domains`，手写逻辑收敛于 `app/Services` 与 `app/Modules`；
 4. **云原生约束前置**：App Engine 标准环境只读文件系统约束（详见 [部署指南](../deployments/appengine-standard.md)）直接影响缓存、会话、队列、上传的设计选型。
 
@@ -34,16 +35,18 @@
 HTTP 请求
    │
    ▼
-app/Modules/{Portal,Admin,User,Api}        交付层：控制器聚合、页面渲染、路由（就近定义）
+app/Modules/{Admin,Portal,User}            Web 交付层：Blade 页面（后台/前台/个人中心）
+app/Api/{Admin,Common,Portal,User}         API 交付层：JSON 接口（{code,message,data} 契约）
    │  Request 校验 / Response DTO
    ▼
+app/Domains/{Domain}/Controllers           领域 CRUD 接口（gen:controller 生成，挂载 Admin API）
 app/Services/{Domain}                      应用层：跨表组装、跨领域协同、业务计算（手写）
    │  依赖注入
    ▼
 app/Domains/{Domain}/Services              领域层：单领域 CRUD 与领域规则（DevTools 生成，禁手改）
    │
    ▼
-app/Domains/{Domain}/{Dao,Models,Entities} 数据层：查询封装、Eloquent 模型
+app/Domains/{Domain}/{Repositories,Models,Entities}  数据层：查询封装、Eloquent 模型
    │
    ▼
 MySQL 8.4（Cloud SQL）   GCS（媒体文件）   队列/调度（database 驱动）
@@ -55,7 +58,7 @@ MySQL 8.4（Cloud SQL）   GCS（媒体文件）   队列/调度（database 驱�
 
 | 领域 | 职责（对应 PRD 章节） | 表前缀 | 版本 |
 | --- | --- | --- | --- |
-| User | 用户、角色、审计日志（4.5） | `user_` | V1.0 |
+| User | 用户、角色、审计日志（4.5） | `user_`（例外：`users`、`password_reset_tokens`） | V1.0 |
 | Content | 文章、单页、修订版本（4.2） | `content_` | V1.0 |
 | Taxonomy | 分类、标签（4.2.3） | `taxonomy_` | V1.0 |
 | Media | 媒体文件、引用关系（4.4） | `media_` | V1.0 |
@@ -69,48 +72,75 @@ MySQL 8.4（Cloud SQL）   GCS（媒体文件）   队列/调度（database 驱�
 
 ### 2.3 模块清单
 
-| 模块 | 目录 | 职责 | 版本 |
-| --- | --- | --- | --- |
-| Portal | `app/Modules/Portal` | 前台站点：首页/列表/详情/单页/搜索/sitemap | V1.0 |
-| Admin | `app/Modules/Admin` | 管理后台：全部管理功能 | V1.0 |
-| User | `app/Modules/User` | 读者个人中心（评论、通知、资料） | V1.1 |
-| Api | `app/Api` | 开放 API（REST + Token） | V1.2 |
+| 层 | 模块 | 目录 | 职责 | 版本 |
+| --- | --- | --- | --- | --- |
+| Web | Portal | `app/Modules/Portal` | 前台站点页面：首页/列表/详情/单页/搜索/sitemap | V1.0 |
+| Web | Admin | `app/Modules/Admin` | 管理后台页面（Blade） | V1.0 |
+| Web | User | `app/Modules/User` | 读者个人中心页面（评论、通知、资料） | V1.1 |
+| API | Admin | `app/Api/Admin` | 后台 JSON 接口（并挂载全部领域 CRUD 接口，见 6.0） | V1.0 |
+| API | Common | `app/Api/Common` | 公共接口（登录、验证码等，不含鉴权） | V1.0 |
+| API | Portal | `app/Api/Portal` | 前台开放 JSON 接口 | V1.1+ |
+| API | User | `app/Api/User` | 个人中心 JSON 接口 | V1.1+ |
 
 ### 2.4 目录结构规划
 
 ```
 app/
 ├── Domains/                          # DevTools 生成代码（严禁手工侵入，见军规 3.2）
-│   ├── User/
-│   │   ├── Models/  Entities/  Dao/  Services/  Requests/  Responses/
-│   ├── Content/   …（结构同上）
-│   ├── Taxonomy/  Media/  Setting/  Comment/  Workflow/  Stat/
+│   └── User/
+│       ├── Models/  Entities/  Repositories/  Services/
+│       ├── Requests/  Responses/
+│       ├── Controllers/              # 领域 CRUD 接口（gen:controller 生成，挂载 Admin API）
+│       └── Routes/route.gen.php      # gen:route 生成，由 app/Api/Admin 装载
+│   （Content/ Taxonomy/ Media/ Setting/ Comment/ Workflow/ Stat/ 结构同上）
 ├── Services/                         # 手写应用层（跨领域协同、业务计算）
 │   ├── Content/PostManageService.php
 │   ├── Media/MediaUploadService.php
 │   └── …
-├── Modules/                          # 交付层（视图与路由就近定义，见军规 3.5）
-│   ├── Admin/
-│   │   ├── Controllers/
-│   │   ├── Requests/  Responses/
-│   │   ├── Views/                    # Blade 视图（命名空间 'admin::'）
-│   │   └── Routes/route.php          # 轻量入口，require route.gen.php
-│   ├── Portal/  User/  Api/          # 结构同上
-├── Http/                             # 仅保留框架必要内容（Kernel 中间件配置等）
-├── Providers/                        # AppServiceProvider + 模块注册
+├── Modules/                          # Web 交付层（Blade，视图与路由就近，军规 3.5）
+│   └── {Admin,Portal,User}/
+│       ├── Controllers/  Requests/  Responses/
+│       ├── Views/                    # Blade 视图（命名空间 '{module}::'）
+│       └── Routes/{route.php, route.gen.php}
+├── Api/                              # API 交付层（JSON 接口，无视图）
+│   └── {Admin,Common,Portal,User}/
+│       ├── Controllers/  Requests/  Responses/
+│       └── Routes/{route.php, route.gen.php}
+├── Models/User.php                   # 认证边界模型（Guard Provider，见 5.1 双模型说明）
+├── Http/                             # 仅保留框架必要内容（基类 Controller 等）
+├── Providers/                        # AppServiceProvider + 模块注册（视图命名空间）
 └── …
 
+routes/
+├── web.php                           # 装载点：glob app/Modules/*/Routes/route.php
+└── api.php                           # 装载点：glob app/Api/*/Routes/route.php（/api 前缀）
+
 database/migrations/                  # 按领域集中，见军规 3.1
-├── create_user_domain_tables.php
+├── 0001_*                            # 框架三件套保留（users/cache/jobs 标准命名）
+├── create_user_domain_tables.php     # 扩展 users 业务字段 + user_roles/user_audit_logs
 ├── create_content_domain_tables.php
 ├── create_taxonomy_domain_tables.php
 ├── create_media_domain_tables.php
 ├── create_setting_domain_tables.php
-├── create_system_domain_tables.php   # 框架基础表（sessions/cache/jobs…）
+├── create_system_domain_tables.php   # 其余框架基础表（sessions 已在 0001 中）
 └── （V1.1）create_comment_domain_tables.php 等
 ```
 
-> **对框架默认结构的改造**：删除 Laravel 自带的 `0001_01_01_000000_create_users_table.php`、`0001_01_01_000001_create_cache_table.php`、`0001_01_01_000002_create_jobs_table.php` 三件套，由 `user_domain` 与 `system_domain` 迁移替代（`users` → `user_users`，并同步调整认证配置的 `providers.users.table`）。
+> **框架默认结构的处理**：Laravel 自带三件套迁移（users/cache/jobs）**保留**，`users` 表沿用标准命名——DevTools 按 `exclude_tables`（标准表名）排除框架表，改名会导致重复生成。User 域迁移（`create_user_domain_tables.php`）在 `users` 表上**补充业务字段**（role_id、status 等，见 5.1）。认证继续使用 `config/auth.php` 默认指向的 `App\Models\User`。
+
+### 2.5 基础设施层：phpkg/laravel-foundation
+
+已通过 composer 引入（生产依赖，`Juling\Foundation` 命名空间），以下能力**直接使用、不重复造轮子**：
+
+| 能力 | 提供 | 使用位置 |
+| --- | --- | --- |
+| 统一 JSON 响应 | `Http\Responses\JsonResponses`（`$this->success()/error()`，`{code,message,data}` 契约） | 全部 API 控制器（经 `App\Http\Controllers\Controller` 继承链获得） |
+| 业务异常体系 | `BusinessException` + `BusinessEnum` 错误码 | Services/Controllers 抛出与转译 |
+| 仓储/服务基类 | `CurdRepository`、`CommonService`（`ServiceInterface`） | Domains 生成代码的基类 |
+| 内置状态枚举 | `StatusEnum` | 与 `gen:enums` 生成物配合 |
+| 请求追踪 | `Http\Middleware\Trace` | 可选启用（request_id 关联日志） |
+
+注意：该包捆绑的 `SLSHandler`（阿里云 SLS 日志）在本项目**不启用**——App Engine 部署的日志通道为 `stderr` → Cloud Logging（见 7.6 与部署指南）；其附带的 `aliyun-log-php-sdk` 生产依赖建议后续向上游反馈拆分为 suggest。
 
 ---
 
@@ -125,7 +155,7 @@ database/migrations/                  # 按领域集中，见军规 3.1
   2. **Schema 必须包含简洁清晰的表注释**：每个表的迁移定义中必须显式声明 `$table->comment('XXX表');`（例如 `users` 表标注"用户表"、`orders` 表标注"订单表"、`carts` 表标注"购物车表"）。
   3. **字段注释与枚举字段格式规范**：所有字段必须带有简洁的 comment 信息。若为状态或类型枚举字段，描述信息必须严格统一使用形如：**`状态：1-启用，2-不启用`** 格式（格式：`描述：值1-标签1，值2-标签2`，使用冒号与破折号、逗号隔开），以供 `php artisan gen:enum` 工具精准解析并自动生成对应的 PHP Enum 类。
 - **目的**：杜绝 `database/migrations` 随着表数增多而产生上百个碎片文件的无限膨胀；同时保障代码生成器（`php artisan gen:xxx`）及数据库字典工具能够精准提取表业务语义与枚举映射，自动生成规范的代码命名与枚举类。
-- **HugeCMS 应用**：本项目领域即迁移单位，对应 `create_user_domain_tables.php`、`create_content_domain_tables.php` 等（见 2.4）；枚举注释格式统一为本文档第 5 章各表定义中的写法。
+- **HugeCMS 应用**：本项目领域即迁移单位，对应 `create_user_domain_tables.php`、`create_content_domain_tables.php` 等（见 2.4）；枚举注释格式统一为本文档第 5 章各表定义中的写法；工具实际命令为 `php artisan gen:enums`（复数）；认证框架表（`users`、`password_reset_tokens`）保留 Laravel 标准命名，为命名规范的唯一例外（见第 4 章）。
 
 ### 3.2 服务层（app/Services）与领域生成代码防腐隔离
 
@@ -133,7 +163,7 @@ database/migrations/                  # 按领域集中，见军规 3.1
   1. 通过 `php artisan gen:xxx`（DevTools）生成的 `app/Domains/{Domain}/` 基础代码（Model, Entity, Dao/Repository, Service, Request, Response）作为基底资产，**原则上严禁手工侵入修改**。
   2. 复杂的跨表组装、跨领域协同、业务计算等应用层服务，统一在 **`app/Services/{Domain}/`** 中按领域创建，通过继承或依赖注入（DI）消费 `app/Domains/{Domain}/Services`。
 - **目的**：代码生成器后续重新执行或覆盖时，不会抹掉应用层手工编写的核心业务代码。
-- **HugeCMS 应用**：第 5 章各领域列出的「应用服务」全部落在 `app/Services/{Domain}/`；跨领域调用（如发布文章需失效缓存 + 通知 + 统计）只发生在应用层。
+- **HugeCMS 应用**：生成物实际目录为 `Models/Entities/Repositories/Services/Requests/Responses/Controllers`（Dao 即 Repository；`Controllers/` 为领域 CRUD 接口，由 `gen:controller` 生成并挂载 Admin API，见 6.0）；第 5 章各领域列出的「应用服务」全部落在 `app/Services/{Domain}/`；跨领域调用（如发布文章需失效缓存 + 通知 + 统计）只发生在应用层。
 
 ### 3.3 数据接口按业务实体控制器聚合
 
@@ -153,7 +183,7 @@ database/migrations/                  # 按领域集中，见军规 3.1
 
 - **规则**：`app/Modules/{Portal,Admin,Seller,Supplier,User}` 各模块的 Blade 视图统一就近存放在 `app/Modules/{Module}/Views/` 目录中，Web 路由统一定义在 `app/Modules/{Module}/Routes/route.php`。
 - **服务提供者注册**：在全局服务提供者中自动扫描 `app/Modules/*/Views`，通过 `loadViewsFrom($viewsPath, $moduleName)` 进行视图命名空间注入；在控制器中使用 `view('{module}::xxx')` 进行视图渲染。
-- **HugeCMS 应用**：本项目模块集合为 `{Portal, Admin, User, Api}`（Api 无视图）；视图命名空间 `view('admin::posts.index')`、`view('portal::posts.show')`。
+- **HugeCMS 应用**：本项目为双交付层——Web 层 `app/Modules/{Admin,Portal,User}` 就近存放 Blade 视图与路由；API 层 `app/Api/{Admin,Common,Portal,User}` 只有路由无视图。视图命名空间 `view('admin::posts.index')`、`view('portal::posts.show')`。
 
 ### 3.6 Modules 控制器 OpenAPI 注解与 gen:route 自动化路由规范
 
@@ -163,7 +193,7 @@ database/migrations/                  # 按领域集中，见军规 3.1
   3. 路由由命令行工具 `php artisan gen:route` 统一自动化扫描并生成至对应模块的 `Routes/route.gen.php` 中。
   4. 各模块的主路由入口 `Routes/route.php` 必须严格遵循轻量化原则，仅负责通过命名空间分组引入生成的路由文件（如 `Route::name('{module}.')->group(function () { require __DIR__.'/route.gen.php'; });`），杜绝手工散落定义路由。
 - **目的**：注解即路由事实源，杜绝路由与文档漂移。
-- **HugeCMS 应用**：所有 `Admin`/`Portal`/`User`/`Api` 控制器方法均需 `#[OA\Get/Post/Put/Delete(path:…, summary:…)]`；模块级前缀与中间件在 `route.php` 入口统一施加（Admin：`/admin` + auth + role；Portal：`/`；Api：`/api/v1` + token）。
+- **HugeCMS 应用**：所有 `Modules`/`Api`/`Domains` 控制器方法均需 `#[OA\Get/Post/Put/Delete(path:…, summary:…)]`（必须为首个 Attribute）；`gen:route` 同时扫描 `app/Api/*`、`app/Domains/*`、`app/Modules/*` 三层 `Controllers/` 生成 `route.gen.php`（注意：仅为 GET 路由生成 `->name()`）；装载点见 6.0，模块前缀/中间件在各自 `route.php` 施加（Api/Admin：`/api/admin`；Modules/Admin：`/admin` + auth + role；Modules/Portal：`/`）。
 
 ### 3.7 任务完成收尾三部曲自动化执行规范
 
@@ -183,6 +213,8 @@ database/migrations/                  # 按领域集中，见军规 3.1
 ## 4. 数据表总览
 
 **命名规范**：业务表 = `{领域前缀}_{实体复数}`（如 `content_posts`）；关联表 = `{前缀}_{实体A}_{实体B}`；全部小写下划线。所有表、字段必须带注释；枚举字段注释遵循军规 3.1 格式。
+
+**唯一例外**：认证框架表 `users`、`password_reset_tokens` 及 DevTools `exclude_tables` 列出的基础设施表（sessions/cache/jobs 等）保留 Laravel 标准命名——生成工具按标准表名排除，改名会导致框架表被重复生成代码。
 
 ### 4.1 V1.0（MVP）
 
@@ -245,6 +277,8 @@ database/migrations/                  # 按领域集中，见军规 3.1
 | created_at / updated_at | timestamp | 创建/更新时间 |
 
 索引：`email` 唯一；`role_id`、`status` 普通。V1.0 单角色（role_id），V1.2 演进为 `user_role_user` 多角色 pivot。
+
+**双 User 模型说明**（已落地）：`users` 表由两个模型映射——`app/Models/User.php` 为**认证边界模型**（Guard Provider，承载登录态、密码哈希、通知，可手工维护），`app/Domains/User/Models/User.php` 为**领域 CRUD 模型**（DevTools 生成，严禁手改）。授权检查（role 中间件/Gate/Policy）读取认证模型；领域 CRUD 走领域模型。二者职责分离，不可合并（合并即违反军规 3.2 的防腐隔离）。
 
 #### 表：user_roles（角色表）
 
@@ -529,7 +563,15 @@ id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（30
 
 ## 6. 模块与路由设计
 
-### 6.1 Admin 模块（`/admin`，中间件 `auth` + `role`）
+### 6.0 路由装载点（已落地）
+
+- `routes/web.php`：glob 引入 `app/Modules/{Module}/Routes/route.php`（Web 层）；
+- `routes/api.php`：glob 引入 `app/Api/{Module}/Routes/route.php`（API 层，框架自动施加 `/api` 前缀 + api 中间件组）；
+- `app/Api/Admin/Routes/route.php`：额外挂载 `app/Domains/*/Routes/route.gen.php`——领域 CRUD 接口统一归 Admin API（如 `POST /api/admin/user/search`，已验证）；
+- 各 `route.php` 只做分组（prefix/name/middleware）+ require 生成文件，符合军规 3.6 的轻量化原则；
+- `route.gen.php` 由 `gen:route` 生成（禁手改）；GET 路由自动命名，叠加分组前缀后形如 `admin.user.show`。
+
+### 6.1 Admin 模块（Web 层 `/admin`；中间件 `auth` + `role` 待鉴权就绪后追加）
 
 | 控制器 | 聚合动作（每个方法需 OA 注解，军规 3.6） |
 | --- | --- |
@@ -550,10 +592,13 @@ id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（30
 路由入口示例（`app/Modules/Admin/Routes/route.php`）：
 
 ```php
-Route::prefix('admin')->name('admin.')->middleware(['web', 'auth', 'role:admin,super_admin,editor,author,auditor'])
-    ->group(function () {
-        require __DIR__.'/route.gen.php';
-    });
+// app/Modules/Admin/Routes/route.php（已落地，与实际代码一致）
+Route::prefix('admin')->name('admin.')->group(function () {
+    if (file_exists(__DIR__ . '/route.gen.php')) {
+        require __DIR__ . '/route.gen.php';
+    }
+});
+// TODO(V1.0)：后台鉴权就绪后追加 ->middleware(['auth', 'role:admin,super_admin,editor,author,auditor'])
 ```
 
 ### 6.2 Portal 模块（`/`，前台）
@@ -569,9 +614,12 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth', 'role:admin,s
 
 ProfileController（edit/update）、NotificationController（index/read）。
 
-### 6.4 Api 模块（V1.2，`/api/v1`，Sanctum Token + 限流）
+### 6.4 API 层模块（`app/Api/*`，骨架已就位，业务接口随版本填充）
 
-PostController（search/show）、CategoryController（index）、TagController（index）。严格 DTO（军规 3.4），导出 openapi.json 供第三方。
+- **Api/Admin**：后台 JSON 接口 + 全部领域 CRUD 接口（V1.0 起，`/api/admin/*`）；
+- **Api/Common**：登录、验证码等公共接口（V1.0，无鉴权）；
+- **Api/Portal / Api/User**：前台与个人中心接口（V1.1+）；
+- 对外开放 API 的版本化（`/api/v1`）+ Sanctum Token + 限流在 V1.2 落地；openapi.json 由 swagger-php 扫描注解导出供第三方。
 
 ---
 
@@ -579,7 +627,7 @@ PostController（search/show）、CategoryController（index）、TagController�
 
 ### 7.1 认证与授权（RBAC）
 
-- 认证：Laravel session guard（`user_users` 表）；登录限流 5 次失败锁 15 分钟（FR-503）；
+- 认证：Laravel session guard（`users` 表，认证模型 `App\Models\User`，见 5.1 双模型说明）；登录限流 5 次失败锁 15 分钟（FR-503）；
 - 授权：内置 5 角色对应 PRD 2.2 权限矩阵，落地为 `role` 中间件（粗粒度路由级）+ Policy（细粒度数据级，见 5.1）；
 - 审计：所有写操作经 `UserAccountService`/各应用服务统一落 `user_audit_logs`。
 
@@ -664,13 +712,14 @@ Flysystem GCS 适配器 + `disk('gcs')`；URL 支持 CDN 域名前缀（setting�
 
 ## 11. 依赖引入清单与风险（实施前评审）
 
-| 项 | 用途 | 风险/备注 |
+| 项 | 用途 | 状态/风险 |
 | --- | --- | --- |
-| DevTools 代码生成工具链（`gen:xxx`/`gen:route`/`gen:enum`） | 军规 3.1/3.2/3.6 的执行载体 | 团队自有工具，需 composer 接入并适配 Laravel 13；**MVP 前置任务** |
-| Flysystem GCS 适配器 | 媒体云存储 | 需评审选型（候选 superbalist 系或 Laravel 官方适配包）；只读 FS 兼容性验证 |
-| zircot/swagger-php | OA 注解与 openapi.json | Api 模块（V1.2）与 gen:route（3.6）共同依赖，MVP 即引入 |
-| 编辑器（Tiptap/CodeMirror） | 内容编辑 | 第 1 周 Spike 定版（PRD 风险表） |
-| Laravel Sanctum | Api Token | V1.2 引入即可 |
+| DevTools 工具链（`phpkg/laravel-devtools`） | 军规 3.1/3.2/3.6 的执行载体 | ✅ 已接入；Laravel 13 适配经 gen:route/optimize 实测验证；枚举命令为 `gen:enums`（复数） |
+| 基础设施包（`phpkg/laravel-foundation`） | 响应契约/异常/仓储基类（见 2.5） | ✅ 已接入；捆绑的 Aliyun SLS SDK 生产依赖本项目不启用，建议上游拆分为 suggest |
+| swagger-php（`zircote/swagger-php` ^6.11） | OA 注解与 openapi.json | ✅ 已接入；`/swagger-ui` 调试路由已注册（仅开发环境） |
+| Flysystem GCS 适配器 | 媒体云存储 | ⏳ 待评审选型（候选 superbalist 系或 Laravel 官方适配包）；只读 FS 兼容性验证 |
+| 编辑器（Tiptap/CodeMirror） | 内容编辑 | ⏳ 第 1 周 Spike 定版（PRD 风险表） |
+| Laravel Sanctum | API Token（生成代码 bearerAuth 注解的落地） | ⏳ 领域 CRUD 接口对外暴露前引入（当前骨架未含鉴权） |
 
 ## 12. 附录：需求追踪矩阵（FR → 技术落点）
 
@@ -693,4 +742,4 @@ Flysystem GCS 适配器 + `disk('gcs')`；URL 支持 CDN 域名前缀（setting�
 
 ---
 
-**下一步建议**：① 评审本文档与 PRD 第 10 节假设；② 确认 DevTools 工具链接入方式；③ 编辑器 Spike（1 周内）；④ 输出 V1.0 迭代 backlog（以领域为交付单元：User → Taxonomy → Content → Media → Setting → Admin/Portal 模块）。
+**下一步建议**：① 编写 User 域迁移（军规 3.1：扩展 `users` 业务字段 + `user_roles`/`user_audit_logs`，含表/字段/枚举注释）并跑通 codegen 全流程；② 编辑器 Spike（1 周内）；③ GCS 适配器选型评审；④ 输出 V1.0 迭代 backlog（以领域为交付单元：User → Taxonomy → Content → Media → Setting → Admin/Portal 模块）。
