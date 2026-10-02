@@ -7,7 +7,7 @@
 - 迁移文件必须**按领域集中**（`create_user_domain_tables.php`、`create_content_domain_tables.php`…），严禁按单表无节制新建。
 - 每个表必须声明 `$table->comment('XXX表');`；所有字段必须带简洁 comment。
 - 枚举字段注释格式**严格**为 `状态：1-启用，2-禁用`（`描述：值1-标签1，值2-标签2`，全角冒号/逗号、半角连字符），供 `php artisan gen:enums` 解析生成 Enum 类。注意命令是 `gen:enums`（复数）。
-- 认证框架表（`users`、`password_reset_tokens`）保留 Laravel 标准命名（devtools `exclude_tables` 依赖），其余业务表用领域前缀（`user_roles`、`content_posts`…）。
+- 标准命名例外：认证框架表（`users`、`password_reset_tokens`，devtools `exclude_tables` 依赖）、RBAC 标准表（`roles`、`permissions`、`user_roles`、`role_permissions`，对齐 spatie/laravel-permission 惯例）与配置表 `settings`（对齐 spatie/laravel-settings 惯例）保留通用命名；其余业务表用领域前缀（`site_banners`、`user_audit_logs`、`content_posts`…）。
 
 ## 2. 服务层与领域生成代码防腐隔离
 
