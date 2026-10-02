@@ -3,7 +3,7 @@
 | 项目 | 内容 |
 | --- | --- |
 | 产品名称 | HugeCMS 内容管理系统 |
-| 文档版本 | V1.1（草稿） |
+| 文档版本 | V1.6（草稿） |
 | 上游文档 | [产品需求文档 PRD](./prd.md) |
 | 创建日期 | 2026-10-02 |
 | 文档状态 | 待评审（评审人：研发 / 架构 / 产品） |
@@ -15,6 +15,11 @@
 | --- | --- | --- | --- |
 | V1.0 | 2026-10-02 | 初稿：领域划分、数据表设计、模块与路由、横切设计、编码军规收录 | 研发组 |
 | V1.1 | 2026-10-02 | 对齐工具链落地现状：双交付层（app/Api + app/Modules）、users 表命名例外、laravel-foundation 基础设施、路由装载点、双 User 模型、gen:enums 命令更正 | 研发组 |
+| V1.2 | 2026-10-02 | 认证鉴权升级为标准 RBAC（user_permissions + user_role/user_role_permission 多对多，多角色多权限点提前至 V1.0）；五个领域迁移文件落地并验证 | 研发组 |
+| V1.3 | 2026-10-02 | RBAC 表名标准化：角色表/权限点表改为 `roles`/`permissions`，关联表改为 `user_roles`/`role_permissions`（对齐 Laravel 权限生态惯例，如 spatie） | 研发组 |
+| V1.4 | 2026-10-02 | 补充国内建站惯例：users.phone、media_files.alt、setting_banners（轮播/广告位）、setting_friend_links（友链）、setting_feedbacks（留言） | 研发组 |
+| V1.5 | 2026-10-02 | 新增 Site 域（site_ 前缀，站点运营内容：轮播/友链/留言，V1.1 菜单/重定向并入）；Setting 域收缩为纯配置，setting_settings 更名为 settings（对齐 spatie/laravel-settings 惯例） | 研发组 |
+| V1.6 | 2026-10-02 | 国内惯例字段级补充：content_posts.author_name（自定义署名）、content_posts.allow_comment（评论开关预留）、site_banners.mobile_image_media_id（移动端轮播图） | 研发组 |
 
 ---
 
@@ -22,7 +27,7 @@
 
 本文档基于 [PRD](./prd.md) 自底向上完成技术实现设计，范围覆盖 V1.0（MVP）全部功能与 V1.1/V1.2 的结构性预留。核心设计决策：
 
-1. **领域驱动的前后端组织**：业务按领域（Domain）划分为 User / Content / Taxonomy / Media / Setting / Comment / Workflow / Stat / System 九个领域，数据表以领域为前缀命名；
+1. **领域驱动的前后端组织**：业务按领域（Domain）划分为 User / Content / Taxonomy / Media / Setting / Site / Comment / Workflow / Stat / System 十个领域，数据表以领域为前缀命名（标准命名例外见第 4 章）；
 2. **双交付层模块化**：Web 层 `app/Modules/{Admin,Portal,User}`（Blade 页面）与 API 层 `app/Api/{Admin,Common,Portal,User}`（JSON 接口，`{code,message,data}` 契约）并行，经 `routes/web.php` 与 `routes/api.php` 自动装载（已落地）；
 3. **生成代码与手工代码防腐隔离**：DevTools 生成 `app/Domains`，手写逻辑收敛于 `app/Services` 与 `app/Modules`；
 4. **云原生约束前置**：App Engine 标准环境只读文件系统约束（详见 [部署指南](../deployments/appengine-standard.md)）直接影响缓存、会话、队列、上传的设计选型。
@@ -58,11 +63,12 @@ MySQL 8.4（Cloud SQL）   GCS（媒体文件）   队列/调度（database 驱�
 
 | 领域 | 职责（对应 PRD 章节） | 表前缀 | 版本 |
 | --- | --- | --- | --- |
-| User | 用户、角色、审计日志（4.5） | `user_`（例外：`users`、`password_reset_tokens`） | V1.0 |
+| User | 用户、角色、审计日志（4.5） | `user_`（例外见第 4 章命名规范） | V1.0 |
 | Content | 文章、单页、修订版本（4.2） | `content_` | V1.0 |
 | Taxonomy | 分类、标签（4.2.3） | `taxonomy_` | V1.0 |
 | Media | 媒体文件、引用关系（4.4） | `media_` | V1.0 |
-| Setting | 站点配置、重定向、菜单（4.7） | `setting_` | V1.0 |
+| Setting | 站点 KV 配置（4.7） | `settings`（标准命名例外） | V1.0 |
+| Site | 站点运营内容：轮播/广告位、友链、留言、菜单、重定向（4.7） | `site_` | V1.0 |
 | System | 框架基础表（会话/缓存/队列/通知） | Laravel 标准命名 | V1.0 |
 | Comment | 评论、敏感词（4.6） | `comment_` | V1.1 |
 | Workflow | 审核流转（4.3） | `workflow_` | V1.1 |
@@ -92,7 +98,7 @@ app/
 │       ├── Requests/  Responses/
 │       ├── Controllers/              # 领域 CRUD 接口（gen:controller 生成，挂载 Admin API）
 │       └── Routes/route.gen.php      # gen:route 生成，由 app/Api/Admin 装载
-│   （Content/ Taxonomy/ Media/ Setting/ Comment/ Workflow/ Stat/ 结构同上）
+│   （Content/ Taxonomy/ Media/ Setting/ Site/ Comment/ Workflow/ Stat/ 结构同上）
 ├── Services/                         # 手写应用层（跨领域协同、业务计算）
 │   ├── Content/PostManageService.php
 │   ├── Media/MediaUploadService.php
@@ -117,11 +123,12 @@ routes/
 
 database/migrations/                  # 按领域集中，见军规 3.1
 ├── 0001_*                            # 框架三件套保留（users/cache/jobs 标准命名）
-├── create_user_domain_tables.php     # 扩展 users 业务字段 + user_roles/user_audit_logs
+├── create_user_domain_tables.php     # 扩展 users 业务字段 + RBAC 表 + 审计日志
 ├── create_content_domain_tables.php
 ├── create_taxonomy_domain_tables.php
 ├── create_media_domain_tables.php
-├── create_setting_domain_tables.php
+├── create_setting_domain_tables.php  # settings 站点配置表
+├── create_site_domain_tables.php     # 轮播/广告位、友链、留言
 ├── create_system_domain_tables.php   # 其余框架基础表（sessions 已在 0001 中）
 └── （V1.1）create_comment_domain_tables.php 等
 ```
@@ -214,14 +221,21 @@ database/migrations/                  # 按领域集中，见军规 3.1
 
 **命名规范**：业务表 = `{领域前缀}_{实体复数}`（如 `content_posts`）；关联表 = `{前缀}_{实体A}_{实体B}`；全部小写下划线。所有表、字段必须带注释；枚举字段注释遵循军规 3.1 格式。
 
-**唯一例外**：认证框架表 `users`、`password_reset_tokens` 及 DevTools `exclude_tables` 列出的基础设施表（sessions/cache/jobs 等）保留 Laravel 标准命名——生成工具按标准表名排除，改名会导致框架表被重复生成代码。
+**标准命名例外**：以下表保留通用命名、不加领域前缀——
+
+1. **认证框架表**：`users`、`password_reset_tokens` 及 DevTools `exclude_tables` 列出的基础设施表（sessions/cache/jobs 等）——生成工具按标准表名排除，改名会导致框架表被重复生成代码；
+2. **RBAC 标准表**：`roles`（角色表）、`permissions`（权限点表）及其关联表 `user_roles`、`role_permissions`——对齐 Laravel 权限生态惯例（如 spatie/laravel-permission），便于直接复用生态实践；
+3. **配置标准表**：`settings`（站点配置表）——对齐 Laravel 配置生态惯例（如 spatie/laravel-settings）。
 
 ### 4.1 V1.0（MVP）
 
 | 表名 | 说明 | 所属域 |
 | --- | --- | --- |
-| users | 用户表 | User |
-| user_roles | 角色表 | User |
+| users | 用户表（0001 创建 + User 域迁移扩展业务字段） | User |
+| roles | 角色表 | User |
+| permissions | 权限点表 | User |
+| user_roles | 用户角色关联表 | User |
+| role_permissions | 角色权限关联表 | User |
 | password_reset_tokens | 密码重置令牌表 | User |
 | user_audit_logs | 操作审计日志表 | User |
 | content_posts | 文章表 | Content |
@@ -231,8 +245,13 @@ database/migrations/                  # 按领域集中，见军规 3.1
 | taxonomy_post_tag | 文章标签关联表 | Taxonomy |
 | media_files | 媒体文件表 | Media |
 | media_usages | 媒体引用表 | Media |
-| setting_settings | 站点配置表 | Setting |
+| settings | 站点配置表 | Setting |
+| site_banners | 轮播图/广告位表 | Site |
+| site_friend_links | 友情链接表 | Site |
+| site_feedbacks | 留言信息表 | Site |
 | sessions / cache / cache_locks / jobs / job_batches / failed_jobs | 框架基础表（标准命名，App Engine database 驱动依赖） | System |
+
+> **迁移已落地（2026-10-02）**：`2026_10_02_112914`（user）/`112915`（taxonomy）/`112916`（media）/`112917`（content）/`112918`（setting）/`121049`（site）六个领域迁移，已通过 sqlite 测试与本地 MySQL 迁移双重验证。System 域 V1.0 无需新表（0001 三件套已含 sessions/cache/jobs）。跨领域引用（如 content_posts.category_id → taxonomy）仅建索引不建外键，避免领域迁移顺序耦合，关系由 Eloquent 维护。
 
 ### 4.2 V1.1 / V1.2 预留
 
@@ -242,11 +261,10 @@ database/migrations/                  # 按领域集中，见军规 3.1
 | comment_comments | 评论表 | Comment | V1.1 |
 | comment_sensitive_words | 敏感词表 | Comment | V1.1 |
 | workflow_records | 审核流转记录表 | Workflow | V1.1 |
-| setting_redirects | 重定向表 | Setting | V1.1 |
-| setting_nav_menus / setting_nav_menu_items | 导航菜单表 / 菜单项表 | Setting | V1.1 |
+| site_redirects | 重定向表 | Site | V1.1 |
+| site_nav_menus / site_nav_menu_items | 导航菜单表 / 菜单项表 | Site | V1.1 |
 | stat_view_logs / stat_daily_post_views / stat_daily_site_views | 访问事件表 / 文章日统计表 / 站点日统计表 | Stat | V1.1 |
 | notifications | 通知表（Laravel 标准命名） | System | V1.1 |
-| user_role_user（多角色 pivot，替代 role_id 单值） | 用户角色关联表 | User | V1.2 |
 | personal_access_tokens | API Token 表（Sanctum，标准命名） | System | V1.2 |
 
 ---
@@ -266,9 +284,9 @@ database/migrations/                  # 按领域集中，见军规 3.1
 | id | bigint PK | 用户ID |
 | name | varchar(64) | 昵称 |
 | email | varchar(128) UK | 登录邮箱 |
+| phone | varchar(20) UK NULL | 手机号（登录标识之一，国内惯例） |
 | password | varchar(255) | 密码哈希 |
 | avatar_media_id | bigint NULL | 头像媒体ID（关联 media_files.id） |
-| role_id | bigint | 角色ID（关联 user_roles.id） |
 | status | tinyint | 状态：1-启用，2-禁用 |
 | login_failed_count | int | 连续登录失败次数 |
 | locked_until | datetime NULL | 锁定截止时间 |
@@ -276,11 +294,11 @@ database/migrations/                  # 按领域集中，见军规 3.1
 | totp_secret | varchar(255) NULL | 双因素认证密钥（V1.1 启用） |
 | created_at / updated_at | timestamp | 创建/更新时间 |
 
-索引：`email` 唯一；`role_id`、`status` 普通。V1.0 单角色（role_id），V1.2 演进为 `user_role_user` 多角色 pivot。
+索引：`email` 唯一、`status`。角色经 `user_roles` 关联表多对多挂载（标准 RBAC，见下），不设 role_id 单值列。
 
 **双 User 模型说明**（已落地）：`users` 表由两个模型映射——`app/Models/User.php` 为**认证边界模型**（Guard Provider，承载登录态、密码哈希、通知，可手工维护），`app/Domains/User/Models/User.php` 为**领域 CRUD 模型**（DevTools 生成，严禁手改）。授权检查（role 中间件/Gate/Policy）读取认证模型；领域 CRUD 走领域模型。二者职责分离，不可合并（合并即违反军规 3.2 的防腐隔离）。
 
-#### 表：user_roles（角色表）
+#### 表：roles（角色表）
 
 | 字段 | 类型 | 注释 |
 | --- | --- | --- |
@@ -289,9 +307,32 @@ database/migrations/                  # 按领域集中，见军规 3.1
 | code | varchar(32) UK | 角色标识（super_admin/admin/editor/author/auditor） |
 | description | varchar(255) | 角色说明 |
 | is_system | tinyint | 是否内置角色：1-是，2-否 |
+| status | tinyint | 状态：1-启用，2-禁用 |
+| sort | int | 排序（值小在前） |
 | created_at / updated_at | timestamp | 创建/更新时间 |
 
 V1.0 预置 5 条内置数据（种子），权限矩阵见 PRD 2.2 与本文 7.1。
+
+#### 表：user_roles（用户角色关联表）
+
+user_id + role_id，联合唯一 `(user_id, role_id)`。标准 RBAC 多对多挂载：一个用户可拥有多个角色（如「编辑 + 审核员」）。
+
+#### 表：permissions（权限点表）
+
+| 字段 | 类型 | 注释 |
+| --- | --- | --- |
+| id | bigint PK | 权限ID |
+| name | varchar(64) UK | 权限标识（如 post.publish、media.upload） |
+| module | varchar(32) | 所属模块（content/media/user/setting） |
+| remark | varchar(255) | 权限说明 |
+| status | tinyint | 状态：1-启用，2-禁用 |
+| created_at / updated_at | timestamp | 创建/更新时间 |
+
+#### 表：role_permissions（角色权限关联表）
+
+role_id + permission_id，联合唯一 `(role_id, permission_id)`。角色聚合权限点，用户经角色间接获得权限（标准 RBAC 不设用户直授权限表，避免两套授权路径）。
+
+权限点按 PRD 2.2 矩阵初始化（如 `post.manage-own`、`post.publish`、`review.approve`），与 5 角色一起在种子里预置。
 
 #### 表：password_reset_tokens（密码重置令牌表）
 
@@ -313,19 +354,21 @@ email (PK)、token、created_at，结构同 Laravel 标准。
 
 只增不改，保留 ≥ 180 天（PRD FR-505）；按 `user_id + created_at`、`action` 建索引。
 
-#### 枚举类（gen:enum 生成）
+#### 枚举类（gen:enums 生成）
 
-`UserStatusEnum`（1-启用，2-禁用）、`RoleIsSystemEnum`（1-是，2-否）
+`UserStatusEnum`（1-启用，2-禁用）、`RoleStatusEnum`（1-启用，2-禁用）、`RoleIsSystemEnum`（1-是，2-否）、`PermissionStatusEnum`（1-启用，2-禁用）
 
 #### 应用服务（app/Services/User）
 
 - `UserAccountService`：邀请建号、启用/禁用、重置密码、角色分配（写审计日志）
+- `RbacService`：角色/权限点 CRUD、角色-权限分配（变更后失效权限缓存）
 - `LoginSecurityService`：失败计数、锁定 15 分钟（FR-503 限流部分）、登录事件审计
 - （V1.1）`TotpService`：双因素认证绑定与校验
 
 #### 权限 enforcement
 
 - 路由中间件：`auth` + `role:{code}`（Admin 模块路由组统一施加）；
+- 权限校验：Gate 以 `permissions.name` 为权限点，经用户角色聚合判定（`Gate::before` 放行 super_admin）；权限集合缓存于 database cache，角色/权限变更时失效；
 - Policy：`PostPolicy`（编辑仅管理自己内容、作者仅草稿/待审）、`PagePolicy`、`MediaPolicy`（作者仅删自己上传）、`UserPolicy`（管理员不可管理超级管理员）；
 - 越权一律 403 并落 `user_audit_logs`。
 
@@ -352,11 +395,13 @@ email (PK)、token、created_at，结构同 Laravel 标准。
 | is_recommended | tinyint | 是否推荐：1-是，2-否 |
 | source_type | tinyint | 来源类型：1-原创，2-转载 |
 | source_url | varchar(500) NULL | 转载原文链接 |
+| author_name | varchar(64) NULL | 自定义署名（空则显示创建者昵称） |
 | seo_title | varchar(200) NULL | SEO标题（空则按规则生成） |
 | seo_description | varchar(300) NULL | SEO描述 |
 | seo_keywords | varchar(200) NULL | SEO关键词 |
 | view_count | bigint | 阅读量（冗余计数） |
 | comment_count | bigint | 评论数（V1.1 启用维护） |
+| allow_comment | tinyint | 是否允许评论：1-允许，2-关闭 |
 | created_by / updated_by | bigint | 创建人/最后编辑人ID |
 | deleted_at | datetime NULL | 删除时间（回收站，保留30天） |
 | created_at / updated_at | timestamp | 创建/更新时间 |
@@ -453,6 +498,7 @@ post_id、tag_id，联合唯一 `(post_id, tag_id)`。
 | disk | varchar(32) | 存储盘标识（gcs） |
 | path | varchar(500) | 存储相对路径 |
 | name | varchar(255) | 原始文件名 |
+| alt | varchar(255) NULL | 替代文本（图片alt，SEO与无障碍） |
 | extension | varchar(16) | 扩展名 |
 | mime_type | varchar(128) | 真实MIME类型 |
 | size | bigint | 文件大小（字节） |
@@ -490,11 +536,11 @@ post_id、tag_id，联合唯一 `(post_id, tag_id)`。
 
 > **依赖**：Flysystem 的 GCS 适配器为新增 composer 依赖，实施前需评审（CLAUDE.md 约定，见第 11 章）。
 
-### 5.5 Setting 域（V1.0 部分，V1.1 扩展）
+### 5.5 Setting 域（V1.0）
 
-**职责**：站点配置 KV、SEO 全局项、301 重定向与导航菜单（V1.1）。对应 PRD 4.7（FR-701~705）。
+**职责**：站点 KV 配置（分组读写、缓存）。对应 PRD 4.7（FR-701/702）。
 
-#### 表：setting_settings（站点配置表）
+#### 表：settings（站点配置表）
 
 | 字段 | 类型 | 注释 |
 | --- | --- | --- |
@@ -505,23 +551,49 @@ post_id、tag_id，联合唯一 `(post_id, tag_id)`。
 | remark | varchar(255) NULL | 配置说明 |
 | created_at / updated_at | timestamp | 创建/更新时间 |
 
-配置读写走 `SiteSettingService`（整组缓存，写入失效），后台「系统设置」按分组 Tab 渲染（PRD 附录）。
+配置读写走 `SettingService`（整组缓存，写入失效），后台「系统设置」按分组 Tab 渲染（PRD 附录）。
 
-#### 表：setting_redirects（重定向表，V1.1）
+### 5.6 Site 域（V1.0，站点运营内容）
 
-id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（301/302）、hits int、status tinyint（状态：1-启用，2-禁用）、timestamps。中间件命中即 30x 跳转并累加 hits（FR-704）。
+**职责**：站点呈现与运营内容——轮播图/广告位、友情链接、留言反馈（V1.0 建表），导航菜单与 301 重定向（V1.1）。对应 PRD 4.7（FR-704/706~708）与 4.2.2（FR-222）。
 
-#### 表：setting_nav_menus / setting_nav_menu_items（V1.1）
+#### 表：site_banners（轮播图/广告位表，V1.0）
 
+| 字段 | 类型 | 注释 |
+| --- | --- | --- |
+| id | bigint PK | 轮播ID |
+| position | varchar(32) | 展示位置（home_slide 首页轮播/sidebar 侧栏广告） |
+| title | varchar(100) | 标题 |
+| image_media_id | bigint | 图片媒体ID（关联 media_files.id） |
+| mobile_image_media_id | bigint NULL | 移动端图片媒体ID（关联 media_files.id，空则复用PC图） |
+| link_url | varchar(500) | 跳转链接 |
+| target_type | tinyint | 打开方式：1-当前窗口，2-新窗口 |
+| sort | int | 排序（值小在前） |
+| start_at / end_at | date NULL | 投放开始/结束日期（空为立即/长期） |
+| status | tinyint | 状态：1-启用，2-禁用 |
+| created_at / updated_at | timestamp | 创建/更新时间 |
+
+#### 表：site_friend_links（友情链接表，V1.0）
+
+id、name varchar(64) 站点名称、url varchar(500) 站点链接、logo_media_id NULL、sort、status（状态：1-启用，2-禁用）、timestamps。页脚展示启用中的友链（缓存）。
+
+#### 表：site_feedbacks（留言信息表，V1.0 建表 / V1.1 界面）
+
+id、name 联系人、phone 联系电话、email NULL、subject NULL 留言主题、content text 留言内容、ip NULL、status（状态：1-未处理，2-已处理）、handled_at NULL、handled_by NULL、timestamps。
+
+#### 表（V1.1）：site_redirects / site_nav_menus / site_nav_menu_items
+
+重定向：id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（301/302）、hits int、status tinyint（状态：1-启用，2-禁用）、timestamps。中间件命中即 30x 跳转并累加 hits（FR-704）。
 菜单：id、name、code UK（header/footer）、timestamps。
 菜单项：id、menu_id、parent_id NULL、title、target_type tinyint（类型：1-自定义链接，2-分类，3-单页，4-文章）、target_id bigint NULL、url varchar(500) NULL、sort、status tinyint（状态：1-启用，2-禁用）、timestamps。支持拖拽排序（FR-222）。
 
 #### 应用服务
 
-- `SiteSettingService`：分组读写 + 缓存 + 全站生效
-- （V1.1）`RedirectService`（含批量导入）、`NavMenuService`（树构建 + 缓存）
+- `BannerService`：按位置查询启用中的轮播（缓存 + 投放期校验，到期自动不展示）
+- `FriendLinkService`：启用的友链列表（缓存）
+- （V1.1）`RedirectService`（含批量导入）、`NavMenuService`（树构建 + 缓存）、`FeedbackService`（留言接收含频次限制、标记处理）
 
-### 5.6 Comment 域（V1.1）
+### 5.7 Comment 域（V1.1）
 
 **职责**：评论（二级回复）、先审后发/先发后审、敏感词。对应 PRD 4.6（FR-601~603）。
 
@@ -531,15 +603,15 @@ id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（30
 - 应用服务：`CommentService`（发表策略判定、敏感词 DFA 匹配、审核流转、驳回通知）；前台展示仅 `status=1`。
 - 回复他人评论 → 站内通知（notifications 表 + Laravel Notification）。
 
-### 5.7 Workflow 域（V1.1）
+### 5.8 Workflow 域（V1.1）
 
 **职责**：投稿审核流。对应 PRD 4.3（FR-301~303）。
 
 - **workflow_records（审核流转记录表）**：id、post_id、action tinyint（动作：1-提交审核，2-审核通过，3-审核驳回）、operator_id、reason varchar(500) NULL（驳回理由/备注）、created_at。
-- 与 `content_posts.status`（10↔20/40）联动；开关在 `setting_settings`（group=reading，key=review_required）。
+- 与 `content_posts.status`（10↔20/40）联动；开关在 `settings`（group=reading，key=review_required）。
 - 应用服务：`ReviewService`（提交/通过/驳回 + 状态机校验 + 记录 + 通知作者）。
 
-### 5.8 Stat 域（V1.1）
+### 5.9 Stat 域（V1.1）
 
 **职责**：轻量自建统计（PV/UV），隐私友好。对应 PRD 4.11（FR-104/1101/1102）。
 
@@ -548,7 +620,7 @@ id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（30
 - **stat_daily_site_views（站点日统计表）**：id、date UK、pv int、uv int。
 - 应用服务：`ViewTrackService`（前台埋点入队列）、`StatAggregateService`（每日队列聚合 view_logs → 日表，`BITCOUNT` 思路以 distinct session_hash 计 UV）。
 
-### 5.9 System 域（V1.0）
+### 5.10 System 域（V1.0）
 
 框架基础表，**保留 Laravel 标准命名**（App Engine 部署依赖 database 驱动，见部署指南）：
 
@@ -585,9 +657,11 @@ id、from_path varchar(500) UK、to_url varchar(500)、status_code smallint（30
 | RoleController | index（V1.0 内置角色只读） |
 | AuditLogController | index（FR-505） |
 | SettingController | index、update（FR-701/702） |
+| BannerController | index、store、update、destroy、sort（FR-706） |
+| FriendLinkController | index、store、update、destroy、sort（FR-707） |
 | （V1.1）ReviewController | pending、show、approve、reject |
 | （V1.1）CommentController | index、approve、reject、reply、destroy |
-| （V1.1）RedirectController / MenuController / StatController | 略 |
+| （V1.1）RedirectController / MenuController / StatController / FeedbackController | 略 |
 
 路由入口示例（`app/Modules/Admin/Routes/route.php`）：
 
@@ -628,7 +702,7 @@ ProfileController（edit/update）、NotificationController（index/read）。
 ### 7.1 认证与授权（RBAC）
 
 - 认证：Laravel session guard（`users` 表，认证模型 `App\Models\User`，见 5.1 双模型说明）；登录限流 5 次失败锁 15 分钟（FR-503）；
-- 授权：内置 5 角色对应 PRD 2.2 权限矩阵，落地为 `role` 中间件（粗粒度路由级）+ Policy（细粒度数据级，见 5.1）；
+- 授权：标准 RBAC——内置 5 角色对应 PRD 2.2 权限矩阵，角色聚合权限点（`user_roles` / `role_permissions` 多对多）；落地为 `role` 中间件（粗粒度路由级）+ Gate（权限点级）+ Policy（数据级，见 5.1）；
 - 审计：所有写操作经 `UserAccountService`/各应用服务统一落 `user_audit_logs`。
 
 ### 7.2 缓存策略（只读文件系统约束）
@@ -661,7 +735,7 @@ Flysystem GCS 适配器 + `disk('gcs')`；URL 支持 CDN 域名前缀（setting�
 - TDK 生成链：文章自定义值 > 分类覆盖 > 全局规则（`{标题} - {站点名}` 等，setting:seo.*）；
 - sitemap：`SeoController@sitemap` 输出，内容缓存于 database cache，事件驱动刷新；
 - 结构化数据（V1.1）：Blade 局部视图输出 Article/BreadcrumbList JSON-LD（FR-705）；
-- 301 中间件（V1.1）：全局限先于路由匹配查 `setting_redirects`。
+- 301 中间件（V1.1）：全局限先于路由匹配查 `site_redirects`。
 
 ### 7.6 日志与错误处理
 
@@ -732,7 +806,7 @@ Flysystem GCS 适配器 + `disk('gcs')`；URL 支持 CDN 域名前缀（setting�
 | 媒体库 | FR-401~405 | Media 域 + MediaUploadService + GCS |
 | 用户与权限 | FR-501~505 | User 域 + RBAC（7.1）+ 审计 |
 | 评论 | FR-601~603 | Comment 域（V1.1） |
-| SEO/设置 | FR-701~705 | Setting 域 + SeoController + TDK 生成链（7.5） |
+| SEO/设置/站点运营 | FR-701~708 | Setting + Site 域 + SeoController + TDK 生成链（7.5）+ Banner/FriendLink 服务 |
 | 搜索 | FR-801/802 | content_posts FULLTEXT(ngram) + Portal\PostController@search（V1.1） |
 | 主题前台 | FR-901~904 | Portal 模块 Views + 默认主题（V1.2 子主题） |
 | 多语言 | FR-1001/1002 | 后台 lang 包（V1.1）；内容多语言单独立项（V1.2） |
