@@ -11,7 +11,7 @@ Route::prefix('admin')->group(function () {
 
     // 领域 CRUD 接口（gen:controller 生成于 app/Domains/*/Controllers，挂载到 Admin API）
     $domainRoutes = glob(app_path('Domains/*/Routes/route.gen.php'));
-    if (!empty($domainRoutes)) {
+    if (! empty($domainRoutes)) {
         foreach ($domainRoutes as $domainRoute) {
             require $domainRoute;
         }

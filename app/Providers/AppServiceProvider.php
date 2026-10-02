@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->loadViewsFromModules();
+    }
+
+    protected function loadViewsFromModules(): void
+    {
+        $modules = glob(app_path('Modules/*'), GLOB_ONLYDIR);
+        if (! empty($modules)) {
+            foreach ($modules as $module) {
+                $moduleName = basename($module);
+                $this->loadViewsFrom($module.'/Views', Str::snake($moduleName));
+            }
+        }
     }
 }
