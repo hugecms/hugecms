@@ -7,9 +7,9 @@
         "laravel",
         "framework"
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
         "phpkg/laravel-foundation": "^1.0"
