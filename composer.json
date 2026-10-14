@@ -1,11 +1,10 @@
 {
-    "name": "phpcms/phpcms",
-    "description": "the new thinkphp framework",
+    "name": "hugecms/hugecms",
+    "description": "The new content management system",
     "type": "project",
     "keywords": [
-        "framework",
-        "thinkphp",
-        "ORM"
+        "hugecms",
+        "thinkphp"
     ],
     "license": "Apache-2.0",
     "require": {
@@ -15,7 +14,8 @@
         "topthink/think-filesystem": "^3.0",
         "topthink/think-worker": "^5.0",
         "topthink/think-queue": "^3.0",
-        "juling/think-foundation": "^1.0"
+        "juling/think-foundation": "^1.0",
+        "topthink/think-migration": "^3.1"
     },
     "require-dev": {
         "topthink/think-dumper": "^1.0",
@@ -35,6 +35,7 @@
         }
     },
     "config": {
+        "sort-packages": true,
         "preferred-install": "dist",
         "allow-plugins": {
             "pestphp/pest-plugin": true
