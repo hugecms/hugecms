@@ -4,24 +4,46 @@
     "type": "project",
     "keywords": [
         "hugecms",
-        "thinkphp"
+        "php",
+        "mysql"
     ],
     "license": "Apache-2.0",
     "require": {
         "php": "^8.4",
+        "aliyuncs/oss-sdk-php": "^2.7",
+        "elasticsearch/elasticsearch": "^9.5",
+        "endroid/qr-code": "^6.1",
+        "firebase/php-jwt": "^7.2",
+        "intervention/image": "^4.3",
         "juling/think-foundation": "^1.0",
+        "overtrue/easy-sms": "^3.5",
+        "overtrue/pinyin": "^6.0",
+        "overtrue/socialite": "^4.15",
+        "phpoffice/phpspreadsheet": "^5.10",
+        "qcloud/cos-sdk-v5": "^2.6",
+        "qiniu/php-sdk": "^7.14",
+        "ramsey/uuid": "^4.9",
         "topthink/framework": "^8.0",
+        "topthink/think-captcha": "^3.0",
+        "topthink/think-cors": "^1.0",
         "topthink/think-filesystem": "^3.0",
+        "topthink/think-image": "^1.0",
         "topthink/think-migration": "^3.1",
         "topthink/think-orm": "^4.0",
         "topthink/think-queue": "^3.0",
+        "topthink/think-throttle": "^3.0",
         "topthink/think-view": "^2.0",
-        "topthink/think-worker": "^5.0"
+        "topthink/think-worker": "^5.0",
+        "w7corp/easywechat": "^6.20",
+        "workerman/crontab": "^1.0",
+        "workerman/gateway-worker": "^3.1",
+        "yansongda/pay": "^3.7"
     },
     "require-dev": {
         "juling/think-devtools": "^1.1",
         "laravel/pint": "^1.32",
         "pestphp/pest": "^5.3",
+        "phpstan/phpstan": "^2.3",
         "topthink/think-dumper": "^1.0",
         "topthink/think-trace": "^2.0",
         "zircote/swagger-php": "^6.14"
@@ -36,17 +58,31 @@
             "Tests\\": "tests/"
         }
     },
-    "config": {
-        "sort-packages": true,
-        "preferred-install": "dist",
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
     "scripts": {
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan migrate:run",
+            "npm install --ignore-scripts",
+            "npm run build"
+        ],
         "post-autoload-dump": [
             "@php artisan service:discover",
             "@php artisan vendor:publish"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ]
-    }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
