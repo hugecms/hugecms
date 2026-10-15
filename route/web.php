@@ -6,7 +6,7 @@ use think\facade\Route;
 use think\middleware\SessionInit;
 
 Route::group(function () {
-    $routeFiles = glob(app_path().'modules/*/route/route.gen.php');
+    $routeFiles = glob(app_path().'modules/*/route/*.php');
     foreach ($routeFiles as $routeFile) {
         require $routeFile;
     }
