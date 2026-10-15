@@ -1,0 +1,10 @@
+<?php
+
+declare(strict_types=1);
+
+use app\modules\user\controller\IndexController;
+use think\facade\Route;
+
+Route::group('user', function () {
+    Route::get('/', [IndexController::class, 'index']);
+});
