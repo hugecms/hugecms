@@ -9,20 +9,22 @@
     "license": "Apache-2.0",
     "require": {
         "php": "^8.4",
-        "topthink/framework": "^8.0",
-        "topthink/think-orm": "^4.0",
-        "topthink/think-filesystem": "^3.0",
-        "topthink/think-worker": "^5.0",
-        "topthink/think-queue": "^3.0",
         "juling/think-foundation": "^1.0",
-        "topthink/think-migration": "^3.1"
+        "topthink/framework": "^8.0",
+        "topthink/think-filesystem": "^3.0",
+        "topthink/think-migration": "^3.1",
+        "topthink/think-orm": "^4.0",
+        "topthink/think-queue": "^3.0",
+        "topthink/think-view": "^2.0",
+        "topthink/think-worker": "^5.0"
     },
     "require-dev": {
+        "juling/think-devtools": "^1.1",
+        "laravel/pint": "^1.32",
+        "pestphp/pest": "^5.3",
         "topthink/think-dumper": "^1.0",
         "topthink/think-trace": "^2.0",
-        "laravel/pint": "^1.32",
-        "juling/think-devtools": "^1.1",
-        "pestphp/pest": "^5.3"
+        "zircote/swagger-php": "^6.14"
     },
     "autoload": {
         "psr-4": {

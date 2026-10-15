@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace app\api\admin\controller;
 
-abstract class BaseController {}
+use app\controller\BaseController as Controller;
+
+abstract class BaseController extends Controller {}
