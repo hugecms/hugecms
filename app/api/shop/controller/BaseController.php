@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace app\api\shop\controller;
 
-abstract class BaseController {}
+use Juling\Foundation\Routing\Controller;
+
+abstract class BaseController extends Controller {}

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace app\api\admin\controller;
 
-use app\controller\BaseController as Controller;
+use Juling\Foundation\Response\JsonResponse;
+use Juling\Foundation\Routing\Controller;
 
-abstract class BaseController extends Controller {}
+abstract class BaseController extends Controller
+{
+    use JsonResponse;
+}

@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 class IndexController extends BaseController
 {
-    #[OA\Get(path: '/', summary: 'test', security: [['bearerAuth' => []]], tags: ['后台模块'])]
+    #[OA\Get(path: '/', summary: 'test', tags: ['后台模块'])]
     public function index()
     {
         return 'welcome shop index';
