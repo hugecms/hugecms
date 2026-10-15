@@ -6,12 +6,12 @@ namespace app\domain\admin\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\admin\entity\AdminRoleEntity;
-use app\domain\admin\service\AdminRoleService;
 use app\domain\admin\request\adminRole\AdminRoleCreateRequest;
 use app\domain\admin\request\adminRole\AdminRoleQueryRequest;
 use app\domain\admin\request\adminRole\AdminRoleUpdateRequest;
 use app\domain\admin\response\adminRole\AdminRoleQueryResponse;
 use app\domain\admin\response\adminRole\AdminRoleResponse;
+use app\domain\admin\service\AdminRoleService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

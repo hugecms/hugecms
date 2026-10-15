@@ -26,9 +26,9 @@ class ContentCommentEntity
 
     public const string getIp = 'ip'; // 评论IP
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

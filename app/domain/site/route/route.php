@@ -6,17 +6,19 @@
 
 declare(strict_types=1);
 
+use app\domain\site\controller\SiteBannerController;
+use app\domain\site\controller\SiteLinkController;
 use think\facade\Route;
 
 Route::group(function () {
-    Route::post('siteBanner/query', [\app\domain\site\controller\SiteBannerController::class, 'query']);
-    Route::post('siteBanner/create', [\app\domain\site\controller\SiteBannerController::class, 'create']);
-    Route::get('siteBanner/show', [\app\domain\site\controller\SiteBannerController::class, 'show']);
-    Route::put('siteBanner/update', [\app\domain\site\controller\SiteBannerController::class, 'update']);
-    Route::delete('siteBanner/destroy', [\app\domain\site\controller\SiteBannerController::class, 'destroy']);
-    Route::post('siteLink/query', [\app\domain\site\controller\SiteLinkController::class, 'query']);
-    Route::post('siteLink/create', [\app\domain\site\controller\SiteLinkController::class, 'create']);
-    Route::get('siteLink/show', [\app\domain\site\controller\SiteLinkController::class, 'show']);
-    Route::put('siteLink/update', [\app\domain\site\controller\SiteLinkController::class, 'update']);
-    Route::delete('siteLink/destroy', [\app\domain\site\controller\SiteLinkController::class, 'destroy']);
+    Route::post('siteBanner/query', [SiteBannerController::class, 'query']);
+    Route::post('siteBanner/create', [SiteBannerController::class, 'create']);
+    Route::get('siteBanner/show', [SiteBannerController::class, 'show']);
+    Route::put('siteBanner/update', [SiteBannerController::class, 'update']);
+    Route::delete('siteBanner/destroy', [SiteBannerController::class, 'destroy']);
+    Route::post('siteLink/query', [SiteLinkController::class, 'query']);
+    Route::post('siteLink/create', [SiteLinkController::class, 'create']);
+    Route::get('siteLink/show', [SiteLinkController::class, 'show']);
+    Route::put('siteLink/update', [SiteLinkController::class, 'update']);
+    Route::delete('siteLink/destroy', [SiteLinkController::class, 'destroy']);
 });

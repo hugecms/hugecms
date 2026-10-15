@@ -38,7 +38,7 @@ class SystemOperationLogEntity
 
     public const string getUserAgent = 'user_agent'; // User-Agent
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

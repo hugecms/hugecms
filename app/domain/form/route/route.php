@@ -6,22 +6,25 @@
 
 declare(strict_types=1);
 
+use app\domain\form\controller\FormController;
+use app\domain\form\controller\FormFieldController;
+use app\domain\form\controller\FormSubmissionController;
 use think\facade\Route;
 
 Route::group(function () {
-    Route::post('form/query', [\app\domain\form\controller\FormController::class, 'query']);
-    Route::post('form/create', [\app\domain\form\controller\FormController::class, 'create']);
-    Route::get('form/show', [\app\domain\form\controller\FormController::class, 'show']);
-    Route::put('form/update', [\app\domain\form\controller\FormController::class, 'update']);
-    Route::delete('form/destroy', [\app\domain\form\controller\FormController::class, 'destroy']);
-    Route::post('formField/query', [\app\domain\form\controller\FormFieldController::class, 'query']);
-    Route::post('formField/create', [\app\domain\form\controller\FormFieldController::class, 'create']);
-    Route::get('formField/show', [\app\domain\form\controller\FormFieldController::class, 'show']);
-    Route::put('formField/update', [\app\domain\form\controller\FormFieldController::class, 'update']);
-    Route::delete('formField/destroy', [\app\domain\form\controller\FormFieldController::class, 'destroy']);
-    Route::post('formSubmission/query', [\app\domain\form\controller\FormSubmissionController::class, 'query']);
-    Route::post('formSubmission/create', [\app\domain\form\controller\FormSubmissionController::class, 'create']);
-    Route::get('formSubmission/show', [\app\domain\form\controller\FormSubmissionController::class, 'show']);
-    Route::put('formSubmission/update', [\app\domain\form\controller\FormSubmissionController::class, 'update']);
-    Route::delete('formSubmission/destroy', [\app\domain\form\controller\FormSubmissionController::class, 'destroy']);
+    Route::post('form/query', [FormController::class, 'query']);
+    Route::post('form/create', [FormController::class, 'create']);
+    Route::get('form/show', [FormController::class, 'show']);
+    Route::put('form/update', [FormController::class, 'update']);
+    Route::delete('form/destroy', [FormController::class, 'destroy']);
+    Route::post('formField/query', [FormFieldController::class, 'query']);
+    Route::post('formField/create', [FormFieldController::class, 'create']);
+    Route::get('formField/show', [FormFieldController::class, 'show']);
+    Route::put('formField/update', [FormFieldController::class, 'update']);
+    Route::delete('formField/destroy', [FormFieldController::class, 'destroy']);
+    Route::post('formSubmission/query', [FormSubmissionController::class, 'query']);
+    Route::post('formSubmission/create', [FormSubmissionController::class, 'create']);
+    Route::get('formSubmission/show', [FormSubmissionController::class, 'show']);
+    Route::put('formSubmission/update', [FormSubmissionController::class, 'update']);
+    Route::delete('formSubmission/destroy', [FormSubmissionController::class, 'destroy']);
 });

@@ -22,9 +22,9 @@ class SystemSettingEntity
 
     public const string getType = 'type'; // 值类型:text,number,select,radio
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

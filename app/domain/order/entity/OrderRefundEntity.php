@@ -26,9 +26,9 @@ class OrderRefundEntity
 
     public const string getRefundedAt = 'refunded_at'; // 退款完成时间
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

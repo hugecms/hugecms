@@ -6,12 +6,12 @@ namespace app\domain\system\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\system\entity\SystemRegionEntity;
-use app\domain\system\service\SystemRegionService;
 use app\domain\system\request\systemRegion\SystemRegionCreateRequest;
 use app\domain\system\request\systemRegion\SystemRegionQueryRequest;
 use app\domain\system\request\systemRegion\SystemRegionUpdateRequest;
 use app\domain\system\response\systemRegion\SystemRegionQueryResponse;
 use app\domain\system\response\systemRegion\SystemRegionResponse;
+use app\domain\system\service\SystemRegionService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

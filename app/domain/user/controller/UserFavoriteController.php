@@ -6,12 +6,12 @@ namespace app\domain\user\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\user\entity\UserFavoriteEntity;
-use app\domain\user\service\UserFavoriteService;
 use app\domain\user\request\userFavorite\UserFavoriteCreateRequest;
 use app\domain\user\request\userFavorite\UserFavoriteQueryRequest;
 use app\domain\user\request\userFavorite\UserFavoriteUpdateRequest;
 use app\domain\user\response\userFavorite\UserFavoriteQueryResponse;
 use app\domain\user\response\userFavorite\UserFavoriteResponse;
+use app\domain\user\service\UserFavoriteService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

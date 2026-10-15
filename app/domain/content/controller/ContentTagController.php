@@ -6,12 +6,12 @@ namespace app\domain\content\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\content\entity\ContentTagEntity;
-use app\domain\content\service\ContentTagService;
 use app\domain\content\request\contentTag\ContentTagCreateRequest;
 use app\domain\content\request\contentTag\ContentTagQueryRequest;
 use app\domain\content\request\contentTag\ContentTagUpdateRequest;
 use app\domain\content\response\contentTag\ContentTagQueryResponse;
 use app\domain\content\response\contentTag\ContentTagResponse;
+use app\domain\content\service\ContentTagService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

@@ -6,12 +6,12 @@ namespace app\domain\admin\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\admin\entity\AdminUserEntity;
-use app\domain\admin\service\AdminUserService;
 use app\domain\admin\request\adminUser\AdminUserCreateRequest;
 use app\domain\admin\request\adminUser\AdminUserQueryRequest;
 use app\domain\admin\request\adminUser\AdminUserUpdateRequest;
 use app\domain\admin\response\adminUser\AdminUserQueryResponse;
 use app\domain\admin\response\adminUser\AdminUserResponse;
+use app\domain\admin\service\AdminUserService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

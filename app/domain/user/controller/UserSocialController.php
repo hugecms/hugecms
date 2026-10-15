@@ -6,12 +6,12 @@ namespace app\domain\user\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\user\entity\UserSocialEntity;
-use app\domain\user\service\UserSocialService;
 use app\domain\user\request\userSocial\UserSocialCreateRequest;
 use app\domain\user\request\userSocial\UserSocialQueryRequest;
 use app\domain\user\request\userSocial\UserSocialUpdateRequest;
 use app\domain\user\response\userSocial\UserSocialQueryResponse;
 use app\domain\user\response\userSocial\UserSocialResponse;
+use app\domain\user\service\UserSocialService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

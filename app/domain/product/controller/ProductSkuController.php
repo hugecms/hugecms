@@ -6,12 +6,12 @@ namespace app\domain\product\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\product\entity\ProductSkuEntity;
-use app\domain\product\service\ProductSkuService;
 use app\domain\product\request\productSku\ProductSkuCreateRequest;
 use app\domain\product\request\productSku\ProductSkuQueryRequest;
 use app\domain\product\request\productSku\ProductSkuUpdateRequest;
 use app\domain\product\response\productSku\ProductSkuQueryResponse;
 use app\domain\product\response\productSku\ProductSkuResponse;
+use app\domain\product\service\ProductSkuService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

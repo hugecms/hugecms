@@ -24,7 +24,7 @@ class UserSmsCodeEntity
 
     public const string getIp = 'ip'; // 发送IP,用于防刷
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

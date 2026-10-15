@@ -28,9 +28,9 @@ class OrderCartEntity
 
     public const string getChecked = 'checked'; // 结算勾选:0=否,1=是
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

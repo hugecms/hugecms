@@ -24,9 +24,9 @@ class UserSocialEntity
 
     public const string getAvatar = 'avatar'; // 第三方头像快照
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

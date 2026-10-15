@@ -14,9 +14,9 @@ class ContentTagEntity
 
     public const string getName = 'name'; // 标签名
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

@@ -28,11 +28,11 @@ class FormEntity
 
     public const string getStatus = 'status'; // 状态:0=停用,1=启用
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
-    public const string getDeleteTime = 'delete_time'; // 
+    public const string getDeleteTime = 'delete_time'; //
 
     private int $id;
 

@@ -20,7 +20,7 @@ class OrderShipmentEntity
 
     public const string getRemark = 'remark'; // 发货备注
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

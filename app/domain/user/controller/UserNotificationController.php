@@ -6,12 +6,12 @@ namespace app\domain\user\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\user\entity\UserNotificationEntity;
-use app\domain\user\service\UserNotificationService;
 use app\domain\user\request\userNotification\UserNotificationCreateRequest;
 use app\domain\user\request\userNotification\UserNotificationQueryRequest;
 use app\domain\user\request\userNotification\UserNotificationUpdateRequest;
 use app\domain\user\response\userNotification\UserNotificationQueryResponse;
 use app\domain\user\response\userNotification\UserNotificationResponse;
+use app\domain\user\service\UserNotificationService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

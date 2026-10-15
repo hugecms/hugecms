@@ -30,7 +30,7 @@ class OrderItemEntity
 
     public const string getTotalAmount = 'total_amount'; // 小计
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

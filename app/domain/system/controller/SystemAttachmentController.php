@@ -6,12 +6,12 @@ namespace app\domain\system\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\system\entity\SystemAttachmentEntity;
-use app\domain\system\service\SystemAttachmentService;
 use app\domain\system\request\systemAttachment\SystemAttachmentCreateRequest;
 use app\domain\system\request\systemAttachment\SystemAttachmentQueryRequest;
 use app\domain\system\request\systemAttachment\SystemAttachmentUpdateRequest;
 use app\domain\system\response\systemAttachment\SystemAttachmentQueryResponse;
 use app\domain\system\response\systemAttachment\SystemAttachmentResponse;
+use app\domain\system\service\SystemAttachmentService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

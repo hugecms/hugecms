@@ -6,12 +6,12 @@ namespace app\domain\system\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\system\entity\SystemSettingEntity;
-use app\domain\system\service\SystemSettingService;
 use app\domain\system\request\systemSetting\SystemSettingCreateRequest;
 use app\domain\system\request\systemSetting\SystemSettingQueryRequest;
 use app\domain\system\request\systemSetting\SystemSettingUpdateRequest;
 use app\domain\system\response\systemSetting\SystemSettingQueryResponse;
 use app\domain\system\response\systemSetting\SystemSettingResponse;
+use app\domain\system\service\SystemSettingService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

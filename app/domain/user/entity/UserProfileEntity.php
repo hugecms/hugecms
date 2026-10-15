@@ -24,9 +24,9 @@ class UserProfileEntity
 
     public const string getLocation = 'location'; // 所在地
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $userId;
 

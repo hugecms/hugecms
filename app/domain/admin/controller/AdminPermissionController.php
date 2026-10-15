@@ -6,12 +6,12 @@ namespace app\domain\admin\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\admin\entity\AdminPermissionEntity;
-use app\domain\admin\service\AdminPermissionService;
 use app\domain\admin\request\adminPermission\AdminPermissionCreateRequest;
 use app\domain\admin\request\adminPermission\AdminPermissionQueryRequest;
 use app\domain\admin\request\adminPermission\AdminPermissionUpdateRequest;
 use app\domain\admin\response\adminPermission\AdminPermissionQueryResponse;
 use app\domain\admin\response\adminPermission\AdminPermissionResponse;
+use app\domain\admin\service\AdminPermissionService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

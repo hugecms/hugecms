@@ -22,7 +22,7 @@ class SystemRegionEntity
 
     public const string getSort = 'sort'; // 排序
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

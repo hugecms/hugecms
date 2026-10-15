@@ -6,12 +6,12 @@ namespace app\domain\system\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\system\entity\SystemDictEntity;
-use app\domain\system\service\SystemDictService;
 use app\domain\system\request\systemDict\SystemDictCreateRequest;
 use app\domain\system\request\systemDict\SystemDictQueryRequest;
 use app\domain\system\request\systemDict\SystemDictUpdateRequest;
 use app\domain\system\response\systemDict\SystemDictQueryResponse;
 use app\domain\system\response\systemDict\SystemDictResponse;
+use app\domain\system\service\SystemDictService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

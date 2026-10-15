@@ -26,11 +26,11 @@ class UserEntity
 
     public const string getLastLoginIp = 'last_login_ip'; // 最后登录IP
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
-    public const string getDeleteTime = 'delete_time'; // 
+    public const string getDeleteTime = 'delete_time'; //
 
     private int $id;
 

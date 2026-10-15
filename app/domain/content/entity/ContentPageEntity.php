@@ -26,9 +26,9 @@ class ContentPageEntity
 
     public const string getStatus = 'status'; // 状态:0=隐藏,1=显示
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

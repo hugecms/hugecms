@@ -6,12 +6,12 @@ namespace app\domain\product\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\product\entity\ProductBrandEntity;
-use app\domain\product\service\ProductBrandService;
 use app\domain\product\request\productBrand\ProductBrandCreateRequest;
 use app\domain\product\request\productBrand\ProductBrandQueryRequest;
 use app\domain\product\request\productBrand\ProductBrandUpdateRequest;
 use app\domain\product\response\productBrand\ProductBrandQueryResponse;
 use app\domain\product\response\productBrand\ProductBrandResponse;
+use app\domain\product\service\ProductBrandService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

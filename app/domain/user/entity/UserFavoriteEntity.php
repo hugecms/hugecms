@@ -18,7 +18,7 @@ class UserFavoriteEntity
 
     public const string getTargetId = 'target_id'; // 目标ID
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

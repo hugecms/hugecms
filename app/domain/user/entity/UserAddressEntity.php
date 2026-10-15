@@ -24,11 +24,11 @@ class UserAddressEntity
 
     public const string getIsDefault = 'is_default'; // 默认地址:0=否,1=是
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
-    public const string getDeleteTime = 'delete_time'; // 
+    public const string getDeleteTime = 'delete_time'; //
 
     private int $id;
 

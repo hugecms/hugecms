@@ -6,12 +6,12 @@ namespace app\domain\content\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\content\entity\ContentArticleContentEntity;
-use app\domain\content\service\ContentArticleContentService;
 use app\domain\content\request\contentArticleContent\ContentArticleContentCreateRequest;
 use app\domain\content\request\contentArticleContent\ContentArticleContentQueryRequest;
 use app\domain\content\request\contentArticleContent\ContentArticleContentUpdateRequest;
 use app\domain\content\response\contentArticleContent\ContentArticleContentQueryResponse;
 use app\domain\content\response\contentArticleContent\ContentArticleContentResponse;
+use app\domain\content\service\ContentArticleContentService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

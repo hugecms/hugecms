@@ -6,12 +6,12 @@ namespace app\domain\product\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\product\entity\ProductStockLogEntity;
-use app\domain\product\service\ProductStockLogService;
 use app\domain\product\request\productStockLog\ProductStockLogCreateRequest;
 use app\domain\product\request\productStockLog\ProductStockLogQueryRequest;
 use app\domain\product\request\productStockLog\ProductStockLogUpdateRequest;
 use app\domain\product\response\productStockLog\ProductStockLogQueryResponse;
 use app\domain\product\response\productStockLog\ProductStockLogResponse;
+use app\domain\product\service\ProductStockLogService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

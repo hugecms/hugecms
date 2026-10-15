@@ -30,9 +30,9 @@ class SiteBannerEntity
 
     public const string getEndTime = 'end_time'; // 投放结束时间
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

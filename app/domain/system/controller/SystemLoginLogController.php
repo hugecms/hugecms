@@ -6,12 +6,12 @@ namespace app\domain\system\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\system\entity\SystemLoginLogEntity;
-use app\domain\system\service\SystemLoginLogService;
 use app\domain\system\request\systemLoginLog\SystemLoginLogCreateRequest;
 use app\domain\system\request\systemLoginLog\SystemLoginLogQueryRequest;
 use app\domain\system\request\systemLoginLog\SystemLoginLogUpdateRequest;
 use app\domain\system\response\systemLoginLog\SystemLoginLogQueryResponse;
 use app\domain\system\response\systemLoginLog\SystemLoginLogResponse;
+use app\domain\system\service\SystemLoginLogService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

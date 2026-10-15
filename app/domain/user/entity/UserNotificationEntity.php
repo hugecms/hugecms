@@ -24,7 +24,7 @@ class UserNotificationEntity
 
     public const string getReadAt = 'read_at'; // 已读时间,空=未读
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

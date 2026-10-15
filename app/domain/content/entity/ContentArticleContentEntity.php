@@ -14,9 +14,9 @@ class ContentArticleContentEntity
 
     public const string getContent = 'content'; // 正文(富文本)
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $articleId;
 

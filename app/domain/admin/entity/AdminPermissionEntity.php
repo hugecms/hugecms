@@ -28,9 +28,9 @@ class AdminPermissionEntity
 
     public const string getStatus = 'status'; // 状态:0=禁用,1=启用
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
-    public const string getUpdateTime = 'update_time'; // 
+    public const string getUpdateTime = 'update_time'; //
 
     private int $id;
 

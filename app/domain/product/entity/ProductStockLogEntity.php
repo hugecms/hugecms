@@ -32,7 +32,7 @@ class ProductStockLogEntity
 
     public const string getRemark = 'remark'; // 备注
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 

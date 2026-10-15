@@ -6,12 +6,12 @@ namespace app\domain\user\controller;
 
 use app\api\admin\controller\BaseController;
 use app\domain\user\entity\UserEntity;
-use app\domain\user\service\UserService;
 use app\domain\user\request\user\UserCreateRequest;
 use app\domain\user\request\user\UserQueryRequest;
 use app\domain\user\request\user\UserUpdateRequest;
 use app\domain\user\response\user\UserQueryResponse;
 use app\domain\user\response\user\UserResponse;
+use app\domain\user\service\UserService;
 use Juling\Foundation\Exception\CustomException;
 use OpenApi\Attributes as OA;
 use think\facade\Db as DB;

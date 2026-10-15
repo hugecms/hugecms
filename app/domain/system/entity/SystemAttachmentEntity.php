@@ -28,7 +28,7 @@ class SystemAttachmentEntity
 
     public const string getUserId = 'user_id'; // 上传人ID
 
-    public const string getCreateTime = 'create_time'; // 
+    public const string getCreateTime = 'create_time'; //
 
     private int $id;
 
