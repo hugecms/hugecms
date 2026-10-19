@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、钱包、浏览足迹
+     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、钱包、浏览足迹、每日签到
      * 前台用户账户表 users 由基础迁移 0001_01_01_000000 创建
      * 站内通知复用 Laravel notifications 表，见 notify 域迁移
      */
@@ -148,6 +148,19 @@ return new class extends Migration
             $table->unique(['user_id', 'target_type', 'target_id'], 'uk_browsing_histories_user_target');
             $table->index('create_time', 'idx_browsing_histories_create_time');
         });
+
+        // 用户签到表：每人每天一条，连续签到天数由应用层比对昨日记录计算；奖励规则配置于 system_settings
+        Schema::create('user_sign_ins', function (Blueprint $table) {
+            $table->comment('用户签到表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('用户ID');
+            $table->date('sign_date')->comment('签到日期');
+            $table->unsignedInteger('continuous_days')->default(1)->comment('连续签到天数');
+            $table->integer('points')->default(0)->comment('本次获得积分');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->unique(['user_id', 'sign_date'], 'uk_user_sign_ins_user_date');
+            $table->index('sign_date', 'idx_user_sign_ins_sign_date');
+        });
     }
 
     /**
@@ -155,6 +168,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_sign_ins');
         Schema::dropIfExists('user_browsing_histories');
         Schema::dropIfExists('user_account_logs');
         Schema::dropIfExists('user_accounts');

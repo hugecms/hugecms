@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 订单域：购物车、订单、明细、订单日志、退款单、发货单及明细、发票
+     * 订单域：购物车、订单、明细、订单日志、退款单（含审核备注/凭证图/协商日志）、发货单及明细、发票
      * 支付单独立为支付域（payments 表），通过 biz_type/biz_id 关联
      */
     public function up(): void
@@ -83,6 +83,8 @@ return new class extends Migration
             $table->tinyInteger('type')->default(1)->comment('售后类型:1=仅退款,2=退货退款');
             $table->decimal('amount', 10, 2)->comment('退款金额');
             $table->string('reason', 255)->nullable()->comment('退款原因');
+            $table->string('admin_note', 255)->nullable()->comment('商家审核备注/拒绝原因');
+            $table->json('images')->nullable()->comment('申请凭证图片(JSON数组)');
             $table->string('return_express_company', 50)->nullable()->comment('退货物流公司,退货退款时填写');
             $table->string('return_express_no', 50)->nullable()->comment('退货物流单号');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=退款中,2=已退款,3=已拒绝');
@@ -149,6 +151,20 @@ return new class extends Migration
             $table->index('order_item_id', 'idx_order_refund_items_order_item_id');
         });
 
+        // 售后协商日志表：申请/协商/审核/退货/退款全流程留痕，风格同 order_logs
+        Schema::create('order_refund_logs', function (Blueprint $table) {
+            $table->comment('售后协商日志表');
+            $table->id();
+            $table->unsignedInteger('refund_id')->comment('退款单ID');
+            $table->string('operator_type', 20)->default('user')->comment('操作账户类型:admin,user,system');
+            $table->unsignedInteger('operator_id')->nullable()->comment('操作人ID');
+            $table->string('operator', 50)->comment('操作人名称快照');
+            $table->string('content', 500)->comment('协商内容/操作说明');
+            $table->json('images')->nullable()->comment('凭证图片(JSON数组)');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index('refund_id', 'idx_order_refund_logs_refund_id');
+        });
+
         // 订单发票表：开票申请与开具记录
         Schema::create('order_invoices', function (Blueprint $table) {
             $table->comment('订单发票表');
@@ -172,6 +188,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('order_refund_logs');
         Schema::dropIfExists('order_invoices');
         Schema::dropIfExists('order_refund_items');
         Schema::dropIfExists('order_shipment_items');

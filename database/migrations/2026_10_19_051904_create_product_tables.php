@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 商品域：分类、品牌、商品、SKU、库存流水、属性体系、价格策略
+     * 商品域：分类、品牌、商品、SKU、库存流水、属性体系、价格策略、商品评价
+     * 商品评价独立于 content_comments 通用评论：需星级评分、关联订单明细做已购验证
      */
     public function up(): void
     {
@@ -155,6 +156,31 @@ return new class extends Migration
             $table->timestamps();
             $table->unique(['product_id', 'sku_id', 'min_quantity'], 'uk_volume_prices_product_sku_qty');
         });
+
+        // 商品评价表：一个订单明细仅可评价一次，rating 1-5 星，支持晒图/追评/商家回复
+        Schema::create('product_reviews', function (Blueprint $table) {
+            $table->comment('商品评价表');
+            $table->id();
+            $table->unsignedInteger('order_id')->comment('订单ID,已购验证依据');
+            $table->unsignedInteger('order_item_id')->comment('订单明细ID');
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('user_id')->comment('评价用户ID');
+            $table->tinyInteger('rating')->comment('评分:1-5星');
+            $table->string('content', 1000)->nullable()->comment('评价内容');
+            $table->json('images')->nullable()->comment('晒图(JSON数组)');
+            $table->string('append_content', 1000)->nullable()->comment('追评内容');
+            $table->dateTime('appended_at')->nullable()->comment('追评时间');
+            $table->string('reply', 500)->nullable()->comment('商家回复');
+            $table->dateTime('replied_at')->nullable()->comment('商家回复时间');
+            $table->tinyInteger('is_anonymous')->default(0)->comment('匿名:0=否,1=是');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待审,1=通过,2=拒绝');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['order_item_id', 'user_id'], 'uk_product_reviews_item_user');
+            $table->index(['product_id', 'status'], 'idx_product_reviews_product_status');
+            $table->index('user_id', 'idx_product_reviews_user_id');
+        });
     }
 
     /**
@@ -162,6 +188,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('product_reviews');
         Schema::dropIfExists('product_volume_prices');
         Schema::dropIfExists('product_member_prices');
         Schema::dropIfExists('product_attribute_values');

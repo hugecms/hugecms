@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词
+     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词、短信发送流水、IP黑名单
      */
     public function up(): void
     {
@@ -126,6 +126,39 @@ return new class extends Migration
             $table->timestamps();
             $table->unique('word', 'uk_sensitive_words_word');
         });
+
+        // 短信发送流水表：验证码/通知短信统一落库（overtrue/easy-sms 多网关），记录成败与报错
+        // 与 user_sms_codes 职责区分：后者只存验证码业务数据，本表为排查"收不到短信"依据
+        Schema::create('system_sms_logs', function (Blueprint $table) {
+            $table->comment('短信发送流水表');
+            $table->id();
+            $table->string('phone', 20)->comment('手机号');
+            $table->string('template', 50)->nullable()->comment('模板标识,如:verify_code');
+            $table->string('content', 500)->comment('短信内容');
+            $table->json('params')->nullable()->comment('模板变量(JSON)');
+            $table->string('gateway', 30)->comment('发送网关:aliyun,tencent,qiniu等');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=发送中,1=成功,2=失败');
+            $table->string('message_id', 64)->nullable()->comment('网关消息ID');
+            $table->string('error', 255)->nullable()->comment('失败原因');
+            $table->unsignedInteger('cost_time')->default(0)->comment('耗时(毫秒)');
+            $table->string('ip', 45)->nullable()->comment('触发来源IP');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index('phone', 'idx_system_sms_logs_phone');
+            $table->index(['status', 'create_time'], 'idx_system_sms_logs_status_time');
+        });
+
+        // IP黑名单表：中间件命中即拒绝访问，精确IP匹配，expired_at 为空表示永久封禁
+        Schema::create('system_ip_blacklists', function (Blueprint $table) {
+            $table->comment('IP黑名单表');
+            $table->id();
+            $table->string('ip', 45)->comment('IP地址,支持IPv4/IPv6');
+            $table->string('reason', 255)->nullable()->comment('拉黑原因');
+            $table->dateTime('expired_at')->nullable()->comment('过期时间,空=永久');
+            $table->string('user_type', 20)->default('admin')->comment('操作账户类型:admin,system');
+            $table->unsignedInteger('user_id')->nullable()->comment('操作人ID');
+            $table->timestamps();
+            $table->unique('ip', 'uk_system_ip_blacklists_ip');
+        });
     }
 
     /**
@@ -133,6 +166,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('system_ip_blacklists');
+        Schema::dropIfExists('system_sms_logs');
         Schema::dropIfExists('system_sensitive_words');
         Schema::dropIfExists('system_operation_logs');
         Schema::dropIfExists('system_login_logs');

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 内容域：栏目、文章、标签、评论、单页、评论点赞
+     * 内容域：栏目、文章、标签、评论、单页、评论点赞、专题
      */
     public function up(): void
     {
@@ -120,6 +120,42 @@ return new class extends Migration
             $table->primary(['comment_id', 'user_id']);
             $table->index('user_id', 'idx_comment_likes_user_id');
         });
+
+        // 专题表：聚合文章+商品的活动落地页（如"双11精选"），支持自定义模板与定时上下线
+        // 栏目按内容归属组织，专题按运营活动组织，二者互补
+        Schema::create('content_topics', function (Blueprint $table) {
+            $table->comment('专题表');
+            $table->id();
+            $table->string('title', 100)->comment('专题标题');
+            $table->string('slug', 50)->comment('专题标识,用于URL');
+            $table->string('cover', 255)->nullable()->comment('专题头图');
+            $table->string('description', 500)->nullable()->comment('专题简介');
+            $table->longText('content')->nullable()->comment('自定义内容(富文本)');
+            $table->string('template', 50)->nullable()->comment('模板标识,空=默认模板');
+            $table->string('seo_title', 100)->nullable()->comment('SEO标题');
+            $table->string('seo_keywords', 255)->nullable()->comment('SEO关键词');
+            $table->string('seo_description', 255)->nullable()->comment('SEO描述');
+            $table->dateTime('start_time')->nullable()->comment('上线时间,空=立即');
+            $table->dateTime('end_time')->nullable()->comment('下线时间,空=不限');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=下线,1=上线');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unique('slug', 'uk_content_topics_slug');
+        });
+
+        // 专题内容关联表：多态聚合文章/商品，独立排序
+        Schema::create('content_topic_items', function (Blueprint $table) {
+            $table->comment('专题内容关联表');
+            $table->id();
+            $table->unsignedInteger('topic_id')->comment('专题ID');
+            $table->string('target_type', 20)->comment('目标类型:article,product');
+            $table->unsignedInteger('target_id')->comment('目标ID');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->unique(['topic_id', 'target_type', 'target_id'], 'uk_content_topic_items_topic_target');
+            $table->index(['target_type', 'target_id'], 'idx_content_topic_items_target');
+        });
     }
 
     /**
@@ -127,6 +163,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('content_topic_items');
+        Schema::dropIfExists('content_topics');
         Schema::dropIfExists('content_comment_likes');
         Schema::dropIfExists('content_pages');
         Schema::dropIfExists('content_comments');
