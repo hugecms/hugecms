@@ -1,0 +1,96 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\User\Requests\User;
+
+use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    schema: 'UserUpdateRequest',
+    required: [
+        self::getId,
+        self::getUsername,
+        self::getEmail,
+        self::getPhone,
+        self::getPassword,
+        self::getStatus,
+        self::getLastLoginTime,
+        self::getLastLoginIp,
+        self::getCreateTime,
+        self::getUpdateTime,
+        self::getDeleteTime,
+    ],
+    properties: [
+        new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getUsername, description: '用户名', type: 'string'),
+        new OA\Property(property: self::getEmail, description: '邮箱', type: 'string'),
+        new OA\Property(property: self::getPhone, description: '手机号', type: 'string'),
+        new OA\Property(property: self::getPassword, description: '密码哈希', type: 'string'),
+        new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=正常', type: 'integer'),
+        new OA\Property(property: self::getLastLoginTime, description: '最后登录时间', type: 'string'),
+        new OA\Property(property: self::getLastLoginIp, description: '最后登录IP', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getDeleteTime, description: '', type: 'string'),
+    ]
+)]
+class UserUpdateRequest extends FormRequest
+{
+    public const string getId = 'id';
+
+    public const string getUsername = 'username';
+
+    public const string getEmail = 'email';
+
+    public const string getPhone = 'phone';
+
+    public const string getPassword = 'password';
+
+    public const string getStatus = 'status';
+
+    public const string getLastLoginTime = 'lastLoginTime';
+
+    public const string getLastLoginIp = 'lastLoginIp';
+
+    public const string getCreateTime = 'createTime';
+
+    public const string getUpdateTime = 'updateTime';
+
+    public const string getDeleteTime = 'deleteTime';
+
+    public function rules(): array
+    {
+        return [
+            self::getId => 'required',
+            self::getUsername => 'required',
+            self::getEmail => 'required',
+            self::getPhone => 'required',
+            self::getPassword => 'required',
+            self::getStatus => 'required',
+            self::getLastLoginTime => 'required',
+            self::getLastLoginIp => 'required',
+            self::getCreateTime => 'required',
+            self::getUpdateTime => 'required',
+            self::getDeleteTime => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            self::getId.'.required' => '请设置ID',
+            self::getUsername.'.required' => '请设置用户名',
+            self::getEmail.'.required' => '请设置邮箱',
+            self::getPhone.'.required' => '请设置手机号',
+            self::getPassword.'.required' => '请设置密码哈希',
+            self::getStatus.'.required' => '请设置状态:0=禁用,1=正常',
+            self::getLastLoginTime.'.required' => '请设置最后登录时间',
+            self::getLastLoginIp.'.required' => '请设置最后登录IP',
+            self::getCreateTime.'.required' => '请设置',
+            self::getUpdateTime.'.required' => '请设置',
+            self::getDeleteTime.'.required' => '请设置',
+        ];
+    }
+}

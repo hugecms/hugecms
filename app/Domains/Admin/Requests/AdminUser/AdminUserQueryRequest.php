@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Admin\Requests\AdminUser;
+
+use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    schema: 'AdminUserQueryRequest',
+    required: [],
+    properties: [
+        new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getUsername, description: '用户名', type: 'string'),
+        new OA\Property(property: self::getEmail, description: '邮箱', type: 'string'),
+        new OA\Property(property: self::getPhone, description: '手机号', type: 'string'),
+    ]
+)]
+class AdminUserQueryRequest extends FormRequest
+{
+    public const string getId = 'id';
+
+    public const string getUsername = 'username';
+
+    public const string getEmail = 'email';
+
+    public const string getPhone = 'phone';
+
+    public function rules(): array
+    {
+        return [
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+        ];
+    }
+}

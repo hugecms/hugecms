@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Order\Requests\OrderCart;
+
+use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    schema: 'OrderCartQueryRequest',
+    required: [],
+    properties: [
+        new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
+    ]
+)]
+class OrderCartQueryRequest extends FormRequest
+{
+    public const string getId = 'id';
+
+    public const string getProductId = 'productId';
+
+    public const string getSkuId = 'skuId';
+
+    public function rules(): array
+    {
+        return [
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+        ];
+    }
+}

@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\User\Services;
+
+use App\Domains\User\Repositories\UserSmsCodeRepository;
+use Juling\Foundation\Contracts\ServiceInterface;
+use Juling\Foundation\Services\CommonService;
+
+class UserSmsCodeService extends CommonService implements ServiceInterface
+{
+    public function __construct(
+        private readonly UserSmsCodeRepository $repository,
+    ) {}
+
+    public function getRepository(): UserSmsCodeRepository
+    {
+        return $this->repository;
+    }
+
+    // please fill in your code here
+    
+}

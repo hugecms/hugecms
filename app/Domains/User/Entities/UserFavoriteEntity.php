@@ -1,0 +1,119 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\User\Entities;
+
+use Juling\Foundation\Support\Traits\HasSerializableAttributes;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(schema: 'UserFavoriteEntity')]
+class UserFavoriteEntity implements \JsonSerializable
+{
+    use HasSerializableAttributes;
+
+    public const string getId = 'id'; // ID
+
+    public const string getUserId = 'user_id'; // 用户ID
+
+    public const string getTargetType = 'target_type'; // 目标类型:article,product
+
+    public const string getTargetId = 'target_id'; // 目标ID
+
+    public const string getCreateTime = 'create_time';
+
+    #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
+    private int $id;
+
+    #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
+    private int $userId;
+
+    #[OA\Property(property: 'targetType', description: '目标类型:article,product', type: 'string')]
+    private string $targetType;
+
+    #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
+    private int $targetId;
+
+    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    private string $createTime;
+
+    /**
+     * 获取ID
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * 设置ID
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * 获取用户ID
+     */
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    /**
+     * 设置用户ID
+     */
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    /**
+     * 获取目标类型:article,product
+     */
+    public function getTargetType(): string
+    {
+        return $this->targetType;
+    }
+
+    /**
+     * 设置目标类型:article,product
+     */
+    public function setTargetType(string $targetType): void
+    {
+        $this->targetType = $targetType;
+    }
+
+    /**
+     * 获取目标ID
+     */
+    public function getTargetId(): int
+    {
+        return $this->targetId;
+    }
+
+    /**
+     * 设置目标ID
+     */
+    public function setTargetId(int $targetId): void
+    {
+        $this->targetId = $targetId;
+    }
+
+    /**
+     * 获取
+     */
+    public function getCreateTime(): string
+    {
+        return $this->createTime;
+    }
+
+    /**
+     * 设置
+     */
+    public function setCreateTime(string $createTime): void
+    {
+        $this->createTime = $createTime;
+    }
+}

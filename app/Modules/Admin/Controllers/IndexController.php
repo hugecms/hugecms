@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Admin\Controllers;
+
+use OpenApi\Attributes as OA;
+
+class IndexController extends BaseController
+{
+    #[OA\Get(path: '/', summary: 'test', tags: ['后台模块'])]
+    public function index()
+    {
+        return view('/index');
+    }
+}
