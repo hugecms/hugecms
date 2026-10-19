@@ -72,7 +72,7 @@ return new class extends Migration
             $table->dateTime('end_time')->comment('结束时间');
             $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
             $table->timestamps();
-            $table->index(['status', 'start_time', 'end_time'], 'idx_flash_sales_status_time');
+            $table->index(['status', 'start_time', 'end_time'], 'idx_marketing_flash_sales_status_time');
         });
 
         // 秒杀商品表：活动维度的特价与限量，可购=total_stock-sold_stock；价格优先级:秒杀价>阶梯价>会员价>会员折扣
@@ -90,8 +90,8 @@ return new class extends Migration
             $table->integer('sort')->default(0)->comment('排序');
             $table->tinyInteger('status')->default(1)->comment('状态:0=下架,1=上架');
             $table->timestamps();
-            $table->unique(['sale_id', 'product_id', 'sku_id'], 'uk_flash_sale_items_sale_product_sku');
-            $table->index(['product_id', 'status'], 'idx_flash_sale_items_product_status');
+            $table->unique(['sale_id', 'product_id', 'sku_id'], 'uk_marketing_flash_sale_items_sale_product_sku');
+            $table->index(['product_id', 'status'], 'idx_marketing_flash_sale_items_product_status');
         });
 
         // 分销员表：用户申请成为分销员，审核通过后可推广计佣
@@ -105,8 +105,8 @@ return new class extends Migration
             $table->decimal('settled_commission', 10, 2)->default(0)->comment('已结算佣金,可提现=total-settled');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=通过,2=拒绝,3=冻结');
             $table->timestamps();
-            $table->unique('user_id', 'uk_distribution_users_user_id');
-            $table->index('inviter_id', 'idx_distribution_users_inviter_id');
+            $table->unique('user_id', 'uk_marketing_distribution_users_user_id');
+            $table->index('inviter_id', 'idx_marketing_distribution_users_inviter_id');
         });
 
         // 分销绑定关系表：下单人与分销员的层级快照，绑定后下单即计佣，防层级变更漏算
@@ -117,8 +117,8 @@ return new class extends Migration
             $table->unsignedInteger('distributor_id')->comment('分销员用户ID');
             $table->tinyInteger('level')->comment('层级:1=一级(直接邀请),2=二级(间接)');
             $table->timestamp('create_time')->useCurrent()->comment('绑定时间');
-            $table->unique(['user_id', 'distributor_id'], 'uk_distribution_relations_user_distributor');
-            $table->index('distributor_id', 'idx_distribution_relations_distributor_id');
+            $table->unique(['user_id', 'distributor_id'], 'uk_marketing_distribution_relations_user_distributor');
+            $table->index('distributor_id', 'idx_marketing_distribution_relations_distributor_id');
         });
 
         // 分销佣金流水表：订单确认完成后结算，退款将佣金置为已失效
@@ -136,8 +136,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0)->comment('状态:0=待结算,1=已结算,2=已失效(退款)');
             $table->dateTime('settled_at')->nullable()->comment('结算时间');
             $table->timestamps();
-            $table->index(['distributor_id', 'status'], 'idx_distribution_commissions_distributor_status');
-            $table->index('order_id', 'idx_distribution_commissions_order_id');
+            $table->index(['distributor_id', 'status'], 'idx_marketing_distribution_commissions_distributor_status');
+            $table->index('order_id', 'idx_marketing_distribution_commissions_order_id');
         });
     }
 
