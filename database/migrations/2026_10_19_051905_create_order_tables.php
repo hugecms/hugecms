@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 订单域：购物车、订单、明细、订单日志、退款单（含审核备注/凭证图/协商日志）、发货单及明细、发票
+     * 订单域：购物车、订单、明细、优惠明细、订单日志、退款单（含审核备注/凭证图/协商日志）、发货单及明细、发票
      * 支付单独立为支付域（payments 表），通过 biz_type/biz_id 关联
      */
     public function up(): void
@@ -54,6 +54,22 @@ return new class extends Migration
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->index('order_id', 'idx_order_items_order_id');
             $table->index('product_id', 'idx_order_items_product_id');
+        });
+
+        // 订单优惠明细表：拆分 discount_amount 构成（券/积分/促销），部分退款摊销与营销费用对账依据
+        Schema::create('order_promotions', function (Blueprint $table) {
+            $table->comment('订单优惠明细表');
+            $table->id();
+            $table->unsignedInteger('order_id')->comment('订单ID');
+            $table->string('type', 20)->comment('优惠类型:coupon=优惠券,points=积分抵扣,promotion=促销活动');
+            $table->unsignedInteger('related_id')->nullable()->comment('关联ID:coupon=用户券ID,promotion=活动ID,points=空');
+            $table->string('name', 100)->comment('优惠名称快照,如:满100减20');
+            $table->unsignedInteger('order_item_id')->nullable()->comment('订单明细ID,空=全单优惠');
+            $table->decimal('amount', 10, 2)->comment('抵扣金额');
+            $table->unsignedInteger('points')->default(0)->comment('消耗积分,积分抵扣时记录,退款按比例返还');
+            $table->timestamps();
+            $table->index('order_id', 'idx_order_promotions_order_id');
+            $table->index(['type', 'related_id'], 'idx_order_promotions_type_related');
         });
 
         // 购物车表：交易链路起点，结算时转入 order_items；游客购物车不落库，登录后合并
@@ -196,6 +212,7 @@ return new class extends Migration
         Schema::dropIfExists('order_shipments');
         Schema::dropIfExists('order_refunds');
         Schema::dropIfExists('order_carts');
+        Schema::dropIfExists('order_promotions');
         Schema::dropIfExists('order_items');
         Schema::dropIfExists('orders');
     }
