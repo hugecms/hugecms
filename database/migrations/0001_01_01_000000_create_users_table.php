@@ -11,14 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 前台用户账户表：仅存放登录凭证与账户状态，资料信息见 user_profiles 表
         Schema::create('users', function (Blueprint $table) {
+            $table->comment('用户表');
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('username')->comment('用户名');
+            $table->string('password')->comment('密码哈希');
+            $table->string('email', 100)->nullable()->comment('邮箱');
+            $table->string('phone', 20)->nullable()->comment('手机号');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=正常');
+            $table->dateTime('last_login_time')->nullable()->comment('最后登录时间');
+            $table->string('last_login_ip', 45)->nullable()->comment('最后登录IP');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique('username', 'uk_users_username');
+            $table->unique('email', 'uk_users_email');
+            $table->unique('phone', 'uk_users_phone');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

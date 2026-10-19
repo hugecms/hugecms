@@ -1,6 +1,9 @@
 <?php
 
-use think\migration\Seeder;
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SystemSettingsSeeder extends Seeder
 {
@@ -10,11 +13,13 @@ class SystemSettingsSeeder extends Seeder
     public function run(): void
     {
         // 幂等：已初始化过则跳过
-        if ($this->fetchRow("SELECT * FROM `system_settings` WHERE `key` = 'site_name'")) {
+        if (DB::table('system_settings')->where('key', 'site_name')->exists()) {
             return;
         }
 
-        $this->insert('system_settings', [
+        $now = now();
+
+        $settings = [
             ['group' => 'basic', 'key' => 'site_name', 'title' => '站点名称', 'value' => 'HugeCMS', 'type' => 'text'],
             ['group' => 'basic', 'key' => 'site_description', 'title' => '站点描述', 'value' => '', 'type' => 'textarea'],
             ['group' => 'basic', 'key' => 'site_logo', 'title' => '站点LOGO', 'value' => '', 'type' => 'image'],
@@ -26,6 +31,11 @@ class SystemSettingsSeeder extends Seeder
             ['group' => 'seo', 'key' => 'site_keywords', 'title' => 'SEO关键词', 'value' => '', 'type' => 'text'],
             ['group' => 'seo', 'key' => 'site_title', 'title' => 'SEO标题', 'value' => '', 'type' => 'text'],
             ['group' => 'seo', 'key' => 'site_description_seo', 'title' => 'SEO描述', 'value' => '', 'type' => 'textarea'],
-        ]);
+        ];
+
+        DB::table('system_settings')->insert(array_map(
+            fn (array $setting): array => $setting + ['created_at' => $now, 'updated_at' => $now],
+            $settings
+        ));
     }
 }
