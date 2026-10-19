@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 网站域：轮播图/广告位 + 友情链接
+     * 网站域：轮播图/广告位、友情链接、导航
      */
     public function up(): void
     {
@@ -40,6 +40,20 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
         });
+
+        // 导航表：头部/底部菜单，树形结构
+        Schema::create('site_navs', function (Blueprint $table) {
+            $table->comment('导航表');
+            $table->id();
+            $table->unsignedInteger('parent_id')->default(0)->comment('父级ID,0=顶级');
+            $table->string('name', 50)->comment('导航名称');
+            $table->string('url', 255)->comment('链接地址');
+            $table->string('position', 20)->default('header')->comment('展示位置:header=头部,footer=底部');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=隐藏,1=显示');
+            $table->timestamps();
+            $table->index('position', 'idx_navs_position');
+        });
     }
 
     /**
@@ -47,6 +61,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('site_navs');
         Schema::dropIfExists('site_links');
         Schema::dropIfExists('site_banners');
     }

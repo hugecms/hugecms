@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 商品域：商品分类、品牌、商品、SKU、库存流水
+     * 商品域：分类、品牌、商品、SKU、库存流水、属性体系、价格策略
      */
     public function up(): void
     {
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name', 50)->comment('分类名称');
             $table->integer('sort')->default(0)->comment('排序');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
+            $table->tinyInteger('is_recommend')->default(0)->comment('首页推荐:0=否,1=是');
             $table->timestamps();
             $table->index('parent_id', 'idx_product_categories_parent_id');
         });
@@ -41,6 +42,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('category_id')->comment('分类ID');
             $table->unsignedInteger('brand_id')->nullable()->comment('品牌ID');
+            $table->unsignedInteger('type_id')->nullable()->comment('商品类型ID,关联属性体系');
             $table->string('name', 200)->comment('商品名称');
             $table->string('sn', 50)->nullable()->comment('商品编码');
             $table->string('subtitle', 200)->nullable()->comment('副标题');
@@ -91,6 +93,66 @@ return new class extends Migration
             $table->index(['product_id', 'sku_id'], 'idx_product_stock_logs_product_sku');
             $table->index('related_id', 'idx_product_stock_logs_related_id');
         });
+
+        // 商品类型表：属性集容器，如"手机""服装"，商品挂靠类型后启用属性
+        Schema::create('product_types', function (Blueprint $table) {
+            $table->comment('商品类型表');
+            $table->id();
+            $table->string('name', 50)->comment('类型名称,如:手机');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
+            $table->timestamps();
+        });
+
+        // 商品属性定义表：规格属性参与 SKU 组合，普通属性仅作展示与筛选
+        Schema::create('product_attributes', function (Blueprint $table) {
+            $table->comment('商品属性定义表');
+            $table->id();
+            $table->unsignedInteger('type_id')->comment('所属商品类型ID');
+            $table->string('name', 50)->comment('属性名,如:颜色');
+            $table->tinyInteger('input_type')->default(1)->comment('录入方式:1=手工输入,2=列表选择');
+            $table->string('values', 500)->nullable()->comment('可选值列表(逗号分隔),列表选择时用');
+            $table->tinyInteger('is_spec')->default(0)->comment('是否规格属性:0=否,1=是(参与SKU组合)');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
+            $table->timestamps();
+            $table->index('type_id', 'idx_product_attributes_type_id');
+        });
+
+        // 商品属性值表：商品的属性快照，规格属性值可关联 SKU
+        Schema::create('product_attribute_values', function (Blueprint $table) {
+            $table->comment('商品属性值表');
+            $table->id();
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('attribute_id')->comment('属性ID');
+            $table->string('value', 255)->comment('属性值');
+            $table->unsignedInteger('sku_id')->nullable()->comment('关联SKU ID,规格属性时对应');
+            $table->timestamps();
+            $table->unique(['product_id', 'attribute_id', 'value'], 'uk_attribute_values_product_attr_value');
+            $table->index('attribute_id', 'idx_attribute_values_attribute_id');
+        });
+
+        // 商品会员等级价表：覆盖 products.price，会员价优先级高于等级折扣
+        Schema::create('product_member_prices', function (Blueprint $table) {
+            $table->comment('商品会员等级价表');
+            $table->id();
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('rank_id')->comment('会员等级ID');
+            $table->decimal('price', 10, 2)->comment('等级价');
+            $table->timestamps();
+            $table->unique(['product_id', 'rank_id'], 'uk_member_prices_product_rank');
+        });
+
+        // 商品阶梯价表：按购买数量分档定价，命中最低档优于会员价
+        Schema::create('product_volume_prices', function (Blueprint $table) {
+            $table->comment('商品阶梯价表');
+            $table->id();
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=商品统一价');
+            $table->unsignedInteger('min_quantity')->comment('起购数量');
+            $table->decimal('price', 10, 2)->comment('单价');
+            $table->timestamps();
+            $table->unique(['product_id', 'sku_id', 'min_quantity'], 'uk_volume_prices_product_sku_qty');
+        });
     }
 
     /**
@@ -98,6 +160,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('product_volume_prices');
+        Schema::dropIfExists('product_member_prices');
+        Schema::dropIfExists('product_attribute_values');
+        Schema::dropIfExists('product_attributes');
+        Schema::dropIfExists('product_types');
         Schema::dropIfExists('product_stock_logs');
         Schema::dropIfExists('product_skus');
         Schema::dropIfExists('products');

@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 用户域：资料、关注、收货地址、收藏、短信验证码、通知、社交登录绑定
+     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、钱包
      * 前台用户账户表 users 由基础迁移 0001_01_01_000000 创建
+     * 站内通知复用 Laravel notifications 表，见 notify 域迁移
      */
     public function up(): void
     {
@@ -79,20 +80,6 @@ return new class extends Migration
             $table->index('create_time', 'idx_user_sms_codes_create_time');
         });
 
-        // 通知表：订单状态变更、评论回复等站内触达，read_at 为空即未读
-        Schema::create('user_notifications', function (Blueprint $table) {
-            $table->comment('用户通知表');
-            $table->id();
-            $table->unsignedInteger('user_id')->comment('接收用户ID');
-            $table->string('type', 30)->comment('类型:order,comment,system');
-            $table->string('title', 100)->comment('通知标题');
-            $table->string('content', 500)->comment('通知内容');
-            $table->string('params', 500)->nullable()->comment('跳转参数(JSON)');
-            $table->dateTime('read_at')->nullable()->comment('已读时间,空=未读');
-            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
-            $table->index(['user_id', 'read_at'], 'idx_user_notifications_user_read');
-        });
-
         // 社交登录绑定表：一个用户可绑多个平台，未绑定用户首次授权时静默注册
         Schema::create('user_socials', function (Blueprint $table) {
             $table->comment('社交登录绑定表');
@@ -107,6 +94,48 @@ return new class extends Migration
             $table->unique(['platform', 'open_id'], 'uk_user_socials_platform_openid');
             $table->index('user_id', 'idx_user_socials_user_id');
         });
+
+        // 会员等级表：按积分自动升级，等级价与等级折扣依据
+        Schema::create('user_ranks', function (Blueprint $table) {
+            $table->comment('会员等级表');
+            $table->id();
+            $table->string('name', 50)->comment('等级名称,如:普通会员');
+            $table->unsignedInteger('min_points')->default(0)->comment('升级所需最低积分');
+            $table->unsignedInteger('max_points')->default(0)->comment('积分上限,0=不限(最高级)');
+            $table->unsignedTinyInteger('discount')->default(100)->comment('会员折扣,100=原价,95=95折');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
+            $table->timestamps();
+        });
+
+        // 用户资金申请表：充值/提现，审核通过后入账并记流水
+        Schema::create('user_accounts', function (Blueprint $table) {
+            $table->comment('用户资金申请表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('用户ID');
+            $table->string('type', 20)->comment('类型:recharge=充值,withdraw=提现');
+            $table->decimal('amount', 10, 2)->comment('申请金额');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=已到账,2=已拒绝');
+            $table->string('user_note', 255)->nullable()->comment('用户备注');
+            $table->string('admin_note', 255)->nullable()->comment('管理员备注');
+            $table->dateTime('paid_at')->nullable()->comment('到账时间');
+            $table->timestamps();
+            $table->index(['user_id', 'status'], 'idx_user_accounts_user_status');
+        });
+
+        // 用户资金/积分流水表：只记变动量，余额以 users 表为准，对账依据
+        Schema::create('user_account_logs', function (Blueprint $table) {
+            $table->comment('用户资金/积分流水表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('用户ID');
+            $table->string('change_type', 30)->comment('变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整');
+            $table->decimal('change_amount', 10, 2)->default(0)->comment('资金变动,正数入负数出');
+            $table->integer('change_points')->default(0)->comment('积分变动,正数入负数出');
+            $table->string('description', 255)->comment('变动说明');
+            $table->unsignedInteger('related_id')->nullable()->comment('关联单据ID');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index(['user_id', 'create_time'], 'idx_user_account_logs_user_time');
+        });
     }
 
     /**
@@ -114,8 +143,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_account_logs');
+        Schema::dropIfExists('user_accounts');
+        Schema::dropIfExists('user_ranks');
         Schema::dropIfExists('user_socials');
-        Schema::dropIfExists('user_notifications');
         Schema::dropIfExists('user_sms_codes');
         Schema::dropIfExists('user_favorites');
         Schema::dropIfExists('user_addresses');

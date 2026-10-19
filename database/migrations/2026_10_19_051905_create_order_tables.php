@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 订单域：购物车、订单、明细、支付单、退款单、发货单
+     * 订单域：购物车、订单、明细、订单日志、退款单、发货单及明细
+     * 支付单独立为支付域（payments 表），通过 biz_type/biz_id 关联
      */
     public function up(): void
     {
@@ -72,30 +73,13 @@ return new class extends Migration
             $table->index('product_id', 'idx_order_carts_product_id');
         });
 
-        // 支付单表：与订单一对多，记录第三方交易号
-        Schema::create('order_payments', function (Blueprint $table) {
-            $table->comment('支付单表');
-            $table->id();
-            $table->string('payment_no', 30)->comment('支付单号');
-            $table->unsignedInteger('order_id')->comment('订单ID');
-            $table->string('pay_method', 20)->comment('支付方式:wechat,alipay');
-            $table->decimal('amount', 10, 2)->comment('支付金额');
-            $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=成功,2=失败');
-            $table->string('trade_no', 64)->nullable()->comment('第三方交易号');
-            $table->dateTime('paid_at')->nullable()->comment('支付成功时间');
-            $table->timestamps();
-            $table->unique('payment_no', 'uk_payments_payment_no');
-            $table->index('order_id', 'idx_payments_order_id');
-            $table->index('trade_no', 'idx_payments_trade_no');
-        });
-
         // 退款单表
         Schema::create('order_refunds', function (Blueprint $table) {
             $table->comment('退款单表');
             $table->id();
             $table->string('refund_no', 30)->comment('退款单号');
             $table->unsignedInteger('order_id')->comment('订单ID');
-            $table->unsignedInteger('payment_id')->nullable()->comment('支付单ID');
+            $table->unsignedInteger('payment_id')->nullable()->comment('关联支付单ID(payments 表)');
             $table->decimal('amount', 10, 2)->comment('退款金额');
             $table->string('reason', 255)->nullable()->comment('退款原因');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=退款中,2=已退款,3=已拒绝');
@@ -117,6 +101,50 @@ return new class extends Migration
             $table->index('order_id', 'idx_order_shipments_order_id');
             $table->index('express_no', 'idx_order_shipments_express_no');
         });
+
+        // 订单操作日志表：状态每次流转留痕，追溯"谁在何时做了什么"
+        Schema::create('order_logs', function (Blueprint $table) {
+            $table->comment('订单操作日志表');
+            $table->id();
+            $table->unsignedInteger('order_id')->comment('订单ID');
+            $table->tinyInteger('from_status')->nullable()->comment('变更前状态');
+            $table->tinyInteger('to_status')->comment('变更后状态');
+            $table->string('operator_type', 20)->default('user')->comment('操作账户类型:admin,user,system');
+            $table->unsignedInteger('operator_id')->nullable()->comment('操作人ID');
+            $table->string('operator', 50)->comment('操作人名称快照');
+            $table->string('note', 255)->nullable()->comment('操作备注');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index('order_id', 'idx_order_logs_order_id');
+        });
+
+        // 发货单明细表：支持一单多裹，按订单明细拆分发货数量
+        Schema::create('order_shipment_items', function (Blueprint $table) {
+            $table->comment('发货单明细表');
+            $table->id();
+            $table->unsignedInteger('shipment_id')->comment('发货单ID');
+            $table->unsignedInteger('order_item_id')->comment('订单明细ID');
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('quantity')->comment('发货数量');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index('shipment_id', 'idx_order_shipment_items_shipment_id');
+            $table->index('order_item_id', 'idx_order_shipment_items_order_item_id');
+        });
+
+        // 退货明细表：退款单按明细部分退货，金额与数量快照
+        Schema::create('order_refund_items', function (Blueprint $table) {
+            $table->comment('退货明细表');
+            $table->id();
+            $table->unsignedInteger('refund_id')->comment('退款单ID');
+            $table->unsignedInteger('order_item_id')->comment('订单明细ID');
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('quantity')->comment('退货数量');
+            $table->decimal('amount', 10, 2)->comment('退款金额');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index('refund_id', 'idx_order_refund_items_refund_id');
+            $table->index('order_item_id', 'idx_order_refund_items_order_item_id');
+        });
     }
 
     /**
@@ -124,9 +152,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('order_refund_items');
+        Schema::dropIfExists('order_shipment_items');
+        Schema::dropIfExists('order_logs');
         Schema::dropIfExists('order_shipments');
         Schema::dropIfExists('order_refunds');
-        Schema::dropIfExists('order_payments');
         Schema::dropIfExists('order_carts');
         Schema::dropIfExists('order_items');
         Schema::dropIfExists('orders');
