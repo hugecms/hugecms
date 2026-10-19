@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 订单域：购物车、订单、明细、订单日志、退款单、发货单及明细
+     * 订单域：购物车、订单、明细、订单日志、退款单、发货单及明细、发票
      * 支付单独立为支付域（payments 表），通过 biz_type/biz_id 关联
      */
     public function up(): void
@@ -80,8 +80,11 @@ return new class extends Migration
             $table->string('refund_no', 30)->comment('退款单号');
             $table->unsignedInteger('order_id')->comment('订单ID');
             $table->unsignedInteger('payment_id')->nullable()->comment('关联支付单ID(payments 表)');
+            $table->tinyInteger('type')->default(1)->comment('售后类型:1=仅退款,2=退货退款');
             $table->decimal('amount', 10, 2)->comment('退款金额');
             $table->string('reason', 255)->nullable()->comment('退款原因');
+            $table->string('return_express_company', 50)->nullable()->comment('退货物流公司,退货退款时填写');
+            $table->string('return_express_no', 50)->nullable()->comment('退货物流单号');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=退款中,2=已退款,3=已拒绝');
             $table->dateTime('refunded_at')->nullable()->comment('退款完成时间');
             $table->timestamps();
@@ -145,6 +148,23 @@ return new class extends Migration
             $table->index('refund_id', 'idx_order_refund_items_refund_id');
             $table->index('order_item_id', 'idx_order_refund_items_order_item_id');
         });
+
+        // 订单发票表：开票申请与开具记录
+        Schema::create('order_invoices', function (Blueprint $table) {
+            $table->comment('订单发票表');
+            $table->id();
+            $table->unsignedInteger('order_id')->comment('订单ID');
+            $table->tinyInteger('type')->default(1)->comment('类型:1=电子普通发票,2=纸质普通发票,3=增值税专用发票');
+            $table->string('title', 200)->comment('发票抬头');
+            $table->string('tax_no', 30)->nullable()->comment('纳税人识别号,个人抬头为空');
+            $table->decimal('amount', 10, 2)->comment('开票金额');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待开票,1=已开票,2=已作废');
+            $table->string('invoice_no', 50)->nullable()->comment('发票号码');
+            $table->dateTime('invoiced_at')->nullable()->comment('开票时间');
+            $table->string('remark', 255)->nullable()->comment('备注');
+            $table->timestamps();
+            $table->index('order_id', 'idx_order_invoices_order_id');
+        });
     }
 
     /**
@@ -152,6 +172,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('order_invoices');
         Schema::dropIfExists('order_refund_items');
         Schema::dropIfExists('order_shipment_items');
         Schema::dropIfExists('order_logs');

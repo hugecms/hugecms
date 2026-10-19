@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、钱包
+     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、钱包、浏览足迹
      * 前台用户账户表 users 由基础迁移 0001_01_01_000000 创建
      * 站内通知复用 Laravel notifications 表，见 notify 域迁移
      */
@@ -136,6 +136,18 @@ return new class extends Migration
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->index(['user_id', 'create_time'], 'idx_user_account_logs_user_time');
         });
+
+        // 浏览足迹表：最近浏览的文章/商品，重复浏览仅更新时间（应用层 upsert touch），表不膨胀
+        Schema::create('user_browsing_histories', function (Blueprint $table) {
+            $table->comment('用户浏览足迹表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('用户ID');
+            $table->string('target_type', 20)->comment('目标类型:article,product');
+            $table->unsignedInteger('target_id')->comment('目标ID');
+            $table->timestamp('create_time')->useCurrent()->comment('最近浏览时间,重复浏览更新');
+            $table->unique(['user_id', 'target_type', 'target_id'], 'uk_browsing_histories_user_target');
+            $table->index('create_time', 'idx_browsing_histories_create_time');
+        });
     }
 
     /**
@@ -143,6 +155,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_browsing_histories');
         Schema::dropIfExists('user_account_logs');
         Schema::dropIfExists('user_accounts');
         Schema::dropIfExists('user_ranks');

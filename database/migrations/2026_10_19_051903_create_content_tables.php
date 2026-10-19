@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 内容域：栏目、文章、标签、评论、单页
+     * 内容域：栏目、文章、标签、评论、单页、评论点赞
      */
     public function up(): void
     {
@@ -110,6 +110,16 @@ return new class extends Migration
             $table->timestamps();
             $table->unique('slug', 'uk_pages_slug');
         });
+
+        // 评论点赞表：联合主键防重复点赞，风格同 user_followers
+        Schema::create('content_comment_likes', function (Blueprint $table) {
+            $table->comment('评论点赞表');
+            $table->unsignedInteger('comment_id')->comment('评论ID');
+            $table->unsignedInteger('user_id')->comment('点赞用户ID');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->primary(['comment_id', 'user_id']);
+            $table->index('user_id', 'idx_comment_likes_user_id');
+        });
     }
 
     /**
@@ -117,6 +127,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('content_comment_likes');
         Schema::dropIfExists('content_pages');
         Schema::dropIfExists('content_comments');
         Schema::dropIfExists('content_article_tags');

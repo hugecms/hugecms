@@ -52,6 +52,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2)->comment('售价,多规格时为最低规格价');
             $table->decimal('market_price', 10, 2)->nullable()->comment('市场价');
             $table->unsignedInteger('stock')->default(0)->comment('库存,单规格商品有效');
+            $table->unsignedInteger('locked_stock')->default(0)->comment('锁定库存(下单未支付),可售=stock-locked_stock');
             $table->unsignedInteger('sales')->default(0)->comment('销量');
             $table->tinyInteger('status')->default(0)->comment('状态:0=下架,1=上架');
             $table->integer('sort')->default(0)->comment('排序');
@@ -70,6 +71,7 @@ return new class extends Migration
             $table->string('specs', 500)->comment('规格值(JSON),如:{"颜色":"红","尺码":"L"}');
             $table->decimal('price', 10, 2)->comment('售价');
             $table->unsignedInteger('stock')->default(0)->comment('库存');
+            $table->unsignedInteger('locked_stock')->default(0)->comment('锁定库存(下单未支付),可售=stock-locked_stock');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
             $table->index('product_id', 'idx_product_skus_product_id');

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 物流域：配送方式、配送区域（含运价）、区域-行政区划关联
+     * 物流域：配送方式、配送区域（含运价）、区域-行政区划关联、物流轨迹
      */
     public function up(): void
     {
@@ -43,6 +43,18 @@ return new class extends Migration
             $table->primary(['shipping_area_id', 'region_id']);
             $table->index('region_id', 'idx_shipping_area_regions_region_id');
         });
+
+        // 物流轨迹表：第三方轨迹查询结果落缓存，同步去重由应用层按(shipment_id,accept_time,description)比对
+        Schema::create('shipping_shipment_tracks', function (Blueprint $table) {
+            $table->comment('物流轨迹表');
+            $table->id();
+            $table->unsignedInteger('shipment_id')->comment('发货单ID');
+            $table->dateTime('accept_time')->comment('轨迹发生时间');
+            $table->string('location', 100)->nullable()->comment('所在城市/网点');
+            $table->string('description', 255)->comment('轨迹描述,如:已签收');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index(['shipment_id', 'accept_time'], 'idx_shipment_tracks_shipment_time');
+        });
     }
 
     /**
@@ -50,6 +62,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('shipping_shipment_tracks');
         Schema::dropIfExists('shipping_area_regions');
         Schema::dropIfExists('shipping_areas');
         Schema::dropIfExists('shippings');

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）
+     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词
      */
     public function up(): void
     {
@@ -115,6 +115,17 @@ return new class extends Migration
             $table->index(['user_type', 'user_id'], 'idx_system_operation_logs_user');
             $table->index('create_time', 'idx_system_operation_logs_create_time');
         });
+
+        // 敏感词表：评论/表单/昵称等内容审核过滤，replacement 为空则直接拦截
+        Schema::create('system_sensitive_words', function (Blueprint $table) {
+            $table->comment('敏感词表');
+            $table->id();
+            $table->string('word', 50)->comment('敏感词');
+            $table->string('replacement', 50)->nullable()->comment('替换词,空=直接拦截');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
+            $table->timestamps();
+            $table->unique('word', 'uk_sensitive_words_word');
+        });
     }
 
     /**
@@ -122,6 +133,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('system_sensitive_words');
         Schema::dropIfExists('system_operation_logs');
         Schema::dropIfExists('system_login_logs');
         Schema::dropIfExists('system_regions');
