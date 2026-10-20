@@ -25,11 +25,11 @@ return new class extends Migration
             $table->integer('sort')->default(0)->comment('排序');
             $table->tinyInteger('status')->default(1)->comment('状态:0=隐藏,1=显示');
             $table->timestamps();
-            $table->unique('slug', 'uk_categories_slug');
-            $table->index('parent_id', 'idx_categories_parent_id');
+            $table->unique('slug', 'uk_content_categories_slug');
+            $table->index('parent_id', 'idx_content_categories_parent_id');
         });
 
-        // 文章主表：正文分离到 article_content，列表查询不拖大字段
+        // 文章主表：正文分离到 article_content，列表查询不拖大字段；可挂关联商品（种草转化）
         Schema::create('content_articles', function (Blueprint $table) {
             $table->comment('文章表');
             $table->id();
@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('slug', 200)->nullable()->comment('文章标识,用于URL');
             $table->string('summary', 500)->nullable()->comment('摘要');
             $table->string('cover', 255)->nullable()->comment('封面图');
+            $table->json('product_ids')->nullable()->comment('关联商品ID列表(JSON数组),种草文章挂商品购买入口');
             $table->unsignedInteger('author_id')->nullable()->comment('作者管理员ID');
             $table->string('author', 50)->nullable()->comment('作者名称快照');
             $table->tinyInteger('is_top')->default(0)->comment('置顶:0=否,1=是');
@@ -47,9 +48,9 @@ return new class extends Migration
             $table->dateTime('published_at')->nullable()->comment('发布时间');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique('slug', 'uk_articles_slug');
-            $table->index(['category_id', 'status'], 'idx_articles_category_status');
-            $table->index('published_at', 'idx_articles_published_at');
+            $table->unique('slug', 'uk_content_articles_slug');
+            $table->index(['category_id', 'status'], 'idx_content_articles_category_status');
+            $table->index('published_at', 'idx_content_articles_published_at');
         });
 
         // 文章正文表：与文章一对一
@@ -67,7 +68,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50)->comment('标签名');
             $table->timestamps();
-            $table->unique('name', 'uk_tags_name');
+            $table->unique('name', 'uk_content_tags_name');
         });
 
         // 文章-标签关联表
@@ -77,7 +78,7 @@ return new class extends Migration
             $table->unsignedInteger('tag_id')->comment('标签ID');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->primary(['article_id', 'tag_id']);
-            $table->index('tag_id', 'idx_article_tags_tag_id');
+            $table->index('tag_id', 'idx_content_article_tags_tag_id');
         });
 
         // 评论表：多态目标，文章专用（商品评价走 product_reviews），parent_id 支持楼中楼
@@ -92,8 +93,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审,1=通过,2=拒绝');
             $table->string('ip', 45)->nullable()->comment('评论IP');
             $table->timestamps();
-            $table->index(['target_type', 'target_id'], 'idx_comments_target');
-            $table->index('user_id', 'idx_comments_user_id');
+            $table->index(['target_type', 'target_id'], 'idx_content_comments_target');
+            $table->index('user_id', 'idx_content_comments_user_id');
         });
 
         // 单页表：关于我们等固定页面
@@ -108,7 +109,7 @@ return new class extends Migration
             $table->string('seo_description', 255)->nullable()->comment('SEO描述');
             $table->tinyInteger('status')->default(1)->comment('状态:0=隐藏,1=显示');
             $table->timestamps();
-            $table->unique('slug', 'uk_pages_slug');
+            $table->unique('slug', 'uk_content_pages_slug');
         });
 
         // 评论点赞表：联合主键防重复点赞，风格同 user_followers
@@ -118,7 +119,7 @@ return new class extends Migration
             $table->unsignedInteger('user_id')->comment('点赞用户ID');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->primary(['comment_id', 'user_id']);
-            $table->index('user_id', 'idx_comment_likes_user_id');
+            $table->index('user_id', 'idx_content_comment_likes_user_id');
         });
 
         // 专题表：聚合文章+商品的活动落地页（如"双11精选"），支持自定义模板与定时上下线

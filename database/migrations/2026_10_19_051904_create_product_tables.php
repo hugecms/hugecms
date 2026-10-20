@@ -34,7 +34,7 @@ return new class extends Migration
             $table->integer('sort')->default(0)->comment('排序');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
-            $table->unique('name', 'uk_brands_name');
+            $table->unique('name', 'uk_product_brands_name');
         });
 
         // 商品表
@@ -48,7 +48,7 @@ return new class extends Migration
             $table->string('sn', 50)->nullable()->comment('商品编码');
             $table->string('subtitle', 200)->nullable()->comment('副标题');
             $table->string('cover', 255)->nullable()->comment('主图');
-            $table->text('images')->nullable()->comment('图册(JSON数组)');
+            $table->json('images')->nullable()->comment('图册(JSON数组)');
             $table->longText('content')->nullable()->comment('商品详情');
             $table->decimal('price', 10, 2)->comment('售价,多规格时为最低规格价');
             $table->decimal('market_price', 10, 2)->nullable()->comment('市场价');
@@ -131,8 +131,8 @@ return new class extends Migration
             $table->string('value', 255)->comment('属性值');
             $table->unsignedInteger('sku_id')->nullable()->comment('关联SKU ID,规格属性时对应');
             $table->timestamps();
-            $table->unique(['product_id', 'attribute_id', 'value'], 'uk_attribute_values_product_attr_value');
-            $table->index('attribute_id', 'idx_attribute_values_attribute_id');
+            $table->unique(['product_id', 'attribute_id', 'value'], 'uk_product_attribute_values_product_attr_value');
+            $table->index('attribute_id', 'idx_product_attribute_values_attribute_id');
         });
 
         // 商品会员等级价表：覆盖 products.price，会员价优先级高于等级折扣
@@ -143,7 +143,7 @@ return new class extends Migration
             $table->unsignedInteger('rank_id')->comment('会员等级ID');
             $table->decimal('price', 10, 2)->comment('等级价');
             $table->timestamps();
-            $table->unique(['product_id', 'rank_id'], 'uk_member_prices_product_rank');
+            $table->unique(['product_id', 'rank_id'], 'uk_product_member_prices_product_rank');
         });
 
         // 商品阶梯价表：按购买数量分档定价，命中最低档优于会员价
@@ -155,7 +155,7 @@ return new class extends Migration
             $table->unsignedInteger('min_quantity')->comment('起购数量');
             $table->decimal('price', 10, 2)->comment('单价');
             $table->timestamps();
-            $table->unique(['product_id', 'sku_id', 'min_quantity'], 'uk_volume_prices_product_sku_qty');
+            $table->unique(['product_id', 'sku_id', 'min_quantity'], 'uk_product_volume_prices_product_sku_qty');
         });
 
         // 商品评价表：一个订单明细仅可评价一次，rating 1-5 星，支持晒图/追评/商家回复
@@ -182,6 +182,20 @@ return new class extends Migration
             $table->index(['product_id', 'status'], 'idx_product_reviews_product_status');
             $table->index('user_id', 'idx_product_reviews_user_id');
         });
+
+        // 到货提醒表：缺货登记与到货通知，一用户一SKU 一条复用（再次登记 upsert 重置状态）；到货后走触达降级链路提醒
+        Schema::create('product_stock_reminders', function (Blueprint $table) {
+            $table->comment('到货提醒表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('登记用户ID');
+            $table->unsignedInteger('product_id')->comment('商品ID');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格/不限规格');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待提醒,1=已提醒,2=已取消');
+            $table->dateTime('notified_at')->nullable()->comment('提醒时间');
+            $table->timestamps();
+            $table->unique(['user_id', 'product_id', 'sku_id'], 'uk_product_stock_reminders_user_product_sku');
+            $table->index(['product_id', 'status'], 'idx_product_stock_reminders_product_status');
+        });
     }
 
     /**
@@ -189,6 +203,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('product_stock_reminders');
         Schema::dropIfExists('product_reviews');
         Schema::dropIfExists('product_volume_prices');
         Schema::dropIfExists('product_member_prices');

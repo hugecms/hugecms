@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * 支付域：通用支付单、支付渠道配置、回调流水留痕
-     * 支付单与业务解耦：biz_type/biz_id 关联订单支付或余额充值（user_accounts）
+     * 支付单与业务解耦：biz_type/biz_id 关联订单支付或余额充值（user_fund_applications）
      * 幂等：回调按 unique(channel,notify_id) 去重，单据状态流转用条件更新（where status=0）
      */
     public function up(): void
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('trade_no', 64)->nullable()->comment('第三方交易号');
             $table->dateTime('paid_at')->nullable()->comment('支付成功时间');
             $table->timestamps();
+            $table->softDeletes();
             $table->unique('payment_no', 'uk_payments_payment_no');
             $table->index(['biz_type', 'biz_id'], 'idx_payments_biz');
             $table->index('trade_no', 'idx_payments_trade_no');

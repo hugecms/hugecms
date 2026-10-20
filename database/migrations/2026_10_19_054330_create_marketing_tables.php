@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * 营销域：优惠券（类型/用户领取）、促销活动（满减/折扣）、秒杀/限时购、分销返佣（两级分销）
      * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补，变动记 marketing_flash_sale_logs
-     * 佣金发放走 user_account_logs 入账，提现复用 user_accounts(withdraw)；分销比例/结算条件配置于 system_settings
+     * 佣金发放走 user_account_logs 入账，提现复用 user_fund_applications(withdraw)；分销比例/结算条件配置于 system_settings
      */
     public function up(): void
     {

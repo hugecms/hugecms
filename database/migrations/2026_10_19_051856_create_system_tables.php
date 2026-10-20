@@ -21,8 +21,8 @@ return new class extends Migration
             $table->text('value')->nullable()->comment('配置值');
             $table->string('type', 20)->default('text')->comment('值类型:text,number,select,radio');
             $table->timestamps();
-            $table->unique('key', 'uk_settings_key');
-            $table->index('group', 'idx_settings_group');
+            $table->unique('key', 'uk_system_settings_key');
+            $table->index('group', 'idx_system_settings_group');
         });
 
         // 附件表：全站上传文件统一登记
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->string('user_type', 20)->default('admin')->comment('上传账户类型:admin,user');
             $table->unsignedInteger('user_id')->nullable()->comment('上传人ID');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
-            $table->index('module', 'idx_attachments_module');
+            $table->index('module', 'idx_system_attachments_module');
         });
 
         // 字典类型表
@@ -49,7 +49,7 @@ return new class extends Migration
             $table->string('name', 50)->comment('类型名称');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
-            $table->unique('type', 'uk_dicts_type');
+            $table->unique('type', 'uk_system_dicts_type');
         });
 
         // 字典项表
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->integer('sort')->default(0)->comment('排序');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
-            $table->index('dict_id', 'idx_dict_items_dict_id');
+            $table->index('dict_id', 'idx_system_dict_items_dict_id');
         });
 
         // 行政区划表：省市区三级，收货地址/前台展示用，初始化时导入国标数据
@@ -75,7 +75,7 @@ return new class extends Migration
             $table->string('code', 20)->nullable()->comment('行政区划码');
             $table->integer('sort')->default(0)->comment('排序');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
-            $table->index('parent_id', 'idx_regions_parent_id');
+            $table->index('parent_id', 'idx_system_regions_parent_id');
         });
 
         // 登录日志表：账户类型字段兼容前台用户与后台管理员
@@ -124,7 +124,7 @@ return new class extends Migration
             $table->string('replacement', 50)->nullable()->comment('替换词,空=直接拦截');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
-            $table->unique('word', 'uk_sensitive_words_word');
+            $table->unique('word', 'uk_system_sensitive_words_word');
         });
 
         // 短信发送流水表：验证码/通知短信统一落库（overtrue/easy-sms 多网关），记录成败与报错

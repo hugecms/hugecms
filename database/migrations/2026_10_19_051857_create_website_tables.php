@@ -38,7 +38,7 @@ return new class extends Migration
             $table->dateTime('start_time')->nullable()->comment('投放开始时间');
             $table->dateTime('end_time')->nullable()->comment('投放结束时间');
             $table->timestamps();
-            $table->index('position', 'idx_banners_position');
+            $table->index('position', 'idx_site_banners_position');
         });
 
         // 友情链接表
@@ -65,7 +65,7 @@ return new class extends Migration
             $table->integer('sort')->default(0)->comment('排序');
             $table->tinyInteger('status')->default(1)->comment('状态:0=隐藏,1=显示');
             $table->timestamps();
-            $table->index('position', 'idx_navs_position');
+            $table->index('position', 'idx_site_navs_position');
         });
 
         // 搜索热词表：用户每次搜索按词 upsert 计数，配合 Elasticsearch；is_hot 为人工推荐位
@@ -79,8 +79,8 @@ return new class extends Migration
             $table->tinyInteger('is_hot')->default(0)->comment('人工推荐热词:0=否,1=是');
             $table->tinyInteger('status')->default(1)->comment('状态:0=屏蔽,1=正常');
             $table->timestamps();
-            $table->unique('keyword', 'uk_search_keywords_keyword');
-            $table->index('search_count', 'idx_search_keywords_search_count');
+            $table->unique('keyword', 'uk_site_search_keywords_keyword');
+            $table->index('search_count', 'idx_site_search_keywords_search_count');
         });
 
         // 每日统计汇总表：定时任务凌晨聚合前一天数据，一天一行，报表/运营看板数据源
@@ -99,7 +99,7 @@ return new class extends Migration
             $table->unsignedInteger('refund_count')->default(0)->comment('退款笔数');
             $table->decimal('refund_amount', 10, 2)->default(0)->comment('退款金额');
             $table->timestamps();
-            $table->unique('stat_date', 'uk_statistics_daily_stat_date');
+            $table->unique('stat_date', 'uk_site_statistics_daily_stat_date');
         });
     }
 

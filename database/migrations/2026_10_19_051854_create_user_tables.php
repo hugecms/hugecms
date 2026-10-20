@@ -108,8 +108,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 用户资金申请表：充值/提现，审核通过后入账并记流水
-        Schema::create('user_accounts', function (Blueprint $table) {
+        // 用户资金申请表：充值/提现申请单，与余额(users)、流水(user_account_logs)职责区分
+        Schema::create('user_fund_applications', function (Blueprint $table) {
             $table->comment('用户资金申请表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
@@ -120,7 +120,7 @@ return new class extends Migration
             $table->string('admin_note', 255)->nullable()->comment('管理员备注');
             $table->dateTime('paid_at')->nullable()->comment('到账时间');
             $table->timestamps();
-            $table->index(['user_id', 'status'], 'idx_user_accounts_user_status');
+            $table->index(['user_id', 'status'], 'idx_user_fund_applications_user_status');
         });
 
         // 用户资金/积分流水表：只记变动量，余额以 users 表为准，对账依据
@@ -145,8 +145,8 @@ return new class extends Migration
             $table->string('target_type', 20)->comment('目标类型:article,product');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->timestamp('create_time')->useCurrent()->comment('最近浏览时间,重复浏览更新');
-            $table->unique(['user_id', 'target_type', 'target_id'], 'uk_browsing_histories_user_target');
-            $table->index('create_time', 'idx_browsing_histories_create_time');
+            $table->unique(['user_id', 'target_type', 'target_id'], 'uk_user_browsing_histories_user_target');
+            $table->index('create_time', 'idx_user_browsing_histories_create_time');
         });
 
         // 用户签到表：每人每天一条，连续签到天数由应用层比对昨日记录计算；奖励规则配置于 system_settings
@@ -171,7 +171,7 @@ return new class extends Migration
         Schema::dropIfExists('user_sign_ins');
         Schema::dropIfExists('user_browsing_histories');
         Schema::dropIfExists('user_account_logs');
-        Schema::dropIfExists('user_accounts');
+        Schema::dropIfExists('user_fund_applications');
         Schema::dropIfExists('user_ranks');
         Schema::dropIfExists('user_socials');
         Schema::dropIfExists('user_sms_codes');

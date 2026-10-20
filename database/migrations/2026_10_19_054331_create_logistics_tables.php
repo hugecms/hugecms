@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 配送方式表
-        Schema::create('shippings', function (Blueprint $table) {
+        // 配送方式表：命名 shipping_methods，与发货单 order_shipments、物流轨迹 shipping_shipment_tracks 职责区分
+        Schema::create('shipping_methods', function (Blueprint $table) {
             $table->comment('配送方式表');
             $table->id();
             $table->string('name', 50)->comment('配送方式名称,如:顺丰标快');
@@ -53,7 +53,7 @@ return new class extends Migration
             $table->string('location', 100)->nullable()->comment('所在城市/网点');
             $table->string('description', 255)->comment('轨迹描述,如:已签收');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
-            $table->index(['shipment_id', 'accept_time'], 'idx_shipment_tracks_shipment_time');
+            $table->index(['shipment_id', 'accept_time'], 'idx_shipping_shipment_tracks_shipment_time');
         });
     }
 
@@ -65,6 +65,6 @@ return new class extends Migration
         Schema::dropIfExists('shipping_shipment_tracks');
         Schema::dropIfExists('shipping_area_regions');
         Schema::dropIfExists('shipping_areas');
-        Schema::dropIfExists('shippings');
+        Schema::dropIfExists('shipping_methods');
     }
 };

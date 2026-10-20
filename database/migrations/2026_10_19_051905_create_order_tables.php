@@ -35,6 +35,7 @@ return new class extends Migration
             $table->dateTime('cancel_time')->nullable()->comment('取消时间');
             $table->string('cancel_reason', 255)->nullable()->comment('取消原因');
             $table->timestamps();
+            $table->softDeletes();
             $table->unique('order_no', 'uk_orders_order_no');
             $table->index(['user_id', 'status'], 'idx_orders_user_status');
         });
@@ -45,7 +46,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('order_id')->comment('订单ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->nullable()->comment('SKU ID');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
             $table->string('product_name', 200)->comment('商品名称快照');
             $table->string('sku_specs', 500)->nullable()->comment('规格快照');
             $table->string('image', 255)->nullable()->comment('商品图快照');
@@ -107,8 +108,9 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=退款中,2=已退款,3=已拒绝');
             $table->dateTime('refunded_at')->nullable()->comment('退款完成时间');
             $table->timestamps();
-            $table->unique('refund_no', 'uk_refunds_refund_no');
-            $table->index('order_id', 'idx_refunds_order_id');
+            $table->softDeletes();
+            $table->unique('refund_no', 'uk_order_refunds_refund_no');
+            $table->index('order_id', 'idx_order_refunds_order_id');
         });
 
         // 发货单表：记录快递信息，支持一单多裹多次发货

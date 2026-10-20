@@ -44,7 +44,7 @@ return new class extends Migration
             $table->unsignedInteger('sender_id')->default(0)->comment('发送者ID,system为0');
             $table->string('type', 20)->default('text')->comment('消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件');
             $table->string('content', 1000)->comment('消息内容,文本或卡片数据(JSON)');
-            $table->timestamps();
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间,消息只追加不修改');
             $table->index('session_id', 'idx_chat_messages_session_id');
         });
 
