@@ -36,7 +36,5 @@ class OrderCart extends Model
         'price',
         'quantity',
         'checked',
-        'create_time',
-        'update_time',
     ];
 }

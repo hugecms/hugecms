@@ -38,7 +38,5 @@ class FormField extends Model
         'pattern',
         'sort',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

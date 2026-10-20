@@ -6,7 +6,8 @@
 
 declare(strict_types=1);
 
+use App\Api\Common\Controllers\CaptchaController;
 use Illuminate\Support\Facades\Route;
 
 // 获取验证码图片
-Route::get('captcha', [\App\Api\Common\Controllers\CaptchaController::class, 'index'])->name('captcha');
+Route::get('captcha', [CaptchaController::class, 'index'])->name('captcha');

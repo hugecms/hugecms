@@ -24,6 +24,8 @@ class ContentArticleEntity implements \JsonSerializable
 
     public const string getCover = 'cover'; // 封面图
 
+    public const string getProductIds = 'product_ids'; // 关联商品ID列表(JSON数组),种草文章挂商品购买入口
+
     public const string getAuthorId = 'author_id'; // 作者管理员ID
 
     public const string getAuthor = 'author'; // 作者名称快照
@@ -38,11 +40,11 @@ class ContentArticleEntity implements \JsonSerializable
 
     public const string getPublishedAt = 'published_at'; // 发布时间
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreatedAt = 'created_at'; // 创建时间
 
-    public const string getUpdateTime = 'update_time';
+    public const string getUpdatedAt = 'updated_at'; // 更新时间
 
-    public const string getDeleteTime = 'delete_time';
+    public const string getDeletedAt = 'deleted_at'; // 删除时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -61,6 +63,9 @@ class ContentArticleEntity implements \JsonSerializable
 
     #[OA\Property(property: 'cover', description: '封面图', type: 'string')]
     private string $cover;
+
+    #[OA\Property(property: 'productIds', description: '关联商品ID列表(JSON数组),种草文章挂商品购买入口', type: 'string')]
+    private string $productIds;
 
     #[OA\Property(property: 'authorId', description: '作者管理员ID', type: 'integer')]
     private int $authorId;
@@ -83,14 +88,14 @@ class ContentArticleEntity implements \JsonSerializable
     #[OA\Property(property: 'publishedAt', description: '发布时间', type: 'string')]
     private string $publishedAt;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
 
-    #[OA\Property(property: 'deleteTime', description: '', type: 'string')]
-    private string $deleteTime;
+    #[OA\Property(property: 'deletedAt', description: '删除时间', type: 'string')]
+    private string $deletedAt;
 
     /**
      * 获取ID
@@ -186,6 +191,22 @@ class ContentArticleEntity implements \JsonSerializable
     public function setCover(string $cover): void
     {
         $this->cover = $cover;
+    }
+
+    /**
+     * 获取关联商品ID列表(JSON数组),种草文章挂商品购买入口
+     */
+    public function getProductIds(): string
+    {
+        return $this->productIds;
+    }
+
+    /**
+     * 设置关联商品ID列表(JSON数组),种草文章挂商品购买入口
+     */
+    public function setProductIds(string $productIds): void
+    {
+        $this->productIds = $productIds;
     }
 
     /**
@@ -301,50 +322,50 @@ class ContentArticleEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
     }
 
     /**
-     * 获取
+     * 获取删除时间
      */
-    public function getDeleteTime(): string
+    public function getDeletedAt(): string
     {
-        return $this->deleteTime;
+        return $this->deletedAt;
     }
 
     /**
-     * 设置
+     * 设置删除时间
      */
-    public function setDeleteTime(string $deleteTime): void
+    public function setDeletedAt(string $deletedAt): void
     {
-        $this->deleteTime = $deleteTime;
+        $this->deletedAt = $deletedAt;
     }
 }

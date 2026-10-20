@@ -6,7 +6,6 @@ namespace App\Domains\Product\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Product\Entities\ProductCategoryEntity;
-use App\Domains\Product\Services\ProductCategoryService;
 use App\Domains\Product\Requests\ProductCategory\ProductCategoryCreateRequest;
 use App\Domains\Product\Requests\ProductCategory\ProductCategoryDestroyRequest;
 use App\Domains\Product\Requests\ProductCategory\ProductCategoryQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Product\Requests\ProductCategory\ProductCategoryUpdateRequest;
 use App\Domains\Product\Responses\ProductCategory\ProductCategoryDestroyResponse;
 use App\Domains\Product\Responses\ProductCategory\ProductCategoryQueryResponse;
 use App\Domains\Product\Responses\ProductCategory\ProductCategoryResponse;
+use App\Domains\Product\Services\ProductCategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class ProductCategoryController extends BaseController
             if (isset($requestData[ProductCategoryQueryRequest::getId])) {
                 $condition[] = [ProductCategoryEntity::getId, '=', $requestData[ProductCategoryQueryRequest::getId]];
             }
-            
+
             $result = $this->productCategoryService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

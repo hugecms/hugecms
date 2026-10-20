@@ -29,7 +29,5 @@ class ContentTag extends Model
      */
     protected $fillable = [
         'name',
-        'create_time',
-        'update_time',
     ];
 }

@@ -20,8 +20,6 @@ use OpenApi\Attributes as OA;
         self::getStatus,
         self::getStartTime,
         self::getEndTime,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
@@ -34,8 +32,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=启用', type: 'integer'),
         new OA\Property(property: self::getStartTime, description: '投放开始时间', type: 'string'),
         new OA\Property(property: self::getEndTime, description: '投放结束时间', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class SiteBannerUpdateRequest extends FormRequest
@@ -60,10 +56,6 @@ class SiteBannerUpdateRequest extends FormRequest
 
     public const string getEndTime = 'endTime';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -77,8 +69,6 @@ class SiteBannerUpdateRequest extends FormRequest
             self::getStatus => 'required',
             self::getStartTime => 'required',
             self::getEndTime => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -95,8 +85,6 @@ class SiteBannerUpdateRequest extends FormRequest
             self::getStatus.'.required' => '请设置状态:0=禁用,1=启用',
             self::getStartTime.'.required' => '请设置投放开始时间',
             self::getEndTime.'.required' => '请设置投放结束时间',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

@@ -15,12 +15,12 @@ enum UserAddressIsDefaultEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =否
+     * 否
      */
     case IsDefault0 = 0;
 
     /**
-     * =是
+     * 是
      */
     case IsDefault1 = 1;
 }

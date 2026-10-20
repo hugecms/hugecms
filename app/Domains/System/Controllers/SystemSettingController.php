@@ -6,7 +6,6 @@ namespace App\Domains\System\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\System\Entities\SystemSettingEntity;
-use App\Domains\System\Services\SystemSettingService;
 use App\Domains\System\Requests\SystemSetting\SystemSettingCreateRequest;
 use App\Domains\System\Requests\SystemSetting\SystemSettingDestroyRequest;
 use App\Domains\System\Requests\SystemSetting\SystemSettingQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\System\Requests\SystemSetting\SystemSettingUpdateRequest;
 use App\Domains\System\Responses\SystemSetting\SystemSettingDestroyResponse;
 use App\Domains\System\Responses\SystemSetting\SystemSettingQueryResponse;
 use App\Domains\System\Responses\SystemSetting\SystemSettingResponse;
+use App\Domains\System\Services\SystemSettingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +57,7 @@ class SystemSettingController extends BaseController
             if (isset($requestData[SystemSettingQueryRequest::getKey])) {
                 $condition[] = [SystemSettingEntity::getKey, '=', $requestData[SystemSettingQueryRequest::getKey]];
             }
-            
+
             $result = $this->systemSettingService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

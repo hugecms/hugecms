@@ -16,7 +16,7 @@ class ContentArticleTagEntity implements \JsonSerializable
 
     public const string getTagId = 'tag_id'; // 标签ID
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreateTime = 'create_time'; // 创建时间
 
     #[OA\Property(property: 'articleId', description: '文章ID', type: 'integer')]
     private int $articleId;
@@ -24,7 +24,7 @@ class ContentArticleTagEntity implements \JsonSerializable
     #[OA\Property(property: 'tagId', description: '标签ID', type: 'integer')]
     private int $tagId;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -60,7 +60,7 @@ class ContentArticleTagEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -68,7 +68,7 @@ class ContentArticleTagEntity implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

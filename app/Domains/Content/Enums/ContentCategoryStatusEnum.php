@@ -15,12 +15,12 @@ enum ContentCategoryStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =隐藏
+     * 隐藏
      */
     case Status0 = 0;
 
     /**
-     * =显示
+     * 显示
      */
     case Status1 = 1;
 }

@@ -6,7 +6,6 @@ namespace App\Domains\Site\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Site\Entities\SiteLinkEntity;
-use App\Domains\Site\Services\SiteLinkService;
 use App\Domains\Site\Requests\SiteLink\SiteLinkCreateRequest;
 use App\Domains\Site\Requests\SiteLink\SiteLinkDestroyRequest;
 use App\Domains\Site\Requests\SiteLink\SiteLinkQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Site\Requests\SiteLink\SiteLinkUpdateRequest;
 use App\Domains\Site\Responses\SiteLink\SiteLinkDestroyResponse;
 use App\Domains\Site\Responses\SiteLink\SiteLinkQueryResponse;
 use App\Domains\Site\Responses\SiteLink\SiteLinkResponse;
+use App\Domains\Site\Services\SiteLinkService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +51,7 @@ class SiteLinkController extends BaseController
             if (isset($requestData[SiteLinkQueryRequest::getId])) {
                 $condition[] = [SiteLinkEntity::getId, '=', $requestData[SiteLinkQueryRequest::getId]];
             }
-            
+
             $result = $this->siteLinkService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

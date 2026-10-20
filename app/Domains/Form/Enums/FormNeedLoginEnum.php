@@ -15,12 +15,12 @@ enum FormNeedLoginEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =否
+     * 否
      */
     case NeedLogin0 = 0;
 
     /**
-     * =是
+     * 是
      */
     case NeedLogin1 = 1;
 }

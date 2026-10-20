@@ -27,7 +27,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getStatus, description: '结果:0=失败,1=成功', type: 'integer'),
         new OA\Property(property: self::getIp, description: '登录IP', type: 'string'),
         new OA\Property(property: self::getUserAgent, description: 'User-Agent', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class SystemLoginLogUpdateRequest extends FormRequest
@@ -72,7 +72,7 @@ class SystemLoginLogUpdateRequest extends FormRequest
             self::getStatus.'.required' => '请设置结果:0=失败,1=成功',
             self::getIp.'.required' => '请设置登录IP',
             self::getUserAgent.'.required' => '请设置User-Agent',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

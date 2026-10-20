@@ -30,7 +30,7 @@ class SystemAttachmentEntity implements \JsonSerializable
 
     public const string getUserId = 'user_id'; // 上传人ID
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreateTime = 'create_time'; // 创建时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -59,7 +59,7 @@ class SystemAttachmentEntity implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '上传人ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -207,7 +207,7 @@ class SystemAttachmentEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -215,7 +215,7 @@ class SystemAttachmentEntity implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

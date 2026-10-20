@@ -15,12 +15,12 @@ enum SystemLoginLogStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =失败
+     * 失败
      */
     case Status0 = 0;
 
     /**
-     * =成功
+     * 成功
      */
     case Status1 = 1;
 }

@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentArticleEntity;
-use App\Domains\Content\Services\ContentArticleService;
 use App\Domains\Content\Requests\ContentArticle\ContentArticleCreateRequest;
 use App\Domains\Content\Requests\ContentArticle\ContentArticleDestroyRequest;
 use App\Domains\Content\Requests\ContentArticle\ContentArticleQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentArticle\ContentArticleUpdateRequest;
 use App\Domains\Content\Responses\ContentArticle\ContentArticleDestroyResponse;
 use App\Domains\Content\Responses\ContentArticle\ContentArticleQueryResponse;
 use App\Domains\Content\Responses\ContentArticle\ContentArticleResponse;
+use App\Domains\Content\Services\ContentArticleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +48,9 @@ class ContentArticleController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[ContentArticleQueryRequest::getCategoryId])) {
+                $condition[] = [ContentArticleEntity::getCategoryId, '=', $requestData[ContentArticleQueryRequest::getCategoryId]];
+            }
             if (isset($requestData[ContentArticleQueryRequest::getStatus])) {
                 $condition[] = [ContentArticleEntity::getStatus, '=', $requestData[ContentArticleQueryRequest::getStatus]];
             }
@@ -60,7 +63,7 @@ class ContentArticleController extends BaseController
             if (isset($requestData[ContentArticleQueryRequest::getSlug])) {
                 $condition[] = [ContentArticleEntity::getSlug, '=', $requestData[ContentArticleQueryRequest::getSlug]];
             }
-            
+
             $result = $this->contentArticleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

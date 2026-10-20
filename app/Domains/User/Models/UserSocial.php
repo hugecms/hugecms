@@ -34,7 +34,5 @@ class UserSocial extends Model
         'union_id',
         'nickname',
         'avatar',
-        'create_time',
-        'update_time',
     ];
 }

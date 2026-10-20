@@ -6,7 +6,6 @@ namespace App\Domains\Product\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Product\Entities\ProductSkuEntity;
-use App\Domains\Product\Services\ProductSkuService;
 use App\Domains\Product\Requests\ProductSku\ProductSkuCreateRequest;
 use App\Domains\Product\Requests\ProductSku\ProductSkuDestroyRequest;
 use App\Domains\Product\Requests\ProductSku\ProductSkuQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Product\Requests\ProductSku\ProductSkuUpdateRequest;
 use App\Domains\Product\Responses\ProductSku\ProductSkuDestroyResponse;
 use App\Domains\Product\Responses\ProductSku\ProductSkuQueryResponse;
 use App\Domains\Product\Responses\ProductSku\ProductSkuResponse;
+use App\Domains\Product\Services\ProductSkuService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class ProductSkuController extends BaseController
             if (isset($requestData[ProductSkuQueryRequest::getId])) {
                 $condition[] = [ProductSkuEntity::getId, '=', $requestData[ProductSkuQueryRequest::getId]];
             }
-            
+
             $result = $this->productSkuService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

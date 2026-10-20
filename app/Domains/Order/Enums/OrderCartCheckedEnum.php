@@ -15,12 +15,12 @@ enum OrderCartCheckedEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =否
+     * 否
      */
     case Checked0 = 0;
 
     /**
-     * =是
+     * 是
      */
     case Checked1 = 1;
 }

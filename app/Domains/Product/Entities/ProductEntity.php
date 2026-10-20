@@ -18,6 +18,8 @@ class ProductEntity implements \JsonSerializable
 
     public const string getBrandId = 'brand_id'; // 品牌ID
 
+    public const string getTypeId = 'type_id'; // 商品类型ID,关联属性体系
+
     public const string getName = 'name'; // 商品名称
 
     public const string getSn = 'sn'; // 商品编码
@@ -36,17 +38,19 @@ class ProductEntity implements \JsonSerializable
 
     public const string getStock = 'stock'; // 库存,单规格商品有效
 
+    public const string getLockedStock = 'locked_stock'; // 锁定库存(下单未支付),可售=stock-locked_stock
+
     public const string getSales = 'sales'; // 销量
 
     public const string getStatus = 'status'; // 状态:0=下架,1=上架
 
     public const string getSort = 'sort'; // 排序
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreatedAt = 'created_at'; // 创建时间
 
-    public const string getUpdateTime = 'update_time';
+    public const string getUpdatedAt = 'updated_at'; // 更新时间
 
-    public const string getDeleteTime = 'delete_time';
+    public const string getDeletedAt = 'deleted_at'; // 删除时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -56,6 +60,9 @@ class ProductEntity implements \JsonSerializable
 
     #[OA\Property(property: 'brandId', description: '品牌ID', type: 'integer')]
     private int $brandId;
+
+    #[OA\Property(property: 'typeId', description: '商品类型ID,关联属性体系', type: 'integer')]
+    private int $typeId;
 
     #[OA\Property(property: 'name', description: '商品名称', type: 'string')]
     private string $name;
@@ -84,6 +91,9 @@ class ProductEntity implements \JsonSerializable
     #[OA\Property(property: 'stock', description: '库存,单规格商品有效', type: 'integer')]
     private int $stock;
 
+    #[OA\Property(property: 'lockedStock', description: '锁定库存(下单未支付),可售=stock-locked_stock', type: 'integer')]
+    private int $lockedStock;
+
     #[OA\Property(property: 'sales', description: '销量', type: 'integer')]
     private int $sales;
 
@@ -93,14 +103,14 @@ class ProductEntity implements \JsonSerializable
     #[OA\Property(property: 'sort', description: '排序', type: 'integer')]
     private int $sort;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
 
-    #[OA\Property(property: 'deleteTime', description: '', type: 'string')]
-    private string $deleteTime;
+    #[OA\Property(property: 'deletedAt', description: '删除时间', type: 'string')]
+    private string $deletedAt;
 
     /**
      * 获取ID
@@ -148,6 +158,22 @@ class ProductEntity implements \JsonSerializable
     public function setBrandId(int $brandId): void
     {
         $this->brandId = $brandId;
+    }
+
+    /**
+     * 获取商品类型ID,关联属性体系
+     */
+    public function getTypeId(): int
+    {
+        return $this->typeId;
+    }
+
+    /**
+     * 设置商品类型ID,关联属性体系
+     */
+    public function setTypeId(int $typeId): void
+    {
+        $this->typeId = $typeId;
     }
 
     /**
@@ -295,6 +321,22 @@ class ProductEntity implements \JsonSerializable
     }
 
     /**
+     * 获取锁定库存(下单未支付),可售=stock-locked_stock
+     */
+    public function getLockedStock(): int
+    {
+        return $this->lockedStock;
+    }
+
+    /**
+     * 设置锁定库存(下单未支付),可售=stock-locked_stock
+     */
+    public function setLockedStock(int $lockedStock): void
+    {
+        $this->lockedStock = $lockedStock;
+    }
+
+    /**
      * 获取销量
      */
     public function getSales(): int
@@ -343,50 +385,50 @@ class ProductEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
     }
 
     /**
-     * 获取
+     * 获取删除时间
      */
-    public function getDeleteTime(): string
+    public function getDeletedAt(): string
     {
-        return $this->deleteTime;
+        return $this->deletedAt;
     }
 
     /**
-     * 设置
+     * 设置删除时间
      */
-    public function setDeleteTime(string $deleteTime): void
+    public function setDeletedAt(string $deletedAt): void
     {
-        $this->deleteTime = $deleteTime;
+        $this->deletedAt = $deletedAt;
     }
 }

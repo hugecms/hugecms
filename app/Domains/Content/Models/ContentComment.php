@@ -35,7 +35,5 @@ class ContentComment extends Model
         'content',
         'status',
         'ip',
-        'create_time',
-        'update_time',
     ];
 }

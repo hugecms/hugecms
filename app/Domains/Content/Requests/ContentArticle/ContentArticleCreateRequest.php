@@ -15,6 +15,7 @@ use OpenApi\Attributes as OA;
         self::getSlug,
         self::getSummary,
         self::getCover,
+        self::getProductIds,
         self::getAuthorId,
         self::getAuthor,
         self::getIsTop,
@@ -22,9 +23,6 @@ use OpenApi\Attributes as OA;
         self::getStatus,
         self::getViews,
         self::getPublishedAt,
-        self::getCreateTime,
-        self::getUpdateTime,
-        self::getDeleteTime,
     ],
     properties: [
         new OA\Property(property: self::getCategoryId, description: '栏目ID', type: 'integer'),
@@ -32,6 +30,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getSlug, description: '文章标识,用于URL', type: 'string'),
         new OA\Property(property: self::getSummary, description: '摘要', type: 'string'),
         new OA\Property(property: self::getCover, description: '封面图', type: 'string'),
+        new OA\Property(property: self::getProductIds, description: '关联商品ID列表(JSON数组),种草文章挂商品购买入口', type: 'string'),
         new OA\Property(property: self::getAuthorId, description: '作者管理员ID', type: 'integer'),
         new OA\Property(property: self::getAuthor, description: '作者名称快照', type: 'string'),
         new OA\Property(property: self::getIsTop, description: '置顶:0=否,1=是', type: 'integer'),
@@ -39,9 +38,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getStatus, description: '状态:0=草稿,1=发布,2=下架', type: 'integer'),
         new OA\Property(property: self::getViews, description: '浏览量', type: 'integer'),
         new OA\Property(property: self::getPublishedAt, description: '发布时间', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getDeleteTime, description: '', type: 'string'),
     ]
 )]
 class ContentArticleCreateRequest extends FormRequest
@@ -55,6 +51,8 @@ class ContentArticleCreateRequest extends FormRequest
     public const string getSummary = 'summary';
 
     public const string getCover = 'cover';
+
+    public const string getProductIds = 'productIds';
 
     public const string getAuthorId = 'authorId';
 
@@ -70,12 +68,6 @@ class ContentArticleCreateRequest extends FormRequest
 
     public const string getPublishedAt = 'publishedAt';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
-    public const string getDeleteTime = 'deleteTime';
-
     public function rules(): array
     {
         return [
@@ -84,6 +76,7 @@ class ContentArticleCreateRequest extends FormRequest
             self::getSlug => 'required',
             self::getSummary => 'required',
             self::getCover => 'required',
+            self::getProductIds => 'required',
             self::getAuthorId => 'required',
             self::getAuthor => 'required',
             self::getIsTop => 'required',
@@ -91,9 +84,6 @@ class ContentArticleCreateRequest extends FormRequest
             self::getStatus => 'required',
             self::getViews => 'required',
             self::getPublishedAt => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
-            self::getDeleteTime => 'required',
         ];
     }
 
@@ -105,6 +95,7 @@ class ContentArticleCreateRequest extends FormRequest
             self::getSlug.'.required' => '请设置文章标识,用于URL',
             self::getSummary.'.required' => '请设置摘要',
             self::getCover.'.required' => '请设置封面图',
+            self::getProductIds.'.required' => '请设置关联商品ID列表(JSON数组),种草文章挂商品购买入口',
             self::getAuthorId.'.required' => '请设置作者管理员ID',
             self::getAuthor.'.required' => '请设置作者名称快照',
             self::getIsTop.'.required' => '请设置置顶:0=否,1=是',
@@ -112,9 +103,6 @@ class ContentArticleCreateRequest extends FormRequest
             self::getStatus.'.required' => '请设置状态:0=草稿,1=发布,2=下架',
             self::getViews.'.required' => '请设置浏览量',
             self::getPublishedAt.'.required' => '请设置发布时间',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
-            self::getDeleteTime.'.required' => '请设置',
         ];
     }
 }

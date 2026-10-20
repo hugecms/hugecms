@@ -30,7 +30,7 @@ class SystemRegionResponse implements \JsonSerializable
     #[OA\Property(property: 'sort', description: '排序', type: 'integer')]
     private int $sort;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -130,7 +130,7 @@ class SystemRegionResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -138,7 +138,7 @@ class SystemRegionResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

@@ -16,9 +16,6 @@ use OpenApi\Attributes as OA;
         self::getReceiverRegion,
         self::getReceiverAddress,
         self::getIsDefault,
-        self::getCreateTime,
-        self::getUpdateTime,
-        self::getDeleteTime,
     ],
     properties: [
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
@@ -27,9 +24,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getReceiverRegion, description: '省市区', type: 'string'),
         new OA\Property(property: self::getReceiverAddress, description: '详细地址', type: 'string'),
         new OA\Property(property: self::getIsDefault, description: '默认地址:0=否,1=是', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getDeleteTime, description: '', type: 'string'),
     ]
 )]
 class UserAddressCreateRequest extends FormRequest
@@ -46,12 +40,6 @@ class UserAddressCreateRequest extends FormRequest
 
     public const string getIsDefault = 'isDefault';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
-    public const string getDeleteTime = 'deleteTime';
-
     public function rules(): array
     {
         return [
@@ -61,9 +49,6 @@ class UserAddressCreateRequest extends FormRequest
             self::getReceiverRegion => 'required',
             self::getReceiverAddress => 'required',
             self::getIsDefault => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
-            self::getDeleteTime => 'required',
         ];
     }
 
@@ -76,9 +61,6 @@ class UserAddressCreateRequest extends FormRequest
             self::getReceiverRegion.'.required' => '请设置省市区',
             self::getReceiverAddress.'.required' => '请设置详细地址',
             self::getIsDefault.'.required' => '请设置默认地址:0=否,1=是',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
-            self::getDeleteTime.'.required' => '请设置',
         ];
     }
 }

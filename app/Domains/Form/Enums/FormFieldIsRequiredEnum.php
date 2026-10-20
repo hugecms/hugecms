@@ -15,12 +15,12 @@ enum FormFieldIsRequiredEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =否
+     * 否
      */
     case IsRequired0 = 0;
 
     /**
-     * =是
+     * 是
      */
     case IsRequired1 = 1;
 }

@@ -6,7 +6,6 @@ namespace App\Domains\Admin\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Admin\Entities\AdminPermissionEntity;
-use App\Domains\Admin\Services\AdminPermissionService;
 use App\Domains\Admin\Requests\AdminPermission\AdminPermissionCreateRequest;
 use App\Domains\Admin\Requests\AdminPermission\AdminPermissionDestroyRequest;
 use App\Domains\Admin\Requests\AdminPermission\AdminPermissionQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Admin\Requests\AdminPermission\AdminPermissionUpdateRequest;
 use App\Domains\Admin\Responses\AdminPermission\AdminPermissionDestroyResponse;
 use App\Domains\Admin\Responses\AdminPermission\AdminPermissionQueryResponse;
 use App\Domains\Admin\Responses\AdminPermission\AdminPermissionResponse;
+use App\Domains\Admin\Services\AdminPermissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +57,7 @@ class AdminPermissionController extends BaseController
             if (isset($requestData[AdminPermissionQueryRequest::getCode])) {
                 $condition[] = [AdminPermissionEntity::getCode, '=', $requestData[AdminPermissionQueryRequest::getCode]];
             }
-            
+
             $result = $this->adminPermissionService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

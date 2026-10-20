@@ -6,7 +6,6 @@ namespace App\Domains\User\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\User\Entities\UserSocialEntity;
-use App\Domains\User\Services\UserSocialService;
 use App\Domains\User\Requests\UserSocial\UserSocialCreateRequest;
 use App\Domains\User\Requests\UserSocial\UserSocialDestroyRequest;
 use App\Domains\User\Requests\UserSocial\UserSocialQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\User\Requests\UserSocial\UserSocialUpdateRequest;
 use App\Domains\User\Responses\UserSocial\UserSocialDestroyResponse;
 use App\Domains\User\Responses\UserSocial\UserSocialQueryResponse;
 use App\Domains\User\Responses\UserSocial\UserSocialResponse;
+use App\Domains\User\Services\UserSocialService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,10 +54,13 @@ class UserSocialController extends BaseController
             if (isset($requestData[UserSocialQueryRequest::getId])) {
                 $condition[] = [UserSocialEntity::getId, '=', $requestData[UserSocialQueryRequest::getId]];
             }
+            if (isset($requestData[UserSocialQueryRequest::getPlatform])) {
+                $condition[] = [UserSocialEntity::getPlatform, '=', $requestData[UserSocialQueryRequest::getPlatform]];
+            }
             if (isset($requestData[UserSocialQueryRequest::getOpenId])) {
                 $condition[] = [UserSocialEntity::getOpenId, '=', $requestData[UserSocialQueryRequest::getOpenId]];
             }
-            
+
             $result = $this->userSocialService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

@@ -32,7 +32,5 @@ class ProductBrand extends Model
         'logo',
         'sort',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

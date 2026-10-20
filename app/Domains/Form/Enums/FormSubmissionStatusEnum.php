@@ -15,12 +15,12 @@ enum FormSubmissionStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =未处理
+     * 未处理
      */
     case Status0 = 0;
 
     /**
-     * =已处理
+     * 已处理
      */
     case Status1 = 1;
 }

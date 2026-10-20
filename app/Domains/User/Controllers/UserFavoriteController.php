@@ -6,7 +6,6 @@ namespace App\Domains\User\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\User\Entities\UserFavoriteEntity;
-use App\Domains\User\Services\UserFavoriteService;
 use App\Domains\User\Requests\UserFavorite\UserFavoriteCreateRequest;
 use App\Domains\User\Requests\UserFavorite\UserFavoriteDestroyRequest;
 use App\Domains\User\Requests\UserFavorite\UserFavoriteQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\User\Requests\UserFavorite\UserFavoriteUpdateRequest;
 use App\Domains\User\Responses\UserFavorite\UserFavoriteDestroyResponse;
 use App\Domains\User\Responses\UserFavorite\UserFavoriteQueryResponse;
 use App\Domains\User\Responses\UserFavorite\UserFavoriteResponse;
+use App\Domains\User\Services\UserFavoriteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,16 +48,25 @@ class UserFavoriteController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[UserFavoriteQueryRequest::getTargetType])) {
+                $condition[] = [UserFavoriteEntity::getTargetType, '=', $requestData[UserFavoriteQueryRequest::getTargetType]];
+            }
             if (isset($requestData[UserFavoriteQueryRequest::getTargetId])) {
                 $condition[] = [UserFavoriteEntity::getTargetId, '=', $requestData[UserFavoriteQueryRequest::getTargetId]];
             }
             if (isset($requestData[UserFavoriteQueryRequest::getId])) {
                 $condition[] = [UserFavoriteEntity::getId, '=', $requestData[UserFavoriteQueryRequest::getId]];
             }
+            if (isset($requestData[UserFavoriteQueryRequest::getUserId])) {
+                $condition[] = [UserFavoriteEntity::getUserId, '=', $requestData[UserFavoriteQueryRequest::getUserId]];
+            }
+            if (isset($requestData[UserFavoriteQueryRequest::getTargetType])) {
+                $condition[] = [UserFavoriteEntity::getTargetType, '=', $requestData[UserFavoriteQueryRequest::getTargetType]];
+            }
             if (isset($requestData[UserFavoriteQueryRequest::getTargetId])) {
                 $condition[] = [UserFavoriteEntity::getTargetId, '=', $requestData[UserFavoriteQueryRequest::getTargetId]];
             }
-            
+
             $result = $this->userFavoriteService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

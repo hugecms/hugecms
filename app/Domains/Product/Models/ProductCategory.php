@@ -32,7 +32,6 @@ class ProductCategory extends Model
         'name',
         'sort',
         'status',
-        'create_time',
-        'update_time',
+        'is_recommend',
     ];
 }

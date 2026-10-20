@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentPageEntity;
-use App\Domains\Content\Services\ContentPageService;
 use App\Domains\Content\Requests\ContentPage\ContentPageCreateRequest;
 use App\Domains\Content\Requests\ContentPage\ContentPageDestroyRequest;
 use App\Domains\Content\Requests\ContentPage\ContentPageQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentPage\ContentPageUpdateRequest;
 use App\Domains\Content\Responses\ContentPage\ContentPageDestroyResponse;
 use App\Domains\Content\Responses\ContentPage\ContentPageQueryResponse;
 use App\Domains\Content\Responses\ContentPage\ContentPageResponse;
+use App\Domains\Content\Services\ContentPageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class ContentPageController extends BaseController
             if (isset($requestData[ContentPageQueryRequest::getSlug])) {
                 $condition[] = [ContentPageEntity::getSlug, '=', $requestData[ContentPageQueryRequest::getSlug]];
             }
-            
+
             $result = $this->contentPageService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

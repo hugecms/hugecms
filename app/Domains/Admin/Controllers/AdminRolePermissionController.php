@@ -6,7 +6,6 @@ namespace App\Domains\Admin\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Admin\Entities\AdminRolePermissionEntity;
-use App\Domains\Admin\Services\AdminRolePermissionService;
 use App\Domains\Admin\Requests\AdminRolePermission\AdminRolePermissionCreateRequest;
 use App\Domains\Admin\Requests\AdminRolePermission\AdminRolePermissionDestroyRequest;
 use App\Domains\Admin\Requests\AdminRolePermission\AdminRolePermissionQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Admin\Requests\AdminRolePermission\AdminRolePermissionUpdateRequ
 use App\Domains\Admin\Responses\AdminRolePermission\AdminRolePermissionDestroyResponse;
 use App\Domains\Admin\Responses\AdminRolePermission\AdminRolePermissionQueryResponse;
 use App\Domains\Admin\Responses\AdminRolePermission\AdminRolePermissionResponse;
+use App\Domains\Admin\Services\AdminRolePermissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,10 +51,13 @@ class AdminRolePermissionController extends BaseController
             if (isset($requestData[AdminRolePermissionQueryRequest::getPermissionId])) {
                 $condition[] = [AdminRolePermissionEntity::getPermissionId, '=', $requestData[AdminRolePermissionQueryRequest::getPermissionId]];
             }
+            if (isset($requestData[AdminRolePermissionQueryRequest::getRoleId])) {
+                $condition[] = [AdminRolePermissionEntity::getRoleId, '=', $requestData[AdminRolePermissionQueryRequest::getRoleId]];
+            }
             if (isset($requestData[AdminRolePermissionQueryRequest::getPermissionId])) {
                 $condition[] = [AdminRolePermissionEntity::getPermissionId, '=', $requestData[AdminRolePermissionQueryRequest::getPermissionId]];
             }
-            
+
             $result = $this->adminRolePermissionService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

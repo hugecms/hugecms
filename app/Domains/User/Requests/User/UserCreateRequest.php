@@ -11,64 +11,64 @@ use OpenApi\Attributes as OA;
     schema: 'UserCreateRequest',
     required: [
         self::getUsername,
+        self::getPassword,
         self::getEmail,
         self::getPhone,
-        self::getPassword,
         self::getStatus,
+        self::getRankId,
+        self::getBalance,
+        self::getPoints,
         self::getLastLoginTime,
         self::getLastLoginIp,
-        self::getCreateTime,
-        self::getUpdateTime,
-        self::getDeleteTime,
     ],
     properties: [
         new OA\Property(property: self::getUsername, description: '用户名', type: 'string'),
+        new OA\Property(property: self::getPassword, description: '密码哈希', type: 'string'),
         new OA\Property(property: self::getEmail, description: '邮箱', type: 'string'),
         new OA\Property(property: self::getPhone, description: '手机号', type: 'string'),
-        new OA\Property(property: self::getPassword, description: '密码哈希', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=正常', type: 'integer'),
+        new OA\Property(property: self::getRankId, description: '会员等级ID,0=默认等级', type: 'integer'),
+        new OA\Property(property: self::getBalance, description: '账户余额', type: 'string'),
+        new OA\Property(property: self::getPoints, description: '积分', type: 'integer'),
         new OA\Property(property: self::getLastLoginTime, description: '最后登录时间', type: 'string'),
         new OA\Property(property: self::getLastLoginIp, description: '最后登录IP', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getDeleteTime, description: '', type: 'string'),
     ]
 )]
 class UserCreateRequest extends FormRequest
 {
     public const string getUsername = 'username';
 
+    public const string getPassword = 'password';
+
     public const string getEmail = 'email';
 
     public const string getPhone = 'phone';
 
-    public const string getPassword = 'password';
-
     public const string getStatus = 'status';
+
+    public const string getRankId = 'rankId';
+
+    public const string getBalance = 'balance';
+
+    public const string getPoints = 'points';
 
     public const string getLastLoginTime = 'lastLoginTime';
 
     public const string getLastLoginIp = 'lastLoginIp';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
-    public const string getDeleteTime = 'deleteTime';
-
     public function rules(): array
     {
         return [
             self::getUsername => 'required',
+            self::getPassword => 'required',
             self::getEmail => 'required',
             self::getPhone => 'required',
-            self::getPassword => 'required',
             self::getStatus => 'required',
+            self::getRankId => 'required',
+            self::getBalance => 'required',
+            self::getPoints => 'required',
             self::getLastLoginTime => 'required',
             self::getLastLoginIp => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
-            self::getDeleteTime => 'required',
         ];
     }
 
@@ -76,15 +76,15 @@ class UserCreateRequest extends FormRequest
     {
         return [
             self::getUsername.'.required' => '请设置用户名',
+            self::getPassword.'.required' => '请设置密码哈希',
             self::getEmail.'.required' => '请设置邮箱',
             self::getPhone.'.required' => '请设置手机号',
-            self::getPassword.'.required' => '请设置密码哈希',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=正常',
+            self::getRankId.'.required' => '请设置会员等级ID,0=默认等级',
+            self::getBalance.'.required' => '请设置账户余额',
+            self::getPoints.'.required' => '请设置积分',
             self::getLastLoginTime.'.required' => '请设置最后登录时间',
             self::getLastLoginIp.'.required' => '请设置最后登录IP',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
-            self::getDeleteTime.'.required' => '请设置',
         ];
     }
 }

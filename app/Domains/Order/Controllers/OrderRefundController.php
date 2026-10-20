@@ -6,7 +6,6 @@ namespace App\Domains\Order\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Order\Entities\OrderRefundEntity;
-use App\Domains\Order\Services\OrderRefundService;
 use App\Domains\Order\Requests\OrderRefund\OrderRefundCreateRequest;
 use App\Domains\Order\Requests\OrderRefund\OrderRefundDestroyRequest;
 use App\Domains\Order\Requests\OrderRefund\OrderRefundQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Order\Requests\OrderRefund\OrderRefundUpdateRequest;
 use App\Domains\Order\Responses\OrderRefund\OrderRefundDestroyResponse;
 use App\Domains\Order\Responses\OrderRefund\OrderRefundQueryResponse;
 use App\Domains\Order\Responses\OrderRefund\OrderRefundResponse;
+use App\Domains\Order\Services\OrderRefundService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +57,7 @@ class OrderRefundController extends BaseController
             if (isset($requestData[OrderRefundQueryRequest::getRefundNo])) {
                 $condition[] = [OrderRefundEntity::getRefundNo, '=', $requestData[OrderRefundQueryRequest::getRefundNo]];
             }
-            
+
             $result = $this->orderRefundService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

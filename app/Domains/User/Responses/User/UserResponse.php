@@ -27,20 +27,29 @@ class UserResponse implements \JsonSerializable
     #[OA\Property(property: 'status', description: '状态:0=禁用,1=正常', type: 'integer')]
     private int $status;
 
+    #[OA\Property(property: 'rankId', description: '会员等级ID,0=默认等级', type: 'integer')]
+    private int $rankId;
+
+    #[OA\Property(property: 'balance', description: '账户余额', type: 'string')]
+    private string $balance;
+
+    #[OA\Property(property: 'points', description: '积分', type: 'integer')]
+    private int $points;
+
     #[OA\Property(property: 'lastLoginTime', description: '最后登录时间', type: 'string')]
     private string $lastLoginTime;
 
     #[OA\Property(property: 'lastLoginIp', description: '最后登录IP', type: 'string')]
     private string $lastLoginIp;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
 
-    #[OA\Property(property: 'deleteTime', description: '', type: 'string')]
-    private string $deleteTime;
+    #[OA\Property(property: 'deletedAt', description: '删除时间', type: 'string')]
+    private string $deletedAt;
 
     /**
      * 获取ID
@@ -123,6 +132,54 @@ class UserResponse implements \JsonSerializable
     }
 
     /**
+     * 获取会员等级ID,0=默认等级
+     */
+    public function getRankId(): int
+    {
+        return $this->rankId;
+    }
+
+    /**
+     * 设置会员等级ID,0=默认等级
+     */
+    public function setRankId(int $rankId): void
+    {
+        $this->rankId = $rankId;
+    }
+
+    /**
+     * 获取账户余额
+     */
+    public function getBalance(): string
+    {
+        return $this->balance;
+    }
+
+    /**
+     * 设置账户余额
+     */
+    public function setBalance(string $balance): void
+    {
+        $this->balance = $balance;
+    }
+
+    /**
+     * 获取积分
+     */
+    public function getPoints(): int
+    {
+        return $this->points;
+    }
+
+    /**
+     * 设置积分
+     */
+    public function setPoints(int $points): void
+    {
+        $this->points = $points;
+    }
+
+    /**
      * 获取最后登录时间
      */
     public function getLastLoginTime(): string
@@ -155,50 +212,50 @@ class UserResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
     }
 
     /**
-     * 获取
+     * 获取删除时间
      */
-    public function getDeleteTime(): string
+    public function getDeletedAt(): string
     {
-        return $this->deleteTime;
+        return $this->deletedAt;
     }
 
     /**
-     * 设置
+     * 设置删除时间
      */
-    public function setDeleteTime(string $deleteTime): void
+    public function setDeletedAt(string $deletedAt): void
     {
-        $this->deleteTime = $deleteTime;
+        $this->deletedAt = $deletedAt;
     }
 }

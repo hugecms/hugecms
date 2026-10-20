@@ -33,7 +33,5 @@ class AdminRole extends Model
         'description',
         'sort',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

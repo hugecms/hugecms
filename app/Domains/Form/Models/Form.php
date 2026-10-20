@@ -36,8 +36,5 @@ class Form extends Model
         'need_login',
         'max_submits',
         'status',
-        'create_time',
-        'update_time',
-        'delete_time',
     ];
 }

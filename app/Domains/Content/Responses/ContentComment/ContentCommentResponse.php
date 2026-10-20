@@ -18,7 +18,7 @@ class ContentCommentResponse implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '评论用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'targetType', description: '目标类型:article,product', type: 'string')]
+    #[OA\Property(property: 'targetType', description: '目标类型:article=文章,商品评价走product_reviews表', type: 'string')]
     private string $targetType;
 
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
@@ -36,11 +36,11 @@ class ContentCommentResponse implements \JsonSerializable
     #[OA\Property(property: 'ip', description: '评论IP', type: 'string')]
     private string $ip;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
 
     /**
      * 获取ID
@@ -75,7 +75,7 @@ class ContentCommentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取目标类型:article,product
+     * 获取目标类型:article=文章,商品评价走product_reviews表
      */
     public function getTargetType(): string
     {
@@ -83,7 +83,7 @@ class ContentCommentResponse implements \JsonSerializable
     }
 
     /**
-     * 设置目标类型:article,product
+     * 设置目标类型:article=文章,商品评价走product_reviews表
      */
     public function setTargetType(string $targetType): void
     {
@@ -171,34 +171,34 @@ class ContentCommentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
     }
 }

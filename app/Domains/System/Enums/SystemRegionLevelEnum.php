@@ -15,17 +15,17 @@ enum SystemRegionLevelEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =省
+     * 省
      */
     case Level1 = 1;
 
     /**
-     * =市
+     * 市
      */
     case Level2 = 2;
 
     /**
-     * =区县
+     * 区县
      */
     case Level3 = 3;
 }

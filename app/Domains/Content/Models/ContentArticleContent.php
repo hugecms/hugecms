@@ -29,7 +29,5 @@ class ContentArticleContent extends Model
      */
     protected $fillable = [
         'content',
-        'create_time',
-        'update_time',
     ];
 }

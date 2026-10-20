@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getUserId, description: '被关注用户ID', type: 'integer'),
         new OA\Property(property: self::getFollowerId, description: '关注者用户ID', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class UserFollowerUpdateRequest extends FormRequest
@@ -42,7 +42,7 @@ class UserFollowerUpdateRequest extends FormRequest
         return [
             self::getUserId.'.required' => '请设置被关注用户ID',
             self::getFollowerId.'.required' => '请设置关注者用户ID',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

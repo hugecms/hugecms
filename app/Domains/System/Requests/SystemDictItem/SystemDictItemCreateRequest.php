@@ -15,8 +15,6 @@ use OpenApi\Attributes as OA;
         self::getLabel,
         self::getSort,
         self::getStatus,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getDictId, description: '字典类型ID', type: 'integer'),
@@ -24,8 +22,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getLabel, description: '字典标签', type: 'string'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=启用', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class SystemDictItemCreateRequest extends FormRequest
@@ -40,10 +36,6 @@ class SystemDictItemCreateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -52,8 +44,6 @@ class SystemDictItemCreateRequest extends FormRequest
             self::getLabel => 'required',
             self::getSort => 'required',
             self::getStatus => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -65,8 +55,6 @@ class SystemDictItemCreateRequest extends FormRequest
             self::getLabel.'.required' => '请设置字典标签',
             self::getSort.'.required' => '请设置排序',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=启用',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

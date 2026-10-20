@@ -11,11 +11,14 @@ use OpenApi\Attributes as OA;
     schema: 'ContentArticleTagQueryRequest',
     required: [],
     properties: [
+        new OA\Property(property: self::getArticleId, description: '文章ID', type: 'integer'),
         new OA\Property(property: self::getTagId, description: '标签ID', type: 'integer'),
     ]
 )]
 class ContentArticleTagQueryRequest extends FormRequest
 {
+    public const string getArticleId = 'articleId';
+
     public const string getTagId = 'tagId';
 
     public function rules(): array

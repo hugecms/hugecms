@@ -6,7 +6,6 @@ namespace App\Domains\Order\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Order\Entities\OrderShipmentEntity;
-use App\Domains\Order\Services\OrderShipmentService;
 use App\Domains\Order\Requests\OrderShipment\OrderShipmentCreateRequest;
 use App\Domains\Order\Requests\OrderShipment\OrderShipmentDestroyRequest;
 use App\Domains\Order\Requests\OrderShipment\OrderShipmentQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Order\Requests\OrderShipment\OrderShipmentUpdateRequest;
 use App\Domains\Order\Responses\OrderShipment\OrderShipmentDestroyResponse;
 use App\Domains\Order\Responses\OrderShipment\OrderShipmentQueryResponse;
 use App\Domains\Order\Responses\OrderShipment\OrderShipmentResponse;
+use App\Domains\Order\Services\OrderShipmentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +57,7 @@ class OrderShipmentController extends BaseController
             if (isset($requestData[OrderShipmentQueryRequest::getId])) {
                 $condition[] = [OrderShipmentEntity::getId, '=', $requestData[OrderShipmentQueryRequest::getId]];
             }
-            
+
             $result = $this->orderShipmentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

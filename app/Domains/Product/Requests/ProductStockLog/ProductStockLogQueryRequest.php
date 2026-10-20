@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
         new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格商品', type: 'integer'),
         new OA\Property(property: self::getRelatedId, description: '关联单据ID(订单/退款单)', type: 'integer'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class ProductStockLogQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getProductId = 'productId';
 
     public const string getSkuId = 'skuId';
 

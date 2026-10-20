@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentArticleContentEntity;
-use App\Domains\Content\Services\ContentArticleContentService;
 use App\Domains\Content\Requests\ContentArticleContent\ContentArticleContentCreateRequest;
 use App\Domains\Content\Requests\ContentArticleContent\ContentArticleContentDestroyRequest;
 use App\Domains\Content\Requests\ContentArticleContent\ContentArticleContentQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentArticleContent\ContentArticleContentUpda
 use App\Domains\Content\Responses\ContentArticleContent\ContentArticleContentDestroyResponse;
 use App\Domains\Content\Responses\ContentArticleContent\ContentArticleContentQueryResponse;
 use App\Domains\Content\Responses\ContentArticleContent\ContentArticleContentResponse;
+use App\Domains\Content\Services\ContentArticleContentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +51,7 @@ class ContentArticleContentController extends BaseController
             if (isset($requestData[ContentArticleContentQueryRequest::getArticleId])) {
                 $condition[] = [ContentArticleContentEntity::getArticleId, '=', $requestData[ContentArticleContentQueryRequest::getArticleId]];
             }
-            
+
             $result = $this->contentArticleContentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

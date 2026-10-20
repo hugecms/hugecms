@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "962e3734dac7c2fe358eacb09542fbd8",
+    "content-hash": "b210003514a3e9639688b0d24663a750",
     "packages": [
         {
             "name": "alibabacloud/aliyun-log-php-sdk",
@@ -664,16 +664,16 @@
         },
         {
             "name": "dragonmantank/cron-expression",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dragonmantank/cron-expression.git",
-                "reference": "d61a8a9604ec1f8c3d150d09db6ce98b32675013"
+                "reference": "4189372ffeff09bf14f731f67a9de90c7b413ebe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/d61a8a9604ec1f8c3d150d09db6ce98b32675013",
-                "reference": "d61a8a9604ec1f8c3d150d09db6ce98b32675013",
+                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/4189372ffeff09bf14f731f67a9de90c7b413ebe",
+                "reference": "4189372ffeff09bf14f731f67a9de90c7b413ebe",
                 "shasum": ""
             },
             "require": {
@@ -684,8 +684,8 @@
             },
             "require-dev": {
                 "phpstan/extension-installer": "^1.4.3",
-                "phpstan/phpstan": "^1.12.32|^2.1.31",
-                "phpunit/phpunit": "^8.5.48|^9.0"
+                "phpstan/phpstan": "^2.1.31",
+                "phpunit/phpunit": "^11.5.43 || ^12.4"
             },
             "type": "library",
             "extra": {
@@ -716,7 +716,7 @@
             ],
             "support": {
                 "issues": "https://github.com/dragonmantank/cron-expression/issues",
-                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.6.0"
+                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.6.1"
             },
             "funding": [
                 {
@@ -724,7 +724,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-31T18:51:33+00:00"
+            "time": "2026-10-19T17:53:57+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -3880,16 +3880,16 @@
         },
         {
             "name": "open-telemetry/api",
-            "version": "1.10.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opentelemetry-php/api.git",
-                "reference": "7c029c4a6fd457094a20569bf98f93d95e9a7559"
+                "reference": "b2bc26bf8bd6b2b6447b3626b2a1b5733873aa0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opentelemetry-php/api/zipball/7c029c4a6fd457094a20569bf98f93d95e9a7559",
-                "reference": "7c029c4a6fd457094a20569bf98f93d95e9a7559",
+                "url": "https://api.github.com/repos/opentelemetry-php/api/zipball/b2bc26bf8bd6b2b6447b3626b2a1b5733873aa0b",
+                "reference": "b2bc26bf8bd6b2b6447b3626b2a1b5733873aa0b",
                 "shasum": ""
             },
             "require": {
@@ -3946,7 +3946,7 @@
                 "issues": "https://github.com/open-telemetry/opentelemetry-php/issues",
                 "source": "https://github.com/open-telemetry/opentelemetry-php"
             },
-            "time": "2026-07-06T12:28:04+00:00"
+            "time": "2026-09-16T01:59:09+00:00"
         },
         {
             "name": "open-telemetry/context",
@@ -10624,26 +10624,26 @@
         },
         {
             "name": "phpkg/laravel-devtools",
-            "version": "v1.0.7",
+            "version": "v1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wanganlin/laravel-devtools.git",
-                "reference": "ba62bcf6b68503ce76346e4895beedd334ae955f"
+                "reference": "d769cda8863678a35ceb65c1dd4d89718f6d88a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wanganlin/laravel-devtools/zipball/ba62bcf6b68503ce76346e4895beedd334ae955f",
-                "reference": "ba62bcf6b68503ce76346e4895beedd334ae955f",
+                "url": "https://api.github.com/repos/wanganlin/laravel-devtools/zipball/d769cda8863678a35ceb65c1dd4d89718f6d88a8",
+                "reference": "d769cda8863678a35ceb65c1dd4d89718f6d88a8",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^13.24",
+                "laravel/framework": "^13.30",
                 "php": "^8.3"
             },
             "require-dev": {
                 "laravel/pint": "^1.30",
                 "phpstan/phpstan": "^2.2",
-                "zircote/swagger-php": "^6.5"
+                "zircote/swagger-php": "^6.7"
             },
             "type": "library",
             "extra": {
@@ -10654,9 +10654,6 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/Support/helpers.php"
-                ],
                 "psr-4": {
                     "Juling\\DevTools\\": "src/"
                 }
@@ -10667,9 +10664,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wanganlin/laravel-devtools/issues",
-                "source": "https://github.com/wanganlin/laravel-devtools/tree/v1.0.7"
+                "source": "https://github.com/wanganlin/laravel-devtools/tree/v1.0.9"
             },
-            "time": "2026-08-11T06:48:57+00:00"
+            "time": "2026-10-20T06:08:20+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -12486,16 +12483,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "6.16.0",
+            "version": "6.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "6c6c03110bfaf02a46e9906b3f0058851f3df2c8"
+                "reference": "1c179b500667e70f998d6a4ef0af96386af3d032"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/6c6c03110bfaf02a46e9906b3f0058851f3df2c8",
-                "reference": "6c6c03110bfaf02a46e9906b3f0058851f3df2c8",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/1c179b500667e70f998d6a4ef0af96386af3d032",
+                "reference": "1c179b500667e70f998d6a4ef0af96386af3d032",
                 "shasum": ""
             },
             "require": {
@@ -12564,7 +12561,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/6.16.0"
+                "source": "https://github.com/zircote/swagger-php/tree/6.17.1"
             },
             "funding": [
                 {
@@ -12572,7 +12569,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-17T07:23:10+00:00"
+            "time": "2026-10-19T19:53:44+00:00"
         }
     ],
     "aliases": [],

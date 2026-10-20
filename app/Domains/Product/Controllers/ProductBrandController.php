@@ -6,7 +6,6 @@ namespace App\Domains\Product\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Product\Entities\ProductBrandEntity;
-use App\Domains\Product\Services\ProductBrandService;
 use App\Domains\Product\Requests\ProductBrand\ProductBrandCreateRequest;
 use App\Domains\Product\Requests\ProductBrand\ProductBrandDestroyRequest;
 use App\Domains\Product\Requests\ProductBrand\ProductBrandQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Product\Requests\ProductBrand\ProductBrandUpdateRequest;
 use App\Domains\Product\Responses\ProductBrand\ProductBrandDestroyResponse;
 use App\Domains\Product\Responses\ProductBrand\ProductBrandQueryResponse;
 use App\Domains\Product\Responses\ProductBrand\ProductBrandResponse;
+use App\Domains\Product\Services\ProductBrandService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class ProductBrandController extends BaseController
             if (isset($requestData[ProductBrandQueryRequest::getName])) {
                 $condition[] = [ProductBrandEntity::getName, '=', $requestData[ProductBrandQueryRequest::getName]];
             }
-            
+
             $result = $this->productBrandService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

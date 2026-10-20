@@ -26,7 +26,7 @@ class UserSmsCodeEntity implements \JsonSerializable
 
     public const string getIp = 'ip'; // 发送IP,用于防刷
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreateTime = 'create_time'; // 创建时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -49,7 +49,7 @@ class UserSmsCodeEntity implements \JsonSerializable
     #[OA\Property(property: 'ip', description: '发送IP,用于防刷', type: 'string')]
     private string $ip;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -165,7 +165,7 @@ class UserSmsCodeEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -173,7 +173,7 @@ class UserSmsCodeEntity implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

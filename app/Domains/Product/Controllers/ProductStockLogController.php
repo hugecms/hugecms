@@ -6,7 +6,6 @@ namespace App\Domains\Product\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Product\Entities\ProductStockLogEntity;
-use App\Domains\Product\Services\ProductStockLogService;
 use App\Domains\Product\Requests\ProductStockLog\ProductStockLogCreateRequest;
 use App\Domains\Product\Requests\ProductStockLog\ProductStockLogDestroyRequest;
 use App\Domains\Product\Requests\ProductStockLog\ProductStockLogQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Product\Requests\ProductStockLog\ProductStockLogUpdateRequest;
 use App\Domains\Product\Responses\ProductStockLog\ProductStockLogDestroyResponse;
 use App\Domains\Product\Responses\ProductStockLog\ProductStockLogQueryResponse;
 use App\Domains\Product\Responses\ProductStockLog\ProductStockLogResponse;
+use App\Domains\Product\Services\ProductStockLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +48,9 @@ class ProductStockLogController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[ProductStockLogQueryRequest::getProductId])) {
+                $condition[] = [ProductStockLogEntity::getProductId, '=', $requestData[ProductStockLogQueryRequest::getProductId]];
+            }
             if (isset($requestData[ProductStockLogQueryRequest::getSkuId])) {
                 $condition[] = [ProductStockLogEntity::getSkuId, '=', $requestData[ProductStockLogQueryRequest::getSkuId]];
             }
@@ -57,7 +60,7 @@ class ProductStockLogController extends BaseController
             if (isset($requestData[ProductStockLogQueryRequest::getId])) {
                 $condition[] = [ProductStockLogEntity::getId, '=', $requestData[ProductStockLogQueryRequest::getId]];
             }
-            
+
             $result = $this->productStockLogService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

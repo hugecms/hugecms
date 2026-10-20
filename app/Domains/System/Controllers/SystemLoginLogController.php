@@ -6,7 +6,6 @@ namespace App\Domains\System\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\System\Entities\SystemLoginLogEntity;
-use App\Domains\System\Services\SystemLoginLogService;
 use App\Domains\System\Requests\SystemLoginLog\SystemLoginLogCreateRequest;
 use App\Domains\System\Requests\SystemLoginLog\SystemLoginLogDestroyRequest;
 use App\Domains\System\Requests\SystemLoginLog\SystemLoginLogQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\System\Requests\SystemLoginLog\SystemLoginLogUpdateRequest;
 use App\Domains\System\Responses\SystemLoginLog\SystemLoginLogDestroyResponse;
 use App\Domains\System\Responses\SystemLoginLog\SystemLoginLogQueryResponse;
 use App\Domains\System\Responses\SystemLoginLog\SystemLoginLogResponse;
+use App\Domains\System\Services\SystemLoginLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,13 +54,16 @@ class SystemLoginLogController extends BaseController
             if (isset($requestData[SystemLoginLogQueryRequest::getIp])) {
                 $condition[] = [SystemLoginLogEntity::getIp, '=', $requestData[SystemLoginLogQueryRequest::getIp]];
             }
+            if (isset($requestData[SystemLoginLogQueryRequest::getUserType])) {
+                $condition[] = [SystemLoginLogEntity::getUserType, '=', $requestData[SystemLoginLogQueryRequest::getUserType]];
+            }
             if (isset($requestData[SystemLoginLogQueryRequest::getUserId])) {
                 $condition[] = [SystemLoginLogEntity::getUserId, '=', $requestData[SystemLoginLogQueryRequest::getUserId]];
             }
             if (isset($requestData[SystemLoginLogQueryRequest::getId])) {
                 $condition[] = [SystemLoginLogEntity::getId, '=', $requestData[SystemLoginLogQueryRequest::getId]];
             }
-            
+
             $result = $this->systemLoginLogService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

@@ -26,9 +26,9 @@ class UserProfileEntity implements \JsonSerializable
 
     public const string getLocation = 'location'; // 所在地
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreatedAt = 'created_at'; // 创建时间
 
-    public const string getUpdateTime = 'update_time';
+    public const string getUpdatedAt = 'updated_at'; // 更新时间
 
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
@@ -51,11 +51,11 @@ class UserProfileEntity implements \JsonSerializable
     #[OA\Property(property: 'location', description: '所在地', type: 'string')]
     private string $location;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
 
     /**
      * 获取用户ID
@@ -170,34 +170,34 @@ class UserProfileEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
     }
 }

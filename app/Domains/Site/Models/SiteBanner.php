@@ -37,7 +37,5 @@ class SiteBanner extends Model
         'status',
         'start_time',
         'end_time',
-        'create_time',
-        'update_time',
     ];
 }

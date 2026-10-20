@@ -15,17 +15,17 @@ enum UserProfileGenderEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =未知
+     * 未知
      */
     case Gender0 = 0;
 
     /**
-     * =男
+     * 男
      */
     case Gender1 = 1;
 
     /**
-     * =女
+     * 女
      */
     case Gender2 = 2;
 }

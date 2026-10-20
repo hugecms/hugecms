@@ -15,12 +15,12 @@ enum AdminUserStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =禁用
+     * 禁用
      */
     case Status0 = 0;
 
     /**
-     * =正常
+     * 正常
      */
     case Status1 = 1;
 }

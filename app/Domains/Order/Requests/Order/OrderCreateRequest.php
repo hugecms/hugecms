@@ -17,6 +17,7 @@ use OpenApi\Attributes as OA;
         self::getDiscountAmount,
         self::getPayAmount,
         self::getStatus,
+        self::getRefundStatus,
         self::getReceiverName,
         self::getReceiverPhone,
         self::getReceiverRegion,
@@ -27,8 +28,6 @@ use OpenApi\Attributes as OA;
         self::getFinishTime,
         self::getCancelTime,
         self::getCancelReason,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getOrderNo, description: '订单号', type: 'string'),
@@ -37,7 +36,8 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getFreightAmount, description: '运费', type: 'string'),
         new OA\Property(property: self::getDiscountAmount, description: '优惠金额', type: 'string'),
         new OA\Property(property: self::getPayAmount, description: '实付金额', type: 'string'),
-        new OA\Property(property: self::getStatus, description: '状态:0=待支付,1=已支付,2=已发货,3=已完成,4=已取消', type: 'integer'),
+        new OA\Property(property: self::getStatus, description: '状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)', type: 'integer'),
+        new OA\Property(property: self::getRefundStatus, description: '售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写', type: 'integer'),
         new OA\Property(property: self::getReceiverName, description: '收货人', type: 'string'),
         new OA\Property(property: self::getReceiverPhone, description: '收货电话', type: 'string'),
         new OA\Property(property: self::getReceiverRegion, description: '省市区', type: 'string'),
@@ -48,8 +48,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getFinishTime, description: '完成时间', type: 'string'),
         new OA\Property(property: self::getCancelTime, description: '取消时间', type: 'string'),
         new OA\Property(property: self::getCancelReason, description: '取消原因', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class OrderCreateRequest extends FormRequest
@@ -67,6 +65,8 @@ class OrderCreateRequest extends FormRequest
     public const string getPayAmount = 'payAmount';
 
     public const string getStatus = 'status';
+
+    public const string getRefundStatus = 'refundStatus';
 
     public const string getReceiverName = 'receiverName';
 
@@ -88,10 +88,6 @@ class OrderCreateRequest extends FormRequest
 
     public const string getCancelReason = 'cancelReason';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -102,6 +98,7 @@ class OrderCreateRequest extends FormRequest
             self::getDiscountAmount => 'required',
             self::getPayAmount => 'required',
             self::getStatus => 'required',
+            self::getRefundStatus => 'required',
             self::getReceiverName => 'required',
             self::getReceiverPhone => 'required',
             self::getReceiverRegion => 'required',
@@ -112,8 +109,6 @@ class OrderCreateRequest extends FormRequest
             self::getFinishTime => 'required',
             self::getCancelTime => 'required',
             self::getCancelReason => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -126,7 +121,8 @@ class OrderCreateRequest extends FormRequest
             self::getFreightAmount.'.required' => '请设置运费',
             self::getDiscountAmount.'.required' => '请设置优惠金额',
             self::getPayAmount.'.required' => '请设置实付金额',
-            self::getStatus.'.required' => '请设置状态:0=待支付,1=已支付,2=已发货,3=已完成,4=已取消',
+            self::getStatus.'.required' => '请设置状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)',
+            self::getRefundStatus.'.required' => '请设置售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写',
             self::getReceiverName.'.required' => '请设置收货人',
             self::getReceiverPhone.'.required' => '请设置收货电话',
             self::getReceiverRegion.'.required' => '请设置省市区',
@@ -137,8 +133,6 @@ class OrderCreateRequest extends FormRequest
             self::getFinishTime.'.required' => '请设置完成时间',
             self::getCancelTime.'.required' => '请设置取消时间',
             self::getCancelReason.'.required' => '请设置取消原因',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

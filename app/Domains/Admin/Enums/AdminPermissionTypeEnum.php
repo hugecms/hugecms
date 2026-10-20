@@ -15,12 +15,12 @@ enum AdminPermissionTypeEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =菜单
+     * 菜单
      */
     case Type1 = 1;
 
     /**
-     * =按钮
+     * 按钮
      */
     case Type2 = 2;
 }

@@ -17,8 +17,6 @@ use OpenApi\Attributes as OA;
         self::getBirthday,
         self::getBio,
         self::getLocation,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
@@ -28,8 +26,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getBirthday, description: '生日', type: 'string'),
         new OA\Property(property: self::getBio, description: '个人简介', type: 'string'),
         new OA\Property(property: self::getLocation, description: '所在地', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class UserProfileCreateRequest extends FormRequest
@@ -48,10 +44,6 @@ class UserProfileCreateRequest extends FormRequest
 
     public const string getLocation = 'location';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -62,8 +54,6 @@ class UserProfileCreateRequest extends FormRequest
             self::getBirthday => 'required',
             self::getBio => 'required',
             self::getLocation => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -77,8 +67,6 @@ class UserProfileCreateRequest extends FormRequest
             self::getBirthday.'.required' => '请设置生日',
             self::getBio.'.required' => '请设置个人简介',
             self::getLocation.'.required' => '请设置所在地',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

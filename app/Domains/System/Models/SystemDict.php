@@ -31,7 +31,5 @@ class SystemDict extends Model
         'type',
         'name',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

@@ -45,7 +45,7 @@ class ProductStockLogResponse implements \JsonSerializable
     #[OA\Property(property: 'remark', description: '备注', type: 'string')]
     private string $remark;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -225,7 +225,7 @@ class ProductStockLogResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -233,7 +233,7 @@ class ProductStockLogResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

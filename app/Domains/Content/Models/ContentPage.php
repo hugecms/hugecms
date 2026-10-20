@@ -35,7 +35,5 @@ class ContentPage extends Model
         'seo_keywords',
         'seo_description',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

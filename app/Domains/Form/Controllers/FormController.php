@@ -6,7 +6,6 @@ namespace App\Domains\Form\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Form\Entities\FormEntity;
-use App\Domains\Form\Services\FormService;
 use App\Domains\Form\Requests\Form\FormCreateRequest;
 use App\Domains\Form\Requests\Form\FormDestroyRequest;
 use App\Domains\Form\Requests\Form\FormQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Form\Requests\Form\FormUpdateRequest;
 use App\Domains\Form\Responses\Form\FormDestroyResponse;
 use App\Domains\Form\Responses\Form\FormQueryResponse;
 use App\Domains\Form\Responses\Form\FormResponse;
+use App\Domains\Form\Services\FormService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +51,7 @@ class FormController extends BaseController
             if (isset($requestData[FormQueryRequest::getId])) {
                 $condition[] = [FormEntity::getId, '=', $requestData[FormQueryRequest::getId]];
             }
-            
+
             $result = $this->formService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

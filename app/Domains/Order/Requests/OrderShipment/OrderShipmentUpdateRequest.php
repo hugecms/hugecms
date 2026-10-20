@@ -23,7 +23,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getExpressCompany, description: '快递公司', type: 'string'),
         new OA\Property(property: self::getExpressNo, description: '运单号', type: 'string'),
         new OA\Property(property: self::getRemark, description: '发货备注', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class OrderShipmentUpdateRequest extends FormRequest
@@ -60,7 +60,7 @@ class OrderShipmentUpdateRequest extends FormRequest
             self::getExpressCompany.'.required' => '请设置快递公司',
             self::getExpressNo.'.required' => '请设置运单号',
             self::getRemark.'.required' => '请设置发货备注',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

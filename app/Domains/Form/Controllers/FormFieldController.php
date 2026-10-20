@@ -6,7 +6,6 @@ namespace App\Domains\Form\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Form\Entities\FormFieldEntity;
-use App\Domains\Form\Services\FormFieldService;
 use App\Domains\Form\Requests\FormField\FormFieldCreateRequest;
 use App\Domains\Form\Requests\FormField\FormFieldDestroyRequest;
 use App\Domains\Form\Requests\FormField\FormFieldQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Form\Requests\FormField\FormFieldUpdateRequest;
 use App\Domains\Form\Responses\FormField\FormFieldDestroyResponse;
 use App\Domains\Form\Responses\FormField\FormFieldQueryResponse;
 use App\Domains\Form\Responses\FormField\FormFieldResponse;
+use App\Domains\Form\Services\FormFieldService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,10 +51,13 @@ class FormFieldController extends BaseController
             if (isset($requestData[FormFieldQueryRequest::getId])) {
                 $condition[] = [FormFieldEntity::getId, '=', $requestData[FormFieldQueryRequest::getId]];
             }
+            if (isset($requestData[FormFieldQueryRequest::getFormId])) {
+                $condition[] = [FormFieldEntity::getFormId, '=', $requestData[FormFieldQueryRequest::getFormId]];
+            }
             if (isset($requestData[FormFieldQueryRequest::getFieldName])) {
                 $condition[] = [FormFieldEntity::getFieldName, '=', $requestData[FormFieldQueryRequest::getFieldName]];
             }
-            
+
             $result = $this->formFieldService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

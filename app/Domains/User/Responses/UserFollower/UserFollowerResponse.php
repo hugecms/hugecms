@@ -18,7 +18,7 @@ class UserFollowerResponse implements \JsonSerializable
     #[OA\Property(property: 'followerId', description: '关注者用户ID', type: 'integer')]
     private int $followerId;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -54,7 +54,7 @@ class UserFollowerResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -62,7 +62,7 @@ class UserFollowerResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

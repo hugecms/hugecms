@@ -6,7 +6,8 @@
 
 declare(strict_types=1);
 
+use App\Api\User\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 // 登录
-Route::get('login', [\App\Api\User\Controllers\AuthController::class, 'login'])->name('login');
+Route::get('login', [AuthController::class, 'login'])->name('login');

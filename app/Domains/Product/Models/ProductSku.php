@@ -32,8 +32,7 @@ class ProductSku extends Model
         'specs',
         'price',
         'stock',
+        'locked_stock',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

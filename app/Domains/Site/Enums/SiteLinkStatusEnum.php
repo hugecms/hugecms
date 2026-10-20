@@ -15,12 +15,12 @@ enum SiteLinkStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =禁用
+     * 禁用
      */
     case Status0 = 0;
 
     /**
-     * =启用
+     * 启用
      */
     case Status1 = 1;
 }

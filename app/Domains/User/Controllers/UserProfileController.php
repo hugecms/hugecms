@@ -6,7 +6,6 @@ namespace App\Domains\User\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\User\Entities\UserProfileEntity;
-use App\Domains\User\Services\UserProfileService;
 use App\Domains\User\Requests\UserProfile\UserProfileCreateRequest;
 use App\Domains\User\Requests\UserProfile\UserProfileDestroyRequest;
 use App\Domains\User\Requests\UserProfile\UserProfileQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\User\Requests\UserProfile\UserProfileUpdateRequest;
 use App\Domains\User\Responses\UserProfile\UserProfileDestroyResponse;
 use App\Domains\User\Responses\UserProfile\UserProfileQueryResponse;
 use App\Domains\User\Responses\UserProfile\UserProfileResponse;
+use App\Domains\User\Services\UserProfileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +51,7 @@ class UserProfileController extends BaseController
             if (isset($requestData[UserProfileQueryRequest::getUserId])) {
                 $condition[] = [UserProfileEntity::getUserId, '=', $requestData[UserProfileQueryRequest::getUserId]];
             }
-            
+
             $result = $this->userProfileService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

@@ -24,14 +24,14 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getOrderId, description: '订单ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
-        new OA\Property(property: self::getSkuId, description: 'SKU ID', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
         new OA\Property(property: self::getProductName, description: '商品名称快照', type: 'string'),
         new OA\Property(property: self::getSkuSpecs, description: '规格快照', type: 'string'),
         new OA\Property(property: self::getImage, description: '商品图快照', type: 'string'),
         new OA\Property(property: self::getPrice, description: '成交单价', type: 'string'),
         new OA\Property(property: self::getQuantity, description: '数量', type: 'integer'),
         new OA\Property(property: self::getTotalAmount, description: '小计', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class OrderItemCreateRequest extends FormRequest
@@ -77,14 +77,14 @@ class OrderItemCreateRequest extends FormRequest
         return [
             self::getOrderId.'.required' => '请设置订单ID',
             self::getProductId.'.required' => '请设置商品ID',
-            self::getSkuId.'.required' => '请设置SKU ID',
+            self::getSkuId.'.required' => '请设置SKU ID,0=单规格',
             self::getProductName.'.required' => '请设置商品名称快照',
             self::getSkuSpecs.'.required' => '请设置规格快照',
             self::getImage.'.required' => '请设置商品图快照',
             self::getPrice.'.required' => '请设置成交单价',
             self::getQuantity.'.required' => '请设置数量',
             self::getTotalAmount.'.required' => '请设置小计',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

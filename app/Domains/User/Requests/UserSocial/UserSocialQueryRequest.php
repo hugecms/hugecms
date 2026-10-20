@@ -13,6 +13,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
+        new OA\Property(property: self::getPlatform, description: '平台:wechat,qq,weibo,github', type: 'string'),
         new OA\Property(property: self::getOpenId, description: '第三方OpenID', type: 'string'),
     ]
 )]
@@ -21,6 +22,8 @@ class UserSocialQueryRequest extends FormRequest
     public const string getId = 'id';
 
     public const string getUserId = 'userId';
+
+    public const string getPlatform = 'platform';
 
     public const string getOpenId = 'openId';
 

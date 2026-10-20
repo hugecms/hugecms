@@ -6,7 +6,6 @@ namespace App\Domains\System\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\System\Entities\SystemOperationLogEntity;
-use App\Domains\System\Services\SystemOperationLogService;
 use App\Domains\System\Requests\SystemOperationLog\SystemOperationLogCreateRequest;
 use App\Domains\System\Requests\SystemOperationLog\SystemOperationLogDestroyRequest;
 use App\Domains\System\Requests\SystemOperationLog\SystemOperationLogQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\System\Requests\SystemOperationLog\SystemOperationLogUpdateReque
 use App\Domains\System\Responses\SystemOperationLog\SystemOperationLogDestroyResponse;
 use App\Domains\System\Responses\SystemOperationLog\SystemOperationLogQueryResponse;
 use App\Domains\System\Responses\SystemOperationLog\SystemOperationLogResponse;
+use App\Domains\System\Services\SystemOperationLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,13 +51,16 @@ class SystemOperationLogController extends BaseController
             if (isset($requestData[SystemOperationLogQueryRequest::getCreateTime])) {
                 $condition[] = [SystemOperationLogEntity::getCreateTime, '=', $requestData[SystemOperationLogQueryRequest::getCreateTime]];
             }
+            if (isset($requestData[SystemOperationLogQueryRequest::getUserType])) {
+                $condition[] = [SystemOperationLogEntity::getUserType, '=', $requestData[SystemOperationLogQueryRequest::getUserType]];
+            }
             if (isset($requestData[SystemOperationLogQueryRequest::getUserId])) {
                 $condition[] = [SystemOperationLogEntity::getUserId, '=', $requestData[SystemOperationLogQueryRequest::getUserId]];
             }
             if (isset($requestData[SystemOperationLogQueryRequest::getId])) {
                 $condition[] = [SystemOperationLogEntity::getId, '=', $requestData[SystemOperationLogQueryRequest::getId]];
             }
-            
+
             $result = $this->systemOperationLogService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

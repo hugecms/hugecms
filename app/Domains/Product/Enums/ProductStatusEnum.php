@@ -15,12 +15,12 @@ enum ProductStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =下架
+     * 下架
      */
     case Status0 = 0;
 
     /**
-     * =上架
+     * 上架
      */
     case Status1 = 1;
 }

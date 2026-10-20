@@ -6,7 +6,8 @@
 
 declare(strict_types=1);
 
+use App\Api\Portal\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // 首页
-Route::get('home', [\App\Api\Portal\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');

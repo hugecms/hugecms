@@ -29,14 +29,14 @@ class User extends Model
      */
     protected $fillable = [
         'username',
+        'password',
         'email',
         'phone',
-        'password',
         'status',
+        'rank_id',
+        'balance',
+        'points',
         'last_login_time',
         'last_login_ip',
-        'create_time',
-        'update_time',
-        'delete_time',
     ];
 }

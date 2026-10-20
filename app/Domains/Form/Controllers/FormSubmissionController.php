@@ -6,7 +6,6 @@ namespace App\Domains\Form\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Form\Entities\FormSubmissionEntity;
-use App\Domains\Form\Services\FormSubmissionService;
 use App\Domains\Form\Requests\FormSubmission\FormSubmissionCreateRequest;
 use App\Domains\Form\Requests\FormSubmission\FormSubmissionDestroyRequest;
 use App\Domains\Form\Requests\FormSubmission\FormSubmissionQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Form\Requests\FormSubmission\FormSubmissionUpdateRequest;
 use App\Domains\Form\Responses\FormSubmission\FormSubmissionDestroyResponse;
 use App\Domains\Form\Responses\FormSubmission\FormSubmissionQueryResponse;
 use App\Domains\Form\Responses\FormSubmission\FormSubmissionResponse;
+use App\Domains\Form\Services\FormSubmissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +48,9 @@ class FormSubmissionController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[FormSubmissionQueryRequest::getFormId])) {
+                $condition[] = [FormSubmissionEntity::getFormId, '=', $requestData[FormSubmissionQueryRequest::getFormId]];
+            }
             if (isset($requestData[FormSubmissionQueryRequest::getCreateTime])) {
                 $condition[] = [FormSubmissionEntity::getCreateTime, '=', $requestData[FormSubmissionQueryRequest::getCreateTime]];
             }
@@ -57,7 +60,7 @@ class FormSubmissionController extends BaseController
             if (isset($requestData[FormSubmissionQueryRequest::getId])) {
                 $condition[] = [FormSubmissionEntity::getId, '=', $requestData[FormSubmissionQueryRequest::getId]];
             }
-            
+
             $result = $this->formSubmissionService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

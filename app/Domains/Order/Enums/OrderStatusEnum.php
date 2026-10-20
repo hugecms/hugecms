@@ -15,27 +15,32 @@ enum OrderStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =待支付
+     * 待支付
      */
     case Status0 = 0;
 
     /**
-     * =已支付
+     * 已支付(待发货)
      */
     case Status1 = 1;
 
     /**
-     * =已发货
+     * 已发货(待收货)
      */
     case Status2 = 2;
 
     /**
-     * =已完成
+     * 已完成
      */
     case Status3 = 3;
 
     /**
-     * =已取消
+     * 已取消
      */
     case Status4 = 4;
+
+    /**
+     * 已关闭(超时未支付)
+     */
+    case Status5 = 5;
 }

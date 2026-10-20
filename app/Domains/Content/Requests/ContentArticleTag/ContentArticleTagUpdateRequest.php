@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getArticleId, description: '文章ID', type: 'integer'),
         new OA\Property(property: self::getTagId, description: '标签ID', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class ContentArticleTagUpdateRequest extends FormRequest
@@ -42,7 +42,7 @@ class ContentArticleTagUpdateRequest extends FormRequest
         return [
             self::getArticleId.'.required' => '请设置文章ID',
             self::getTagId.'.required' => '请设置标签ID',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

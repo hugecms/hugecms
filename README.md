@@ -138,5 +138,6 @@ php artisan serve
 | 文档 | 内容 |
 |---|---|
 | [数据表设计技术文档](docs/database-design.md) | 13 域表全景、全库设计规范、六大核心机制 |
+| [产品方案评审](docs/product-review.md) | 评审会汇报材料：定位论证、能力方案、路线与决策请求 |
 | [遗留决策点](docs/pending-decisions.md) | 产品/技术待拍板事项与维护约定 |
 | [ECShop 2.7.3 表映射](docs/ecshop-2.7.3-tables-domain-mapping.md) | 数据库蓝本来源与 88 表逐项映射 |

@@ -20,5 +20,5 @@ class ProductCategoryService extends CommonService implements ServiceInterface
     }
 
     // please fill in your code here
-    
+
 }

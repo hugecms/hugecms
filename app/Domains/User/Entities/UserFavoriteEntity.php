@@ -20,7 +20,7 @@ class UserFavoriteEntity implements \JsonSerializable
 
     public const string getTargetId = 'target_id'; // 目标ID
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreateTime = 'create_time'; // 创建时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -34,7 +34,7 @@ class UserFavoriteEntity implements \JsonSerializable
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
     private int $targetId;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -102,7 +102,7 @@ class UserFavoriteEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -110,7 +110,7 @@ class UserFavoriteEntity implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

@@ -6,7 +6,6 @@ namespace App\Domains\Site\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Site\Entities\SiteBannerEntity;
-use App\Domains\Site\Services\SiteBannerService;
 use App\Domains\Site\Requests\SiteBanner\SiteBannerCreateRequest;
 use App\Domains\Site\Requests\SiteBanner\SiteBannerDestroyRequest;
 use App\Domains\Site\Requests\SiteBanner\SiteBannerQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Site\Requests\SiteBanner\SiteBannerUpdateRequest;
 use App\Domains\Site\Responses\SiteBanner\SiteBannerDestroyResponse;
 use App\Domains\Site\Responses\SiteBanner\SiteBannerQueryResponse;
 use App\Domains\Site\Responses\SiteBanner\SiteBannerResponse;
+use App\Domains\Site\Services\SiteBannerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class SiteBannerController extends BaseController
             if (isset($requestData[SiteBannerQueryRequest::getId])) {
                 $condition[] = [SiteBannerEntity::getId, '=', $requestData[SiteBannerQueryRequest::getId]];
             }
-            
+
             $result = $this->siteBannerService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

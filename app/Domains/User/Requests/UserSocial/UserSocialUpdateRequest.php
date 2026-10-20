@@ -17,8 +17,6 @@ use OpenApi\Attributes as OA;
         self::getUnionId,
         self::getNickname,
         self::getAvatar,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
@@ -28,8 +26,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getUnionId, description: '第三方UnionID,如微信多应用互通', type: 'string'),
         new OA\Property(property: self::getNickname, description: '第三方昵称快照', type: 'string'),
         new OA\Property(property: self::getAvatar, description: '第三方头像快照', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class UserSocialUpdateRequest extends FormRequest
@@ -48,10 +44,6 @@ class UserSocialUpdateRequest extends FormRequest
 
     public const string getAvatar = 'avatar';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -62,8 +54,6 @@ class UserSocialUpdateRequest extends FormRequest
             self::getUnionId => 'required',
             self::getNickname => 'required',
             self::getAvatar => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -77,8 +67,6 @@ class UserSocialUpdateRequest extends FormRequest
             self::getUnionId.'.required' => '请设置第三方UnionID,如微信多应用互通',
             self::getNickname.'.required' => '请设置第三方昵称快照',
             self::getAvatar.'.required' => '请设置第三方头像快照',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

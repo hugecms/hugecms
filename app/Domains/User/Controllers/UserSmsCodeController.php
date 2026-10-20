@@ -6,7 +6,6 @@ namespace App\Domains\User\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\User\Entities\UserSmsCodeEntity;
-use App\Domains\User\Services\UserSmsCodeService;
 use App\Domains\User\Requests\UserSmsCode\UserSmsCodeCreateRequest;
 use App\Domains\User\Requests\UserSmsCode\UserSmsCodeDestroyRequest;
 use App\Domains\User\Requests\UserSmsCode\UserSmsCodeQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\User\Requests\UserSmsCode\UserSmsCodeUpdateRequest;
 use App\Domains\User\Responses\UserSmsCode\UserSmsCodeDestroyResponse;
 use App\Domains\User\Responses\UserSmsCode\UserSmsCodeQueryResponse;
 use App\Domains\User\Responses\UserSmsCode\UserSmsCodeResponse;
+use App\Domains\User\Services\UserSmsCodeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,13 +54,16 @@ class UserSmsCodeController extends BaseController
             if (isset($requestData[UserSmsCodeQueryRequest::getIp])) {
                 $condition[] = [UserSmsCodeEntity::getIp, '=', $requestData[UserSmsCodeQueryRequest::getIp]];
             }
+            if (isset($requestData[UserSmsCodeQueryRequest::getPhone])) {
+                $condition[] = [UserSmsCodeEntity::getPhone, '=', $requestData[UserSmsCodeQueryRequest::getPhone]];
+            }
             if (isset($requestData[UserSmsCodeQueryRequest::getScene])) {
                 $condition[] = [UserSmsCodeEntity::getScene, '=', $requestData[UserSmsCodeQueryRequest::getScene]];
             }
             if (isset($requestData[UserSmsCodeQueryRequest::getId])) {
                 $condition[] = [UserSmsCodeEntity::getId, '=', $requestData[UserSmsCodeQueryRequest::getId]];
             }
-            
+
             $result = $this->userSmsCodeService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

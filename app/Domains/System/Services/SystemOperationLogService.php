@@ -20,5 +20,5 @@ class SystemOperationLogService extends CommonService implements ServiceInterfac
     }
 
     // please fill in your code here
-    
+
 }

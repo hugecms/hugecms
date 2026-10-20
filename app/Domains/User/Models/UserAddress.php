@@ -34,8 +34,5 @@ class UserAddress extends Model
         'receiver_region',
         'receiver_address',
         'is_default',
-        'create_time',
-        'update_time',
-        'delete_time',
     ];
 }

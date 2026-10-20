@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
+        new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
         new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
     ]
@@ -19,6 +20,8 @@ use OpenApi\Attributes as OA;
 class OrderCartQueryRequest extends FormRequest
 {
     public const string getId = 'id';
+
+    public const string getUserId = 'userId';
 
     public const string getProductId = 'productId';
 

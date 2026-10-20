@@ -21,7 +21,7 @@ class OrderItemResponse implements \JsonSerializable
     #[OA\Property(property: 'productId', description: '商品ID', type: 'integer')]
     private int $productId;
 
-    #[OA\Property(property: 'skuId', description: 'SKU ID', type: 'integer')]
+    #[OA\Property(property: 'skuId', description: 'SKU ID,0=单规格', type: 'integer')]
     private int $skuId;
 
     #[OA\Property(property: 'productName', description: '商品名称快照', type: 'string')]
@@ -42,7 +42,7 @@ class OrderItemResponse implements \JsonSerializable
     #[OA\Property(property: 'totalAmount', description: '小计', type: 'string')]
     private string $totalAmount;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -94,7 +94,7 @@ class OrderItemResponse implements \JsonSerializable
     }
 
     /**
-     * 获取SKU ID
+     * 获取SKU ID,0=单规格
      */
     public function getSkuId(): int
     {
@@ -102,7 +102,7 @@ class OrderItemResponse implements \JsonSerializable
     }
 
     /**
-     * 设置SKU ID
+     * 设置SKU ID,0=单规格
      */
     public function setSkuId(int $skuId): void
     {
@@ -206,7 +206,7 @@ class OrderItemResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -214,7 +214,7 @@ class OrderItemResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

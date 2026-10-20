@@ -35,6 +35,7 @@ class Order extends Model
         'discount_amount',
         'pay_amount',
         'status',
+        'refund_status',
         'receiver_name',
         'receiver_phone',
         'receiver_region',
@@ -45,7 +46,5 @@ class Order extends Model
         'finish_time',
         'cancel_time',
         'cancel_reason',
-        'create_time',
-        'update_time',
     ];
 }

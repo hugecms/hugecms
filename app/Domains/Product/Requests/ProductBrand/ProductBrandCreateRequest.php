@@ -14,16 +14,12 @@ use OpenApi\Attributes as OA;
         self::getLogo,
         self::getSort,
         self::getStatus,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getName, description: '品牌名称', type: 'string'),
         new OA\Property(property: self::getLogo, description: '品牌LOGO', type: 'string'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=启用', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class ProductBrandCreateRequest extends FormRequest
@@ -36,10 +32,6 @@ class ProductBrandCreateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -47,8 +39,6 @@ class ProductBrandCreateRequest extends FormRequest
             self::getLogo => 'required',
             self::getSort => 'required',
             self::getStatus => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -59,8 +49,6 @@ class ProductBrandCreateRequest extends FormRequest
             self::getLogo.'.required' => '请设置品牌LOGO',
             self::getSort.'.required' => '请设置排序',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=启用',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

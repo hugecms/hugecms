@@ -6,7 +6,6 @@ namespace App\Domains\Admin\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Admin\Entities\AdminUserRoleEntity;
-use App\Domains\Admin\Services\AdminUserRoleService;
 use App\Domains\Admin\Requests\AdminUserRole\AdminUserRoleCreateRequest;
 use App\Domains\Admin\Requests\AdminUserRole\AdminUserRoleDestroyRequest;
 use App\Domains\Admin\Requests\AdminUserRole\AdminUserRoleQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Admin\Requests\AdminUserRole\AdminUserRoleUpdateRequest;
 use App\Domains\Admin\Responses\AdminUserRole\AdminUserRoleDestroyResponse;
 use App\Domains\Admin\Responses\AdminUserRole\AdminUserRoleQueryResponse;
 use App\Domains\Admin\Responses\AdminUserRole\AdminUserRoleResponse;
+use App\Domains\Admin\Services\AdminUserRoleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,10 +51,13 @@ class AdminUserRoleController extends BaseController
             if (isset($requestData[AdminUserRoleQueryRequest::getRoleId])) {
                 $condition[] = [AdminUserRoleEntity::getRoleId, '=', $requestData[AdminUserRoleQueryRequest::getRoleId]];
             }
+            if (isset($requestData[AdminUserRoleQueryRequest::getAdminUserId])) {
+                $condition[] = [AdminUserRoleEntity::getAdminUserId, '=', $requestData[AdminUserRoleQueryRequest::getAdminUserId]];
+            }
             if (isset($requestData[AdminUserRoleQueryRequest::getRoleId])) {
                 $condition[] = [AdminUserRoleEntity::getRoleId, '=', $requestData[AdminUserRoleQueryRequest::getRoleId]];
             }
-            
+
             $result = $this->adminUserRoleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

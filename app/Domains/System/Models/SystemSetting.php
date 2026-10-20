@@ -33,7 +33,5 @@ class SystemSetting extends Model
         'title',
         'value',
         'type',
-        'create_time',
-        'update_time',
     ];
 }

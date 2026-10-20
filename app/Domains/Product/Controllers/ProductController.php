@@ -6,7 +6,6 @@ namespace App\Domains\Product\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Product\Entities\ProductEntity;
-use App\Domains\Product\Services\ProductService;
 use App\Domains\Product\Requests\Product\ProductCreateRequest;
 use App\Domains\Product\Requests\Product\ProductDestroyRequest;
 use App\Domains\Product\Requests\Product\ProductQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Product\Requests\Product\ProductUpdateRequest;
 use App\Domains\Product\Responses\Product\ProductDestroyResponse;
 use App\Domains\Product\Responses\Product\ProductQueryResponse;
 use App\Domains\Product\Responses\Product\ProductResponse;
+use App\Domains\Product\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +51,9 @@ class ProductController extends BaseController
             if (isset($requestData[ProductQueryRequest::getBrandId])) {
                 $condition[] = [ProductEntity::getBrandId, '=', $requestData[ProductQueryRequest::getBrandId]];
             }
+            if (isset($requestData[ProductQueryRequest::getCategoryId])) {
+                $condition[] = [ProductEntity::getCategoryId, '=', $requestData[ProductQueryRequest::getCategoryId]];
+            }
             if (isset($requestData[ProductQueryRequest::getStatus])) {
                 $condition[] = [ProductEntity::getStatus, '=', $requestData[ProductQueryRequest::getStatus]];
             }
@@ -60,7 +63,7 @@ class ProductController extends BaseController
             if (isset($requestData[ProductQueryRequest::getSn])) {
                 $condition[] = [ProductEntity::getSn, '=', $requestData[ProductQueryRequest::getSn]];
             }
-            
+
             $result = $this->productService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

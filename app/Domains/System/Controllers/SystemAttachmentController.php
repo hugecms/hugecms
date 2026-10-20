@@ -6,7 +6,6 @@ namespace App\Domains\System\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\System\Entities\SystemAttachmentEntity;
-use App\Domains\System\Services\SystemAttachmentService;
 use App\Domains\System\Requests\SystemAttachment\SystemAttachmentCreateRequest;
 use App\Domains\System\Requests\SystemAttachment\SystemAttachmentDestroyRequest;
 use App\Domains\System\Requests\SystemAttachment\SystemAttachmentQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\System\Requests\SystemAttachment\SystemAttachmentUpdateRequest;
 use App\Domains\System\Responses\SystemAttachment\SystemAttachmentDestroyResponse;
 use App\Domains\System\Responses\SystemAttachment\SystemAttachmentQueryResponse;
 use App\Domains\System\Responses\SystemAttachment\SystemAttachmentResponse;
+use App\Domains\System\Services\SystemAttachmentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class SystemAttachmentController extends BaseController
             if (isset($requestData[SystemAttachmentQueryRequest::getId])) {
                 $condition[] = [SystemAttachmentEntity::getId, '=', $requestData[SystemAttachmentQueryRequest::getId]];
             }
-            
+
             $result = $this->systemAttachmentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

@@ -6,7 +6,6 @@ namespace App\Domains\System\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\System\Entities\SystemDictEntity;
-use App\Domains\System\Services\SystemDictService;
 use App\Domains\System\Requests\SystemDict\SystemDictCreateRequest;
 use App\Domains\System\Requests\SystemDict\SystemDictDestroyRequest;
 use App\Domains\System\Requests\SystemDict\SystemDictQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\System\Requests\SystemDict\SystemDictUpdateRequest;
 use App\Domains\System\Responses\SystemDict\SystemDictDestroyResponse;
 use App\Domains\System\Responses\SystemDict\SystemDictQueryResponse;
 use App\Domains\System\Responses\SystemDict\SystemDictResponse;
+use App\Domains\System\Services\SystemDictService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class SystemDictController extends BaseController
             if (isset($requestData[SystemDictQueryRequest::getType])) {
                 $condition[] = [SystemDictEntity::getType, '=', $requestData[SystemDictQueryRequest::getType]];
             }
-            
+
             $result = $this->systemDictService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

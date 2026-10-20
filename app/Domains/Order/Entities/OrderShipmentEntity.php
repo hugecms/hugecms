@@ -22,7 +22,7 @@ class OrderShipmentEntity implements \JsonSerializable
 
     public const string getRemark = 'remark'; // 发货备注
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreateTime = 'create_time'; // 创建时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -39,7 +39,7 @@ class OrderShipmentEntity implements \JsonSerializable
     #[OA\Property(property: 'remark', description: '发货备注', type: 'string')]
     private string $remark;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -123,7 +123,7 @@ class OrderShipmentEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -131,7 +131,7 @@ class OrderShipmentEntity implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

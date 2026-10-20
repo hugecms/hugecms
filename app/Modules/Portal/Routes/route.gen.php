@@ -6,7 +6,8 @@
 
 declare(strict_types=1);
 
+use App\Modules\Portal\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 // test
-Route::get('/', [\App\Modules\Portal\Controllers\IndexController::class, 'index'])->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');

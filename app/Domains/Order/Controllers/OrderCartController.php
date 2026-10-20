@@ -6,7 +6,6 @@ namespace App\Domains\Order\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Order\Entities\OrderCartEntity;
-use App\Domains\Order\Services\OrderCartService;
 use App\Domains\Order\Requests\OrderCart\OrderCartCreateRequest;
 use App\Domains\Order\Requests\OrderCart\OrderCartDestroyRequest;
 use App\Domains\Order\Requests\OrderCart\OrderCartQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Order\Requests\OrderCart\OrderCartUpdateRequest;
 use App\Domains\Order\Responses\OrderCart\OrderCartDestroyResponse;
 use App\Domains\Order\Responses\OrderCart\OrderCartQueryResponse;
 use App\Domains\Order\Responses\OrderCart\OrderCartResponse;
+use App\Domains\Order\Services\OrderCartService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,10 +54,16 @@ class OrderCartController extends BaseController
             if (isset($requestData[OrderCartQueryRequest::getId])) {
                 $condition[] = [OrderCartEntity::getId, '=', $requestData[OrderCartQueryRequest::getId]];
             }
+            if (isset($requestData[OrderCartQueryRequest::getUserId])) {
+                $condition[] = [OrderCartEntity::getUserId, '=', $requestData[OrderCartQueryRequest::getUserId]];
+            }
+            if (isset($requestData[OrderCartQueryRequest::getProductId])) {
+                $condition[] = [OrderCartEntity::getProductId, '=', $requestData[OrderCartQueryRequest::getProductId]];
+            }
             if (isset($requestData[OrderCartQueryRequest::getSkuId])) {
                 $condition[] = [OrderCartEntity::getSkuId, '=', $requestData[OrderCartQueryRequest::getSkuId]];
             }
-            
+
             $result = $this->orderCartService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

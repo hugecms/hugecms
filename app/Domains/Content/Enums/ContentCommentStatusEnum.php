@@ -15,17 +15,17 @@ enum ContentCommentStatusEnum: int implements EnumMethodInterface
     use EnumMethods;
 
     /**
-     * =待审
+     * 待审
      */
     case Status0 = 0;
 
     /**
-     * =通过
+     * 通过
      */
     case Status1 = 1;
 
     /**
-     * =拒绝
+     * 拒绝
      */
     case Status2 = 2;
 }

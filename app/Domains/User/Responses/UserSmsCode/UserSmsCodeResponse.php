@@ -33,7 +33,7 @@ class UserSmsCodeResponse implements \JsonSerializable
     #[OA\Property(property: 'ip', description: '发送IP,用于防刷', type: 'string')]
     private string $ip;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -149,7 +149,7 @@ class UserSmsCodeResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -157,7 +157,7 @@ class UserSmsCodeResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

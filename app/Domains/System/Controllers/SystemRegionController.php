@@ -6,7 +6,6 @@ namespace App\Domains\System\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\System\Entities\SystemRegionEntity;
-use App\Domains\System\Services\SystemRegionService;
 use App\Domains\System\Requests\SystemRegion\SystemRegionCreateRequest;
 use App\Domains\System\Requests\SystemRegion\SystemRegionDestroyRequest;
 use App\Domains\System\Requests\SystemRegion\SystemRegionQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\System\Requests\SystemRegion\SystemRegionUpdateRequest;
 use App\Domains\System\Responses\SystemRegion\SystemRegionDestroyResponse;
 use App\Domains\System\Responses\SystemRegion\SystemRegionQueryResponse;
 use App\Domains\System\Responses\SystemRegion\SystemRegionResponse;
+use App\Domains\System\Services\SystemRegionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class SystemRegionController extends BaseController
             if (isset($requestData[SystemRegionQueryRequest::getId])) {
                 $condition[] = [SystemRegionEntity::getId, '=', $requestData[SystemRegionQueryRequest::getId]];
             }
-            
+
             $result = $this->systemRegionService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

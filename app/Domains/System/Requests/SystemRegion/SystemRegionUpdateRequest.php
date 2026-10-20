@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getLevel, description: '层级:1=省,2=市,3=区县', type: 'integer'),
         new OA\Property(property: self::getCode, description: '行政区划码', type: 'string'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class SystemRegionUpdateRequest extends FormRequest
@@ -66,7 +66,7 @@ class SystemRegionUpdateRequest extends FormRequest
             self::getLevel.'.required' => '请设置层级:1=省,2=市,3=区县',
             self::getCode.'.required' => '请设置行政区划码',
             self::getSort.'.required' => '请设置排序',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

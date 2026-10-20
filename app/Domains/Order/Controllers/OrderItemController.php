@@ -6,7 +6,6 @@ namespace App\Domains\Order\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Order\Entities\OrderItemEntity;
-use App\Domains\Order\Services\OrderItemService;
 use App\Domains\Order\Requests\OrderItem\OrderItemCreateRequest;
 use App\Domains\Order\Requests\OrderItem\OrderItemDestroyRequest;
 use App\Domains\Order\Requests\OrderItem\OrderItemQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Order\Requests\OrderItem\OrderItemUpdateRequest;
 use App\Domains\Order\Responses\OrderItem\OrderItemDestroyResponse;
 use App\Domains\Order\Responses\OrderItem\OrderItemQueryResponse;
 use App\Domains\Order\Responses\OrderItem\OrderItemResponse;
+use App\Domains\Order\Services\OrderItemService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +57,7 @@ class OrderItemController extends BaseController
             if (isset($requestData[OrderItemQueryRequest::getId])) {
                 $condition[] = [OrderItemEntity::getId, '=', $requestData[OrderItemQueryRequest::getId]];
             }
-            
+
             $result = $this->orderItemService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

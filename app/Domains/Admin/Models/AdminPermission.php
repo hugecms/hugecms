@@ -36,7 +36,5 @@ class AdminPermission extends Model
         'icon',
         'sort',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

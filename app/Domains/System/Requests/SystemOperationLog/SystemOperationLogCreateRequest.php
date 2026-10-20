@@ -39,7 +39,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getCostTime, description: '耗时(毫秒)', type: 'integer'),
         new OA\Property(property: self::getIp, description: '操作IP', type: 'string'),
         new OA\Property(property: self::getUserAgent, description: 'User-Agent', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class SystemOperationLogCreateRequest extends FormRequest
@@ -108,7 +108,7 @@ class SystemOperationLogCreateRequest extends FormRequest
             self::getCostTime.'.required' => '请设置耗时(毫秒)',
             self::getIp.'.required' => '请设置操作IP',
             self::getUserAgent.'.required' => '请设置User-Agent',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

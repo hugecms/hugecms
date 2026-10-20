@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentArticleTagEntity;
-use App\Domains\Content\Services\ContentArticleTagService;
 use App\Domains\Content\Requests\ContentArticleTag\ContentArticleTagCreateRequest;
 use App\Domains\Content\Requests\ContentArticleTag\ContentArticleTagDestroyRequest;
 use App\Domains\Content\Requests\ContentArticleTag\ContentArticleTagQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentArticleTag\ContentArticleTagUpdateReques
 use App\Domains\Content\Responses\ContentArticleTag\ContentArticleTagDestroyResponse;
 use App\Domains\Content\Responses\ContentArticleTag\ContentArticleTagQueryResponse;
 use App\Domains\Content\Responses\ContentArticleTag\ContentArticleTagResponse;
+use App\Domains\Content\Services\ContentArticleTagService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,10 +51,13 @@ class ContentArticleTagController extends BaseController
             if (isset($requestData[ContentArticleTagQueryRequest::getTagId])) {
                 $condition[] = [ContentArticleTagEntity::getTagId, '=', $requestData[ContentArticleTagQueryRequest::getTagId]];
             }
+            if (isset($requestData[ContentArticleTagQueryRequest::getArticleId])) {
+                $condition[] = [ContentArticleTagEntity::getArticleId, '=', $requestData[ContentArticleTagQueryRequest::getArticleId]];
+            }
             if (isset($requestData[ContentArticleTagQueryRequest::getTagId])) {
                 $condition[] = [ContentArticleTagEntity::getTagId, '=', $requestData[ContentArticleTagQueryRequest::getTagId]];
             }
-            
+
             $result = $this->contentArticleTagService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

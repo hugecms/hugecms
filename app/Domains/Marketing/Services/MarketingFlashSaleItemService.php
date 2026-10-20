@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Marketing\Services;
+
+use App\Domains\Marketing\Repositories\MarketingFlashSaleItemRepository;
+use Juling\Foundation\Contracts\ServiceInterface;
+use Juling\Foundation\Services\CommonService;
+
+class MarketingFlashSaleItemService extends CommonService implements ServiceInterface
+{
+    public function __construct(
+        private readonly MarketingFlashSaleItemRepository $repository,
+    ) {}
+
+    public function getRepository(): MarketingFlashSaleItemRepository
+    {
+        return $this->repository;
+    }
+
+    // please fill in your code here
+
+}

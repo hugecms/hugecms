@@ -33,8 +33,11 @@ class OrderResponse implements \JsonSerializable
     #[OA\Property(property: 'payAmount', description: '实付金额', type: 'string')]
     private string $payAmount;
 
-    #[OA\Property(property: 'status', description: '状态:0=待支付,1=已支付,2=已发货,3=已完成,4=已取消', type: 'integer')]
+    #[OA\Property(property: 'status', description: '状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)', type: 'integer')]
     private int $status;
+
+    #[OA\Property(property: 'refundStatus', description: '售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写', type: 'integer')]
+    private int $refundStatus;
 
     #[OA\Property(property: 'receiverName', description: '收货人', type: 'string')]
     private string $receiverName;
@@ -66,11 +69,14 @@ class OrderResponse implements \JsonSerializable
     #[OA\Property(property: 'cancelReason', description: '取消原因', type: 'string')]
     private string $cancelReason;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
+
+    #[OA\Property(property: 'deletedAt', description: '删除时间', type: 'string')]
+    private string $deletedAt;
 
     /**
      * 获取ID
@@ -185,7 +191,7 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 获取状态:0=待支付,1=已支付,2=已发货,3=已完成,4=已取消
+     * 获取状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)
      */
     public function getStatus(): int
     {
@@ -193,11 +199,27 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 设置状态:0=待支付,1=已支付,2=已发货,3=已完成,4=已取消
+     * 设置状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)
      */
     public function setStatus(int $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * 获取售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写
+     */
+    public function getRefundStatus(): int
+    {
+        return $this->refundStatus;
+    }
+
+    /**
+     * 设置售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写
+     */
+    public function setRefundStatus(int $refundStatus): void
+    {
+        $this->refundStatus = $refundStatus;
     }
 
     /**
@@ -361,34 +383,50 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * 获取删除时间
+     */
+    public function getDeletedAt(): string
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * 设置删除时间
+     */
+    public function setDeletedAt(string $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

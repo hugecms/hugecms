@@ -35,7 +35,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getUserType, description: '操作账户类型:admin,user,system', type: 'string'),
         new OA\Property(property: self::getUserId, description: '操作人ID', type: 'integer'),
         new OA\Property(property: self::getRemark, description: '备注', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class ProductStockLogUpdateRequest extends FormRequest
@@ -96,7 +96,7 @@ class ProductStockLogUpdateRequest extends FormRequest
             self::getUserType.'.required' => '请设置操作账户类型:admin,user,system',
             self::getUserId.'.required' => '请设置操作人ID',
             self::getRemark.'.required' => '请设置备注',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

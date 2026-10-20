@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentCategoryEntity;
-use App\Domains\Content\Services\ContentCategoryService;
 use App\Domains\Content\Requests\ContentCategory\ContentCategoryCreateRequest;
 use App\Domains\Content\Requests\ContentCategory\ContentCategoryDestroyRequest;
 use App\Domains\Content\Requests\ContentCategory\ContentCategoryQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentCategory\ContentCategoryUpdateRequest;
 use App\Domains\Content\Responses\ContentCategory\ContentCategoryDestroyResponse;
 use App\Domains\Content\Responses\ContentCategory\ContentCategoryQueryResponse;
 use App\Domains\Content\Responses\ContentCategory\ContentCategoryResponse;
+use App\Domains\Content\Services\ContentCategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +57,7 @@ class ContentCategoryController extends BaseController
             if (isset($requestData[ContentCategoryQueryRequest::getSlug])) {
                 $condition[] = [ContentCategoryEntity::getSlug, '=', $requestData[ContentCategoryQueryRequest::getSlug]];
             }
-            
+
             $result = $this->contentCategoryService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

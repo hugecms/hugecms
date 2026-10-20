@@ -27,14 +27,20 @@ class ProductSkuResponse implements \JsonSerializable
     #[OA\Property(property: 'stock', description: '库存', type: 'integer')]
     private int $stock;
 
+    #[OA\Property(property: 'lockedStock', description: '锁定库存(下单未支付),可售=stock-locked_stock', type: 'integer')]
+    private int $lockedStock;
+
     #[OA\Property(property: 'status', description: '状态:0=禁用,1=启用', type: 'integer')]
     private int $status;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
 
-    #[OA\Property(property: 'updateTime', description: '', type: 'string')]
-    private string $updateTime;
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
+
+    #[OA\Property(property: 'deletedAt', description: '删除时间', type: 'string')]
+    private string $deletedAt;
 
     /**
      * 获取ID
@@ -117,6 +123,22 @@ class ProductSkuResponse implements \JsonSerializable
     }
 
     /**
+     * 获取锁定库存(下单未支付),可售=stock-locked_stock
+     */
+    public function getLockedStock(): int
+    {
+        return $this->lockedStock;
+    }
+
+    /**
+     * 设置锁定库存(下单未支付),可售=stock-locked_stock
+     */
+    public function setLockedStock(int $lockedStock): void
+    {
+        $this->lockedStock = $lockedStock;
+    }
+
+    /**
      * 获取状态:0=禁用,1=启用
      */
     public function getStatus(): int
@@ -133,34 +155,50 @@ class ProductSkuResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * 获取
+     * 获取更新时间
      */
-    public function getUpdateTime(): string
+    public function getUpdatedAt(): string
     {
-        return $this->updateTime;
+        return $this->updatedAt;
     }
 
     /**
-     * 设置
+     * 设置更新时间
      */
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdatedAt(string $updatedAt): void
     {
-        $this->updateTime = $updateTime;
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * 获取删除时间
+     */
+    public function getDeletedAt(): string
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * 设置删除时间
+     */
+    public function setDeletedAt(string $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentCommentEntity;
-use App\Domains\Content\Services\ContentCommentService;
 use App\Domains\Content\Requests\ContentComment\ContentCommentCreateRequest;
 use App\Domains\Content\Requests\ContentComment\ContentCommentDestroyRequest;
 use App\Domains\Content\Requests\ContentComment\ContentCommentQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentComment\ContentCommentUpdateRequest;
 use App\Domains\Content\Responses\ContentComment\ContentCommentDestroyResponse;
 use App\Domains\Content\Responses\ContentComment\ContentCommentQueryResponse;
 use App\Domains\Content\Responses\ContentComment\ContentCommentResponse;
+use App\Domains\Content\Services\ContentCommentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +48,9 @@ class ContentCommentController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[ContentCommentQueryRequest::getTargetType])) {
+                $condition[] = [ContentCommentEntity::getTargetType, '=', $requestData[ContentCommentQueryRequest::getTargetType]];
+            }
             if (isset($requestData[ContentCommentQueryRequest::getTargetId])) {
                 $condition[] = [ContentCommentEntity::getTargetId, '=', $requestData[ContentCommentQueryRequest::getTargetId]];
             }
@@ -57,7 +60,7 @@ class ContentCommentController extends BaseController
             if (isset($requestData[ContentCommentQueryRequest::getId])) {
                 $condition[] = [ContentCommentEntity::getId, '=', $requestData[ContentCommentQueryRequest::getId]];
             }
-            
+
             $result = $this->contentCommentService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

@@ -31,11 +31,14 @@ class OrderRefund extends Model
         'refund_no',
         'order_id',
         'payment_id',
+        'type',
         'amount',
         'reason',
+        'admin_note',
+        'images',
+        'return_express_company',
+        'return_express_no',
         'status',
         'refunded_at',
-        'create_time',
-        'update_time',
     ];
 }

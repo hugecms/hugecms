@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getStatus, description: '处理状态:0=未处理,1=已处理', type: 'integer'),
         new OA\Property(property: self::getIp, description: '提交IP', type: 'string'),
         new OA\Property(property: self::getUserAgent, description: 'User-Agent', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class FormSubmissionCreateRequest extends FormRequest
@@ -66,7 +66,7 @@ class FormSubmissionCreateRequest extends FormRequest
             self::getStatus.'.required' => '请设置处理状态:0=未处理,1=已处理',
             self::getIp.'.required' => '请设置提交IP',
             self::getUserAgent.'.required' => '请设置User-Agent',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

@@ -20,5 +20,5 @@ class ContentArticleContentService extends CommonService implements ServiceInter
     }
 
     // please fill in your code here
-    
+
 }

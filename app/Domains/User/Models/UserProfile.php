@@ -34,7 +34,5 @@ class UserProfile extends Model
         'birthday',
         'bio',
         'location',
-        'create_time',
-        'update_time',
     ];
 }

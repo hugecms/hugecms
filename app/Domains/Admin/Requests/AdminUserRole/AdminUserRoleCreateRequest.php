@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getAdminUserId, description: '管理员ID', type: 'integer'),
         new OA\Property(property: self::getRoleId, description: '角色ID', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class AdminUserRoleCreateRequest extends FormRequest
@@ -42,7 +42,7 @@ class AdminUserRoleCreateRequest extends FormRequest
         return [
             self::getAdminUserId.'.required' => '请设置管理员ID',
             self::getRoleId.'.required' => '请设置角色ID',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

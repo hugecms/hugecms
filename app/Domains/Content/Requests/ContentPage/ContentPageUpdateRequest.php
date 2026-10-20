@@ -18,8 +18,6 @@ use OpenApi\Attributes as OA;
         self::getSeoKeywords,
         self::getSeoDescription,
         self::getStatus,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
@@ -30,8 +28,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getSeoKeywords, description: 'SEO关键词', type: 'string'),
         new OA\Property(property: self::getSeoDescription, description: 'SEO描述', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态:0=隐藏,1=显示', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class ContentPageUpdateRequest extends FormRequest
@@ -52,10 +48,6 @@ class ContentPageUpdateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -67,8 +59,6 @@ class ContentPageUpdateRequest extends FormRequest
             self::getSeoKeywords => 'required',
             self::getSeoDescription => 'required',
             self::getStatus => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -83,8 +73,6 @@ class ContentPageUpdateRequest extends FormRequest
             self::getSeoKeywords.'.required' => '请设置SEO关键词',
             self::getSeoDescription.'.required' => '请设置SEO描述',
             self::getStatus.'.required' => '请设置状态:0=隐藏,1=显示',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

@@ -20,5 +20,5 @@ class AdminRolePermissionService extends CommonService implements ServiceInterfa
     }
 
     // please fill in your code here
-    
+
 }

@@ -6,7 +6,6 @@ namespace App\Domains\Content\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Content\Entities\ContentTagEntity;
-use App\Domains\Content\Services\ContentTagService;
 use App\Domains\Content\Requests\ContentTag\ContentTagCreateRequest;
 use App\Domains\Content\Requests\ContentTag\ContentTagDestroyRequest;
 use App\Domains\Content\Requests\ContentTag\ContentTagQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Content\Requests\ContentTag\ContentTagUpdateRequest;
 use App\Domains\Content\Responses\ContentTag\ContentTagDestroyResponse;
 use App\Domains\Content\Responses\ContentTag\ContentTagQueryResponse;
 use App\Domains\Content\Responses\ContentTag\ContentTagResponse;
+use App\Domains\Content\Services\ContentTagService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class ContentTagController extends BaseController
             if (isset($requestData[ContentTagQueryRequest::getName])) {
                 $condition[] = [ContentTagEntity::getName, '=', $requestData[ContentTagQueryRequest::getName]];
             }
-            
+
             $result = $this->contentTagService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

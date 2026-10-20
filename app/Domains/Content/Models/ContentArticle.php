@@ -33,6 +33,7 @@ class ContentArticle extends Model
         'slug',
         'summary',
         'cover',
+        'product_ids',
         'author_id',
         'author',
         'is_top',
@@ -40,8 +41,5 @@ class ContentArticle extends Model
         'status',
         'views',
         'published_at',
-        'create_time',
-        'update_time',
-        'delete_time',
     ];
 }

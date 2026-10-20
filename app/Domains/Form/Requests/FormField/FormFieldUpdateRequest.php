@@ -21,8 +21,6 @@ use OpenApi\Attributes as OA;
         self::getPattern,
         self::getSort,
         self::getStatus,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
@@ -36,8 +34,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getPattern, description: '正则验证规则', type: 'string'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=隐藏,1=显示', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class FormFieldUpdateRequest extends FormRequest
@@ -64,10 +60,6 @@ class FormFieldUpdateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -82,8 +74,6 @@ class FormFieldUpdateRequest extends FormRequest
             self::getPattern => 'required',
             self::getSort => 'required',
             self::getStatus => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -101,8 +91,6 @@ class FormFieldUpdateRequest extends FormRequest
             self::getPattern.'.required' => '请设置正则验证规则',
             self::getSort.'.required' => '请设置排序',
             self::getStatus.'.required' => '请设置状态:0=隐藏,1=显示',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

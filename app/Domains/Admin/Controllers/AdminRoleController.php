@@ -6,7 +6,6 @@ namespace App\Domains\Admin\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\Admin\Entities\AdminRoleEntity;
-use App\Domains\Admin\Services\AdminRoleService;
 use App\Domains\Admin\Requests\AdminRole\AdminRoleCreateRequest;
 use App\Domains\Admin\Requests\AdminRole\AdminRoleDestroyRequest;
 use App\Domains\Admin\Requests\AdminRole\AdminRoleQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\Admin\Requests\AdminRole\AdminRoleUpdateRequest;
 use App\Domains\Admin\Responses\AdminRole\AdminRoleDestroyResponse;
 use App\Domains\Admin\Responses\AdminRole\AdminRoleQueryResponse;
 use App\Domains\Admin\Responses\AdminRole\AdminRoleResponse;
+use App\Domains\Admin\Services\AdminRoleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +54,7 @@ class AdminRoleController extends BaseController
             if (isset($requestData[AdminRoleQueryRequest::getCode])) {
                 $condition[] = [AdminRoleEntity::getCode, '=', $requestData[AdminRoleQueryRequest::getCode]];
             }
-            
+
             $result = $this->adminRoleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

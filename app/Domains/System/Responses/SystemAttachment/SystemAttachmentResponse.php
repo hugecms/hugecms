@@ -39,7 +39,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '上传人ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -187,7 +187,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -195,7 +195,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

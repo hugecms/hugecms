@@ -33,7 +33,5 @@ class SystemDictItem extends Model
         'label',
         'sort',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

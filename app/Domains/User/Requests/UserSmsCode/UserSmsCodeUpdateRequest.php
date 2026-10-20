@@ -27,7 +27,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getExpireAt, description: '过期时间', type: 'string'),
         new OA\Property(property: self::getUsedAt, description: '使用时间', type: 'string'),
         new OA\Property(property: self::getIp, description: '发送IP,用于防刷', type: 'string'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class UserSmsCodeUpdateRequest extends FormRequest
@@ -72,7 +72,7 @@ class UserSmsCodeUpdateRequest extends FormRequest
             self::getExpireAt.'.required' => '请设置过期时间',
             self::getUsedAt.'.required' => '请设置使用时间',
             self::getIp.'.required' => '请设置发送IP,用于防刷',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

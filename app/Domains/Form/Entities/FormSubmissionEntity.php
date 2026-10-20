@@ -26,7 +26,7 @@ class FormSubmissionEntity implements \JsonSerializable
 
     public const string getUserAgent = 'user_agent'; // User-Agent
 
-    public const string getCreateTime = 'create_time';
+    public const string getCreateTime = 'create_time'; // 创建时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -49,7 +49,7 @@ class FormSubmissionEntity implements \JsonSerializable
     #[OA\Property(property: 'userAgent', description: 'User-Agent', type: 'string')]
     private string $userAgent;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -165,7 +165,7 @@ class FormSubmissionEntity implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -173,7 +173,7 @@ class FormSubmissionEntity implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

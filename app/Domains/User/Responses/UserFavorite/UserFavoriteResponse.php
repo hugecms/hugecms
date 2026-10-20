@@ -24,7 +24,7 @@ class UserFavoriteResponse implements \JsonSerializable
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
     private int $targetId;
 
-    #[OA\Property(property: 'createTime', description: '', type: 'string')]
+    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
 
     /**
@@ -92,7 +92,7 @@ class UserFavoriteResponse implements \JsonSerializable
     }
 
     /**
-     * 获取
+     * 获取创建时间
      */
     public function getCreateTime(): string
     {
@@ -100,7 +100,7 @@ class UserFavoriteResponse implements \JsonSerializable
     }
 
     /**
-     * 设置
+     * 设置创建时间
      */
     public function setCreateTime(string $createTime): void
     {

@@ -37,7 +37,5 @@ class ContentCategory extends Model
         'seo_description',
         'sort',
         'status',
-        'create_time',
-        'update_time',
     ];
 }

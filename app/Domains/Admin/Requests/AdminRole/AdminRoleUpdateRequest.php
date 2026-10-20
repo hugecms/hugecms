@@ -16,8 +16,6 @@ use OpenApi\Attributes as OA;
         self::getDescription,
         self::getSort,
         self::getStatus,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
@@ -26,8 +24,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getDescription, description: '角色描述', type: 'string'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=启用', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class AdminRoleUpdateRequest extends FormRequest
@@ -44,10 +40,6 @@ class AdminRoleUpdateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -57,8 +49,6 @@ class AdminRoleUpdateRequest extends FormRequest
             self::getDescription => 'required',
             self::getSort => 'required',
             self::getStatus => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -71,8 +61,6 @@ class AdminRoleUpdateRequest extends FormRequest
             self::getDescription.'.required' => '请设置角色描述',
             self::getSort.'.required' => '请设置排序',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=启用',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

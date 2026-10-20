@@ -30,6 +30,7 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'brand_id',
+        'type_id',
         'name',
         'sn',
         'subtitle',
@@ -39,11 +40,9 @@ class Product extends Model
         'price',
         'market_price',
         'stock',
+        'locked_stock',
         'sales',
         'status',
         'sort',
-        'create_time',
-        'update_time',
-        'delete_time',
     ];
 }

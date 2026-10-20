@@ -6,7 +6,6 @@ namespace App\Domains\User\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\User\Entities\UserFollowerEntity;
-use App\Domains\User\Services\UserFollowerService;
 use App\Domains\User\Requests\UserFollower\UserFollowerCreateRequest;
 use App\Domains\User\Requests\UserFollower\UserFollowerDestroyRequest;
 use App\Domains\User\Requests\UserFollower\UserFollowerQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\User\Requests\UserFollower\UserFollowerUpdateRequest;
 use App\Domains\User\Responses\UserFollower\UserFollowerDestroyResponse;
 use App\Domains\User\Responses\UserFollower\UserFollowerQueryResponse;
 use App\Domains\User\Responses\UserFollower\UserFollowerResponse;
+use App\Domains\User\Services\UserFollowerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,10 +51,13 @@ class UserFollowerController extends BaseController
             if (isset($requestData[UserFollowerQueryRequest::getFollowerId])) {
                 $condition[] = [UserFollowerEntity::getFollowerId, '=', $requestData[UserFollowerQueryRequest::getFollowerId]];
             }
+            if (isset($requestData[UserFollowerQueryRequest::getUserId])) {
+                $condition[] = [UserFollowerEntity::getUserId, '=', $requestData[UserFollowerQueryRequest::getUserId]];
+            }
             if (isset($requestData[UserFollowerQueryRequest::getFollowerId])) {
                 $condition[] = [UserFollowerEntity::getFollowerId, '=', $requestData[UserFollowerQueryRequest::getFollowerId]];
             }
-            
+
             $result = $this->userFollowerService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {

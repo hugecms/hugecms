@@ -6,7 +6,6 @@ namespace App\Domains\User\Controllers;
 
 use App\Api\Admin\Controllers\BaseController;
 use App\Domains\User\Entities\UserEntity;
-use App\Domains\User\Services\UserService;
 use App\Domains\User\Requests\User\UserCreateRequest;
 use App\Domains\User\Requests\User\UserDestroyRequest;
 use App\Domains\User\Requests\User\UserQueryRequest;
@@ -14,6 +13,7 @@ use App\Domains\User\Requests\User\UserUpdateRequest;
 use App\Domains\User\Responses\User\UserDestroyResponse;
 use App\Domains\User\Responses\User\UserQueryResponse;
 use App\Domains\User\Responses\User\UserResponse;
+use App\Domains\User\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +29,7 @@ class UserController extends BaseController
         private readonly UserService $userService,
     ) {}
 
-    #[OA\Post(path: '/user/search', summary: '查询用户账户列表接口', security: [['bearerAuth' => []]], tags: ['用户账户模块'])]
+    #[OA\Post(path: '/user/search', summary: '查询用户列表接口', security: [['bearerAuth' => []]], tags: ['用户模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserQueryRequest::class))]
@@ -60,7 +60,7 @@ class UserController extends BaseController
             if (isset($requestData[UserQueryRequest::getUsername])) {
                 $condition[] = [UserEntity::getUsername, '=', $requestData[UserQueryRequest::getUsername]];
             }
-            
+
             $result = $this->userService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
@@ -86,7 +86,7 @@ class UserController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/user/store', summary: '新增用户账户接口', security: [['bearerAuth' => []]], tags: ['用户账户模块'])]
+    #[OA\Post(path: '/user/store', summary: '新增用户接口', security: [['bearerAuth' => []]], tags: ['用户模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserCreateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -123,7 +123,7 @@ class UserController extends BaseController
         }
     }
 
-    #[OA\Get(path: '/user/show', summary: '获取用户账户详情接口', security: [['bearerAuth' => []]], tags: ['用户账户模块'])]
+    #[OA\Get(path: '/user/show', summary: '获取用户详情接口', security: [['bearerAuth' => []]], tags: ['用户模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -156,7 +156,7 @@ class UserController extends BaseController
         }
     }
 
-    #[OA\Put(path: '/user/update', summary: '更新用户账户接口', security: [['bearerAuth' => []]], tags: ['用户账户模块'])]
+    #[OA\Put(path: '/user/update', summary: '更新用户接口', security: [['bearerAuth' => []]], tags: ['用户模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserUpdateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
@@ -198,7 +198,7 @@ class UserController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/user/destroy', summary: '删除用户账户接口', security: [['bearerAuth' => []]], tags: ['用户账户模块'])]
+    #[OA\Post(path: '/user/destroy', summary: '删除用户接口', security: [['bearerAuth' => []]], tags: ['用户模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserDestroyRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [

@@ -18,8 +18,6 @@ use OpenApi\Attributes as OA;
         self::getIcon,
         self::getSort,
         self::getStatus,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getParentId, description: '父级ID,0=顶级', type: 'integer'),
@@ -30,8 +28,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getIcon, description: '菜单图标', type: 'string'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=启用', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class AdminPermissionCreateRequest extends FormRequest
@@ -52,10 +48,6 @@ class AdminPermissionCreateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -67,8 +59,6 @@ class AdminPermissionCreateRequest extends FormRequest
             self::getIcon => 'required',
             self::getSort => 'required',
             self::getStatus => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -83,8 +73,6 @@ class AdminPermissionCreateRequest extends FormRequest
             self::getIcon.'.required' => '请设置菜单图标',
             self::getSort.'.required' => '请设置排序',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=启用',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }

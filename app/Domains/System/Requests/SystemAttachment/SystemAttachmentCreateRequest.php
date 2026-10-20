@@ -29,7 +29,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getModule, description: '所属模块:article,product', type: 'string'),
         new OA\Property(property: self::getUserType, description: '上传账户类型:admin,user', type: 'string'),
         new OA\Property(property: self::getUserId, description: '上传人ID', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
+        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class SystemAttachmentCreateRequest extends FormRequest
@@ -78,7 +78,7 @@ class SystemAttachmentCreateRequest extends FormRequest
             self::getModule.'.required' => '请设置所属模块:article,product',
             self::getUserType.'.required' => '请设置上传账户类型:admin,user',
             self::getUserId.'.required' => '请设置上传人ID',
-            self::getCreateTime.'.required' => '请设置',
+            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

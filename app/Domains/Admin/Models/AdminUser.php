@@ -35,8 +35,5 @@ class AdminUser extends Model
         'status',
         'last_login_time',
         'last_login_ip',
-        'create_time',
-        'update_time',
-        'delete_time',
     ];
 }

@@ -19,8 +19,6 @@ use OpenApi\Attributes as OA;
         self::getPrice,
         self::getQuantity,
         self::getChecked,
-        self::getCreateTime,
-        self::getUpdateTime,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
@@ -32,8 +30,6 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getPrice, description: '加购时价格快照', type: 'string'),
         new OA\Property(property: self::getQuantity, description: '数量', type: 'integer'),
         new OA\Property(property: self::getChecked, description: '结算勾选:0=否,1=是', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '', type: 'string'),
-        new OA\Property(property: self::getUpdateTime, description: '', type: 'string'),
     ]
 )]
 class OrderCartUpdateRequest extends FormRequest
@@ -56,10 +52,6 @@ class OrderCartUpdateRequest extends FormRequest
 
     public const string getChecked = 'checked';
 
-    public const string getCreateTime = 'createTime';
-
-    public const string getUpdateTime = 'updateTime';
-
     public function rules(): array
     {
         return [
@@ -72,8 +64,6 @@ class OrderCartUpdateRequest extends FormRequest
             self::getPrice => 'required',
             self::getQuantity => 'required',
             self::getChecked => 'required',
-            self::getCreateTime => 'required',
-            self::getUpdateTime => 'required',
         ];
     }
 
@@ -89,8 +79,6 @@ class OrderCartUpdateRequest extends FormRequest
             self::getPrice.'.required' => '请设置加购时价格快照',
             self::getQuantity.'.required' => '请设置数量',
             self::getChecked.'.required' => '请设置结算勾选:0=否,1=是',
-            self::getCreateTime.'.required' => '请设置',
-            self::getUpdateTime.'.required' => '请设置',
         ];
     }
 }
