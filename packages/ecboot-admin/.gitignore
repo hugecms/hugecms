@@ -40,6 +40,3 @@ __screenshots__/
 
 test-results/
 playwright-report/
-!.vscode/
-!.vscode/settings.json
-!.vscode/extensions.json
