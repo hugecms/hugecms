@@ -5,20 +5,25 @@ import { del, get, post } from '@/utils/request'
 import { useUserStore } from '@/stores/user'
 
 vi.mock('element-plus', () => ({
-  ElMessage: { error: vi.fn(), success: vi.fn() },
+  ElMessage: {
+    error: vi.fn<(...args: unknown[]) => void>(),
+    success: vi.fn<(...args: unknown[]) => void>(),
+  },
 }))
 
 import { ElMessage } from 'element-plus'
 
 /** 短路网络层：让 axios 实例直接返回构造的响应 */
 function useMockAdapter(payload: unknown, status = 200) {
-  return vi.fn(async (config: Record<string, unknown>) => ({
-    data: payload,
-    status,
-    statusText: 'OK',
-    headers: {},
-    config,
-  }))
+  return vi.fn<(config: Record<string, unknown>) => Promise<Record<string, unknown>>>(
+    async (config) => ({
+      data: payload,
+      status,
+      statusText: 'OK',
+      headers: {},
+      config,
+    }),
+  )
 }
 
 describe('request 拦截器', () => {
@@ -86,7 +91,7 @@ describe('request 拦截器', () => {
     const userStore = useUserStore()
     userStore.token = 'expired-token'
 
-    await expect(get('/admin/auth/profile')).rejects.toThrow()
+    await expect(get('/admin/auth/profile')).rejects.toThrow('登录已过期')
 
     expect(userStore.token).toBe('')
     expect(window.location.href).toBe(`/login?redirect=${encodeURIComponent('/dashboard')}`)
@@ -115,7 +120,7 @@ describe('request 拦截器', () => {
     const userStore = useUserStore()
     userStore.token = 'expired-token'
 
-    await expect(get('/admin/auth/profile')).rejects.toThrow()
+    await expect(get('/admin/auth/profile')).rejects.toThrow('Request failed with status code 401')
 
     expect(userStore.token).toBe('')
     expect(window.location.href).toBe(`/login?redirect=${encodeURIComponent('/dashboard')}`)
@@ -127,7 +132,7 @@ describe('request 拦截器', () => {
     const { request } = await import('@/utils/request')
     request.defaults.adapter = adapter as never
 
-    await expect(get('/anything')).rejects.toThrow()
+    await expect(get('/anything')).rejects.toThrow('登录已过期')
 
     expect(window.location.href).toBe('')
   })
@@ -150,7 +155,7 @@ describe('request 拦截器', () => {
       )
     }) as never
 
-    await expect(get('/anything')).rejects.toThrow()
+    await expect(get('/anything')).rejects.toThrow('Request failed with status code 500')
     expect(ElMessage.error).toHaveBeenCalledWith('服务器开小差了，请稍后重试')
   })
 
@@ -160,7 +165,7 @@ describe('request 拦截器', () => {
       throw new AxiosError('Network Error')
     }) as never
 
-    await expect(del('/anything')).rejects.toThrow()
+    await expect(del('/anything')).rejects.toThrow('Network Error')
     expect(ElMessage.error).toHaveBeenCalledWith('网络异常，请检查网络连接')
   })
 })

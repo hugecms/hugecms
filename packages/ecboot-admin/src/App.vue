@@ -16,12 +16,15 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
   box-sizing: border-box;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   width: 100%;
   height: 100%;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 

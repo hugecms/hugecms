@@ -5,13 +5,13 @@ import { createPinia, setActivePinia } from 'pinia'
 import LoginView from '@/views/LoginView.vue'
 
 vi.mock('@/api/auth', () => ({
-  loginApi: vi.fn(),
-  logoutApi: vi.fn(),
-  getProfileApi: vi.fn(),
+  loginApi: vi.fn<(data: LoginParams) => Promise<LoginResult>>(),
+  logoutApi: vi.fn<() => Promise<null>>(),
+  getProfileApi: vi.fn<() => Promise<UserInfo>>(),
 }))
 
 import { getProfileApi, loginApi } from '@/api/auth'
-import type { UserInfo } from '@/types/api'
+import type { LoginParams, LoginResult, UserInfo } from '@/types/api'
 
 const mockUserInfo: UserInfo = { id: 1, username: 'admin', nickname: '管理员' }
 

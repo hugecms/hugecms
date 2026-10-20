@@ -6,13 +6,13 @@ import AppHeader from '@/layout/components/AppHeader.vue'
 import { useUserStore } from '@/stores/user'
 
 vi.mock('@/api/auth', () => ({
-  loginApi: vi.fn(),
-  logoutApi: vi.fn(),
-  getProfileApi: vi.fn(),
+  loginApi: vi.fn<(data: LoginParams) => Promise<LoginResult>>(),
+  logoutApi: vi.fn<() => Promise<null>>(),
+  getProfileApi: vi.fn<() => Promise<UserInfo>>(),
 }))
 
 import { logoutApi } from '@/api/auth'
-import type { UserInfo } from '@/types/api'
+import type { LoginParams, LoginResult, UserInfo } from '@/types/api'
 
 function buildRouter(): Router {
   return createRouter({

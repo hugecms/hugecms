@@ -117,12 +117,7 @@ async function handleLogin(): Promise<void> {
           <el-checkbox v-model="loginForm.remember">记住用户名</el-checkbox>
         </div>
 
-        <el-button
-          class="login-submit"
-          type="primary"
-          native-type="submit"
-          :loading="loading"
-        >
+        <el-button class="login-submit" type="primary" native-type="submit" :loading="loading">
           登 录
         </el-button>
       </el-form>
