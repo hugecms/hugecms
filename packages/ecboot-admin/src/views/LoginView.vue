@@ -2,13 +2,16 @@
 import { Lock, User } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 defineOptions({ name: 'LoginView' })
 
 const REMEMBER_KEY = 'ecboot-admin-username'
 
+const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 
@@ -49,8 +52,10 @@ async function handleLogin(): Promise<void> {
 
   loading.value = true
   try {
-    // TODO: 对接 POST /api/admin/login（JWT），成功后持久化 token 与用户信息
-    await new Promise((resolve) => setTimeout(resolve, 600))
+    await userStore.login({
+      username: loginForm.username,
+      password: loginForm.password,
+    })
 
     if (loginForm.remember) {
       localStorage.setItem(REMEMBER_KEY, loginForm.username)
@@ -59,9 +64,11 @@ async function handleLogin(): Promise<void> {
     }
 
     ElMessage.success('登录成功')
-    router.replace('/')
+    const redirect = route.query.redirect
+    await router.replace(typeof redirect === 'string' && redirect !== '' ? redirect : '/')
   } catch {
-    ElMessage.error('登录失败，请检查用户名或密码')
+    // 错误提示已由 request 拦截器统一弹出
+    return
   } finally {
     loading.value = false
   }
