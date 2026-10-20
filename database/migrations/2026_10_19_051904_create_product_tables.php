@@ -64,7 +64,7 @@ return new class extends Migration
             $table->index('brand_id', 'idx_products_brand_id');
         });
 
-        // 商品SKU表：多规格商品的价格与库存载体
+        // 商品SKU表：多规格商品的价格与库存载体，跟随商品软删级联（商品软删/恢复时应用层同步处理）
         Schema::create('product_skus', function (Blueprint $table) {
             $table->comment('商品SKU表');
             $table->id();
@@ -75,6 +75,7 @@ return new class extends Migration
             $table->unsignedInteger('locked_stock')->default(0)->comment('锁定库存(下单未支付),可售=stock-locked_stock');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
+            $table->softDeletes();
             $table->index('product_id', 'idx_product_skus_product_id');
         });
 

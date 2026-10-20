@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('notifiable_id')->comment('通知目标ID');
             $table->text('data')->comment('通知数据(JSON)');
             $table->timestamp('read_at')->nullable()->comment('已读时间,空=未读');
+            $table->timestamps();
             $table->index(['notifiable_type', 'notifiable_id'], 'idx_notifications_notifiable');
         });
 

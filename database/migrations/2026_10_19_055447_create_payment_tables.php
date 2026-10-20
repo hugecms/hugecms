@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('biz_type', 20)->comment('业务类型:order=订单支付,recharge=余额充值');
             $table->unsignedInteger('biz_id')->comment('业务单据ID,如:订单ID/充值申请ID');
             $table->string('pay_method', 20)->comment('支付方式:wechat,alipay,balance');
+            $table->string('appid', 32)->nullable()->comment('发起支付的应用AppID,关联system_apps,多端回调定位依据');
             $table->decimal('amount', 10, 2)->comment('支付金额');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=成功,2=失败');
             $table->string('trade_no', 64)->nullable()->comment('第三方交易号');
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->unique('payment_no', 'uk_payments_payment_no');
             $table->index(['biz_type', 'biz_id'], 'idx_payments_biz');
             $table->index('trade_no', 'idx_payments_trade_no');
+            $table->index('appid', 'idx_payments_appid');
         });
 
         // 支付渠道配置表：商户号/密钥等渠道参数
@@ -37,12 +39,13 @@ return new class extends Migration
             $table->comment('支付渠道配置表');
             $table->id();
             $table->string('code', 20)->comment('渠道标识:wechat,alipay,balance');
+            $table->string('appid', 32)->default('')->comment('应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号');
             $table->string('name', 50)->comment('渠道名称');
             $table->json('config')->nullable()->comment('渠道配置(JSON):商户号/密钥等');
             $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
             $table->integer('sort')->default(0)->comment('排序');
             $table->timestamps();
-            $table->unique('code', 'uk_payment_channels_code');
+            $table->unique(['code', 'appid'], 'uk_payment_channels_code_appid');
         });
 
         // 支付回调流水表：第三方异步通知原始报文留痕，对账/重放排查依据

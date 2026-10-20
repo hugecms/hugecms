@@ -80,12 +80,12 @@ return new class extends Migration
             $table->index('tag_id', 'idx_article_tags_tag_id');
         });
 
-        // 评论表：多态目标，文章/商品共用，parent_id 支持楼中楼
+        // 评论表：多态目标，文章专用（商品评价走 product_reviews），parent_id 支持楼中楼
         Schema::create('content_comments', function (Blueprint $table) {
             $table->comment('评论表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('评论用户ID');
-            $table->string('target_type', 20)->comment('目标类型:article,product');
+            $table->string('target_type', 20)->comment('目标类型:article=文章,商品评价走product_reviews表');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->unsignedInteger('parent_id')->default(0)->comment('父评论ID,0=顶级');
             $table->string('content', 1000)->comment('评论内容');

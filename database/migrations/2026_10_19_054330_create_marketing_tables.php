@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * 营销域：优惠券（类型/用户领取）、促销活动（满减/折扣）、秒杀/限时购、分销返佣（两级分销）
-     * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补
+     * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补，变动记 marketing_flash_sale_logs
      * 佣金发放走 user_account_logs 入账，提现复用 user_accounts(withdraw)；分销比例/结算条件配置于 system_settings
      */
     public function up(): void
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->comment('用户优惠券表');
             $table->id();
             $table->unsignedInteger('coupon_id')->comment('优惠券类型ID');
-            $table->unsignedInteger('user_id')->nullable()->comment('持有用户ID,未发放为空');
+            $table->unsignedInteger('user_id')->comment('持有用户ID,发放即创建归属');
             $table->unsignedInteger('order_id')->nullable()->comment('核销订单ID');
             $table->tinyInteger('status')->default(0)->comment('状态:0=未使用,1=已使用,2=已过期');
             $table->dateTime('used_at')->nullable()->comment('核销时间');
@@ -139,6 +139,20 @@ return new class extends Migration
             $table->index(['distributor_id', 'status'], 'idx_marketing_distribution_commissions_distributor_status');
             $table->index('order_id', 'idx_marketing_distribution_commissions_order_id');
         });
+
+        // 秒杀库存流水表：sold_stock 每次原子变动的审计留痕，超卖/回补纠纷追溯依据
+        Schema::create('marketing_flash_sale_logs', function (Blueprint $table) {
+            $table->comment('秒杀库存流水表');
+            $table->id();
+            $table->unsignedInteger('flash_sale_item_id')->comment('秒杀商品ID,关联marketing_flash_sale_items');
+            $table->unsignedInteger('order_id')->comment('关联订单ID,扣减与回补均关联订单');
+            $table->integer('change_quantity')->comment('变动数量,正数扣减,负数回补');
+            $table->unsignedInteger('before_sold_stock')->comment('变动前已售量');
+            $table->unsignedInteger('after_sold_stock')->comment('变动后已售量');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index('flash_sale_item_id', 'idx_marketing_flash_sale_logs_item');
+            $table->index('order_id', 'idx_marketing_flash_sale_logs_order_id');
+        });
     }
 
     /**
@@ -146,6 +160,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('marketing_flash_sale_logs');
         Schema::dropIfExists('marketing_distribution_commissions');
         Schema::dropIfExists('marketing_distribution_relations');
         Schema::dropIfExists('marketing_distribution_users');

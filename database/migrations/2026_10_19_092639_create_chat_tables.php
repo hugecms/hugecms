@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('user_id')->comment('发起用户ID');
             $table->unsignedInteger('server_id')->default(0)->comment('接待客服管理员ID,0=未分配(机器人/排队)');
-            $table->string('source_type', 20)->default('none')->comment('咨询来源:product=商品,order=订单,none=主动咨询');
+            $table->string('source_type', 20)->default('none')->comment('咨询来源:product=商品,order=订单,wechat=微信入口,none=主动咨询');
             $table->unsignedInteger('source_id')->default(0)->comment('来源ID,商品ID或订单ID');
             $table->tinyInteger('status')->default(1)->comment('状态:1=进行中,2=已结束');
             $table->unsignedInteger('user_last_read_id')->default(0)->comment('用户已读消息水位(消息ID),会话级已读');

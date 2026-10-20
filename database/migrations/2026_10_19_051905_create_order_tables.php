@@ -22,7 +22,8 @@ return new class extends Migration
             $table->decimal('freight_amount', 10, 2)->default(0)->comment('运费');
             $table->decimal('discount_amount', 10, 2)->default(0)->comment('优惠金额');
             $table->decimal('pay_amount', 10, 2)->comment('实付金额');
-            $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=已支付,2=已发货,3=已完成,4=已取消');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)');
+            $table->tinyInteger('refund_status')->default(0)->comment('售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写');
             $table->string('receiver_name', 50)->comment('收货人');
             $table->string('receiver_phone', 20)->comment('收货电话');
             $table->string('receiver_region', 100)->comment('省市区');

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词、短信发送流水、IP黑名单
+     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词、短信发送流水、IP黑名单、应用注册
      */
     public function up(): void
     {
@@ -159,6 +159,21 @@ return new class extends Migration
             $table->timestamps();
             $table->unique('ip', 'uk_system_ip_blacklists_ip');
         });
+        // 应用注册表：全站客户端身份与密钥中心，wechat_* 表的 appid 以此为字典；secret 加密存储
+        Schema::create('system_apps', function (Blueprint $table) {
+            $table->comment('应用注册表');
+            $table->id();
+            $table->string('code', 30)->comment('应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android');
+            $table->string('name', 50)->comment('应用名称');
+            $table->string('type', 20)->default('web')->comment('应用类型:web,h5,wechat,app');
+            $table->string('appid', 32)->nullable()->comment('微信类应用AppID,非微信应用为空');
+            $table->string('secret', 500)->nullable()->comment('应用密钥,加密存储');
+            $table->json('config')->nullable()->comment('扩展配置(JSON):token,aes_key,推送参数,API域名,商户号绑定等');
+            $table->integer('sort')->default(0)->comment('排序');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用,停用即一键下线该端');
+            $table->timestamps();
+            $table->unique('code', 'uk_system_apps_code');
+        });
     }
 
     /**
@@ -166,6 +181,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('system_apps');
         Schema::dropIfExists('system_ip_blacklists');
         Schema::dropIfExists('system_sms_logs');
         Schema::dropIfExists('system_sensitive_words');
