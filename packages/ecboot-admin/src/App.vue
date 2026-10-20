@@ -9,7 +9,8 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
   </el-config-provider>
 </template>
 
-<style scoped>
+<!-- 全局 reset：不能加 scoped，否则选择器被改写为 *[data-v-xxx]，body/html/#app 无法命中 -->
+<style>
 * {
   margin: 0;
   padding: 0;

@@ -1,5 +1,7 @@
 import axios, { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
+// ElMessage 是函数式调用，不经模板编译，unplugin 无法按需注入样式，需显式引入（一次引入全局生效）
+import 'element-plus/es/components/message/style/css'
 import { useUserStore } from '@/stores/user'
 
 const REQUEST_TIMEOUT = 10_000
