@@ -1,0 +1,110 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "管理平台API文档",
+        "description": "2026-10-20",
+        "contact": {
+            "name": "API Develop Team"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/admin/",
+            "description": "开发环境"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "认证模块"
+                ],
+                "summary": "管理员登录接口",
+                "operationId": "e4924a689c8005a7f9446168f0a0ab48",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/App\\Api\\Admin\\Requests\\Auth\\LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/App\\Api\\Admin\\Responses\\Auth\\LoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "App\\Api\\Admin\\Requests\\Auth\\LoginRequest": {
+                "required": [
+                    "user_name",
+                    "password",
+                    "captcha",
+                    "captchaId"
+                ],
+                "properties": {
+                    "user_name": {
+                        "description": "用户用户名",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "用户登录密码",
+                        "type": "string"
+                    },
+                    "captcha": {
+                        "description": "登录图片验证码",
+                        "type": "string"
+                    },
+                    "captchaId": {
+                        "description": "图片验证码ID",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "App\\Api\\Admin\\Responses\\Auth\\LoginResponse": {
+                "properties": {
+                    "token": {
+                        "description": "token",
+                        "type": "string"
+                    },
+                    "expires": {
+                        "description": "expires",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT 认证信息",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "认证模块",
+            "description": "认证模块"
+        }
+    ]
+}

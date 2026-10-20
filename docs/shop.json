@@ -1,0 +1,34 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "店铺平台API文档",
+        "description": "2026-10-20",
+        "contact": {
+            "name": "API Develop Team"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/shop/",
+            "description": "开发环境"
+        }
+    ],
+    "paths": {
+        "home": {
+            "get": {
+                "tags": [
+                    "首页"
+                ],
+                "summary": "首页",
+                "operationId": "0ae157d05c3789adc42034ba52cadeed"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "首页",
+            "description": "首页"
+        }
+    ]
+}

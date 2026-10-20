@@ -1,0 +1,46 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "用户平台API文档",
+        "description": "2026-10-20",
+        "contact": {
+            "name": "API Develop Team"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/user/",
+            "description": "开发环境"
+        }
+    ],
+    "paths": {
+        "login": {
+            "get": {
+                "tags": [
+                    "登录"
+                ],
+                "summary": "登录",
+                "operationId": "5f70595622b09c5557a0a6250f402eae"
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT 认证信息",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "登录",
+            "description": "登录"
+        }
+    ]
+}

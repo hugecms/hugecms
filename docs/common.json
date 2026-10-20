@@ -1,0 +1,34 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "公共平台API文档",
+        "description": "2026-10-20",
+        "contact": {
+            "name": "API Develop Team"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/common/",
+            "description": "开发环境"
+        }
+    ],
+    "paths": {
+        "captcha": {
+            "get": {
+                "tags": [
+                    "验证码"
+                ],
+                "summary": "获取验证码图片",
+                "operationId": "9a10ea607953a7c8c113e20863badb9e"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "验证码",
+            "description": "验证码"
+        }
+    ]
+}
