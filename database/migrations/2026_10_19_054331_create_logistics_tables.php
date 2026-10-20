@@ -41,6 +41,7 @@ return new class extends Migration
             $table->unsignedInteger('shipping_area_id')->comment('配送区域ID');
             $table->unsignedInteger('region_id')->comment('行政区划ID');
             $table->primary(['shipping_area_id', 'region_id']);
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->index('region_id', 'idx_shipping_area_regions_region_id');
         });
 

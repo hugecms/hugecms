@@ -153,7 +153,7 @@ return new class extends Migration
             $table->string('target_type', 20)->comment('目标类型:article,product');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->integer('sort')->default(0)->comment('排序');
-            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->timestamps();
             $table->unique(['topic_id', 'target_type', 'target_id'], 'uk_content_topic_items_topic_target');
             $table->index(['target_type', 'target_id'], 'idx_content_topic_items_target');
         });
