@@ -17,13 +17,19 @@ request.interceptors.request.use((config) => {
   return config
 })
 
-/** 未授权（token 失效/缺失）：清空登录态并跳转登录页，携带回跳地址 */
-function handleUnauthorized(): void {
+/**
+ * 未授权（token 失效/缺失）：清空登录态。
+ * 不在登录页时跳转登录页并携带回跳地址（整页刷新以彻底重置状态）；
+ * 已在登录页（如登录接口本身返回 401，即凭据错误）不重复跳转，但必须给出错误反馈。
+ */
+function handleUnauthorized(message: string): void {
   useUserStore().reset()
   const { pathname, search } = window.location
   if (pathname !== '/login') {
     window.location.href = `/login?redirect=${encodeURIComponent(pathname + search)}`
+    return
   }
+  ElMessage.error(message)
 }
 
 /** HTTP 层错误分类文案 */
@@ -53,7 +59,7 @@ request.interceptors.response.use(
       return res.data as AxiosResponse
     }
     if (res.code === 401) {
-      handleUnauthorized()
+      handleUnauthorized(res.message || '登录已过期')
     } else {
       ElMessage.error(res.message || '请求失败')
     }
@@ -61,7 +67,8 @@ request.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      handleUnauthorized()
+      const data = error.response.data as { message?: string } | undefined
+      handleUnauthorized(data?.message || '登录已过期')
     } else {
       ElMessage.error(getHttpErrorMessage(error))
     }

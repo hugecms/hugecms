@@ -1,4 +1,5 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import NProgress from 'nprogress'
 import { createRouter, createMemoryHistory, type Router } from 'vue-router'
 import { createPinia, setActivePinia } from 'pinia'
 import { setupRouterGuard } from '@/router/guard'
@@ -74,5 +75,23 @@ describe('router guard', () => {
     await router.push('/dashboard')
 
     expect(document.title).toBe('仪表盘 - ECBoot')
+  })
+
+  it('导航出错（如懒加载 chunk 失败）时结束 NProgress', async () => {
+    const doneSpy = vi.spyOn(NProgress, 'done')
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: '/login', component: { template: '<div>login</div>' } },
+        // 模拟部署后 stale chunk 加载失败
+        { path: '/boom', component: () => Promise.reject(new Error('chunk load failed')) },
+      ],
+    })
+    setupRouterGuard(router)
+    useUserStore().token = 'jwt-token'
+
+    await expect(router.push('/boom')).rejects.toThrow('chunk load failed')
+
+    expect(doneSpy).toHaveBeenCalled()
   })
 })

@@ -31,4 +31,9 @@ export function setupRouterGuard(router: Router): void {
     document.title = to.meta.title ? `${to.meta.title} - ${APP_NAME}` : APP_NAME
     NProgress.done()
   })
+
+  // 导航出错（如部署后 stale chunk 加载失败）时 afterEach 不会执行，需单独收尾进度条
+  router.onError(() => {
+    NProgress.done()
+  })
 }

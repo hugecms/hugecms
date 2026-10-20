@@ -137,6 +137,45 @@ describe('request 拦截器', () => {
     expect(window.location.href).toBe('')
   })
 
+  it('已在登录页时业务码 401 仍弹出错误提示（登录失败反馈）', async () => {
+    vi.stubGlobal('location', { pathname: '/login', search: '', href: '' })
+    const adapter = useMockAdapter({ code: 401, message: '用户名或密码错误', data: null })
+    const { request } = await import('@/utils/request')
+    request.defaults.adapter = adapter as never
+
+    await expect(post('/admin/auth/login', {})).rejects.toThrow('用户名或密码错误')
+
+    expect(window.location.href).toBe('')
+    expect(ElMessage.error).toHaveBeenCalledWith('用户名或密码错误')
+  })
+
+  it('已在登录页时 HTTP 401 仍弹出后端错误信息', async () => {
+    vi.stubGlobal('location', { pathname: '/login', search: '', href: '' })
+    const { request } = await import('@/utils/request')
+    request.defaults.adapter = (async () => {
+      throw new AxiosError(
+        'Request failed with status code 401',
+        AxiosError.ERR_BAD_REQUEST,
+        {} as never,
+        {} as never,
+        {
+          data: { code: 401, message: '账号或密码错误', data: null },
+          status: 401,
+          statusText: 'Unauthorized',
+          headers: {},
+          config: {} as never,
+        },
+      )
+    }) as never
+
+    await expect(post('/admin/auth/login', {})).rejects.toThrow(
+      'Request failed with status code 401',
+    )
+
+    expect(window.location.href).toBe('')
+    expect(ElMessage.error).toHaveBeenCalledWith('账号或密码错误')
+  })
+
   it('HTTP 500 弹出服务端错误文案', async () => {
     const { request } = await import('@/utils/request')
     request.defaults.adapter = (async () => {
