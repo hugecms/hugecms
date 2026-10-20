@@ -173,6 +173,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用,停用即一键下线该端');
             $table->timestamps();
             $table->unique('code', 'uk_system_apps_code');
+            $table->unique('appid', 'uk_system_apps_appid');
         });
     }
 
