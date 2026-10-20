@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "hugecms/hugecms",
+    "name": "ecboot/ecboot",
     "type": "project",
-    "description": "The HugeCMS.",
-    "keywords": ["hugecms", "framework"],
+    "description": "The ECBoot.",
+    "keywords": ["ecboot", "framework"],
     "license": "Apache-2.0",
     "require": {
         "php": "^8.4",
