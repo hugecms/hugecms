@@ -129,6 +129,7 @@ async function handleLogin(): Promise<void> {
 
 <style scoped>
 .login-page {
+  position: relative; /* 装饰伪元素 ::before/::after 的定位基准；缺失时它们会以视口为包含块，撑出滚动条 */
   display: flex;
   align-items: center;
   justify-content: center;
