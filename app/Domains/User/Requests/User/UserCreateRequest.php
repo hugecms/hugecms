@@ -16,7 +16,6 @@ use OpenApi\Attributes as OA;
         self::getPhone,
         self::getStatus,
         self::getRankId,
-        self::getBalance,
         self::getPoints,
         self::getLastLoginTime,
         self::getLastLoginIp,
@@ -28,8 +27,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getPhone, description: '手机号', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=正常', type: 'integer'),
         new OA\Property(property: self::getRankId, description: '会员等级ID,0=默认等级', type: 'integer'),
-        new OA\Property(property: self::getBalance, description: '账户余额', type: 'string'),
-        new OA\Property(property: self::getPoints, description: '积分', type: 'integer'),
+        new OA\Property(property: self::getPoints, description: '积分余额', type: 'integer'),
         new OA\Property(property: self::getLastLoginTime, description: '最后登录时间', type: 'string'),
         new OA\Property(property: self::getLastLoginIp, description: '最后登录IP', type: 'string'),
     ]
@@ -48,8 +46,6 @@ class UserCreateRequest extends FormRequest
 
     public const string getRankId = 'rankId';
 
-    public const string getBalance = 'balance';
-
     public const string getPoints = 'points';
 
     public const string getLastLoginTime = 'lastLoginTime';
@@ -65,7 +61,6 @@ class UserCreateRequest extends FormRequest
             self::getPhone => 'required',
             self::getStatus => 'required',
             self::getRankId => 'required',
-            self::getBalance => 'required',
             self::getPoints => 'required',
             self::getLastLoginTime => 'required',
             self::getLastLoginIp => 'required',
@@ -81,8 +76,7 @@ class UserCreateRequest extends FormRequest
             self::getPhone.'.required' => '请设置手机号',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=正常',
             self::getRankId.'.required' => '请设置会员等级ID,0=默认等级',
-            self::getBalance.'.required' => '请设置账户余额',
-            self::getPoints.'.required' => '请设置积分',
+            self::getPoints.'.required' => '请设置积分余额',
             self::getLastLoginTime.'.required' => '请设置最后登录时间',
             self::getLastLoginIp.'.required' => '请设置最后登录IP',
         ];

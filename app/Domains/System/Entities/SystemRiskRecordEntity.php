@@ -18,7 +18,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
 
     public const string getRuleId = 'rule_id'; // 命中规则ID,关联system_risk_rules
 
-    public const string getObjectType = 'object_type'; // 对象类型:1=订单,2=优惠券,3=提现,4=售后
+    public const string getObjectType = 'object_type'; // 对象类型:1=订单,2=优惠券,3=提现,4=售后,5=裂变活动(助力/帮砍)
 
     public const string getObjectNo = 'object_no'; // 对象单号,如提现单号/订单号
 
@@ -47,7 +47,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
     #[OA\Property(property: 'ruleId', description: '命中规则ID,关联system_risk_rules', type: 'integer')]
     private int $ruleId;
 
-    #[OA\Property(property: 'objectType', description: '对象类型:1=订单,2=优惠券,3=提现,4=售后', type: 'integer')]
+    #[OA\Property(property: 'objectType', description: '对象类型:1=订单,2=优惠券,3=提现,4=售后,5=裂变活动(助力/帮砍)', type: 'integer')]
     private int $objectType;
 
     #[OA\Property(property: 'objectNo', description: '对象单号,如提现单号/订单号', type: 'string')]
@@ -66,7 +66,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
     private string $handleNote;
 
     #[OA\Property(property: 'handledAt', description: '申诉处理时间', type: 'string')]
-    private ?string $handledAt;
+    private string $handledAt;
 
     #[OA\Property(property: 'remark', description: '命中详情,如规则参数与实际值', type: 'string')]
     private string $remark;
@@ -126,7 +126,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
     }
 
     /**
-     * 获取对象类型:1=订单,2=优惠券,3=提现,4=售后
+     * 获取对象类型:1=订单,2=优惠券,3=提现,4=售后,5=裂变活动(助力/帮砍)
      */
     public function getObjectType(): int
     {
@@ -134,7 +134,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
     }
 
     /**
-     * 设置对象类型:1=订单,2=优惠券,3=提现,4=售后
+     * 设置对象类型:1=订单,2=优惠券,3=提现,4=售后,5=裂变活动(助力/帮砍)
      */
     public function setObjectType(int $objectType): void
     {
@@ -224,7 +224,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
     /**
      * 获取申诉处理时间
      */
-    public function getHandledAt(): ?string
+    public function getHandledAt(): string
     {
         return $this->handledAt;
     }
@@ -232,7 +232,7 @@ class SystemRiskRecordEntity implements \JsonSerializable
     /**
      * 设置申诉处理时间
      */
-    public function setHandledAt(?string $handledAt): void
+    public function setHandledAt(string $handledAt): void
     {
         $this->handledAt = $handledAt;
     }

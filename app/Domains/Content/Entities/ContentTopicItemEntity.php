@@ -22,7 +22,9 @@ class ContentTopicItemEntity implements \JsonSerializable
 
     public const string getSort = 'sort'; // 排序
 
-    public const string getCreateTime = 'create_time'; // 创建时间
+    public const string getCreatedAt = 'created_at'; // 创建时间
+
+    public const string getUpdatedAt = 'updated_at'; // 更新时间
 
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
@@ -39,8 +41,11 @@ class ContentTopicItemEntity implements \JsonSerializable
     #[OA\Property(property: 'sort', description: '排序', type: 'integer')]
     private int $sort;
 
-    #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
-    private string $createTime;
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
+
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
 
     /**
      * 获取ID
@@ -125,16 +130,32 @@ class ContentTopicItemEntity implements \JsonSerializable
     /**
      * 获取创建时间
      */
-    public function getCreateTime(): string
+    public function getCreatedAt(): string
     {
-        return $this->createTime;
+        return $this->createdAt;
     }
 
     /**
      * 设置创建时间
      */
-    public function setCreateTime(string $createTime): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->createTime = $createTime;
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * 获取更新时间
+     */
+    public function getUpdatedAt(): string
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * 设置更新时间
+     */
+    public function setUpdatedAt(string $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 }

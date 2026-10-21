@@ -12,7 +12,6 @@ use App\Domains\User\Controllers\UserAddressController;
 use App\Domains\User\Controllers\UserBrowsingHistoryController;
 use App\Domains\User\Controllers\UserController;
 use App\Domains\User\Controllers\UserFavoriteController;
-use App\Domains\User\Controllers\UserFollowerController;
 use App\Domains\User\Controllers\UserPointLogController;
 use App\Domains\User\Controllers\UserProfileController;
 use App\Domains\User\Controllers\UserRankController;
@@ -24,19 +23,23 @@ use Illuminate\Support\Facades\Route;
 
 // 查询用户账户列表接口
 Route::post('userAccount/search', [UserAccountController::class, 'search']);
+// 新增用户账户接口
+Route::post('userAccount/store', [UserAccountController::class, 'store']);
 // 获取用户账户详情接口
 Route::get('userAccount/show', [UserAccountController::class, 'show'])->name('userAccount.show');
-// 人工调整余额接口
-Route::post('userAccount/adjust', [UserAccountController::class, 'adjust']);
-// 查询用户资金/积分流水列表接口
+// 更新用户账户接口
+Route::put('userAccount/update', [UserAccountController::class, 'update']);
+// 删除用户账户接口
+Route::post('userAccount/destroy', [UserAccountController::class, 'destroy']);
+// 查询用户资金流水列表接口
 Route::post('userAccountLog/search', [UserAccountLogController::class, 'search']);
-// 新增用户资金/积分流水接口
+// 新增用户资金流水接口
 Route::post('userAccountLog/store', [UserAccountLogController::class, 'store']);
-// 获取用户资金/积分流水详情接口
+// 获取用户资金流水详情接口
 Route::get('userAccountLog/show', [UserAccountLogController::class, 'show'])->name('userAccountLog.show');
-// 更新用户资金/积分流水接口
+// 更新用户资金流水接口
 Route::put('userAccountLog/update', [UserAccountLogController::class, 'update']);
-// 删除用户资金/积分流水接口
+// 删除用户资金流水接口
 Route::post('userAccountLog/destroy', [UserAccountLogController::class, 'destroy']);
 // 查询用户收货地址列表接口
 Route::post('userAddress/search', [UserAddressController::class, 'search']);
@@ -78,16 +81,6 @@ Route::get('userFavorite/show', [UserFavoriteController::class, 'show'])->name('
 Route::put('userFavorite/update', [UserFavoriteController::class, 'update']);
 // 删除用户收藏接口
 Route::post('userFavorite/destroy', [UserFavoriteController::class, 'destroy']);
-// 查询关注关系列表接口
-Route::post('userFollower/search', [UserFollowerController::class, 'search']);
-// 新增关注关系接口
-Route::post('userFollower/store', [UserFollowerController::class, 'store']);
-// 获取关注关系详情接口
-Route::get('userFollower/show', [UserFollowerController::class, 'show'])->name('userFollower.show');
-// 更新关注关系接口
-Route::put('userFollower/update', [UserFollowerController::class, 'update']);
-// 删除关注关系接口
-Route::post('userFollower/destroy', [UserFollowerController::class, 'destroy']);
 // 查询用户积分流水列表接口
 Route::post('userPointLog/search', [UserPointLogController::class, 'search']);
 // 新增用户积分流水接口
@@ -148,15 +141,13 @@ Route::get('userSocial/show', [UserSocialController::class, 'show'])->name('user
 Route::put('userSocial/update', [UserSocialController::class, 'update']);
 // 删除社交登录绑定接口
 Route::post('userSocial/destroy', [UserSocialController::class, 'destroy']);
-// 查询提现单列表接口
+// 查询用户提现单列表接口
 Route::post('userWithdrawOrder/search', [UserWithdrawOrderController::class, 'search']);
-// 获取提现单详情接口
+// 新增用户提现单接口
+Route::post('userWithdrawOrder/store', [UserWithdrawOrderController::class, 'store']);
+// 获取用户提现单详情接口
 Route::get('userWithdrawOrder/show', [UserWithdrawOrderController::class, 'show'])->name('userWithdrawOrder.show');
-// 提现单审核接口
-Route::post('userWithdrawOrder/audit', [UserWithdrawOrderController::class, 'audit']);
-// 标记打款中接口
-Route::post('userWithdrawOrder/markPaying', [UserWithdrawOrderController::class, 'markPaying']);
-// 标记打款成功接口
-Route::post('userWithdrawOrder/markSuccess', [UserWithdrawOrderController::class, 'markSuccess']);
-// 标记打款失败接口
-Route::post('userWithdrawOrder/markFail', [UserWithdrawOrderController::class, 'markFail']);
+// 更新用户提现单接口
+Route::put('userWithdrawOrder/update', [UserWithdrawOrderController::class, 'update']);
+// 删除用户提现单接口
+Route::post('userWithdrawOrder/destroy', [UserWithdrawOrderController::class, 'destroy']);

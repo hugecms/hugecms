@@ -30,10 +30,7 @@ class UserResponse implements \JsonSerializable
     #[OA\Property(property: 'rankId', description: '会员等级ID,0=默认等级', type: 'integer')]
     private int $rankId;
 
-    #[OA\Property(property: 'balance', description: '账户余额', type: 'string')]
-    private string $balance;
-
-    #[OA\Property(property: 'points', description: '积分', type: 'integer')]
+    #[OA\Property(property: 'points', description: '积分余额', type: 'integer')]
     private int $points;
 
     #[OA\Property(property: 'lastLoginTime', description: '最后登录时间', type: 'string')]
@@ -148,23 +145,7 @@ class UserResponse implements \JsonSerializable
     }
 
     /**
-     * 获取账户余额
-     */
-    public function getBalance(): string
-    {
-        return $this->balance;
-    }
-
-    /**
-     * 设置账户余额
-     */
-    public function setBalance(string $balance): void
-    {
-        $this->balance = $balance;
-    }
-
-    /**
-     * 获取积分
+     * 获取积分余额
      */
     public function getPoints(): int
     {
@@ -172,7 +153,7 @@ class UserResponse implements \JsonSerializable
     }
 
     /**
-     * 设置积分
+     * 设置积分余额
      */
     public function setPoints(int $points): void
     {

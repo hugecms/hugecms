@@ -48,6 +48,9 @@ class UserProfileController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[UserProfileQueryRequest::getId])) {
+                $condition[] = [UserProfileEntity::getId, '=', $requestData[UserProfileQueryRequest::getId]];
+            }
             if (isset($requestData[UserProfileQueryRequest::getUserId])) {
                 $condition[] = [UserProfileEntity::getUserId, '=', $requestData[UserProfileQueryRequest::getUserId]];
             }

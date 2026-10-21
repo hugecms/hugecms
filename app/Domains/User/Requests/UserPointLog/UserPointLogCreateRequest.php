@@ -11,20 +11,20 @@ use OpenApi\Attributes as OA;
     schema: 'UserPointLogCreateRequest',
     required: [
         self::getUserId,
-        self::getChangeType,
-        self::getChangeAmount,
+        self::getBizType,
         self::getChangePoints,
+        self::getPointsAfter,
+        self::getBizNo,
         self::getDescription,
-        self::getRelatedId,
         self::getCreateTime,
     ],
     properties: [
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
-        new OA\Property(property: self::getChangeType, description: '变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整', type: 'string'),
-        new OA\Property(property: self::getChangeAmount, description: '资金变动,正数入负数出', type: 'string'),
+        new OA\Property(property: self::getBizType, description: '业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)', type: 'integer'),
         new OA\Property(property: self::getChangePoints, description: '积分变动,正数入负数出', type: 'integer'),
+        new OA\Property(property: self::getPointsAfter, description: '变动后积分余额快照', type: 'integer'),
+        new OA\Property(property: self::getBizNo, description: '关联业务单号', type: 'string'),
         new OA\Property(property: self::getDescription, description: '变动说明', type: 'string'),
-        new OA\Property(property: self::getRelatedId, description: '关联单据ID', type: 'integer'),
         new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
@@ -32,15 +32,15 @@ class UserPointLogCreateRequest extends FormRequest
 {
     public const string getUserId = 'userId';
 
-    public const string getChangeType = 'changeType';
-
-    public const string getChangeAmount = 'changeAmount';
+    public const string getBizType = 'bizType';
 
     public const string getChangePoints = 'changePoints';
 
-    public const string getDescription = 'description';
+    public const string getPointsAfter = 'pointsAfter';
 
-    public const string getRelatedId = 'relatedId';
+    public const string getBizNo = 'bizNo';
+
+    public const string getDescription = 'description';
 
     public const string getCreateTime = 'createTime';
 
@@ -48,11 +48,11 @@ class UserPointLogCreateRequest extends FormRequest
     {
         return [
             self::getUserId => 'required',
-            self::getChangeType => 'required',
-            self::getChangeAmount => 'required',
+            self::getBizType => 'required',
             self::getChangePoints => 'required',
+            self::getPointsAfter => 'required',
+            self::getBizNo => 'required',
             self::getDescription => 'required',
-            self::getRelatedId => 'required',
             self::getCreateTime => 'required',
         ];
     }
@@ -61,11 +61,11 @@ class UserPointLogCreateRequest extends FormRequest
     {
         return [
             self::getUserId.'.required' => '请设置用户ID',
-            self::getChangeType.'.required' => '请设置变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整',
-            self::getChangeAmount.'.required' => '请设置资金变动,正数入负数出',
+            self::getBizType.'.required' => '请设置业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)',
             self::getChangePoints.'.required' => '请设置积分变动,正数入负数出',
+            self::getPointsAfter.'.required' => '请设置变动后积分余额快照',
+            self::getBizNo.'.required' => '请设置关联业务单号',
             self::getDescription.'.required' => '请设置变动说明',
-            self::getRelatedId.'.required' => '请设置关联单据ID',
             self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }

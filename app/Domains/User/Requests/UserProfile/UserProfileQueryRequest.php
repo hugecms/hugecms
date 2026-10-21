@@ -11,11 +11,14 @@ use OpenApi\Attributes as OA;
     schema: 'UserProfileQueryRequest',
     required: [],
     properties: [
+        new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
     ]
 )]
 class UserProfileQueryRequest extends FormRequest
 {
+    public const string getId = 'id';
+
     public const string getUserId = 'userId';
 
     public function rules(): array

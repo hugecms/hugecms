@@ -26,7 +26,7 @@ use Throwable;
 class SystemRiskRuleController extends BaseController
 {
     public function __construct(
-        private readonly SystemRiskRuleService $systemIpBlacklistService,
+        private readonly SystemRiskRuleService $systemRiskRuleService,
     ) {}
 
     #[OA\Post(path: '/systemRiskRule/search', summary: '查询风控规则列表接口', security: [['bearerAuth' => []]], tags: ['风控规则模块'])]
@@ -48,14 +48,17 @@ class SystemRiskRuleController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[SystemRiskRuleQueryRequest::getRuleType])) {
+                $condition[] = [SystemRiskRuleEntity::getRuleType, '=', $requestData[SystemRiskRuleQueryRequest::getRuleType]];
+            }
+            if (isset($requestData[SystemRiskRuleQueryRequest::getStatus])) {
+                $condition[] = [SystemRiskRuleEntity::getStatus, '=', $requestData[SystemRiskRuleQueryRequest::getStatus]];
+            }
             if (isset($requestData[SystemRiskRuleQueryRequest::getId])) {
                 $condition[] = [SystemRiskRuleEntity::getId, '=', $requestData[SystemRiskRuleQueryRequest::getId]];
             }
-            if (isset($requestData[SystemRiskRuleQueryRequest::getIp])) {
-                $condition[] = [SystemRiskRuleEntity::getIp, '=', $requestData[SystemRiskRuleQueryRequest::getIp]];
-            }
 
-            $result = $this->systemIpBlacklistService->page($condition, $page, $pageSize);
+            $result = $this->systemRiskRuleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
                 $response = SystemRiskRuleResponse::from($item);
@@ -97,7 +100,7 @@ class SystemRiskRuleController extends BaseController
         try {
             $input = SystemRiskRuleEntity::from($requestData);
 
-            if ($this->systemIpBlacklistService->save($input->toEntity())) {
+            if ($this->systemRiskRuleService->save($input->toEntity())) {
                 DB::commit();
 
                 return $this->success();
@@ -131,12 +134,12 @@ class SystemRiskRuleController extends BaseController
         $id = \intval($request->query('id', '0'));
 
         try {
-            $systemIpBlacklist = $this->systemIpBlacklistService->getOneById($id);
-            if (empty($systemIpBlacklist)) {
+            $systemRiskRule = $this->systemRiskRuleService->getOneById($id);
+            if (empty($systemRiskRule)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
 
-            $response = SystemRiskRuleResponse::from($systemIpBlacklist);
+            $response = SystemRiskRuleResponse::from($systemRiskRule);
 
             return $this->success($response->toArray());
         } catch (Throwable $e) {
@@ -167,14 +170,14 @@ class SystemRiskRuleController extends BaseController
 
         DB::beginTransaction();
         try {
-            $systemIpBlacklist = $this->systemIpBlacklistService->getOneById($id);
-            if (empty($systemIpBlacklist)) {
+            $systemRiskRule = $this->systemRiskRuleService->getOneById($id);
+            if (empty($systemRiskRule)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
 
             $input = SystemRiskRuleEntity::from($requestData);
 
-            $this->systemIpBlacklistService->updateById($input->toEntity(), $id);
+            $this->systemRiskRuleService->updateById($input->toEntity(), $id);
 
             DB::commit();
 
@@ -207,7 +210,7 @@ class SystemRiskRuleController extends BaseController
 
         DB::beginTransaction();
         try {
-            if ($this->systemIpBlacklistService->removeByIds($requestData['ids'])) {
+            if ($this->systemRiskRuleService->removeByIds($requestData['ids'])) {
                 DB::commit();
 
                 return $this->success();

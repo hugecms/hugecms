@@ -20,7 +20,7 @@ class UserProfile extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +28,7 @@ class UserProfile extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'nickname',
         'avatar',
         'gender',

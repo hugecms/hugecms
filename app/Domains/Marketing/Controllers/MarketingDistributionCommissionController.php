@@ -60,6 +60,9 @@ class MarketingDistributionCommissionController extends BaseController
             if (isset($requestData[MarketingDistributionCommissionQueryRequest::getId])) {
                 $condition[] = [MarketingDistributionCommissionEntity::getId, '=', $requestData[MarketingDistributionCommissionQueryRequest::getId]];
             }
+            if (isset($requestData[MarketingDistributionCommissionQueryRequest::getReversalOfId])) {
+                $condition[] = [MarketingDistributionCommissionEntity::getReversalOfId, '=', $requestData[MarketingDistributionCommissionQueryRequest::getReversalOfId]];
+            }
 
             $result = $this->marketingDistributionCommissionService->page($condition, $page, $pageSize);
 

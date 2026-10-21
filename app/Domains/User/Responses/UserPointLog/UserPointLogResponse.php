@@ -18,17 +18,14 @@ class UserPointLogResponse implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'bizType', description: '业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整', type: 'integer')]
+    #[OA\Property(property: 'bizType', description: '业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)', type: 'integer')]
     private int $bizType;
 
-    #[OA\Property(property: 'amount', description: '变动金额,正数入负数出', type: 'string')]
-    private string $amount;
+    #[OA\Property(property: 'changePoints', description: '积分变动,正数入负数出', type: 'integer')]
+    private int $changePoints;
 
-    #[OA\Property(property: 'balanceAfter', description: '变动后余额快照', type: 'string')]
-    private string $balanceAfter;
-
-    #[OA\Property(property: 'frozenAfter', description: '变动后冻结快照', type: 'string')]
-    private string $frozenAfter;
+    #[OA\Property(property: 'pointsAfter', description: '变动后积分余额快照', type: 'integer')]
+    private int $pointsAfter;
 
     #[OA\Property(property: 'bizNo', description: '关联业务单号', type: 'string')]
     private string $bizNo;
@@ -72,7 +69,7 @@ class UserPointLogResponse implements \JsonSerializable
     }
 
     /**
-     * 获取业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
+     * 获取业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)
      */
     public function getBizType(): int
     {
@@ -80,7 +77,7 @@ class UserPointLogResponse implements \JsonSerializable
     }
 
     /**
-     * 设置业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
+     * 设置业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)
      */
     public function setBizType(int $bizType): void
     {
@@ -88,51 +85,35 @@ class UserPointLogResponse implements \JsonSerializable
     }
 
     /**
-     * 获取变动金额,正数入负数出
+     * 获取积分变动,正数入负数出
      */
-    public function getAmount(): string
+    public function getChangePoints(): int
     {
-        return $this->amount;
+        return $this->changePoints;
     }
 
     /**
-     * 设置变动金额,正数入负数出
+     * 设置积分变动,正数入负数出
      */
-    public function setAmount(string $amount): void
+    public function setChangePoints(int $changePoints): void
     {
-        $this->amount = $amount;
+        $this->changePoints = $changePoints;
     }
 
     /**
-     * 获取变动后余额快照
+     * 获取变动后积分余额快照
      */
-    public function getBalanceAfter(): string
+    public function getPointsAfter(): int
     {
-        return $this->balanceAfter;
+        return $this->pointsAfter;
     }
 
     /**
-     * 设置变动后余额快照
+     * 设置变动后积分余额快照
      */
-    public function setBalanceAfter(string $balanceAfter): void
+    public function setPointsAfter(int $pointsAfter): void
     {
-        $this->balanceAfter = $balanceAfter;
-    }
-
-    /**
-     * 获取变动后冻结快照
-     */
-    public function getFrozenAfter(): string
-    {
-        return $this->frozenAfter;
-    }
-
-    /**
-     * 设置变动后冻结快照
-     */
-    public function setFrozenAfter(string $frozenAfter): void
-    {
-        $this->frozenAfter = $frozenAfter;
+        $this->pointsAfter = $pointsAfter;
     }
 
     /**

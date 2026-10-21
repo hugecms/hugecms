@@ -20,6 +20,9 @@ use OpenApi\Attributes as OA;
         self::getAmount,
         self::getStatus,
         self::getSettledAt,
+        self::getSettleTime,
+        self::getReversalRecordId,
+        self::getReversalOfId,
     ],
     properties: [
         new OA\Property(property: self::getDistributorId, description: '分销员用户ID', type: 'integer'),
@@ -29,9 +32,12 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getLevel, description: '层级:1=一级,2=二级', type: 'integer'),
         new OA\Property(property: self::getOrderAmount, description: '计佣基数(商品实付)', type: 'string'),
         new OA\Property(property: self::getRate, description: '佣金比例(%),如5.00表示5%', type: 'string'),
-        new OA\Property(property: self::getAmount, description: '佣金金额', type: 'string'),
-        new OA\Property(property: self::getStatus, description: '状态:0=待结算,1=已结算,2=已失效(退款)', type: 'integer'),
-        new OA\Property(property: self::getSettledAt, description: '结算时间', type: 'string'),
+        new OA\Property(property: self::getAmount, description: '佣金金额,冲销记录为负值', type: 'string'),
+        new OA\Property(property: self::getStatus, description: '状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)', type: 'integer'),
+        new OA\Property(property: self::getSettledAt, description: '实际结算入账时间', type: 'string'),
+        new OA\Property(property: self::getSettleTime, description: '应结算时间=订单完成时间+保护期,到期由结算流程入账', type: 'string'),
+        new OA\Property(property: self::getReversalRecordId, description: '冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录', type: 'integer'),
+        new OA\Property(property: self::getReversalOfId, description: '原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录', type: 'integer'),
     ]
 )]
 class MarketingDistributionCommissionCreateRequest extends FormRequest
@@ -56,6 +62,12 @@ class MarketingDistributionCommissionCreateRequest extends FormRequest
 
     public const string getSettledAt = 'settledAt';
 
+    public const string getSettleTime = 'settleTime';
+
+    public const string getReversalRecordId = 'reversalRecordId';
+
+    public const string getReversalOfId = 'reversalOfId';
+
     public function rules(): array
     {
         return [
@@ -69,6 +81,9 @@ class MarketingDistributionCommissionCreateRequest extends FormRequest
             self::getAmount => 'required',
             self::getStatus => 'required',
             self::getSettledAt => 'required',
+            self::getSettleTime => 'required',
+            self::getReversalRecordId => 'required',
+            self::getReversalOfId => 'required',
         ];
     }
 
@@ -82,9 +97,12 @@ class MarketingDistributionCommissionCreateRequest extends FormRequest
             self::getLevel.'.required' => '请设置层级:1=一级,2=二级',
             self::getOrderAmount.'.required' => '请设置计佣基数(商品实付)',
             self::getRate.'.required' => '请设置佣金比例(%),如5.00表示5%',
-            self::getAmount.'.required' => '请设置佣金金额',
-            self::getStatus.'.required' => '请设置状态:0=待结算,1=已结算,2=已失效(退款)',
-            self::getSettledAt.'.required' => '请设置结算时间',
+            self::getAmount.'.required' => '请设置佣金金额,冲销记录为负值',
+            self::getStatus.'.required' => '请设置状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)',
+            self::getSettledAt.'.required' => '请设置实际结算入账时间',
+            self::getSettleTime.'.required' => '请设置应结算时间=订单完成时间+保护期,到期由结算流程入账',
+            self::getReversalRecordId.'.required' => '请设置冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录',
+            self::getReversalOfId.'.required' => '请设置原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录',
         ];
     }
 }

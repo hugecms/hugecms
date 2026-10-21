@@ -24,7 +24,7 @@ class UserAccountLogEntity implements \JsonSerializable
 
     public const string getFrozenAfter = 'frozen_after'; // 变动后冻结快照
 
-    public const string getBizNo = 'biz_no'; // 关联业务单号
+    public const string getBizNo = 'biz_no'; // 关联业务单号,如提现单号/佣金记录号/充值单号
 
     public const string getDescription = 'description'; // 变动说明
 
@@ -48,7 +48,7 @@ class UserAccountLogEntity implements \JsonSerializable
     #[OA\Property(property: 'frozenAfter', description: '变动后冻结快照', type: 'string')]
     private string $frozenAfter;
 
-    #[OA\Property(property: 'bizNo', description: '关联业务单号', type: 'string')]
+    #[OA\Property(property: 'bizNo', description: '关联业务单号,如提现单号/佣金记录号/充值单号', type: 'string')]
     private string $bizNo;
 
     #[OA\Property(property: 'description', description: '变动说明', type: 'string')]
@@ -154,7 +154,7 @@ class UserAccountLogEntity implements \JsonSerializable
     }
 
     /**
-     * 获取关联业务单号
+     * 获取关联业务单号,如提现单号/佣金记录号/充值单号
      */
     public function getBizNo(): string
     {
@@ -162,7 +162,7 @@ class UserAccountLogEntity implements \JsonSerializable
     }
 
     /**
-     * 设置关联业务单号
+     * 设置关联业务单号,如提现单号/佣金记录号/充值单号
      */
     public function setBizNo(string $bizNo): void
     {

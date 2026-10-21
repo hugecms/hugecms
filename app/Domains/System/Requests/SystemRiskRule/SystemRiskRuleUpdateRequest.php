@@ -11,44 +11,44 @@ use OpenApi\Attributes as OA;
     schema: 'SystemRiskRuleUpdateRequest',
     required: [
         self::getId,
-        self::getIp,
-        self::getReason,
-        self::getExpiredAt,
-        self::getUserType,
-        self::getUserId,
+        self::getName,
+        self::getRuleType,
+        self::getConditionExpr,
+        self::getAction,
+        self::getStatus,
     ],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
-        new OA\Property(property: self::getIp, description: 'IP地址,支持IPv4/IPv6', type: 'string'),
-        new OA\Property(property: self::getReason, description: '拉黑原因', type: 'string'),
-        new OA\Property(property: self::getExpiredAt, description: '过期时间,空=永久', type: 'string'),
-        new OA\Property(property: self::getUserType, description: '操作账户类型:admin,system', type: 'string'),
-        new OA\Property(property: self::getUserId, description: '操作人ID', type: 'integer'),
+        new OA\Property(property: self::getName, description: '规则名称', type: 'string'),
+        new OA\Property(property: self::getRuleType, description: '规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级', type: 'integer'),
+        new OA\Property(property: self::getConditionExpr, description: '条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}', type: 'string'),
+        new OA\Property(property: self::getAction, description: '处置动作:1=拦截,2=标记放行', type: 'integer'),
+        new OA\Property(property: self::getStatus, description: '状态:0=停用,1=启用', type: 'integer'),
     ]
 )]
 class SystemRiskRuleUpdateRequest extends FormRequest
 {
     public const string getId = 'id';
 
-    public const string getIp = 'ip';
+    public const string getName = 'name';
 
-    public const string getReason = 'reason';
+    public const string getRuleType = 'ruleType';
 
-    public const string getExpiredAt = 'expiredAt';
+    public const string getConditionExpr = 'conditionExpr';
 
-    public const string getUserType = 'userType';
+    public const string getAction = 'action';
 
-    public const string getUserId = 'userId';
+    public const string getStatus = 'status';
 
     public function rules(): array
     {
         return [
             self::getId => 'required',
-            self::getIp => 'required',
-            self::getReason => 'required',
-            self::getExpiredAt => 'required',
-            self::getUserType => 'required',
-            self::getUserId => 'required',
+            self::getName => 'required',
+            self::getRuleType => 'required',
+            self::getConditionExpr => 'required',
+            self::getAction => 'required',
+            self::getStatus => 'required',
         ];
     }
 
@@ -56,11 +56,11 @@ class SystemRiskRuleUpdateRequest extends FormRequest
     {
         return [
             self::getId.'.required' => '请设置ID',
-            self::getIp.'.required' => '请设置IP地址,支持IPv4/IPv6',
-            self::getReason.'.required' => '请设置拉黑原因',
-            self::getExpiredAt.'.required' => '请设置过期时间,空=永久',
-            self::getUserType.'.required' => '请设置操作账户类型:admin,system',
-            self::getUserId.'.required' => '请设置操作人ID',
+            self::getName.'.required' => '请设置规则名称',
+            self::getRuleType.'.required' => '请设置规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级',
+            self::getConditionExpr.'.required' => '请设置条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}',
+            self::getAction.'.required' => '请设置处置动作:1=拦截,2=标记放行',
+            self::getStatus.'.required' => '请设置状态:0=停用,1=启用',
         ];
     }
 }

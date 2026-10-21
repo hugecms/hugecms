@@ -30,7 +30,7 @@ enum MarketingDistributionCommissionStatusEnum: int implements EnumMethodInterfa
     case Status2 = 2;
 
     /**
-     * 已冲销(结算后退款,原记录侧)
+     * 已冲销(结算后退款
      */
     case Status3 = 3;
 }

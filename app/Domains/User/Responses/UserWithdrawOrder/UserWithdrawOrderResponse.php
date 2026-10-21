@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\User\Entities;
+namespace App\Domains\User\Responses\UserWithdrawOrder;
 
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;
 use OpenApi\Attributes as OA;
@@ -15,7 +15,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'withdrawNo', description: '提现单号', type: 'string')]
+    #[OA\Property(property: 'withdrawNo', description: '提现单号,应用层生成', type: 'string')]
     private string $withdrawNo;
 
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
@@ -24,11 +24,11 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     #[OA\Property(property: 'amount', description: '提现金额', type: 'string')]
     private string $amount;
 
-    #[OA\Property(property: 'channel', description: '打款渠道:manual=人工线下打款', type: 'string')]
+    #[OA\Property(property: 'channel', description: '打款渠道:manual=人工线下打款,微信商家转账后续扩展', type: 'string')]
     private string $channel;
 
     #[OA\Property(property: 'channelOrderNo', description: '渠道打款单号,回填防重复打款', type: 'string')]
-    private ?string $channelOrderNo;
+    private string $channelOrderNo;
 
     #[OA\Property(property: 'accountType', description: '收款方式:bank=银行卡,wechat=微信,alipay=支付宝', type: 'string')]
     private string $accountType;
@@ -52,16 +52,19 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     private string $failReason;
 
     #[OA\Property(property: 'auditAt', description: '审核时间', type: 'string')]
-    private ?string $auditAt;
+    private string $auditAt;
 
-    #[OA\Property(property: 'paidAt', description: '打款标记时间', type: 'string')]
-    private ?string $paidAt;
+    #[OA\Property(property: 'paidAt', description: '打款标记时间(成功或失败)', type: 'string')]
+    private string $paidAt;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
     private string $createdAt;
 
     #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
     private string $updatedAt;
+
+    #[OA\Property(property: 'deletedAt', description: '删除时间', type: 'string')]
+    private string $deletedAt;
 
     /**
      * 获取ID
@@ -80,7 +83,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     }
 
     /**
-     * 获取提现单号
+     * 获取提现单号,应用层生成
      */
     public function getWithdrawNo(): string
     {
@@ -88,7 +91,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     }
 
     /**
-     * 设置提现单号
+     * 设置提现单号,应用层生成
      */
     public function setWithdrawNo(string $withdrawNo): void
     {
@@ -128,7 +131,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     }
 
     /**
-     * 获取打款渠道:manual=人工线下打款
+     * 获取打款渠道:manual=人工线下打款,微信商家转账后续扩展
      */
     public function getChannel(): string
     {
@@ -136,7 +139,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     }
 
     /**
-     * 设置打款渠道:manual=人工线下打款
+     * 设置打款渠道:manual=人工线下打款,微信商家转账后续扩展
      */
     public function setChannel(string $channel): void
     {
@@ -146,7 +149,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     /**
      * 获取渠道打款单号,回填防重复打款
      */
-    public function getChannelOrderNo(): ?string
+    public function getChannelOrderNo(): string
     {
         return $this->channelOrderNo;
     }
@@ -154,7 +157,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     /**
      * 设置渠道打款单号,回填防重复打款
      */
-    public function setChannelOrderNo(?string $channelOrderNo): void
+    public function setChannelOrderNo(string $channelOrderNo): void
     {
         $this->channelOrderNo = $channelOrderNo;
     }
@@ -274,7 +277,7 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     /**
      * 获取审核时间
      */
-    public function getAuditAt(): ?string
+    public function getAuditAt(): string
     {
         return $this->auditAt;
     }
@@ -282,23 +285,23 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     /**
      * 设置审核时间
      */
-    public function setAuditAt(?string $auditAt): void
+    public function setAuditAt(string $auditAt): void
     {
         $this->auditAt = $auditAt;
     }
 
     /**
-     * 获取打款标记时间
+     * 获取打款标记时间(成功或失败)
      */
-    public function getPaidAt(): ?string
+    public function getPaidAt(): string
     {
         return $this->paidAt;
     }
 
     /**
-     * 设置打款标记时间
+     * 设置打款标记时间(成功或失败)
      */
-    public function setPaidAt(?string $paidAt): void
+    public function setPaidAt(string $paidAt): void
     {
         $this->paidAt = $paidAt;
     }
@@ -333,5 +336,21 @@ class UserWithdrawOrderResponse implements \JsonSerializable
     public function setUpdatedAt(string $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * 获取删除时间
+     */
+    public function getDeletedAt(): string
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * 设置删除时间
+     */
+    public function setDeletedAt(string $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

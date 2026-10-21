@@ -29,7 +29,7 @@ class UserAccountLogController extends BaseController
         private readonly UserAccountLogService $userAccountLogService,
     ) {}
 
-    #[OA\Post(path: '/userAccountLog/search', summary: '查询用户资金/积分流水列表接口', security: [['bearerAuth' => []]], tags: ['用户资金/积分流水模块'])]
+    #[OA\Post(path: '/userAccountLog/search', summary: '查询用户资金流水列表接口', security: [['bearerAuth' => []]], tags: ['用户资金流水模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserAccountLogQueryRequest::class))]
@@ -48,6 +48,9 @@ class UserAccountLogController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[UserAccountLogQueryRequest::getBizNo])) {
+                $condition[] = [UserAccountLogEntity::getBizNo, '=', $requestData[UserAccountLogQueryRequest::getBizNo]];
+            }
             if (isset($requestData[UserAccountLogQueryRequest::getUserId])) {
                 $condition[] = [UserAccountLogEntity::getUserId, '=', $requestData[UserAccountLogQueryRequest::getUserId]];
             }
@@ -83,7 +86,7 @@ class UserAccountLogController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/userAccountLog/store', summary: '新增用户资金/积分流水接口', security: [['bearerAuth' => []]], tags: ['用户资金/积分流水模块'])]
+    #[OA\Post(path: '/userAccountLog/store', summary: '新增用户资金流水接口', security: [['bearerAuth' => []]], tags: ['用户资金流水模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserAccountLogCreateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -120,7 +123,7 @@ class UserAccountLogController extends BaseController
         }
     }
 
-    #[OA\Get(path: '/userAccountLog/show', summary: '获取用户资金/积分流水详情接口', security: [['bearerAuth' => []]], tags: ['用户资金/积分流水模块'])]
+    #[OA\Get(path: '/userAccountLog/show', summary: '获取用户资金流水详情接口', security: [['bearerAuth' => []]], tags: ['用户资金流水模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -153,7 +156,7 @@ class UserAccountLogController extends BaseController
         }
     }
 
-    #[OA\Put(path: '/userAccountLog/update', summary: '更新用户资金/积分流水接口', security: [['bearerAuth' => []]], tags: ['用户资金/积分流水模块'])]
+    #[OA\Put(path: '/userAccountLog/update', summary: '更新用户资金流水接口', security: [['bearerAuth' => []]], tags: ['用户资金流水模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserAccountLogUpdateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
@@ -195,7 +198,7 @@ class UserAccountLogController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/userAccountLog/destroy', summary: '删除用户资金/积分流水接口', security: [['bearerAuth' => []]], tags: ['用户资金/积分流水模块'])]
+    #[OA\Post(path: '/userAccountLog/destroy', summary: '删除用户资金流水接口', security: [['bearerAuth' => []]], tags: ['用户资金流水模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: UserAccountLogDestroyRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [

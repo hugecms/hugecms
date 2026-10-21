@@ -28,9 +28,9 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
 
     public const string getRate = 'rate'; // 佣金比例(%),如5.00表示5%
 
-    public const string getAmount = 'amount'; // 佣金金额
+    public const string getAmount = 'amount'; // 佣金金额,冲销记录为负值
 
-    public const string getStatus = 'status'; // 状态:0=待结算,1=已结算,2=已失效(退款)
+    public const string getStatus = 'status'; // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
 
     public const string getSettledAt = 'settled_at'; // 实际结算入账时间
 
@@ -68,13 +68,13 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     #[OA\Property(property: 'rate', description: '佣金比例(%),如5.00表示5%', type: 'string')]
     private string $rate;
 
-    #[OA\Property(property: 'amount', description: '佣金金额', type: 'string')]
+    #[OA\Property(property: 'amount', description: '佣金金额,冲销记录为负值', type: 'string')]
     private string $amount;
 
-    #[OA\Property(property: 'status', description: '状态:0=待结算,1=已结算,2=已失效(退款)', type: 'integer')]
+    #[OA\Property(property: 'status', description: '状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)', type: 'integer')]
     private int $status;
 
-    #[OA\Property(property: 'settledAt', description: '结算时间', type: 'string')]
+    #[OA\Property(property: 'settledAt', description: '实际结算入账时间', type: 'string')]
     private string $settledAt;
 
     #[OA\Property(property: 'settleTime', description: '应结算时间=订单完成时间+保护期,到期由结算流程入账', type: 'string')]
@@ -84,7 +84,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     private int $reversalRecordId;
 
     #[OA\Property(property: 'reversalOfId', description: '原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录', type: 'integer')]
-    private ?int $reversalOfId;
+    private int $reversalOfId;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
     private string $createdAt;
@@ -221,7 +221,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 获取佣金金额
+     * 获取佣金金额,冲销记录为负值
      */
     public function getAmount(): string
     {
@@ -229,7 +229,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 设置佣金金额
+     * 设置佣金金额,冲销记录为负值
      */
     public function setAmount(string $amount): void
     {
@@ -237,7 +237,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 获取状态:0=待结算,1=已结算,2=已失效(退款)
+     * 获取状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
      */
     public function getStatus(): int
     {
@@ -245,7 +245,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 设置状态:0=待结算,1=已结算,2=已失效(退款)
+     * 设置状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
      */
     public function setStatus(int $status): void
     {
@@ -253,7 +253,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 获取结算时间
+     * 获取实际结算入账时间
      */
     public function getSettledAt(): string
     {
@@ -261,7 +261,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 设置结算时间
+     * 设置实际结算入账时间
      */
     public function setSettledAt(string $settledAt): void
     {
@@ -303,7 +303,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     /**
      * 获取原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录
      */
-    public function getReversalOfId(): ?int
+    public function getReversalOfId(): int
     {
         return $this->reversalOfId;
     }
@@ -311,7 +311,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     /**
      * 设置原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录
      */
-    public function setReversalOfId(?int $reversalOfId): void
+    public function setReversalOfId(int $reversalOfId): void
     {
         $this->reversalOfId = $reversalOfId;
     }

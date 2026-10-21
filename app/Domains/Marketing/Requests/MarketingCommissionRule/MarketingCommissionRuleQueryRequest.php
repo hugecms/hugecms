@@ -12,17 +12,20 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
-        new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
-        new OA\Property(property: self::getInviterId, description: '上级分销员用户ID,0=无上级', type: 'integer'),
+        new OA\Property(property: self::getScopeType, description: '范围类型:1=分类默认,2=商品覆盖', type: 'integer'),
+        new OA\Property(property: self::getScopeId, description: '目标ID,scope_type=1指向分类,2指向商品', type: 'integer'),
+        new OA\Property(property: self::getStatus, description: '状态:0=停用,1=启用', type: 'integer'),
     ]
 )]
 class MarketingCommissionRuleQueryRequest extends FormRequest
 {
     public const string getId = 'id';
 
-    public const string getUserId = 'userId';
+    public const string getScopeType = 'scopeType';
 
-    public const string getInviterId = 'inviterId';
+    public const string getScopeId = 'scopeId';
+
+    public const string getStatus = 'status';
 
     public function rules(): array
     {

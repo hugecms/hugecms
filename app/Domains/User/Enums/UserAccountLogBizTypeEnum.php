@@ -8,7 +8,7 @@ use Juling\Foundation\Contracts\EnumMethodInterface;
 use Juling\Foundation\Support\EnumMethods;
 
 /**
- * 资金流水业务类型枚举
+ * 业务类型枚举
  */
 enum UserAccountLogBizTypeEnum: int implements EnumMethodInterface
 {
@@ -17,50 +17,50 @@ enum UserAccountLogBizTypeEnum: int implements EnumMethodInterface
     /**
      * 佣金入账
      */
-    case CommissionCredit = 1;
+    case BizType1 = 1;
 
     /**
      * 提现冻结
      */
-    case WithdrawFreeze = 2;
+    case BizType2 = 2;
 
     /**
      * 提现完成
      */
-    case WithdrawSettled = 3;
+    case BizType3 = 3;
 
     /**
      * 提现失败回退
      */
-    case WithdrawRefund = 4;
+    case BizType4 = 4;
 
     /**
      * 冲销扣回
      */
-    case ReversalDeduct = 5;
+    case BizType5 = 5;
 
     /**
      * 余额消费冻结
      */
-    case ConsumeFreeze = 6;
+    case BizType6 = 6;
 
     /**
      * 余额消费完成
      */
-    case ConsumeSettled = 7;
+    case BizType7 = 7;
 
     /**
      * 余额消费退回
      */
-    case ConsumeRefund = 8;
+    case BizType8 = 8;
 
     /**
      * 充值入账
      */
-    case RechargeCredit = 9;
+    case BizType9 = 9;
 
     /**
      * 人工调整
      */
-    case AdminAdjust = 10;
+    case BizType10 = 10;
 }

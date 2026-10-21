@@ -14,7 +14,7 @@ class MarketingPromotionLadderEntity implements \JsonSerializable
 
     public const string getId = 'id'; // ID
 
-    public const string getPromotionId = 'promotion_id'; // 促销活动ID
+    public const string getPromotionId = 'promotion_id'; // 促销活动ID,关联marketing_promotions
 
     public const string getMinAmount = 'min_amount'; // 门槛金额,0=无门槛
 
@@ -29,7 +29,7 @@ class MarketingPromotionLadderEntity implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'promotionId', description: '促销活动ID', type: 'integer')]
+    #[OA\Property(property: 'promotionId', description: '促销活动ID,关联marketing_promotions', type: 'integer')]
     private int $promotionId;
 
     #[OA\Property(property: 'minAmount', description: '门槛金额,0=无门槛', type: 'string')]
@@ -64,7 +64,7 @@ class MarketingPromotionLadderEntity implements \JsonSerializable
     }
 
     /**
-     * 获取促销活动ID
+     * 获取促销活动ID,关联marketing_promotions
      */
     public function getPromotionId(): int
     {
@@ -72,7 +72,7 @@ class MarketingPromotionLadderEntity implements \JsonSerializable
     }
 
     /**
-     * 设置促销活动ID
+     * 设置促销活动ID,关联marketing_promotions
      */
     public function setPromotionId(int $promotionId): void
     {

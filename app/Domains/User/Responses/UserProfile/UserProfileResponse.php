@@ -12,6 +12,9 @@ class UserProfileResponse implements \JsonSerializable
 {
     use HasSerializableAttributes;
 
+    #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
+    private int $id;
+
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
@@ -38,6 +41,22 @@ class UserProfileResponse implements \JsonSerializable
 
     #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
     private string $updatedAt;
+
+    /**
+     * 获取ID
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * 设置ID
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 
     /**
      * 获取用户ID

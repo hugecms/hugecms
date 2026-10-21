@@ -13,7 +13,7 @@ use App\Domains\Marketing\Requests\MarketingCommissionRule\MarketingCommissionRu
 use App\Domains\Marketing\Responses\MarketingCommissionRule\MarketingCommissionRuleDestroyResponse;
 use App\Domains\Marketing\Responses\MarketingCommissionRule\MarketingCommissionRuleQueryResponse;
 use App\Domains\Marketing\Responses\MarketingCommissionRule\MarketingCommissionRuleResponse;
-use App\Services\MarketingCommissionRuleService;
+use App\Domains\Marketing\Services\MarketingCommissionRuleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +26,7 @@ use Throwable;
 class MarketingCommissionRuleController extends BaseController
 {
     public function __construct(
-        private readonly MarketingCommissionRuleService $marketingDistributionUserService,
+        private readonly MarketingCommissionRuleService $marketingCommissionRuleService,
     ) {}
 
     #[OA\Post(path: '/marketingCommissionRule/search', summary: '查询佣金规则列表接口', security: [['bearerAuth' => []]], tags: ['佣金规则模块'])]
@@ -48,17 +48,20 @@ class MarketingCommissionRuleController extends BaseController
 
         try {
             $condition = [];
-            if (isset($requestData[MarketingCommissionRuleQueryRequest::getInviterId])) {
-                $condition[] = [MarketingCommissionRuleEntity::getInviterId, '=', $requestData[MarketingCommissionRuleQueryRequest::getInviterId]];
+            if (isset($requestData[MarketingCommissionRuleQueryRequest::getStatus])) {
+                $condition[] = [MarketingCommissionRuleEntity::getStatus, '=', $requestData[MarketingCommissionRuleQueryRequest::getStatus]];
             }
             if (isset($requestData[MarketingCommissionRuleQueryRequest::getId])) {
                 $condition[] = [MarketingCommissionRuleEntity::getId, '=', $requestData[MarketingCommissionRuleQueryRequest::getId]];
             }
-            if (isset($requestData[MarketingCommissionRuleQueryRequest::getUserId])) {
-                $condition[] = [MarketingCommissionRuleEntity::getUserId, '=', $requestData[MarketingCommissionRuleQueryRequest::getUserId]];
+            if (isset($requestData[MarketingCommissionRuleQueryRequest::getScopeType])) {
+                $condition[] = [MarketingCommissionRuleEntity::getScopeType, '=', $requestData[MarketingCommissionRuleQueryRequest::getScopeType]];
+            }
+            if (isset($requestData[MarketingCommissionRuleQueryRequest::getScopeId])) {
+                $condition[] = [MarketingCommissionRuleEntity::getScopeId, '=', $requestData[MarketingCommissionRuleQueryRequest::getScopeId]];
             }
 
-            $result = $this->marketingDistributionUserService->page($condition, $page, $pageSize);
+            $result = $this->marketingCommissionRuleService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
                 $response = MarketingCommissionRuleResponse::from($item);
@@ -100,7 +103,7 @@ class MarketingCommissionRuleController extends BaseController
         try {
             $input = MarketingCommissionRuleEntity::from($requestData);
 
-            if ($this->marketingDistributionUserService->save($input->toEntity())) {
+            if ($this->marketingCommissionRuleService->save($input->toEntity())) {
                 DB::commit();
 
                 return $this->success();
@@ -134,12 +137,12 @@ class MarketingCommissionRuleController extends BaseController
         $id = \intval($request->query('id', '0'));
 
         try {
-            $marketingDistributionUser = $this->marketingDistributionUserService->getOneById($id);
-            if (empty($marketingDistributionUser)) {
+            $marketingCommissionRule = $this->marketingCommissionRuleService->getOneById($id);
+            if (empty($marketingCommissionRule)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
 
-            $response = MarketingCommissionRuleResponse::from($marketingDistributionUser);
+            $response = MarketingCommissionRuleResponse::from($marketingCommissionRule);
 
             return $this->success($response->toArray());
         } catch (Throwable $e) {
@@ -170,14 +173,14 @@ class MarketingCommissionRuleController extends BaseController
 
         DB::beginTransaction();
         try {
-            $marketingDistributionUser = $this->marketingDistributionUserService->getOneById($id);
-            if (empty($marketingDistributionUser)) {
+            $marketingCommissionRule = $this->marketingCommissionRuleService->getOneById($id);
+            if (empty($marketingCommissionRule)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
 
             $input = MarketingCommissionRuleEntity::from($requestData);
 
-            $this->marketingDistributionUserService->updateById($input->toEntity(), $id);
+            $this->marketingCommissionRuleService->updateById($input->toEntity(), $id);
 
             DB::commit();
 
@@ -210,7 +213,7 @@ class MarketingCommissionRuleController extends BaseController
 
         DB::beginTransaction();
         try {
-            if ($this->marketingDistributionUserService->removeByIds($requestData['ids'])) {
+            if ($this->marketingCommissionRuleService->removeByIds($requestData['ids'])) {
                 DB::commit();
 
                 return $this->success();

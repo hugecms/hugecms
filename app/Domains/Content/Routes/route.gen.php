@@ -6,28 +6,15 @@
 
 declare(strict_types=1);
 
-use App\Domains\Content\Controllers\ContentArticleContentController;
 use App\Domains\Content\Controllers\ContentArticleController;
-use App\Domains\Content\Controllers\ContentArticleTagController;
 use App\Domains\Content\Controllers\ContentCategoryController;
 use App\Domains\Content\Controllers\ContentCommentController;
-use App\Domains\Content\Controllers\ContentCommentLikeController;
 use App\Domains\Content\Controllers\ContentPageController;
 use App\Domains\Content\Controllers\ContentTagController;
 use App\Domains\Content\Controllers\ContentTopicController;
 use App\Domains\Content\Controllers\ContentTopicItemController;
 use Illuminate\Support\Facades\Route;
 
-// 查询文章正文列表接口
-Route::post('contentArticleContent/search', [ContentArticleContentController::class, 'search']);
-// 新增文章正文接口
-Route::post('contentArticleContent/store', [ContentArticleContentController::class, 'store']);
-// 获取文章正文详情接口
-Route::get('contentArticleContent/show', [ContentArticleContentController::class, 'show'])->name('contentArticleContent.show');
-// 更新文章正文接口
-Route::put('contentArticleContent/update', [ContentArticleContentController::class, 'update']);
-// 删除文章正文接口
-Route::post('contentArticleContent/destroy', [ContentArticleContentController::class, 'destroy']);
 // 查询文章列表接口
 Route::post('contentArticle/search', [ContentArticleController::class, 'search']);
 // 新增文章接口
@@ -38,16 +25,6 @@ Route::get('contentArticle/show', [ContentArticleController::class, 'show'])->na
 Route::put('contentArticle/update', [ContentArticleController::class, 'update']);
 // 删除文章接口
 Route::post('contentArticle/destroy', [ContentArticleController::class, 'destroy']);
-// 查询文章标签关联列表接口
-Route::post('contentArticleTag/search', [ContentArticleTagController::class, 'search']);
-// 新增文章标签关联接口
-Route::post('contentArticleTag/store', [ContentArticleTagController::class, 'store']);
-// 获取文章标签关联详情接口
-Route::get('contentArticleTag/show', [ContentArticleTagController::class, 'show'])->name('contentArticleTag.show');
-// 更新文章标签关联接口
-Route::put('contentArticleTag/update', [ContentArticleTagController::class, 'update']);
-// 删除文章标签关联接口
-Route::post('contentArticleTag/destroy', [ContentArticleTagController::class, 'destroy']);
 // 查询栏目列表接口
 Route::post('contentCategory/search', [ContentCategoryController::class, 'search']);
 // 新增栏目接口
@@ -68,16 +45,6 @@ Route::get('contentComment/show', [ContentCommentController::class, 'show'])->na
 Route::put('contentComment/update', [ContentCommentController::class, 'update']);
 // 删除评论接口
 Route::post('contentComment/destroy', [ContentCommentController::class, 'destroy']);
-// 查询评论点赞列表接口
-Route::post('contentCommentLike/search', [ContentCommentLikeController::class, 'search']);
-// 新增评论点赞接口
-Route::post('contentCommentLike/store', [ContentCommentLikeController::class, 'store']);
-// 获取评论点赞详情接口
-Route::get('contentCommentLike/show', [ContentCommentLikeController::class, 'show'])->name('contentCommentLike.show');
-// 更新评论点赞接口
-Route::put('contentCommentLike/update', [ContentCommentLikeController::class, 'update']);
-// 删除评论点赞接口
-Route::post('contentCommentLike/destroy', [ContentCommentLikeController::class, 'destroy']);
 // 查询单页列表接口
 Route::post('contentPage/search', [ContentPageController::class, 'search']);
 // 新增单页接口

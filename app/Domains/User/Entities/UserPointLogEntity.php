@@ -16,7 +16,7 @@ class UserPointLogEntity implements \JsonSerializable
 
     public const string getUserId = 'user_id'; // 用户ID
 
-    public const string getBizType = 'biz_type'; // 业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送
+    public const string getBizType = 'biz_type'; // 业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)
 
     public const string getChangePoints = 'change_points'; // 积分变动,正数入负数出
 
@@ -34,7 +34,7 @@ class UserPointLogEntity implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'bizType', description: '业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送', type: 'integer')]
+    #[OA\Property(property: 'bizType', description: '业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)', type: 'integer')]
     private int $bizType;
 
     #[OA\Property(property: 'changePoints', description: '积分变动,正数入负数出', type: 'integer')]
@@ -85,7 +85,7 @@ class UserPointLogEntity implements \JsonSerializable
     }
 
     /**
-     * 获取业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送
+     * 获取业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)
      */
     public function getBizType(): int
     {
@@ -93,7 +93,7 @@ class UserPointLogEntity implements \JsonSerializable
     }
 
     /**
-     * 设置业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送
+     * 设置业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)
      */
     public function setBizType(int $bizType): void
     {

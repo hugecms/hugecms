@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\Marketing\Responses\MarketingPromotion;
 
-use App\Domains\Marketing\Entities\MarketingPromotionLadderEntity;
-use App\Domains\Marketing\Entities\MarketingPromotionScopeEntity;
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;
 use OpenApi\Attributes as OA;
 
@@ -25,12 +23,6 @@ class MarketingPromotionResponse implements \JsonSerializable
 
     #[OA\Property(property: 'rangeType', description: '适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品', type: 'string')]
     private string $rangeType;
-
-    #[OA\Property(property: 'scopes', description: '适用范围列表,rangeType=all 时为空', type: 'array', items: new OA\Items(ref: MarketingPromotionScopeEntity::class))]
-    private array $scopes;
-
-    #[OA\Property(property: 'ladders', description: '优惠档位列表', type: 'array', items: new OA\Items(ref: MarketingPromotionLadderEntity::class))]
-    private array $ladders;
 
     #[OA\Property(property: 'startTime', description: '活动开始时间', type: 'string')]
     private string $startTime;
@@ -109,38 +101,6 @@ class MarketingPromotionResponse implements \JsonSerializable
     public function setRangeType(string $rangeType): void
     {
         $this->rangeType = $rangeType;
-    }
-
-    /**
-     * 获取适用范围列表,rangeType=all 时为空
-     */
-    public function getScopes(): array
-    {
-        return $this->scopes;
-    }
-
-    /**
-     * 设置适用范围列表,rangeType=all 时为空
-     */
-    public function setScopes(array $scopes): void
-    {
-        $this->scopes = $scopes;
-    }
-
-    /**
-     * 获取优惠档位列表
-     */
-    public function getLadders(): array
-    {
-        return $this->ladders;
-    }
-
-    /**
-     * 设置优惠档位列表
-     */
-    public function setLadders(array $ladders): void
-    {
-        $this->ladders = $ladders;
     }
 
     /**

@@ -15,20 +15,20 @@ class SystemRiskRuleResponse implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'ip', description: 'IP地址,支持IPv4/IPv6', type: 'string')]
-    private string $ip;
+    #[OA\Property(property: 'name', description: '规则名称', type: 'string')]
+    private string $name;
 
-    #[OA\Property(property: 'reason', description: '拉黑原因', type: 'string')]
-    private string $reason;
+    #[OA\Property(property: 'ruleType', description: '规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级', type: 'integer')]
+    private int $ruleType;
 
-    #[OA\Property(property: 'expiredAt', description: '过期时间,空=永久', type: 'string')]
-    private string $expiredAt;
+    #[OA\Property(property: 'conditionExpr', description: '条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}', type: 'string')]
+    private string $conditionExpr;
 
-    #[OA\Property(property: 'userType', description: '操作账户类型:admin,system', type: 'string')]
-    private string $userType;
+    #[OA\Property(property: 'action', description: '处置动作:1=拦截,2=标记放行', type: 'integer')]
+    private int $action;
 
-    #[OA\Property(property: 'userId', description: '操作人ID', type: 'integer')]
-    private int $userId;
+    #[OA\Property(property: 'status', description: '状态:0=停用,1=启用', type: 'integer')]
+    private int $status;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
     private string $createdAt;
@@ -53,83 +53,83 @@ class SystemRiskRuleResponse implements \JsonSerializable
     }
 
     /**
-     * 获取IP地址,支持IPv4/IPv6
+     * 获取规则名称
      */
-    public function getIp(): string
+    public function getName(): string
     {
-        return $this->ip;
+        return $this->name;
     }
 
     /**
-     * 设置IP地址,支持IPv4/IPv6
+     * 设置规则名称
      */
-    public function setIp(string $ip): void
+    public function setName(string $name): void
     {
-        $this->ip = $ip;
+        $this->name = $name;
     }
 
     /**
-     * 获取拉黑原因
+     * 获取规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级
      */
-    public function getReason(): string
+    public function getRuleType(): int
     {
-        return $this->reason;
+        return $this->ruleType;
     }
 
     /**
-     * 设置拉黑原因
+     * 设置规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级
      */
-    public function setReason(string $reason): void
+    public function setRuleType(int $ruleType): void
     {
-        $this->reason = $reason;
+        $this->ruleType = $ruleType;
     }
 
     /**
-     * 获取过期时间,空=永久
+     * 获取条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}
      */
-    public function getExpiredAt(): string
+    public function getConditionExpr(): string
     {
-        return $this->expiredAt;
+        return $this->conditionExpr;
     }
 
     /**
-     * 设置过期时间,空=永久
+     * 设置条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}
      */
-    public function setExpiredAt(string $expiredAt): void
+    public function setConditionExpr(string $conditionExpr): void
     {
-        $this->expiredAt = $expiredAt;
+        $this->conditionExpr = $conditionExpr;
     }
 
     /**
-     * 获取操作账户类型:admin,system
+     * 获取处置动作:1=拦截,2=标记放行
      */
-    public function getUserType(): string
+    public function getAction(): int
     {
-        return $this->userType;
+        return $this->action;
     }
 
     /**
-     * 设置操作账户类型:admin,system
+     * 设置处置动作:1=拦截,2=标记放行
      */
-    public function setUserType(string $userType): void
+    public function setAction(int $action): void
     {
-        $this->userType = $userType;
+        $this->action = $action;
     }
 
     /**
-     * 获取操作人ID
+     * 获取状态:0=停用,1=启用
      */
-    public function getUserId(): int
+    public function getStatus(): int
     {
-        return $this->userId;
+        return $this->status;
     }
 
     /**
-     * 设置操作人ID
+     * 设置状态:0=停用,1=启用
      */
-    public function setUserId(int $userId): void
+    public function setStatus(int $status): void
     {
-        $this->userId = $userId;
+        $this->status = $status;
     }
 
     /**

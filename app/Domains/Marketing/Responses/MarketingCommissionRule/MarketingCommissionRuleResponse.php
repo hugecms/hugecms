@@ -15,22 +15,19 @@ class MarketingCommissionRuleResponse implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
-    private int $userId;
+    #[OA\Property(property: 'scopeType', description: '范围类型:1=分类默认,2=商品覆盖', type: 'integer')]
+    private int $scopeType;
 
-    #[OA\Property(property: 'inviterId', description: '上级分销员用户ID,0=无上级', type: 'integer')]
-    private int $inviterId;
+    #[OA\Property(property: 'scopeId', description: '目标ID,scope_type=1指向分类,2指向商品', type: 'integer')]
+    private int $scopeId;
 
-    #[OA\Property(property: 'level', description: '分销员等级:1=普通,2=高级', type: 'integer')]
-    private int $level;
+    #[OA\Property(property: 'level1Rate', description: '一级佣金比例(%),如5.00表示5%', type: 'string')]
+    private string $level1Rate;
 
-    #[OA\Property(property: 'totalCommission', description: '累计佣金', type: 'string')]
-    private string $totalCommission;
+    #[OA\Property(property: 'level2Rate', description: '二级佣金比例(%)', type: 'string')]
+    private string $level2Rate;
 
-    #[OA\Property(property: 'settledCommission', description: '已结算佣金,可提现=total-settled', type: 'string')]
-    private string $settledCommission;
-
-    #[OA\Property(property: 'status', description: '状态:0=待审核,1=通过,2=拒绝,3=冻结', type: 'integer')]
+    #[OA\Property(property: 'status', description: '状态:0=停用,1=启用', type: 'integer')]
     private int $status;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
@@ -56,87 +53,71 @@ class MarketingCommissionRuleResponse implements \JsonSerializable
     }
 
     /**
-     * 获取用户ID
+     * 获取范围类型:1=分类默认,2=商品覆盖
      */
-    public function getUserId(): int
+    public function getScopeType(): int
     {
-        return $this->userId;
+        return $this->scopeType;
     }
 
     /**
-     * 设置用户ID
+     * 设置范围类型:1=分类默认,2=商品覆盖
      */
-    public function setUserId(int $userId): void
+    public function setScopeType(int $scopeType): void
     {
-        $this->userId = $userId;
+        $this->scopeType = $scopeType;
     }
 
     /**
-     * 获取上级分销员用户ID,0=无上级
+     * 获取目标ID,scope_type=1指向分类,2指向商品
      */
-    public function getInviterId(): int
+    public function getScopeId(): int
     {
-        return $this->inviterId;
+        return $this->scopeId;
     }
 
     /**
-     * 设置上级分销员用户ID,0=无上级
+     * 设置目标ID,scope_type=1指向分类,2指向商品
      */
-    public function setInviterId(int $inviterId): void
+    public function setScopeId(int $scopeId): void
     {
-        $this->inviterId = $inviterId;
+        $this->scopeId = $scopeId;
     }
 
     /**
-     * 获取分销员等级:1=普通,2=高级
+     * 获取一级佣金比例(%),如5.00表示5%
      */
-    public function getLevel(): int
+    public function getLevel1Rate(): string
     {
-        return $this->level;
+        return $this->level1Rate;
     }
 
     /**
-     * 设置分销员等级:1=普通,2=高级
+     * 设置一级佣金比例(%),如5.00表示5%
      */
-    public function setLevel(int $level): void
+    public function setLevel1Rate(string $level1Rate): void
     {
-        $this->level = $level;
+        $this->level1Rate = $level1Rate;
     }
 
     /**
-     * 获取累计佣金
+     * 获取二级佣金比例(%)
      */
-    public function getTotalCommission(): string
+    public function getLevel2Rate(): string
     {
-        return $this->totalCommission;
+        return $this->level2Rate;
     }
 
     /**
-     * 设置累计佣金
+     * 设置二级佣金比例(%)
      */
-    public function setTotalCommission(string $totalCommission): void
+    public function setLevel2Rate(string $level2Rate): void
     {
-        $this->totalCommission = $totalCommission;
+        $this->level2Rate = $level2Rate;
     }
 
     /**
-     * 获取已结算佣金,可提现=total-settled
-     */
-    public function getSettledCommission(): string
-    {
-        return $this->settledCommission;
-    }
-
-    /**
-     * 设置已结算佣金,可提现=total-settled
-     */
-    public function setSettledCommission(string $settledCommission): void
-    {
-        $this->settledCommission = $settledCommission;
-    }
-
-    /**
-     * 获取状态:0=待审核,1=通过,2=拒绝,3=冻结
+     * 获取状态:0=停用,1=启用
      */
     public function getStatus(): int
     {
@@ -144,7 +125,7 @@ class MarketingCommissionRuleResponse implements \JsonSerializable
     }
 
     /**
-     * 设置状态:0=待审核,1=通过,2=拒绝,3=冻结
+     * 设置状态:0=停用,1=启用
      */
     public function setStatus(int $status): void
     {

@@ -33,4 +33,9 @@ enum SystemRiskRecordObjectTypeEnum: int implements EnumMethodInterface
      * 售后
      */
     case ObjectType4 = 4;
+
+    /**
+     * 裂变活动(助力/帮砍)
+     */
+    case ObjectType5 = 5;
 }

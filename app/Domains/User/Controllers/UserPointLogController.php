@@ -26,7 +26,7 @@ use Throwable;
 class UserPointLogController extends BaseController
 {
     public function __construct(
-        private readonly UserPointLogService $userAccountLogService,
+        private readonly UserPointLogService $userPointLogService,
     ) {}
 
     #[OA\Post(path: '/userPointLog/search', summary: '查询用户积分流水列表接口', security: [['bearerAuth' => []]], tags: ['用户积分流水模块'])]
@@ -58,7 +58,7 @@ class UserPointLogController extends BaseController
                 $condition[] = [UserPointLogEntity::getId, '=', $requestData[UserPointLogQueryRequest::getId]];
             }
 
-            $result = $this->userAccountLogService->page($condition, $page, $pageSize);
+            $result = $this->userPointLogService->page($condition, $page, $pageSize);
 
             foreach ($result['data'] as $key => $item) {
                 $response = UserPointLogResponse::from($item);
@@ -100,7 +100,7 @@ class UserPointLogController extends BaseController
         try {
             $input = UserPointLogEntity::from($requestData);
 
-            if ($this->userAccountLogService->save($input->toEntity())) {
+            if ($this->userPointLogService->save($input->toEntity())) {
                 DB::commit();
 
                 return $this->success();
@@ -134,12 +134,12 @@ class UserPointLogController extends BaseController
         $id = \intval($request->query('id', '0'));
 
         try {
-            $userAccountLog = $this->userAccountLogService->getOneById($id);
-            if (empty($userAccountLog)) {
+            $userPointLog = $this->userPointLogService->getOneById($id);
+            if (empty($userPointLog)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
 
-            $response = UserPointLogResponse::from($userAccountLog);
+            $response = UserPointLogResponse::from($userPointLog);
 
             return $this->success($response->toArray());
         } catch (Throwable $e) {
@@ -170,14 +170,14 @@ class UserPointLogController extends BaseController
 
         DB::beginTransaction();
         try {
-            $userAccountLog = $this->userAccountLogService->getOneById($id);
-            if (empty($userAccountLog)) {
+            $userPointLog = $this->userPointLogService->getOneById($id);
+            if (empty($userPointLog)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
 
             $input = UserPointLogEntity::from($requestData);
 
-            $this->userAccountLogService->updateById($input->toEntity(), $id);
+            $this->userPointLogService->updateById($input->toEntity(), $id);
 
             DB::commit();
 
@@ -210,7 +210,7 @@ class UserPointLogController extends BaseController
 
         DB::beginTransaction();
         try {
-            if ($this->userAccountLogService->removeByIds($requestData['ids'])) {
+            if ($this->userPointLogService->removeByIds($requestData['ids'])) {
                 DB::commit();
 
                 return $this->success();

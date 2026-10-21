@@ -103,10 +103,14 @@ Route::put('systemRegion/update', [SystemRegionController::class, 'update']);
 Route::post('systemRegion/destroy', [SystemRegionController::class, 'destroy']);
 // 查询风控事件列表接口
 Route::post('systemRiskRecord/search', [SystemRiskRecordController::class, 'search']);
+// 新增风控事件接口
+Route::post('systemRiskRecord/store', [SystemRiskRecordController::class, 'store']);
 // 获取风控事件详情接口
 Route::get('systemRiskRecord/show', [SystemRiskRecordController::class, 'show'])->name('systemRiskRecord.show');
-// 风控事件申诉处理接口
-Route::post('systemRiskRecord/appeal', [SystemRiskRecordController::class, 'appeal']);
+// 更新风控事件接口
+Route::put('systemRiskRecord/update', [SystemRiskRecordController::class, 'update']);
+// 删除风控事件接口
+Route::post('systemRiskRecord/destroy', [SystemRiskRecordController::class, 'destroy']);
 // 查询风控规则列表接口
 Route::post('systemRiskRule/search', [SystemRiskRuleController::class, 'search']);
 // 新增风控规则接口

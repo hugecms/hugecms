@@ -32,6 +32,5 @@ class ContentTopicItem extends Model
         'target_type',
         'target_id',
         'sort',
-        'create_time',
     ];
 }

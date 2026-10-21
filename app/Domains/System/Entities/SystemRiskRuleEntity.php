@@ -18,7 +18,7 @@ class SystemRiskRuleEntity implements \JsonSerializable
 
     public const string getRuleType = 'rule_type'; // 规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级
 
-    public const string getConditionExpr = 'condition_expr'; // 条件参数(JSON)
+    public const string getConditionExpr = 'condition_expr'; // 条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}
 
     public const string getAction = 'action'; // 处置动作:1=拦截,2=标记放行
 
@@ -37,7 +37,7 @@ class SystemRiskRuleEntity implements \JsonSerializable
     #[OA\Property(property: 'ruleType', description: '规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级', type: 'integer')]
     private int $ruleType;
 
-    #[OA\Property(property: 'conditionExpr', description: '条件参数(JSON)', type: 'string')]
+    #[OA\Property(property: 'conditionExpr', description: '条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}', type: 'string')]
     private string $conditionExpr;
 
     #[OA\Property(property: 'action', description: '处置动作:1=拦截,2=标记放行', type: 'integer')]
@@ -101,7 +101,7 @@ class SystemRiskRuleEntity implements \JsonSerializable
     }
 
     /**
-     * 获取条件参数(JSON)
+     * 获取条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}
      */
     public function getConditionExpr(): string
     {
@@ -109,7 +109,7 @@ class SystemRiskRuleEntity implements \JsonSerializable
     }
 
     /**
-     * 设置条件参数(JSON)
+     * 设置条件参数(JSON),如黑名单{&quot;user_ids&quot;:[1,2]}、高频{&quot;max_count&quot;:3,&quot;window_minutes&quot;:60}
      */
     public function setConditionExpr(string $conditionExpr): void
     {

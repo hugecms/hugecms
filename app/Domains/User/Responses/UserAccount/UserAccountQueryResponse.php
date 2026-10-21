@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\User\Responses\UserAccountLog;
+namespace App\Domains\User\Responses\UserAccount;
 
 use App\Http\Responses\PaginateLinkVo;
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;

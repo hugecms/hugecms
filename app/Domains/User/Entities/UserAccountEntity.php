@@ -16,7 +16,7 @@ class UserAccountEntity implements \JsonSerializable
 
     public const string getUserId = 'user_id'; // 用户ID
 
-    public const string getBalance = 'balance'; // 账户余额,可为负=欠款
+    public const string getBalance = 'balance'; // 账户余额,可为负=欠款,欠款不可用于消费/提现
 
     public const string getFrozen = 'frozen'; // 冻结金额,提现审核/打款中在途
 
@@ -30,7 +30,7 @@ class UserAccountEntity implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'balance', description: '账户余额,可为负=欠款', type: 'string')]
+    #[OA\Property(property: 'balance', description: '账户余额,可为负=欠款,欠款不可用于消费/提现', type: 'string')]
     private string $balance;
 
     #[OA\Property(property: 'frozen', description: '冻结金额,提现审核/打款中在途', type: 'string')]
@@ -75,7 +75,7 @@ class UserAccountEntity implements \JsonSerializable
     }
 
     /**
-     * 获取账户余额,可为负=欠款
+     * 获取账户余额,可为负=欠款,欠款不可用于消费/提现
      */
     public function getBalance(): string
     {
@@ -83,7 +83,7 @@ class UserAccountEntity implements \JsonSerializable
     }
 
     /**
-     * 设置账户余额,可为负=欠款
+     * 设置账户余额,可为负=欠款,欠款不可用于消费/提现
      */
     public function setBalance(string $balance): void
     {

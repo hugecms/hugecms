@@ -8,7 +8,7 @@ use Juling\Foundation\Contracts\EnumMethodInterface;
 use Juling\Foundation\Support\EnumMethods;
 
 /**
- * 提现单状态枚举
+ * 状态枚举
  */
 enum UserWithdrawOrderStatusEnum: int implements EnumMethodInterface
 {
@@ -17,30 +17,30 @@ enum UserWithdrawOrderStatusEnum: int implements EnumMethodInterface
     /**
      * 待审核
      */
-    case Pending = 10;
+    case Status10 = 10;
 
     /**
      * 审核通过
      */
-    case Approved = 20;
+    case Status20 = 20;
 
     /**
      * 打款中
      */
-    case Paying = 30;
+    case Status30 = 30;
 
     /**
      * 成功
      */
-    case Success = 40;
+    case Status40 = 40;
 
     /**
      * 审核拒绝
      */
-    case Rejected = 50;
+    case Status50 = 50;
 
     /**
      * 打款失败已回退
      */
-    case Failed = 60;
+    case Status60 = 60;
 }

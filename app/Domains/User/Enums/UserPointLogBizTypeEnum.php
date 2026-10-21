@@ -8,7 +8,7 @@ use Juling\Foundation\Contracts\EnumMethodInterface;
 use Juling\Foundation\Support\EnumMethods;
 
 /**
- * 积分流水业务类型枚举
+ * 业务类型枚举
  */
 enum UserPointLogBizTypeEnum: int implements EnumMethodInterface
 {
@@ -17,35 +17,40 @@ enum UserPointLogBizTypeEnum: int implements EnumMethodInterface
     /**
      * 签到奖励
      */
-    case SignInReward = 1;
+    case BizType1 = 1;
 
     /**
      * 下单抵扣
      */
-    case OrderDeduct = 2;
+    case BizType2 = 2;
 
     /**
      * 订单积分奖励
      */
-    case OrderReward = 3;
+    case BizType3 = 3;
 
     /**
      * 退款返还
      */
-    case RefundReturn = 4;
+    case BizType4 = 4;
 
     /**
      * 积分兑换
      */
-    case Exchange = 5;
+    case BizType5 = 5;
 
     /**
      * 人工调整
      */
-    case AdminAdjust = 6;
+    case BizType6 = 6;
 
     /**
      * 注册赠送
      */
-    case RegisterGift = 7;
+    case BizType7 = 7;
+
+    /**
+     * 活动奖励(助力等)
+     */
+    case BizType8 = 8;
 }

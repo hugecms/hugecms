@@ -12,6 +12,8 @@ class UserProfileEntity implements \JsonSerializable
 {
     use HasSerializableAttributes;
 
+    public const string getId = 'id'; // ID
+
     public const string getUserId = 'user_id'; // 用户ID
 
     public const string getNickname = 'nickname'; // 昵称
@@ -29,6 +31,9 @@ class UserProfileEntity implements \JsonSerializable
     public const string getCreatedAt = 'created_at'; // 创建时间
 
     public const string getUpdatedAt = 'updated_at'; // 更新时间
+
+    #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
+    private int $id;
 
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
@@ -56,6 +61,22 @@ class UserProfileEntity implements \JsonSerializable
 
     #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
     private string $updatedAt;
+
+    /**
+     * 获取ID
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * 设置ID
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 
     /**
      * 获取用户ID

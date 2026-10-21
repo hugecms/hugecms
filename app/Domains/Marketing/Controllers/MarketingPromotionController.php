@@ -13,7 +13,7 @@ use App\Domains\Marketing\Requests\MarketingPromotion\MarketingPromotionUpdateRe
 use App\Domains\Marketing\Responses\MarketingPromotion\MarketingPromotionDestroyResponse;
 use App\Domains\Marketing\Responses\MarketingPromotion\MarketingPromotionQueryResponse;
 use App\Domains\Marketing\Responses\MarketingPromotion\MarketingPromotionResponse;
-use App\Services\MarketingPromotionService;
+use App\Domains\Marketing\Services\MarketingPromotionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +48,15 @@ class MarketingPromotionController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[MarketingPromotionQueryRequest::getStatus])) {
+                $condition[] = [MarketingPromotionEntity::getStatus, '=', $requestData[MarketingPromotionQueryRequest::getStatus]];
+            }
+            if (isset($requestData[MarketingPromotionQueryRequest::getStartTime])) {
+                $condition[] = [MarketingPromotionEntity::getStartTime, '=', $requestData[MarketingPromotionQueryRequest::getStartTime]];
+            }
+            if (isset($requestData[MarketingPromotionQueryRequest::getEndTime])) {
+                $condition[] = [MarketingPromotionEntity::getEndTime, '=', $requestData[MarketingPromotionQueryRequest::getEndTime]];
+            }
             if (isset($requestData[MarketingPromotionQueryRequest::getId])) {
                 $condition[] = [MarketingPromotionEntity::getId, '=', $requestData[MarketingPromotionQueryRequest::getId]];
             }
@@ -89,16 +98,12 @@ class MarketingPromotionController extends BaseController
     public function store(MarketingPromotionCreateRequest $createRequest): JsonResponse
     {
         $requestData = $createRequest->post();
-        // Entity::from 会静默丢弃未知键，scopes/ladders 必须在转换前显式取出
-        $scopes = $requestData[MarketingPromotionCreateRequest::getScopes] ?? [];
-        $ladders = $requestData[MarketingPromotionCreateRequest::getLadders];
 
         DB::beginTransaction();
         try {
             $input = MarketingPromotionEntity::from($requestData);
 
-            $promotionId = $this->marketingPromotionService->savePromotion($input->toEntity(), $scopes, $ladders);
-            if ($promotionId > 0) {
+            if ($this->marketingPromotionService->save($input->toEntity())) {
                 DB::commit();
 
                 return $this->success();
@@ -132,7 +137,7 @@ class MarketingPromotionController extends BaseController
         $id = \intval($request->query('id', '0'));
 
         try {
-            $marketingPromotion = $this->marketingPromotionService->getDetailById($id);
+            $marketingPromotion = $this->marketingPromotionService->getOneById($id);
             if (empty($marketingPromotion)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
@@ -165,9 +170,6 @@ class MarketingPromotionController extends BaseController
     {
         $id = \intval($updateRequest->query('id', '0'));
         $requestData = $updateRequest->post();
-        // Entity::from 会静默丢弃未知键，scopes/ladders 必须在转换前显式取出
-        $scopes = $requestData[MarketingPromotionUpdateRequest::getScopes] ?? [];
-        $ladders = $requestData[MarketingPromotionUpdateRequest::getLadders];
 
         DB::beginTransaction();
         try {
@@ -178,7 +180,7 @@ class MarketingPromotionController extends BaseController
 
             $input = MarketingPromotionEntity::from($requestData);
 
-            $this->marketingPromotionService->updatePromotion($input->toEntity(), $id, $scopes, $ladders);
+            $this->marketingPromotionService->updateById($input->toEntity(), $id);
 
             DB::commit();
 

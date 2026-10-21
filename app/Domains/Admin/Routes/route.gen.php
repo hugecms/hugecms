@@ -8,9 +8,7 @@ declare(strict_types=1);
 
 use App\Domains\Admin\Controllers\AdminPermissionController;
 use App\Domains\Admin\Controllers\AdminRoleController;
-use App\Domains\Admin\Controllers\AdminRolePermissionController;
 use App\Domains\Admin\Controllers\AdminUserController;
-use App\Domains\Admin\Controllers\AdminUserRoleController;
 use Illuminate\Support\Facades\Route;
 
 // 查询后台权限列表接口
@@ -33,16 +31,6 @@ Route::get('adminRole/show', [AdminRoleController::class, 'show'])->name('adminR
 Route::put('adminRole/update', [AdminRoleController::class, 'update']);
 // 删除后台角色接口
 Route::post('adminRole/destroy', [AdminRoleController::class, 'destroy']);
-// 查询角色权限关联列表接口
-Route::post('adminRolePermission/search', [AdminRolePermissionController::class, 'search']);
-// 新增角色权限关联接口
-Route::post('adminRolePermission/store', [AdminRolePermissionController::class, 'store']);
-// 获取角色权限关联详情接口
-Route::get('adminRolePermission/show', [AdminRolePermissionController::class, 'show'])->name('adminRolePermission.show');
-// 更新角色权限关联接口
-Route::put('adminRolePermission/update', [AdminRolePermissionController::class, 'update']);
-// 删除角色权限关联接口
-Route::post('adminRolePermission/destroy', [AdminRolePermissionController::class, 'destroy']);
 // 查询后台管理员账户列表接口
 Route::post('adminUser/search', [AdminUserController::class, 'search']);
 // 新增后台管理员账户接口
@@ -53,13 +41,3 @@ Route::get('adminUser/show', [AdminUserController::class, 'show'])->name('adminU
 Route::put('adminUser/update', [AdminUserController::class, 'update']);
 // 删除后台管理员账户接口
 Route::post('adminUser/destroy', [AdminUserController::class, 'destroy']);
-// 查询管理员角色关联列表接口
-Route::post('adminUserRole/search', [AdminUserRoleController::class, 'search']);
-// 新增管理员角色关联接口
-Route::post('adminUserRole/store', [AdminUserRoleController::class, 'store']);
-// 获取管理员角色关联详情接口
-Route::get('adminUserRole/show', [AdminUserRoleController::class, 'show'])->name('adminUserRole.show');
-// 更新管理员角色关联接口
-Route::put('adminUserRole/update', [AdminUserRoleController::class, 'update']);
-// 删除管理员角色关联接口
-Route::post('adminUserRole/destroy', [AdminUserRoleController::class, 'destroy']);

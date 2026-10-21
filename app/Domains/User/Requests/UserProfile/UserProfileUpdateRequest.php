@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'UserProfileUpdateRequest',
     required: [
+        self::getId,
         self::getUserId,
         self::getNickname,
         self::getAvatar,
@@ -19,6 +20,7 @@ use OpenApi\Attributes as OA;
         self::getLocation,
     ],
     properties: [
+        new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
         new OA\Property(property: self::getNickname, description: '昵称', type: 'string'),
         new OA\Property(property: self::getAvatar, description: '头像', type: 'string'),
@@ -30,6 +32,8 @@ use OpenApi\Attributes as OA;
 )]
 class UserProfileUpdateRequest extends FormRequest
 {
+    public const string getId = 'id';
+
     public const string getUserId = 'userId';
 
     public const string getNickname = 'nickname';
@@ -47,6 +51,7 @@ class UserProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            self::getId => 'required',
             self::getUserId => 'required',
             self::getNickname => 'required',
             self::getAvatar => 'required',
@@ -60,6 +65,7 @@ class UserProfileUpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
+            self::getId.'.required' => '请设置ID',
             self::getUserId.'.required' => '请设置用户ID',
             self::getNickname.'.required' => '请设置昵称',
             self::getAvatar.'.required' => '请设置头像',

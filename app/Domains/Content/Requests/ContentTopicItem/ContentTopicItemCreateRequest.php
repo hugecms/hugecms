@@ -14,14 +14,12 @@ use OpenApi\Attributes as OA;
         self::getTargetType,
         self::getTargetId,
         self::getSort,
-        self::getCreateTime,
     ],
     properties: [
         new OA\Property(property: self::getTopicId, description: '专题ID', type: 'integer'),
         new OA\Property(property: self::getTargetType, description: '目标类型:article,product', type: 'string'),
         new OA\Property(property: self::getTargetId, description: '目标ID', type: 'integer'),
         new OA\Property(property: self::getSort, description: '排序', type: 'integer'),
-        new OA\Property(property: self::getCreateTime, description: '创建时间', type: 'string'),
     ]
 )]
 class ContentTopicItemCreateRequest extends FormRequest
@@ -34,8 +32,6 @@ class ContentTopicItemCreateRequest extends FormRequest
 
     public const string getSort = 'sort';
 
-    public const string getCreateTime = 'createTime';
-
     public function rules(): array
     {
         return [
@@ -43,7 +39,6 @@ class ContentTopicItemCreateRequest extends FormRequest
             self::getTargetType => 'required',
             self::getTargetId => 'required',
             self::getSort => 'required',
-            self::getCreateTime => 'required',
         ];
     }
 
@@ -54,7 +49,6 @@ class ContentTopicItemCreateRequest extends FormRequest
             self::getTargetType.'.required' => '请设置目标类型:article,product',
             self::getTargetId.'.required' => '请设置目标ID',
             self::getSort.'.required' => '请设置排序',
-            self::getCreateTime.'.required' => '请设置创建时间',
         ];
     }
 }

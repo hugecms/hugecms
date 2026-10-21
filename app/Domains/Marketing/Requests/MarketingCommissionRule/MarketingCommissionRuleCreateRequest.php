@@ -10,44 +10,39 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'MarketingCommissionRuleCreateRequest',
     required: [
-        self::getUserId,
-        self::getInviterId,
-        self::getLevel,
-        self::getTotalCommission,
-        self::getSettledCommission,
+        self::getScopeType,
+        self::getScopeId,
+        self::getLevel1Rate,
+        self::getLevel2Rate,
         self::getStatus,
     ],
     properties: [
-        new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
-        new OA\Property(property: self::getInviterId, description: '上级分销员用户ID,0=无上级', type: 'integer'),
-        new OA\Property(property: self::getLevel, description: '分销员等级:1=普通,2=高级', type: 'integer'),
-        new OA\Property(property: self::getTotalCommission, description: '累计佣金', type: 'string'),
-        new OA\Property(property: self::getSettledCommission, description: '已结算佣金,可提现=total-settled', type: 'string'),
-        new OA\Property(property: self::getStatus, description: '状态:0=待审核,1=通过,2=拒绝,3=冻结', type: 'integer'),
+        new OA\Property(property: self::getScopeType, description: '范围类型:1=分类默认,2=商品覆盖', type: 'integer'),
+        new OA\Property(property: self::getScopeId, description: '目标ID,scope_type=1指向分类,2指向商品', type: 'integer'),
+        new OA\Property(property: self::getLevel1Rate, description: '一级佣金比例(%),如5.00表示5%', type: 'string'),
+        new OA\Property(property: self::getLevel2Rate, description: '二级佣金比例(%)', type: 'string'),
+        new OA\Property(property: self::getStatus, description: '状态:0=停用,1=启用', type: 'integer'),
     ]
 )]
 class MarketingCommissionRuleCreateRequest extends FormRequest
 {
-    public const string getUserId = 'userId';
+    public const string getScopeType = 'scopeType';
 
-    public const string getInviterId = 'inviterId';
+    public const string getScopeId = 'scopeId';
 
-    public const string getLevel = 'level';
+    public const string getLevel1Rate = 'level1Rate';
 
-    public const string getTotalCommission = 'totalCommission';
-
-    public const string getSettledCommission = 'settledCommission';
+    public const string getLevel2Rate = 'level2Rate';
 
     public const string getStatus = 'status';
 
     public function rules(): array
     {
         return [
-            self::getUserId => 'required',
-            self::getInviterId => 'required',
-            self::getLevel => 'required',
-            self::getTotalCommission => 'required',
-            self::getSettledCommission => 'required',
+            self::getScopeType => 'required',
+            self::getScopeId => 'required',
+            self::getLevel1Rate => 'required',
+            self::getLevel2Rate => 'required',
             self::getStatus => 'required',
         ];
     }
@@ -55,12 +50,11 @@ class MarketingCommissionRuleCreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            self::getUserId.'.required' => '请设置用户ID',
-            self::getInviterId.'.required' => '请设置上级分销员用户ID,0=无上级',
-            self::getLevel.'.required' => '请设置分销员等级:1=普通,2=高级',
-            self::getTotalCommission.'.required' => '请设置累计佣金',
-            self::getSettledCommission.'.required' => '请设置已结算佣金,可提现=total-settled',
-            self::getStatus.'.required' => '请设置状态:0=待审核,1=通过,2=拒绝,3=冻结',
+            self::getScopeType.'.required' => '请设置范围类型:1=分类默认,2=商品覆盖',
+            self::getScopeId.'.required' => '请设置目标ID,scope_type=1指向分类,2指向商品',
+            self::getLevel1Rate.'.required' => '请设置一级佣金比例(%),如5.00表示5%',
+            self::getLevel2Rate.'.required' => '请设置二级佣金比例(%)',
+            self::getStatus.'.required' => '请设置状态:0=停用,1=启用',
         ];
     }
 }
