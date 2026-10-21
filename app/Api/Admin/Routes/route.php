@@ -8,6 +8,6 @@ Route::prefix('admin')->group(function () {
     require_once __DIR__.'/route.gen.php';
     $routeFiles = glob(app_path('Domains/*/Routes/route.gen.php'));
     foreach ($routeFiles as $routeFile) {
-        require $routeFile;
+        require_once $routeFile;
     }
 });
