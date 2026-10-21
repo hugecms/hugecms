@@ -34,7 +34,7 @@ return new class extends Migration
             $table->unsignedInteger('form_id')->comment('表单ID');
             $table->string('name', 50)->comment('字段名称,如:联系电话');
             $table->string('field_name', 50)->comment('字段标识,英文,提交数据的键');
-            $table->string('type', 20)->comment('类型:text,textarea,select,radio,checkbox,number,date,image,file');
+            $table->string('type', 20)->comment('类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件');
             $table->string('options', 500)->nullable()->comment('选项(JSON),select/radio/checkbox用');
             $table->string('default_value', 255)->nullable()->comment('默认值');
             $table->tinyInteger('is_required')->default(0)->comment('必填:0=否,1=是');

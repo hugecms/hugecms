@@ -24,7 +24,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->comment('状态:1=进行中,2=已结束');
             $table->unsignedInteger('user_last_read_id')->default(0)->comment('用户已读消息水位(消息ID),会话级已读');
             $table->unsignedInteger('server_last_read_id')->default(0)->comment('客服已读消息水位(消息ID)');
-            $table->tinyInteger('rating')->default(0)->comment('满意度评分:0=未评,1-5星');
+            $table->tinyInteger('rating')->default(0)->comment('满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星');
             $table->dateTime('rated_at')->nullable()->comment('评分时间');
             $table->dateTime('assigned_at')->nullable()->comment('分配客服时间');
             $table->dateTime('closed_at')->nullable()->comment('结束时间');
@@ -42,7 +42,7 @@ return new class extends Migration
             $table->unsignedInteger('session_id')->comment('会话ID');
             $table->string('sender_type', 20)->comment('发送者类型:user=用户,admin=客服,bot=机器人,system=系统');
             $table->unsignedInteger('sender_id')->default(0)->comment('发送者ID,system为0');
-            $table->string('type', 20)->default('text')->comment('消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件');
+            $table->string('type', 20)->default('text')->comment('消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件');
             $table->string('content', 1000)->comment('消息内容,文本或卡片数据(JSON)');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间,消息只追加不修改');
             $table->index('session_id', 'idx_chat_messages_session_id');

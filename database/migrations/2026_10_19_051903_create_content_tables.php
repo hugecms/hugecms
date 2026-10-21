@@ -86,7 +86,7 @@ return new class extends Migration
             $table->comment('评论表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('评论用户ID');
-            $table->string('target_type', 20)->comment('目标类型:article=文章,商品评价走product_reviews表');
+            $table->string('target_type', 20)->comment('目标类型:article=文章;商品评价走product_reviews表');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->unsignedInteger('parent_id')->default(0)->comment('父评论ID,0=顶级');
             $table->string('content', 1000)->comment('评论内容');
@@ -150,7 +150,7 @@ return new class extends Migration
             $table->comment('专题内容关联表');
             $table->id();
             $table->unsignedInteger('topic_id')->comment('专题ID');
-            $table->string('target_type', 20)->comment('目标类型:article,product');
+            $table->string('target_type', 20)->comment('目标类型:article=文章,product=商品');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->integer('sort')->default(0)->comment('排序');
             $table->timestamps();

@@ -15,11 +15,11 @@ return new class extends Migration
         Schema::create('system_settings', function (Blueprint $table) {
             $table->comment('系统配置表');
             $table->id();
-            $table->string('group', 30)->default('basic')->comment('配置分组:basic=基础,seo,upload');
+            $table->string('group', 30)->default('basic')->comment('配置分组:basic=基础,seo=SEO,upload=上传');
             $table->string('key', 100)->comment('配置键,如:site_name');
             $table->string('title', 100)->comment('配置名称,用于后台表单展示');
             $table->text('value')->nullable()->comment('配置值');
-            $table->string('type', 20)->default('text')->comment('值类型:text,number,select,radio');
+            $table->string('type', 20)->default('text')->comment('值类型:text=文本,number=数字,select=下拉单选,radio=单选');
             $table->timestamps();
             $table->unique('key', 'uk_system_settings_key');
             $table->index('group', 'idx_system_settings_group');
@@ -29,13 +29,13 @@ return new class extends Migration
         Schema::create('system_attachments', function (Blueprint $table) {
             $table->comment('附件表');
             $table->id();
-            $table->string('storage', 20)->default('local')->comment('存储驱动:local,oss,qiniu');
+            $table->string('storage', 20)->default('local')->comment('存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛');
             $table->string('file_path', 500)->comment('文件路径');
             $table->string('file_name', 255)->comment('原始文件名');
             $table->string('mime_type', 100)->comment('MIME类型');
             $table->unsignedInteger('file_size')->default(0)->comment('文件大小(字节)');
-            $table->string('module', 30)->nullable()->comment('所属模块:article,product');
-            $table->string('user_type', 20)->default('admin')->comment('上传账户类型:admin,user');
+            $table->string('module', 30)->nullable()->comment('所属模块:article=文章,product=商品');
+            $table->string('user_type', 20)->default('admin')->comment('上传账户类型:admin=后台,user=前台');
             $table->unsignedInteger('user_id')->nullable()->comment('上传人ID');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->index('module', 'idx_system_attachments_module');
@@ -136,7 +136,7 @@ return new class extends Migration
             $table->string('template', 50)->nullable()->comment('模板标识,如:verify_code');
             $table->string('content', 500)->comment('短信内容');
             $table->json('params')->nullable()->comment('模板变量(JSON)');
-            $table->string('gateway', 30)->comment('发送网关:aliyun,tencent,qiniu等');
+            $table->string('gateway', 30)->comment('发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛');
             $table->tinyInteger('status')->default(0)->comment('状态:0=发送中,1=成功,2=失败');
             $table->string('message_id', 64)->nullable()->comment('网关消息ID');
             $table->string('error', 255)->nullable()->comment('失败原因');
@@ -154,7 +154,7 @@ return new class extends Migration
             $table->string('ip', 45)->comment('IP地址,支持IPv4/IPv6');
             $table->string('reason', 255)->nullable()->comment('拉黑原因');
             $table->dateTime('expired_at')->nullable()->comment('过期时间,空=永久');
-            $table->string('user_type', 20)->default('admin')->comment('操作账户类型:admin,system');
+            $table->string('user_type', 20)->default('admin')->comment('操作账户类型:admin=后台,system=系统');
             $table->unsignedInteger('user_id')->nullable()->comment('操作人ID');
             $table->timestamps();
             $table->unique('ip', 'uk_system_ip_blacklists_ip');
@@ -163,14 +163,14 @@ return new class extends Migration
         Schema::create('system_apps', function (Blueprint $table) {
             $table->comment('应用注册表');
             $table->id();
-            $table->string('code', 30)->comment('应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android');
+            $table->string('code', 30)->comment('应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用');
             $table->string('name', 50)->comment('应用名称');
-            $table->string('type', 20)->default('web')->comment('应用类型:web,h5,wechat,app');
+            $table->string('type', 20)->default('web')->comment('应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用');
             $table->string('appid', 32)->nullable()->comment('微信类应用AppID,非微信应用为空');
             $table->string('secret', 500)->nullable()->comment('应用密钥,加密存储');
             $table->json('config')->nullable()->comment('扩展配置(JSON):token,aes_key,推送参数,API域名,商户号绑定等');
             $table->integer('sort')->default(0)->comment('排序');
-            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用,停用即一键下线该端');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用;停用即一键下线该端');
             $table->timestamps();
             $table->unique('code', 'uk_system_apps_code');
             $table->unique('appid', 'uk_system_apps_appid');

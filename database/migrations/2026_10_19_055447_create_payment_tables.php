@@ -21,12 +21,15 @@ return new class extends Migration
             $table->unsignedInteger('user_id')->comment('付款用户ID');
             $table->string('biz_type', 20)->comment('业务类型:order=订单支付,recharge=余额充值');
             $table->unsignedInteger('biz_id')->comment('业务单据ID,如:订单ID/充值申请ID');
-            $table->string('pay_method', 20)->comment('支付方式:wechat,alipay,balance');
+            $table->string('pay_method', 20)->comment('支付方式:wechat=微信支付,alipay=支付宝,balance=余额');
             $table->string('appid', 32)->nullable()->comment('发起支付的应用AppID,关联system_apps,多端回调定位依据');
             $table->decimal('amount', 10, 2)->comment('支付金额');
-            $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=成功,2=失败');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)');
             $table->string('trade_no', 64)->nullable()->comment('第三方交易号');
             $table->dateTime('paid_at')->nullable()->comment('支付成功时间');
+            $table->dateTime('expire_time')->nullable()->comment('支付超时时间,超时关单依据');
+            $table->dateTime('closed_at')->nullable()->comment('关闭时间');
+            $table->string('fail_reason', 255)->nullable()->comment('失败原因');
             $table->timestamps();
             $table->softDeletes();
             $table->unique('payment_no', 'uk_payments_payment_no');
@@ -39,7 +42,7 @@ return new class extends Migration
         Schema::create('payment_channels', function (Blueprint $table) {
             $table->comment('支付渠道配置表');
             $table->id();
-            $table->string('code', 20)->comment('渠道标识:wechat,alipay,balance');
+            $table->string('code', 20)->comment('渠道标识:wechat=微信支付,alipay=支付宝,balance=余额');
             $table->string('appid', 32)->default('')->comment('应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号');
             $table->string('name', 50)->comment('渠道名称');
             $table->json('config')->nullable()->comment('渠道配置(JSON):商户号/密钥等');
@@ -54,7 +57,7 @@ return new class extends Migration
             $table->comment('支付回调流水表');
             $table->id();
             $table->unsignedInteger('payment_id')->nullable()->comment('关联支付单ID,未匹配到支付单时为空');
-            $table->string('channel', 20)->comment('渠道:wechat,alipay');
+            $table->string('channel', 20)->comment('渠道:wechat=微信支付,alipay=支付宝');
             $table->string('event_type', 30)->comment('事件类型:payment=支付通知,refund=退款通知');
             $table->string('notify_id', 64)->nullable()->comment('第三方通知唯一ID,幂等去重依据');
             $table->string('trade_no', 64)->nullable()->comment('第三方交易号');

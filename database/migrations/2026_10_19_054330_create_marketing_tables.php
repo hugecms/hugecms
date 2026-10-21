@@ -27,8 +27,11 @@ return new class extends Migration
             $table->decimal('reduce_amount', 10, 2)->nullable()->comment('满减金额,满减券必填');
             $table->decimal('discount_rate', 3, 1)->nullable()->comment('折扣率,如8.5表示85折,折扣券必填');
             $table->string('receive_type', 20)->default('manual')->comment('发放方式:manual=后台发放,order=下单赠送,register=注册赠送');
-            $table->unsignedInteger('total')->default(0)->comment('发放总量,0=不限');
+            $table->unsignedInteger('total')->default(0)->comment('发放总量,0=不限;领券事务条件更新 received_count < total 防超发');
+            $table->unsignedInteger('received_count')->default(0)->comment('已领取数量,领券事务内条件更新 received_count < total 防超发');
             $table->unsignedInteger('per_limit')->default(1)->comment('每人限领');
+            $table->tinyInteger('valid_type')->default(1)->comment('有效期方式:1=固定区间(start_time/end_time),2=领取后N天');
+            $table->unsignedInteger('valid_days')->nullable()->comment('领取后有效天数,valid_type=2 时必填');
             $table->dateTime('start_time')->nullable()->comment('有效期开始,空=领取即生效');
             $table->dateTime('end_time')->nullable()->comment('有效期结束');
             $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
@@ -69,7 +72,7 @@ return new class extends Migration
             $table->comment('促销适用范围表');
             $table->id();
             $table->unsignedInteger('promotion_id')->comment('促销活动ID,关联marketing_promotions');
-            $table->string('scope_type', 20)->comment('范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致');
+            $table->string('scope_type', 20)->comment('范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致');
             $table->unsignedInteger('target_id')->comment('目标ID,按scope_type指向分类/品牌/商品');
             $table->timestamps();
             $table->unique(['promotion_id', 'scope_type', 'target_id'], 'uk_marketing_promotion_scopes_promotion_scope_target');
@@ -173,7 +176,7 @@ return new class extends Migration
             $table->decimal('order_amount', 10, 2)->comment('计佣基数(商品实付)');
             $table->decimal('rate', 5, 2)->comment('佣金比例(%),如5.00表示5%');
             $table->decimal('amount', 10, 2)->comment('佣金金额,冲销记录为负值');
-            $table->tinyInteger('status')->default(0)->comment('状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)');
             $table->dateTime('settled_at')->nullable()->comment('实际结算入账时间');
             $table->dateTime('settle_time')->nullable()->comment('应结算时间=订单完成时间+保护期,到期由结算流程入账');
             $table->unsignedInteger('reversal_record_id')->default(0)->comment('冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录');

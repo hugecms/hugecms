@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone', 20)->nullable()->comment('手机号');
             $table->string('password', 255)->comment('密码哈希');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=正常');
+            $table->tinyInteger('is_super')->default(0)->comment('超级管理员:0=否,1=是;超管不受角色权限限制');
             $table->dateTime('last_login_time')->nullable()->comment('最后登录时间');
             $table->string('last_login_ip', 45)->nullable()->comment('最后登录IP');
             $table->timestamps();

@@ -46,14 +46,14 @@
 ### 2. 支付幂等（三层）
 
 1. 回调层：`payment_callbacks` 按 `unique(channel, notify_id)` 拦第三方重发，全量留痕供对账与重放；
-2. 支付单层：`payments.payment_no` 唯一 + 状态机条件更新（`where status=0`）防重复置成功；
-3. 业务层：订单/充值入账同样以状态字段条件更新，保证幂等。
+2. 支付单层：`payments.payment_no` 唯一 + 状态机条件更新（`where status=0`）防重复置成功；支付单记录 `expire_time`/`closed_at`，超时关单以条件更新置 `status=3`（已关闭）；
+3. 业务层：订单/充值入账同样以状态字段条件更新，保证幂等；**下单幂等**由 `orders.request_token` 唯一约束保障（多 NULL 互不冲突），重复提交返回已存在订单。
 
 `payments` 与业务解耦：`biz_type/biz_id` 同时服务订单支付与余额充值；`appid` 记录发起端，多端回调可定位。`payment_channels` 按 `(code, appid)` 配置——同一渠道、不同应用可用不同商户号。
 
 ### 3. 优惠拆分与退款返还
 
-`order_promotions` 逐笔记录订单优惠明细（type：coupon / points / promotion，含名称快照与 related_id），使 `orders.discount_amount` 可拆解、每场活动真实让利可聚合。退款时按明细返还：券回 `marketing_user_coupons`（status 重置）、积分回用户（user_point_logs 流水）、佣金按保护期状态冲销（见资金机制）。
+`order_promotions` 逐笔记录订单优惠明细（type：coupon / points / promotion，含名称快照与 related_id），使 `orders.discount_amount` 可拆解、每场活动真实让利可聚合。退款时按明细返还：券回 `marketing_user_coupons`（status 重置）、积分回用户（user_point_logs 流水）、佣金按保护期状态冲销（见资金机制）。优惠券发放以 `marketing_coupons.received_count` 条件更新（`received_count < total`）防超发，与用户券插入同事务；券有效期支持固定区间与"领取后 N 天"（`valid_type`/`valid_days`）。
 
 ### 4. 资金与积分
 
@@ -78,6 +78,12 @@
 - 助力：`marketing_assist_records` `uk(activity_id,user_id)` 一人一条参与记录，`helper_count` 条件自增达标触发发奖；发奖幂等靠状态条件更新（1→2 完成态不重复发）；奖励两类——券写 `marketing_user_coupons`、积分走 `users.points` 条件更新 + `user_point_logs` 流水。
 - 砍价：`marketing_bargain_records.current_price` 每刀条件更新（`where current_price - cut >= floor_price`）防并发超砍，到底价 1→2 才可下单；`uk(order_no)` NULL 不参与唯一约束（未下单的砍价单互不冲突，下单回填后防一单多砍）；超时扫描 1→4（超时失败）。
 - 防刷：助力/帮砍入口挂 `RiskService` 黑名单检查；超时扫描为 Service 方法（expireDue*），定时任务注册待调度接入。
+
+### 8. 快照与删除策略
+
+- **订单快照**：`order_items` 记录 `sku_no`/`sku_name`/`sku_specs`/`sku_image` 与商品名/图，历史订单可完整还原购买规格（商品改名/改价/下架不影响）。
+- **地址快照**：`orders` 与 `user_addresses` 均存结构化省市区 + 行政区划码（物流面单用），`receiver_region` 保留合并展示；下单时从用户地址整体快照。
+- **营销活动删除**：禁止物理删除有引用的活动（团/参与记录/用户券/订单优惠引用），删除前做引用守卫，有引用时改为停用（`status=0`）。仓内不引入软删除列——Repository 基于 Query Builder，无全局作用域，半吊子软删除会漏过滤。
 
 
 ## 四、可运营性设计

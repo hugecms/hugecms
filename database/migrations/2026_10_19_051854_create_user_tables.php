@@ -47,7 +47,13 @@ return new class extends Migration
             $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('receiver_name', 50)->comment('收货人');
             $table->string('receiver_phone', 20)->comment('收货电话');
-            $table->string('receiver_region', 100)->comment('省市区');
+            $table->string('receiver_region', 100)->comment('省市区(合并展示用)');
+            $table->string('receiver_province', 50)->nullable()->comment('省');
+            $table->string('receiver_city', 50)->nullable()->comment('市');
+            $table->string('receiver_district', 50)->nullable()->comment('区县');
+            $table->string('receiver_province_code', 20)->nullable()->comment('省行政区划码,物流面单');
+            $table->string('receiver_city_code', 20)->nullable()->comment('市行政区划码');
+            $table->string('receiver_district_code', 20)->nullable()->comment('区县行政区划码');
             $table->string('receiver_address', 255)->comment('详细地址');
             $table->tinyInteger('is_default')->default(0)->comment('默认地址:0=否,1=是');
             $table->timestamps();
@@ -60,7 +66,7 @@ return new class extends Migration
             $table->comment('用户收藏表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->string('target_type', 20)->comment('目标类型:article,product');
+            $table->string('target_type', 20)->comment('目标类型:article=文章,product=商品');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->unique(['user_id', 'target_type', 'target_id'], 'uk_user_favorites_user_target');
@@ -73,7 +79,7 @@ return new class extends Migration
             $table->id();
             $table->string('phone', 20)->comment('手机号');
             $table->string('code', 10)->comment('验证码');
-            $table->string('scene', 30)->comment('场景:register,login,reset_password');
+            $table->string('scene', 30)->comment('场景:register=注册,login=登录,reset_password=重置密码');
             $table->dateTime('expire_at')->comment('过期时间');
             $table->dateTime('used_at')->nullable()->comment('使用时间');
             $table->string('ip', 45)->nullable()->comment('发送IP,用于防刷');
@@ -88,7 +94,7 @@ return new class extends Migration
             $table->comment('社交登录绑定表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->string('platform', 20)->comment('平台:wechat,qq,weibo,github');
+            $table->string('platform', 20)->comment('平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub');
             $table->string('open_id', 64)->comment('第三方OpenID');
             $table->string('union_id', 64)->nullable()->comment('第三方UnionID,如微信多应用互通');
             $table->string('nickname', 50)->nullable()->comment('第三方昵称快照');
@@ -161,7 +167,7 @@ return new class extends Migration
             $table->string('withdraw_no', 32)->comment('提现单号,应用层生成');
             $table->unsignedInteger('user_id')->comment('用户ID');
             $table->decimal('amount', 10, 2)->comment('提现金额');
-            $table->string('channel', 20)->default('manual')->comment('打款渠道:manual=人工线下打款,微信商家转账后续扩展');
+            $table->string('channel', 20)->default('manual')->comment('打款渠道:manual=人工线下打款;微信商家转账后续扩展');
             $table->string('channel_order_no', 64)->nullable()->comment('渠道打款单号,回填防重复打款');
             $table->string('account_type', 20)->default('')->comment('收款方式:bank=银行卡,wechat=微信,alipay=支付宝');
             $table->string('account_name', 50)->default('')->comment('收款人姓名');
@@ -184,7 +190,7 @@ return new class extends Migration
             $table->comment('用户浏览足迹表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->string('target_type', 20)->comment('目标类型:article,product');
+            $table->string('target_type', 20)->comment('目标类型:article=文章,product=商品');
             $table->unsignedInteger('target_id')->comment('目标ID');
             $table->timestamp('create_time')->useCurrent()->comment('最近浏览时间,重复浏览更新');
             $table->unique(['user_id', 'target_type', 'target_id'], 'uk_user_browsing_histories_user_target');

@@ -70,12 +70,21 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('product_id')->comment('商品ID');
             $table->string('specs', 500)->comment('规格值(JSON),如:{"颜色":"红","尺码":"L"}');
+            $table->string('sku_no', 64)->nullable()->comment('SKU编号');
+            $table->string('barcode', 64)->nullable()->comment('条码,仓储/扫码出入库');
+            $table->string('image', 255)->nullable()->comment('SKU图片');
             $table->decimal('price', 10, 2)->comment('售价');
+            $table->decimal('line_price', 10, 2)->nullable()->comment('划线价(市场价展示)');
+            $table->decimal('cost_price', 10, 2)->default(0)->comment('成本价,毛利核算');
+            $table->decimal('weight', 10, 3)->default(0)->comment('重量(kg),运费计算');
             $table->unsignedInteger('stock')->default(0)->comment('库存');
             $table->unsignedInteger('locked_stock')->default(0)->comment('锁定库存(下单未支付),可售=stock-locked_stock');
+            $table->unsignedInteger('warn_stock')->default(0)->comment('库存预警线,库存<=该值触发预警,0=不预警');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique('sku_no', 'uk_product_skus_sku_no');
+            $table->index('barcode', 'idx_product_skus_barcode');
             $table->index('product_id', 'idx_product_skus_product_id');
         });
 
@@ -90,7 +99,7 @@ return new class extends Migration
             $table->integer('before_stock')->comment('变动前库存');
             $table->integer('after_stock')->comment('变动后库存');
             $table->unsignedInteger('related_id')->nullable()->comment('关联单据ID(订单/退款单)');
-            $table->string('user_type', 20)->nullable()->comment('操作账户类型:admin,user,system');
+            $table->string('user_type', 20)->nullable()->comment('操作账户类型:admin=后台,user=前台,system=系统');
             $table->unsignedInteger('user_id')->nullable()->comment('操作人ID');
             $table->string('remark', 255)->nullable()->comment('备注');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');

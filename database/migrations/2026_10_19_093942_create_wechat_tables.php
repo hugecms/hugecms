@@ -113,11 +113,11 @@ return new class extends Migration
             $table->string('appid', 32)->comment('群发公众号AppID');
             $table->string('type', 20)->default('news')->comment('类型:news=图文,text=文本,image=图片');
             $table->json('content')->nullable()->comment('群发内容(JSON),图文为素材列表');
-            $table->string('target', 100)->nullable()->comment('目标:all=全部粉丝,或标签ID列表');
+            $table->string('target', 100)->nullable()->comment('目标:all=全部粉丝;或标签ID列表');
             $table->unsignedInteger('send_count')->default(0)->comment('送达数');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待发送,1=已发送,2=发送失败');
             $table->string('msg_id', 64)->nullable()->comment('微信群发消息ID,回拉发送结果用');
-            $table->string('user_type', 20)->default('admin')->comment('操作账户类型:admin,system');
+            $table->string('user_type', 20)->default('admin')->comment('操作账户类型:admin=后台,system=系统');
             $table->unsignedInteger('user_id')->nullable()->comment('操作人ID');
             $table->dateTime('sent_at')->nullable()->comment('发送时间');
             $table->timestamps();

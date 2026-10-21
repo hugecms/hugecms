@@ -17,16 +17,24 @@ return new class extends Migration
             $table->comment('订单表');
             $table->id();
             $table->string('order_no', 30)->comment('订单号');
+            $table->string('request_token', 64)->nullable()->comment('下单请求幂等令牌,客户端生成,唯一约束防重复下单');
+            $table->string('order_channel', 20)->default('')->comment('下单渠道:web=PC网站,h5=移动网页,wechat_miniapp=微信小程序,wechat_official=微信公众号,app=原生应用');
             $table->unsignedInteger('user_id')->comment('下单用户ID');
             $table->decimal('total_amount', 10, 2)->comment('商品总额');
             $table->decimal('freight_amount', 10, 2)->default(0)->comment('运费');
             $table->decimal('discount_amount', 10, 2)->default(0)->comment('优惠金额');
             $table->decimal('pay_amount', 10, 2)->comment('实付金额');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)');
-            $table->tinyInteger('refund_status')->default(0)->comment('售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写');
+            $table->tinyInteger('refund_status')->default(0)->comment('售后状态:0=无,1=售后中,2=部分退款,3=整单退款;由order_refunds汇总回写');
             $table->string('receiver_name', 50)->comment('收货人');
             $table->string('receiver_phone', 20)->comment('收货电话');
-            $table->string('receiver_region', 100)->comment('省市区');
+            $table->string('receiver_region', 100)->comment('省市区(合并展示用)');
+            $table->string('receiver_province', 50)->nullable()->comment('省');
+            $table->string('receiver_city', 50)->nullable()->comment('市');
+            $table->string('receiver_district', 50)->nullable()->comment('区县');
+            $table->string('receiver_province_code', 20)->nullable()->comment('省行政区划码,物流面单');
+            $table->string('receiver_city_code', 20)->nullable()->comment('市行政区划码');
+            $table->string('receiver_district_code', 20)->nullable()->comment('区县行政区划码');
             $table->string('receiver_address', 255)->comment('详细地址');
             $table->string('buyer_remark', 255)->nullable()->comment('买家备注');
             $table->dateTime('pay_time')->nullable()->comment('支付时间');
@@ -37,7 +45,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->unique('order_no', 'uk_orders_order_no');
+            $table->unique('request_token', 'uk_orders_request_token');
             $table->index(['user_id', 'status'], 'idx_orders_user_status');
+            $table->index(['order_channel', 'created_at'], 'idx_orders_channel_time');
         });
 
         // 订单明细表：商品信息快照，防商品改价/改名影响历史订单
@@ -49,6 +59,9 @@ return new class extends Migration
             $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
             $table->string('product_name', 200)->comment('商品名称快照');
             $table->string('sku_specs', 500)->nullable()->comment('规格快照');
+            $table->string('sku_no', 64)->nullable()->comment('SKU编号快照');
+            $table->string('sku_name', 200)->nullable()->comment('SKU名称快照');
+            $table->string('sku_image', 255)->nullable()->comment('SKU图片快照');
             $table->string('image', 255)->nullable()->comment('商品图快照');
             $table->decimal('price', 10, 2)->comment('成交单价');
             $table->unsignedInteger('quantity')->default(1)->comment('数量');
@@ -133,7 +146,7 @@ return new class extends Migration
             $table->unsignedInteger('order_id')->comment('订单ID');
             $table->tinyInteger('from_status')->nullable()->comment('变更前状态');
             $table->tinyInteger('to_status')->comment('变更后状态');
-            $table->string('operator_type', 20)->default('user')->comment('操作账户类型:admin,user,system');
+            $table->string('operator_type', 20)->default('user')->comment('操作账户类型:admin=后台,user=前台,system=系统');
             $table->unsignedInteger('operator_id')->nullable()->comment('操作人ID');
             $table->string('operator', 50)->comment('操作人名称快照');
             $table->string('note', 255)->nullable()->comment('操作备注');
@@ -175,7 +188,7 @@ return new class extends Migration
             $table->comment('售后协商日志表');
             $table->id();
             $table->unsignedInteger('refund_id')->comment('退款单ID');
-            $table->string('operator_type', 20)->default('user')->comment('操作账户类型:admin,user,system');
+            $table->string('operator_type', 20)->default('user')->comment('操作账户类型:admin=后台,user=前台,system=系统');
             $table->unsignedInteger('operator_id')->nullable()->comment('操作人ID');
             $table->string('operator', 50)->comment('操作人名称快照');
             $table->string('content', 500)->comment('协商内容/操作说明');
