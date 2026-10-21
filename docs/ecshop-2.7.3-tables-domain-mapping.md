@@ -16,7 +16,7 @@
 | 运营域 Website | 13 | `site_*` 已含导航 |
 | 物流域 Logistics | 4 | 已建 shipping_methods/shipping_areas/shipping_area_regions/shipping_shipment_tracks |
 | 支付域 Payment | 2 | 已独立为 payments/payment_channels，支持订单支付与充值 |
-| 消息域 Notify | 3 | Laravel 集成 notifications + email_subscriptions，不自建模板/队列 |
+| 消息域 Notify | 3 | Laravel 集成 notifications，不自建模板/队列（邮件走 Notification 邮件通道） |
 | 系统域 System | 13 | `system_*` / admin 域已有 |
 | 合计 | **88** | |
 
@@ -137,7 +137,7 @@
 | ECShop 表 | 说明 | 去向 |
 |---|---|---|
 | ecs_mail_templates | 邮件模板 | Laravel Notification 邮件通道，模板用代码/Blade，不自建表 |
-| ecs_email_list | 邮件订阅 | email_subscriptions |
+| ecs_email_list | 邮件订阅 | 不迁移（无 EDM 计划；如需收集邮箱线索用 forms/form_submissions） |
 | ecs_email_sendlist | 发送队列 | 框架队列（jobs 表），不自建表 |
 | —（站内通知） | 订单/评论等站内触达 | notifications（Laravel database channel，取代原 user_notifications） |
 
@@ -165,7 +165,7 @@
 2. **注册扩展 → 表单域**：`ecs_reg_fields`/`ecs_reg_extend_info` 本质为自定义表单，直接映射 forms/form_fields/form_submissions，避免重复造轮子。
 3. **region 归属**：已放系统域（system_regions），物流域仅保留配送方式相关表。
 4. **可丢弃表**：sessions、sessions_data、error_log、stats、searchengine、adsense、admin_message、user_feed 等运行时/低价值数据建议排除，实际需迁移业务表约 65~70 张。
-5. **已补充的能力**（本次迁移已落地）：商品属性体系（3 张）、价格策略（2 张）、营销促销基础（marketing_* 3 张）、钱包（2 张 + users 钱包字段）、物流（3 张）、消息通知（Laravel notifications + 邮件订阅）、导航（1 张）、会员等级（1 张 + users.rank_id）、支付域（payments/payment_channels 2 张）。
+5. **已补充的能力**（本次迁移已落地）：商品属性体系（3 张）、价格策略（2 张）、营销促销基础（marketing_* 3 张）、钱包（2 张 + users 钱包字段）、物流（3 张）、消息通知（Laravel notifications）、导航（1 张）、会员等级（1 张 + users.rank_id）、支付域（payments/payment_channels 2 张）。
 6. **支付域独立**：支付单与业务解耦，`payments.biz_type/biz_id` 同时服务订单支付与余额充值（充值回调后走 UserAccountService::credit 入账），原 order_payments 已并入支付域。
 7. **通知不过度设计**：站内通知用 Laravel notifications（database channel），邮件走 Notification 邮件通道，发送队列用框架 jobs；已移除自建的 notify_templates/notify_jobs/user_notifications。
 8. **贺卡/包装**：ECShop 付费附件概念陈旧，建议废弃或降级为字典项，不建表。

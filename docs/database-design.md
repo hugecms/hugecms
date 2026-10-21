@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件 / 13 个业务域 / 118 张业务表 + 1 视图（另有 7 张 Laravel 框架表），`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件（4 个框架 + 13 个业务域）/ 116 张业务表 + 1 视图（另有 8 张 Laravel 框架表），`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景
@@ -9,7 +9,7 @@
 
 | 域 | 迁移文件 | 表 |
 |---|---|---|
-| 用户 | `051854_create_user_tables.php` | user_profiles、user_followers、user_addresses、user_favorites、user_sms_codes、user_socials、user_ranks、user_accounts、user_account_logs、user_point_logs、user_withdraw_orders、user_browsing_histories、user_sign_ins（users 由基础迁移创建） |
+| 用户 | `051854_create_user_tables.php` | user_profiles、user_addresses、user_favorites、user_sms_codes、user_socials、user_ranks、user_accounts、user_account_logs、user_point_logs、user_withdraw_orders、user_browsing_histories、user_sign_ins（users 由基础迁移创建） |
 | 管理 | `051855_create_admin_tables.php` | admin_roles、admin_users、admin_user_roles、admin_permissions、admin_role_permissions |
 | 系统 | `051856_create_system_tables.php` | system_settings、system_attachments、system_dicts、system_dict_items、system_regions、system_login_logs、system_operation_logs、system_sensitive_words、system_sms_logs、system_ip_blacklists、system_apps、system_risk_rules、system_risk_records |
 | 站点 | `051857_create_website_tables.php` | site_ad_positions、site_ads、site_navs、site_links、site_search_keywords、site_daily_statistics |
@@ -18,7 +18,7 @@
 | 订单 | `051905_create_order_tables.php` | orders、order_items、order_promotions、order_carts、order_shipments、order_shipment_items、order_refunds、order_refund_items、order_refund_logs、order_logs、order_invoices |
 | 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_group_buy_activities、marketing_group_buy_items、marketing_group_buy_teams、marketing_group_buy_team_members、marketing_assist_activities、marketing_assist_records、marketing_assist_helpers、marketing_bargain_activities、marketing_bargain_items、marketing_bargain_records、marketing_bargain_helpers、marketing_distribution_commission_rules、marketing_distributors、marketing_distribution_relations、marketing_distribution_commissions |
 | 物流 | `054331_create_logistics_tables.php` | shipping_methods、shipping_areas、shipping_area_regions、shipping_shipment_tracks |
-| 消息 | `054332_create_notify_tables.php` | notifications（Laravel Notification database channel）、email_subscriptions |
+| 消息 | 框架迁移 `0001_01_01_000003_create_notifications_table.php` | notifications（Laravel Notification database channel，无自定义表；邮件走 Notification 邮件通道） |
 | 支付 | `055447_create_payment_tables.php` | payments、payment_channels、payment_callbacks |
 | 客服 | `092639_create_chat_tables.php` | chat_sessions、chat_messages、chat_services、chat_quick_replies、chat_bot_rules、chat_faqs |
 | 微信 | `093942_create_wechat_tables.php` | wechat_fans、wechat_templates、wechat_subscriptions、wechat_messages、wechat_qrcodes、wechat_broadcasts、视图 v_notify_touch_logs |

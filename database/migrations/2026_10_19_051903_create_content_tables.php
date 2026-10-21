@@ -112,7 +112,7 @@ return new class extends Migration
             $table->unique('slug', 'uk_content_pages_slug');
         });
 
-        // 评论点赞表：联合主键防重复点赞，风格同 user_followers
+        // 评论点赞表：联合主键防重复点赞
         Schema::create('content_comment_likes', function (Blueprint $table) {
             $table->comment('评论点赞表');
             $table->unsignedInteger('comment_id')->comment('评论ID');

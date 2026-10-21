@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、资金账户（余额/冻结双字段+双快照流水）、
+     * 用户域：资料、收货地址、收藏、短信验证码、社交登录绑定、会员等级、资金账户（余额/冻结双字段+双快照流水）、
      * 积分流水、提现单状态机、浏览足迹、每日签到
      * 前台用户账户表 users 由基础迁移 0001_01_01_000000 创建（users 仅存积分余额，资金余额独立 user_accounts）
      * 提现走 user_withdraw_orders 状态机（冻结扣 user_accounts.frozen）；充值无需申请单——在线支付走 payments(biz_type=recharge) 回调入账，人工到账走 UserAccountService::adjust
@@ -28,16 +28,6 @@ return new class extends Migration
             $table->string('location', 100)->nullable()->comment('所在地');
             $table->timestamps();
             $table->unique('user_id');
-        });
-
-        // 关注关系表：user_id 被 follower_id 关注，联合主键防重复关注
-        Schema::create('user_followers', function (Blueprint $table) {
-            $table->comment('关注关系表');
-            $table->unsignedInteger('user_id')->comment('被关注用户ID');
-            $table->unsignedInteger('follower_id')->comment('关注者用户ID');
-            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
-            $table->primary(['user_id', 'follower_id']);
-            $table->index('follower_id', 'idx_user_followers_follower_id');
         });
 
         // 收货地址表
@@ -61,7 +51,7 @@ return new class extends Migration
             $table->index('user_id', 'idx_user_addresses_user_id');
         });
 
-        // 收藏表：多态目标，文章/商品共用，与 user_followers 同类互动关系
+        // 收藏表：多态目标，文章/商品共用
         Schema::create('user_favorites', function (Blueprint $table) {
             $table->comment('用户收藏表');
             $table->id();
@@ -227,7 +217,6 @@ return new class extends Migration
         Schema::dropIfExists('user_sms_codes');
         Schema::dropIfExists('user_favorites');
         Schema::dropIfExists('user_addresses');
-        Schema::dropIfExists('user_followers');
         Schema::dropIfExists('user_profiles');
     }
 };

@@ -199,7 +199,7 @@ return new class extends Migration
 
         // 订单发票表：开票申请与开具记录
         Schema::create('order_invoices', function (Blueprint $table) {
-            $table->comment('订单发票表');
+            $table->comment('订单发票表(合规必需:用户开票申请与发票状态跟踪)');
             $table->id();
             $table->unsignedInteger('order_id')->comment('订单ID');
             $table->tinyInteger('type')->default(1)->comment('类型:1=电子普通发票,2=纸质普通发票,3=增值税专用发票');
