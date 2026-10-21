@@ -195,7 +195,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('user_id')->comment('触发用户ID');
             $table->unsignedInteger('rule_id')->comment('命中规则ID,关联system_risk_rules');
-            $table->tinyInteger('object_type')->comment('对象类型:1=订单,2=优惠券,3=提现,4=售后');
+            $table->tinyInteger('object_type')->comment('对象类型:1=订单,2=优惠券,3=提现,4=售后,5=裂变活动(助力/帮砍)');
             $table->string('object_no', 64)->default('')->comment('对象单号,如提现单号/订单号');
             $table->tinyInteger('action')->comment('处置快照:1=拦截,2=标记放行');
             $table->tinyInteger('appeal_status')->default(0)->comment('申诉状态:0=无,1=申诉中,2=申诉通过,3=申诉驳回');

@@ -58,6 +58,36 @@ class RiskService extends CommonService implements ServiceInterface
     }
 
     /**
+     * 通用黑名单检查（助力/帮砍等裂变入口防刷）：命中拦截型黑名单规则且无申诉通过记录则抛错留痕
+     *
+     * @param  int  $objectType  风控对象类型:1=订单,2=优惠券,3=提现,4=售后,5=裂变活动
+     */
+    public function checkBlacklist(int $userId, int $objectType, string $objectNo): void
+    {
+        $rules = $this->ruleRepository->builder()
+            ->where('status', 1)
+            ->where('rule_type', 1)
+            ->orderBy('id')
+            ->get();
+
+        foreach ($rules as $rule) {
+            if (! $this->evaluateBlacklist($rule, $userId, json_decode((string) $rule->condition_expr, true) ?: [])) {
+                continue;
+            }
+
+            $this->record($userId, (int) $rule->id, $objectType, $objectNo, (int) $rule->action, sprintf(
+                '规则[%s]参数=%s',
+                $rule->name,
+                $rule->condition_expr,
+            ));
+
+            if ((int) $rule->action === 1) {
+                throw new BusinessException('触发风控拦截:'.$rule->name, 40010);
+            }
+        }
+    }
+
+    /**
      * 落风控事件（objectType:1=订单,2=优惠券,3=提现,4=售后）
      */
     public function record(int $userId, int $ruleId, int $objectType, string $objectNo, int $action, string $remark): int

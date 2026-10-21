@@ -144,7 +144,7 @@ return new class extends Migration
             $table->comment('用户积分流水表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->tinyInteger('biz_type')->comment('业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送');
+            $table->tinyInteger('biz_type')->comment('业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送,8=活动奖励(助力等)');
             $table->integer('change_points')->default(0)->comment('积分变动,正数入负数出');
             $table->unsignedInteger('points_after')->comment('变动后积分余额快照');
             $table->string('biz_no', 64)->default('')->comment('关联业务单号');

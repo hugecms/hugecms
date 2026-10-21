@@ -7,7 +7,10 @@
 declare(strict_types=1);
 
 use App\Api\User\Controllers\AccountController;
+use App\Api\User\Controllers\AssistController;
 use App\Api\User\Controllers\AuthController;
+use App\Api\User\Controllers\BargainController;
+use App\Api\User\Controllers\GroupBuyController;
 use App\Api\User\Controllers\WithdrawOrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +20,28 @@ Route::get('account', [AccountController::class, 'account'])->name('account');
 Route::post('accountLog/search', [AccountController::class, 'accountLog']);
 // 我的积分流水分页
 Route::post('pointLog/search', [AccountController::class, 'pointLog']);
+// 发起助力
+Route::post('assist/initiate', [AssistController::class, 'initiate']);
+// 为好友助力
+Route::post('assist/help', [AssistController::class, 'help']);
+// 我的助力进度
+Route::get('assist/record', [AssistController::class, 'record'])->name('assist.record');
 // 登录
 Route::get('login', [AuthController::class, 'login'])->name('login');
+// 发起砍价
+Route::post('bargain/initiate', [BargainController::class, 'initiate']);
+// 为好友砍一刀
+Route::post('bargain/cut', [BargainController::class, 'cut']);
+// 砍价单详情
+Route::get('bargain/detail', [BargainController::class, 'detail'])->name('bargain.detail');
+// 砍到低价后下单回填
+Route::post('bargain/order', [BargainController::class, 'order']);
+// 拼团详情
+Route::get('groupBuy/team', [GroupBuyController::class, 'team'])->name('groupBuy.team');
+// 开团(下单后调用,orderNo 为订单号)
+Route::post('groupBuy/open', [GroupBuyController::class, 'open']);
+// 参团(下单后调用,orderNo 为订单号)
+Route::post('groupBuy/join', [GroupBuyController::class, 'join']);
 // 申请提现
 Route::post('withdrawOrder/apply', [WithdrawOrderController::class, 'apply']);
 // 我的提现单分页

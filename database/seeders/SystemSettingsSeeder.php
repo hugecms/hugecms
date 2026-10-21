@@ -38,6 +38,8 @@ class SystemSettingsSeeder extends Seeder
             ['group' => 'funds', 'key' => 'withdraw.daily_limit', 'title' => '每日提现申请次数上限', 'value' => '1', 'type' => 'number'],
             ['group' => 'risk', 'key' => 'risk.withdraw_high_freq.max_count', 'title' => '提现高频阈值(次/窗口)', 'value' => '3', 'type' => 'number'],
             ['group' => 'risk', 'key' => 'risk.withdraw_high_freq.window_minutes', 'title' => '提现高频统计窗口(分钟)', 'value' => '60', 'type' => 'number'],
+            ['group' => 'marketing', 'key' => 'group_buy.expire_hours', 'title' => '拼团成团时限(小时)', 'value' => '24', 'type' => 'number'],
+            ['group' => 'marketing', 'key' => 'bargain.expire_hours', 'title' => '砍价截止时限(小时)', 'value' => '24', 'type' => 'number'],
         ];
 
         DB::table('system_settings')->insert(array_map(
