@@ -12,19 +12,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 消息通知表：Laravel Notification database channel 标准结构
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->comment('消息通知表');
-            $table->uuid('id')->primary();
-            $table->string('type')->comment('通知类型(通知类名)');
-            $table->string('notifiable_type')->comment('通知目标类型,如:App\Models\User');
-            $table->unsignedBigInteger('notifiable_id')->comment('通知目标ID');
-            $table->text('data')->comment('通知数据(JSON)');
-            $table->timestamp('read_at')->nullable()->comment('已读时间,空=未读');
-            $table->timestamps();
-            $table->index(['notifiable_type', 'notifiable_id'], 'idx_notifications_notifiable');
-        });
-
         // 邮件订阅表：订阅/退订与退订令牌，营销邮件触达名单
         Schema::create('email_subscriptions', function (Blueprint $table) {
             $table->comment('邮件订阅表');
@@ -43,6 +30,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('email_subscriptions');
-        Schema::dropIfExists('notifications');
     }
 };
