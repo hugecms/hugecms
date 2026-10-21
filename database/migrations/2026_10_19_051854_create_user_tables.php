@@ -16,6 +16,7 @@ return new class extends Migration
         // 用户资料表：与 users 表一对一（user_id 主键），存放展示类信息
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->comment('用户资料表');
+            $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('nickname', 50)->comment('昵称');
             $table->string('avatar', 255)->nullable()->comment('头像');
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->string('bio', 255)->nullable()->comment('个人简介');
             $table->string('location', 100)->nullable()->comment('所在地');
             $table->timestamps();
-            $table->primary('user_id');
+            $table->unique('user_id');
         });
 
         // 关注关系表：user_id 被 follower_id 关注，联合主键防重复关注
