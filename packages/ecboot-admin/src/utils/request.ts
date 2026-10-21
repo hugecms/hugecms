@@ -3,8 +3,24 @@ import { ElMessage } from 'element-plus'
 // ElMessage 是函数式调用，不经模板编译，unplugin 无法按需注入样式，需显式引入（一次引入全局生效）
 import 'element-plus/es/components/message/style/css'
 import { useUserStore } from '@/stores/user'
+import { LOGIN_PATH } from '@/consts/routes'
+import type { ApiResponse } from '@/types/api'
 
 const REQUEST_TIMEOUT = 10_000
+
+/**
+ * 业务错误：后端信封 code !== 0 时 reject 的类型（HTTP 层错误仍以 AxiosError reject）。
+ * 错误提示已由拦截器统一弹出，调用方 catch 后勿重复 ElMessage。
+ */
+export class BusinessError extends Error {
+  constructor(
+    readonly code: number,
+    message: string,
+  ) {
+    super(message)
+    this.name = 'BusinessError'
+  }
+}
 
 export const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -27,11 +43,16 @@ request.interceptors.request.use((config) => {
 function handleUnauthorized(message: string): void {
   useUserStore().reset()
   const { pathname, search } = window.location
-  if (pathname !== '/login') {
-    window.location.href = `/login?redirect=${encodeURIComponent(pathname + search)}`
+  // location 域：登录页完整地址须含部署 base；BASE_URL 惰性读取以便测试按用例注入
+  const base = import.meta.env.BASE_URL
+  const loginHref = `${base}${LOGIN_PATH.slice(1)}`
+  if (pathname === loginHref) {
+    ElMessage.error(message)
     return
   }
-  ElMessage.error(message)
+  // 剥离部署 base 得到 router 路径（保留前导 /），redirect 由 LoginView 经 router.replace 回跳
+  const routePath = pathname.startsWith(base) ? `/${pathname.slice(base.length)}` : pathname
+  window.location.href = `${loginHref}?redirect=${encodeURIComponent(routePath + search)}`
 }
 
 /** HTTP 层错误分类文案 */
@@ -54,7 +75,7 @@ function getHttpErrorMessage(error: AxiosError): string {
 
 request.interceptors.response.use(
   (response) => {
-    const res = response.data as { code: number; message: string; data: unknown }
+    const res = response.data as ApiResponse
     if (res.code === 0) {
       // 解包信封：直接返回业务数据。拦截器签名要求 AxiosResponse，
       // 故意绕过（运行时就是业务数据），调用方经下方泛型封装按 T 消费
@@ -65,9 +86,13 @@ request.interceptors.response.use(
     } else {
       ElMessage.error(res.message || '请求失败')
     }
-    return Promise.reject(new Error(res.message || '请求失败'))
+    return Promise.reject(new BusinessError(res.code, res.message || '请求失败'))
   },
   (error: AxiosError) => {
+    // 主动取消（如组件卸载中断请求）不是异常，静默 reject 不打扰用户
+    if (error.code === 'ERR_CANCELED') {
+      return Promise.reject(error)
+    }
     if (error.response?.status === 401) {
       const data = error.response.data as { message?: string } | undefined
       handleUnauthorized(data?.message || '登录已过期')

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AxiosError } from 'axios'
 import { createPinia, setActivePinia } from 'pinia'
-import { del, get, post } from '@/utils/request'
+import { BusinessError, del, get, post } from '@/utils/request'
 import { useUserStore } from '@/stores/user'
 
 vi.mock('element-plus', () => ({
@@ -34,6 +34,7 @@ describe('request 拦截器', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals()
+    vi.unstubAllEnvs()
     vi.clearAllMocks()
   })
 
@@ -206,5 +207,56 @@ describe('request 拦截器', () => {
 
     await expect(del('/anything')).rejects.toThrow('Network Error')
     expect(ElMessage.error).toHaveBeenCalledWith('网络异常，请检查网络连接')
+  })
+
+  it('主动取消的请求静默 reject，不弹错误提示', async () => {
+    const { request } = await import('@/utils/request')
+    request.defaults.adapter = (async () => {
+      throw new AxiosError('canceled', AxiosError.ERR_CANCELED)
+    }) as never
+
+    await expect(get('/anything')).rejects.toThrow('canceled')
+    expect(ElMessage.error).not.toHaveBeenCalled()
+  })
+
+  it('业务错误 reject BusinessError 且携带业务码', async () => {
+    const adapter = useMockAdapter({ code: 50001, message: '用户名或密码错误', data: null })
+    const { request } = await import('@/utils/request')
+    request.defaults.adapter = adapter as never
+
+    const error = await post('/anything', {}).then(
+      () => null,
+      (e: unknown) => e,
+    )
+
+    expect(error).toBeInstanceOf(BusinessError)
+    expect(error).toMatchObject({ code: 50001, message: '用户名或密码错误' })
+  })
+
+  it('子路径 base 下 401 跳转到携带 base 的登录地址（redirect 剥离 base）', async () => {
+    vi.stubEnv('BASE_URL', '/admin/')
+    vi.stubGlobal('location', { pathname: '/admin/dashboard', search: '', href: '' })
+    const adapter = useMockAdapter({ code: 401, message: '登录已过期', data: null })
+    const { request } = await import('@/utils/request')
+    request.defaults.adapter = adapter as never
+
+    const userStore = useUserStore()
+    userStore.token = 'expired-token'
+
+    await expect(get('/anything')).rejects.toThrow('登录已过期')
+
+    expect(window.location.href).toBe(`/admin/login?redirect=${encodeURIComponent('/dashboard')}`)
+  })
+
+  it('子路径 base 下在登录页 401 不重复跳转', async () => {
+    vi.stubEnv('BASE_URL', '/admin/')
+    vi.stubGlobal('location', { pathname: '/admin/login', search: '', href: '' })
+    const adapter = useMockAdapter({ code: 401, message: '登录已过期', data: null })
+    const { request } = await import('@/utils/request')
+    request.defaults.adapter = adapter as never
+
+    await expect(get('/anything')).rejects.toThrow('登录已过期')
+
+    expect(window.location.href).toBe('')
   })
 })

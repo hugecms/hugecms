@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
+import { LOGIN_PATH } from '@/consts/routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
+      path: LOGIN_PATH,
       name: 'login',
       component: () => import('@/views/LoginView.vue'),
       meta: { title: '登录' },
