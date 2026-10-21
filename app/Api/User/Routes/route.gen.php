@@ -6,8 +6,20 @@
 
 declare(strict_types=1);
 
+use App\Api\User\Controllers\AccountController;
 use App\Api\User\Controllers\AuthController;
+use App\Api\User\Controllers\WithdrawOrderController;
 use Illuminate\Support\Facades\Route;
 
+// 我的账户概览
+Route::get('account', [AccountController::class, 'account'])->name('account');
+// 我的资金流水分页
+Route::post('accountLog/search', [AccountController::class, 'accountLog']);
+// 我的积分流水分页
+Route::post('pointLog/search', [AccountController::class, 'pointLog']);
 // 登录
 Route::get('login', [AuthController::class, 'login'])->name('login');
+// 申请提现
+Route::post('withdrawOrder/apply', [WithdrawOrderController::class, 'apply']);
+// 我的提现单分页
+Route::post('withdrawOrder/search', [WithdrawOrderController::class, 'search']);

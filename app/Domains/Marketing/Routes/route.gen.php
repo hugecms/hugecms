@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use App\Domains\Marketing\Controllers\MarketingCommissionRuleController;
 use App\Domains\Marketing\Controllers\MarketingCouponController;
 use App\Domains\Marketing\Controllers\MarketingDistributionCommissionController;
 use App\Domains\Marketing\Controllers\MarketingDistributionRelationController;
@@ -17,6 +18,16 @@ use App\Domains\Marketing\Controllers\MarketingPromotionController;
 use App\Domains\Marketing\Controllers\MarketingUserCouponController;
 use Illuminate\Support\Facades\Route;
 
+// 查询分销员列表接口
+Route::post('marketingDistributionUser/search', [MarketingCommissionRuleController::class, 'search']);
+// 新增分销员接口
+Route::post('marketingDistributionUser/store', [MarketingCommissionRuleController::class, 'store']);
+// 获取分销员详情接口
+Route::get('marketingDistributionUser/show', [MarketingCommissionRuleController::class, 'show'])->name('marketingDistributionUser.show');
+// 更新分销员接口
+Route::put('marketingDistributionUser/update', [MarketingCommissionRuleController::class, 'update']);
+// 删除分销员接口
+Route::post('marketingDistributionUser/destroy', [MarketingCommissionRuleController::class, 'destroy']);
 // 查询优惠券类型列表接口
 Route::post('marketingCoupon/search', [MarketingCouponController::class, 'search']);
 // 新增优惠券类型接口

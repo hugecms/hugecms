@@ -9,5 +9,5 @@ declare(strict_types=1);
 use App\Api\Admin\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-// 登录
-Route::get('login', [AuthController::class, 'login'])->name('login');
+// 管理员登录接口
+Route::post('auth/login', [AuthController::class, 'login']);

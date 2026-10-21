@@ -14,6 +14,8 @@ use App\Domains\System\Controllers\SystemIpBlacklistController;
 use App\Domains\System\Controllers\SystemLoginLogController;
 use App\Domains\System\Controllers\SystemOperationLogController;
 use App\Domains\System\Controllers\SystemRegionController;
+use App\Domains\System\Controllers\SystemRiskRecordController;
+use App\Domains\System\Controllers\SystemRiskRuleController;
 use App\Domains\System\Controllers\SystemSensitiveWordController;
 use App\Domains\System\Controllers\SystemSettingController;
 use App\Domains\System\Controllers\SystemSmsLogController;
@@ -99,6 +101,22 @@ Route::get('systemRegion/show', [SystemRegionController::class, 'show'])->name('
 Route::put('systemRegion/update', [SystemRegionController::class, 'update']);
 // 删除行政区划接口
 Route::post('systemRegion/destroy', [SystemRegionController::class, 'destroy']);
+// 查询风控事件列表接口
+Route::post('systemRiskRecord/search', [SystemRiskRecordController::class, 'search']);
+// 获取风控事件详情接口
+Route::get('systemRiskRecord/show', [SystemRiskRecordController::class, 'show'])->name('systemRiskRecord.show');
+// 风控事件申诉处理接口
+Route::post('systemRiskRecord/appeal', [SystemRiskRecordController::class, 'appeal']);
+// 查询IP黑名单列表接口
+Route::post('systemIpBlacklist/search', [SystemRiskRuleController::class, 'search']);
+// 新增IP黑名单接口
+Route::post('systemIpBlacklist/store', [SystemRiskRuleController::class, 'store']);
+// 获取IP黑名单详情接口
+Route::get('systemIpBlacklist/show', [SystemRiskRuleController::class, 'show'])->name('systemIpBlacklist.show');
+// 更新IP黑名单接口
+Route::put('systemIpBlacklist/update', [SystemRiskRuleController::class, 'update']);
+// 删除IP黑名单接口
+Route::post('systemIpBlacklist/destroy', [SystemRiskRuleController::class, 'destroy']);
 // 查询敏感词列表接口
 Route::post('systemSensitiveWord/search', [SystemSensitiveWordController::class, 'search']);
 // 新增敏感词接口
