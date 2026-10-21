@@ -6,7 +6,7 @@ namespace Tests\Feature\System;
 
 use App\Domains\System\Repositories\SystemRiskRecordRepository;
 use App\Domains\System\Repositories\SystemRiskRuleRepository;
-use App\Domains\System\Services\RiskService;
+use App\Services\RiskService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Juling\Foundation\Exceptions\BusinessException;

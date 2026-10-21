@@ -10624,16 +10624,16 @@
         },
         {
             "name": "phpkg/laravel-devtools",
-            "version": "v1.0.10",
+            "version": "v1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wanganlin/laravel-devtools.git",
-                "reference": "d9009f2d1f60c3b6d070eb7e1bf098a2b35a015b"
+                "reference": "bb30b137e5b116ec66d1cebe4e24bae576145c28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wanganlin/laravel-devtools/zipball/d9009f2d1f60c3b6d070eb7e1bf098a2b35a015b",
-                "reference": "d9009f2d1f60c3b6d070eb7e1bf098a2b35a015b",
+                "url": "https://api.github.com/repos/wanganlin/laravel-devtools/zipball/bb30b137e5b116ec66d1cebe4e24bae576145c28",
+                "reference": "bb30b137e5b116ec66d1cebe4e24bae576145c28",
                 "shasum": ""
             },
             "require": {
@@ -10664,9 +10664,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wanganlin/laravel-devtools/issues",
-                "source": "https://github.com/wanganlin/laravel-devtools/tree/v1.0.10"
+                "source": "https://github.com/wanganlin/laravel-devtools/tree/v1.0.11"
             },
-            "time": "2026-10-21T03:19:22+00:00"
+            "time": "2026-10-21T05:43:30+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",

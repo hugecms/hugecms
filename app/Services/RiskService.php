@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\System\Services;
+namespace App\Services;
 
 use App\Domains\System\Repositories\SystemRiskRecordRepository;
 use App\Domains\System\Repositories\SystemRiskRuleRepository;

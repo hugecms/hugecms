@@ -6,7 +6,7 @@ namespace App\Api\User\Controllers;
 
 use App\Domains\User\Entities\UserAccountLogEntity;
 use App\Domains\User\Entities\UserPointLogEntity;
-use App\Domains\User\Services\UserAccountService;
+use App\Services\UserAccountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

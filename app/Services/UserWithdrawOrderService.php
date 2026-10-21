@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\User\Services;
+namespace App\Services;
 
 use App\Domains\System\Repositories\SystemSettingRepository;
-use App\Domains\System\Services\RiskService;
 use App\Domains\User\Enums\UserAccountLogBizTypeEnum;
 use App\Domains\User\Enums\UserWithdrawOrderStatusEnum;
 use App\Domains\User\Repositories\UserWithdrawOrderRepository;

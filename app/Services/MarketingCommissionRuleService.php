@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Marketing\Services;
+namespace App\Services;
 
 use App\Domains\Marketing\Repositories\MarketingCommissionRuleRepository;
 use App\Domains\System\Repositories\SystemSettingRepository;

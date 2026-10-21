@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Marketing\Services;
+namespace App\Services;
 
 use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionRelationRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionUserRepository;
 use App\Domains\User\Enums\UserAccountLogBizTypeEnum;
-use App\Domains\User\Services\UserAccountService;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Juling\Foundation\Contracts\ServiceInterface;

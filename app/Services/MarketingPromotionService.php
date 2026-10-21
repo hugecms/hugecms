@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Marketing\Services;
+namespace App\Services;
 
 use App\Domains\Marketing\Entities\MarketingPromotionLadderEntity;
 use App\Domains\Marketing\Entities\MarketingPromotionScopeEntity;

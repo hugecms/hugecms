@@ -11,7 +11,7 @@ use App\Domains\System\Requests\SystemRiskRecord\SystemRiskRecordAppealRequest;
 use App\Domains\System\Requests\SystemRiskRecord\SystemRiskRecordQueryRequest;
 use App\Domains\System\Responses\SystemRiskRecord\SystemRiskRecordQueryResponse;
 use App\Domains\System\Responses\SystemRiskRecord\SystemRiskRecordResponse;
-use App\Domains\System\Services\RiskService;
+use App\Services\RiskService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

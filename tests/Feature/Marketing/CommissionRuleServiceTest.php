@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Marketing;
 
 use App\Domains\Marketing\Repositories\MarketingCommissionRuleRepository;
-use App\Domains\Marketing\Services\MarketingCommissionRuleService;
 use App\Domains\System\Repositories\SystemSettingRepository;
+use App\Services\MarketingCommissionRuleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;

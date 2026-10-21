@@ -10,7 +10,7 @@ use App\Domains\User\Requests\UserAccount\UserAccountAdjustRequest;
 use App\Domains\User\Requests\UserAccount\UserAccountQueryRequest;
 use App\Domains\User\Responses\UserAccount\UserAccountQueryResponse;
 use App\Domains\User\Responses\UserAccount\UserAccountResponse;
-use App\Domains\User\Services\UserAccountService;
+use App\Services\UserAccountService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

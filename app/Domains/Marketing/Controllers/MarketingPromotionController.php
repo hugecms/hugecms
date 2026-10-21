@@ -13,7 +13,7 @@ use App\Domains\Marketing\Requests\MarketingPromotion\MarketingPromotionUpdateRe
 use App\Domains\Marketing\Responses\MarketingPromotion\MarketingPromotionDestroyResponse;
 use App\Domains\Marketing\Responses\MarketingPromotion\MarketingPromotionQueryResponse;
 use App\Domains\Marketing\Responses\MarketingPromotion\MarketingPromotionResponse;
-use App\Domains\Marketing\Services\MarketingPromotionService;
+use App\Services\MarketingPromotionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

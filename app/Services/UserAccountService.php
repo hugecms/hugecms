@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\User\Services;
+namespace App\Services;
 
 use App\Domains\User\Repositories\UserAccountLogRepository;
 use App\Domains\User\Repositories\UserAccountRepository;

@@ -12,7 +12,7 @@ use App\Domains\User\Requests\UserWithdrawOrder\UserWithdrawOrderMarkSuccessRequ
 use App\Domains\User\Requests\UserWithdrawOrder\UserWithdrawOrderQueryRequest;
 use App\Domains\User\Responses\UserWithdrawOrder\UserWithdrawOrderQueryResponse;
 use App\Domains\User\Responses\UserWithdrawOrder\UserWithdrawOrderResponse;
-use App\Domains\User\Services\UserWithdrawOrderService;
+use App\Services\UserWithdrawOrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

@@ -29,7 +29,7 @@ class SystemRiskRuleController extends BaseController
         private readonly SystemRiskRuleService $systemIpBlacklistService,
     ) {}
 
-    #[OA\Post(path: '/systemIpBlacklist/search', summary: '查询IP黑名单列表接口', security: [['bearerAuth' => []]], tags: ['IP黑名单模块'])]
+    #[OA\Post(path: '/systemRiskRule/search', summary: '查询风控规则列表接口', security: [['bearerAuth' => []]], tags: ['风控规则模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: SystemRiskRuleQueryRequest::class))]
@@ -80,7 +80,7 @@ class SystemRiskRuleController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/systemIpBlacklist/store', summary: '新增IP黑名单接口', security: [['bearerAuth' => []]], tags: ['IP黑名单模块'])]
+    #[OA\Post(path: '/systemRiskRule/store', summary: '新增风控规则接口', security: [['bearerAuth' => []]], tags: ['风控规则模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: SystemRiskRuleCreateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -117,7 +117,7 @@ class SystemRiskRuleController extends BaseController
         }
     }
 
-    #[OA\Get(path: '/systemIpBlacklist/show', summary: '获取IP黑名单详情接口', security: [['bearerAuth' => []]], tags: ['IP黑名单模块'])]
+    #[OA\Get(path: '/systemRiskRule/show', summary: '获取风控规则详情接口', security: [['bearerAuth' => []]], tags: ['风控规则模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -150,7 +150,7 @@ class SystemRiskRuleController extends BaseController
         }
     }
 
-    #[OA\Put(path: '/systemIpBlacklist/update', summary: '更新IP黑名单接口', security: [['bearerAuth' => []]], tags: ['IP黑名单模块'])]
+    #[OA\Put(path: '/systemRiskRule/update', summary: '更新风控规则接口', security: [['bearerAuth' => []]], tags: ['风控规则模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: SystemRiskRuleUpdateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
@@ -192,7 +192,7 @@ class SystemRiskRuleController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/systemIpBlacklist/destroy', summary: '删除IP黑名单接口', security: [['bearerAuth' => []]], tags: ['IP黑名单模块'])]
+    #[OA\Post(path: '/systemRiskRule/destroy', summary: '删除风控规则接口', security: [['bearerAuth' => []]], tags: ['风控规则模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: SystemRiskRuleDestroyRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [

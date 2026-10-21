@@ -13,7 +13,7 @@ use App\Domains\Marketing\Requests\MarketingCommissionRule\MarketingCommissionRu
 use App\Domains\Marketing\Responses\MarketingCommissionRule\MarketingCommissionRuleDestroyResponse;
 use App\Domains\Marketing\Responses\MarketingCommissionRule\MarketingCommissionRuleQueryResponse;
 use App\Domains\Marketing\Responses\MarketingCommissionRule\MarketingCommissionRuleResponse;
-use App\Domains\Marketing\Services\MarketingCommissionRuleService;
+use App\Services\MarketingCommissionRuleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +29,7 @@ class MarketingCommissionRuleController extends BaseController
         private readonly MarketingCommissionRuleService $marketingDistributionUserService,
     ) {}
 
-    #[OA\Post(path: '/marketingDistributionUser/search', summary: '查询分销员列表接口', security: [['bearerAuth' => []]], tags: ['分销员模块'])]
+    #[OA\Post(path: '/marketingCommissionRule/search', summary: '查询佣金规则列表接口', security: [['bearerAuth' => []]], tags: ['佣金规则模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: MarketingCommissionRuleQueryRequest::class))]
@@ -83,7 +83,7 @@ class MarketingCommissionRuleController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/marketingDistributionUser/store', summary: '新增分销员接口', security: [['bearerAuth' => []]], tags: ['分销员模块'])]
+    #[OA\Post(path: '/marketingCommissionRule/store', summary: '新增佣金规则接口', security: [['bearerAuth' => []]], tags: ['佣金规则模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: MarketingCommissionRuleCreateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -120,7 +120,7 @@ class MarketingCommissionRuleController extends BaseController
         }
     }
 
-    #[OA\Get(path: '/marketingDistributionUser/show', summary: '获取分销员详情接口', security: [['bearerAuth' => []]], tags: ['分销员模块'])]
+    #[OA\Get(path: '/marketingCommissionRule/show', summary: '获取佣金规则详情接口', security: [['bearerAuth' => []]], tags: ['佣金规则模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -153,7 +153,7 @@ class MarketingCommissionRuleController extends BaseController
         }
     }
 
-    #[OA\Put(path: '/marketingDistributionUser/update', summary: '更新分销员接口', security: [['bearerAuth' => []]], tags: ['分销员模块'])]
+    #[OA\Put(path: '/marketingCommissionRule/update', summary: '更新佣金规则接口', security: [['bearerAuth' => []]], tags: ['佣金规则模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: MarketingCommissionRuleUpdateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
@@ -195,7 +195,7 @@ class MarketingCommissionRuleController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/marketingDistributionUser/destroy', summary: '删除分销员接口', security: [['bearerAuth' => []]], tags: ['分销员模块'])]
+    #[OA\Post(path: '/marketingCommissionRule/destroy', summary: '删除佣金规则接口', security: [['bearerAuth' => []]], tags: ['佣金规则模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: MarketingCommissionRuleDestroyRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [

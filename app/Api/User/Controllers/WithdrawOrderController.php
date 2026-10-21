@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\User\Controllers;
 
-use App\Domains\User\Services\UserWithdrawOrderService;
+use App\Services\UserWithdrawOrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

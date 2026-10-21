@@ -7,7 +7,7 @@ namespace Tests\Feature\User;
 use App\Domains\User\Enums\UserAccountLogBizTypeEnum;
 use App\Domains\User\Repositories\UserAccountLogRepository;
 use App\Domains\User\Repositories\UserAccountRepository;
-use App\Domains\User\Services\UserAccountService;
+use App\Services\UserAccountService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Juling\Foundation\Exceptions\BusinessException;

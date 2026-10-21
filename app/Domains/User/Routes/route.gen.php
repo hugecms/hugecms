@@ -88,16 +88,16 @@ Route::get('userFollower/show', [UserFollowerController::class, 'show'])->name('
 Route::put('userFollower/update', [UserFollowerController::class, 'update']);
 // 删除关注关系接口
 Route::post('userFollower/destroy', [UserFollowerController::class, 'destroy']);
-// 查询用户资金/积分流水列表接口
-Route::post('userAccountLog/search', [UserPointLogController::class, 'search']);
-// 新增用户资金/积分流水接口
-Route::post('userAccountLog/store', [UserPointLogController::class, 'store']);
-// 获取用户资金/积分流水详情接口
-Route::get('userAccountLog/show', [UserPointLogController::class, 'show'])->name('userAccountLog.show');
-// 更新用户资金/积分流水接口
-Route::put('userAccountLog/update', [UserPointLogController::class, 'update']);
-// 删除用户资金/积分流水接口
-Route::post('userAccountLog/destroy', [UserPointLogController::class, 'destroy']);
+// 查询用户积分流水列表接口
+Route::post('userPointLog/search', [UserPointLogController::class, 'search']);
+// 新增用户积分流水接口
+Route::post('userPointLog/store', [UserPointLogController::class, 'store']);
+// 获取用户积分流水详情接口
+Route::get('userPointLog/show', [UserPointLogController::class, 'show'])->name('userPointLog.show');
+// 更新用户积分流水接口
+Route::put('userPointLog/update', [UserPointLogController::class, 'update']);
+// 删除用户积分流水接口
+Route::post('userPointLog/destroy', [UserPointLogController::class, 'destroy']);
 // 查询用户资料列表接口
 Route::post('userProfile/search', [UserProfileController::class, 'search']);
 // 新增用户资料接口
