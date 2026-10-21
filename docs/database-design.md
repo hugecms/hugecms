@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件 / 13 个业务域 / 98 表 + 1 视图，`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件 / 13 个业务域 / 109 表 + 1 视图，`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景
@@ -16,7 +16,7 @@
 | 内容 | `051903_create_content_tables.php` | content_categories、content_articles、content_article_contents、content_tags、content_article_tags、content_comments、content_comment_likes、content_pages、content_topics、content_topic_items |
 | 商品 | `051904_create_product_tables.php` | product_categories、product_brands、products、product_skus、product_attributes、product_attribute_values、product_member_prices、product_volume_prices、product_stock_logs、product_reviews、product_stock_reminders |
 | 订单 | `051905_create_order_tables.php` | orders、order_items、order_promotions、order_carts、order_shipments、order_shipment_items、order_refunds、order_refund_items、order_refund_logs、order_logs、order_invoices |
-| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_commission_rules、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
+| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_group_buy_activities、marketing_group_buy_items、marketing_group_buy_teams、marketing_group_buy_team_members、marketing_assist_activities、marketing_assist_records、marketing_assist_helpers、marketing_bargain_activities、marketing_bargain_items、marketing_bargain_records、marketing_bargain_helpers、marketing_commission_rules、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
 | 物流 | `054331_create_logistics_tables.php` | shipping_methods、shipping_areas、shipping_area_regions、shipping_shipment_tracks |
 | 消息 | `054332_create_notify_tables.php` | notifications（Laravel Notification database channel）、email_subscriptions |
 | 支付 | `055447_create_payment_tables.php` | payments、payment_channels、payment_callbacks |
@@ -71,6 +71,14 @@
 ### 6. 客服 IM 与机器人分流
 
 实时推送由 GatewayWorker 承载，表只做持久化。会话分配：空闲优先（`chat_services.current_sessions < max_sessions` 且在线）；机器人关键词规则（chat_bot_rules，sort 升序命中）先答，转人工规则兜底；分配/转接等流转事件以 system 消息落 chat_messages，全程可追溯；`user_last_read_id/server_last_read_id` 会话级已读水位。
+
+### 7. 裂变玩法（拼团/助力/砍价）
+
+- 拼团：开团/参团以 `marketing_group_buy_team_members` 的 `uk(team_id,user_id)`（一团一单）+ `uk(order_no)`（一单一团）双重唯一防刷防重；`member_count` 与成员表同事务维护，人齐即条件更新 1→2（已成团），超时扫描 1→3（解散）；成团价按 SKU 配置（group_buy_items），下单快照进订单项 price，库存走常规防超卖。
+- 助力：`marketing_assist_records` `uk(activity_id,user_id)` 一人一条参与记录，`helper_count` 条件自增达标触发发奖；发奖幂等靠状态条件更新（1→2 完成态不重复发）；奖励两类——券写 `marketing_user_coupons`、积分走 `users.points` 条件更新 + `user_point_logs` 流水。
+- 砍价：`marketing_bargain_records.current_price` 每刀条件更新（`where current_price - cut >= floor_price`）防并发超砍，到底价 1→2 才可下单；`uk(order_no)` NULL 不参与唯一约束（未下单的砍价单互不冲突，下单回填后防一单多砍）；超时扫描 1→4（超时失败）。
+- 防刷：助力/帮砍入口挂 `RiskService` 黑名单检查；超时扫描为 Service 方法（expireDue*），定时任务注册待调度接入。
+
 
 ## 四、可运营性设计
 

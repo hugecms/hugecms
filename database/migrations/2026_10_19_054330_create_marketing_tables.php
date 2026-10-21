@@ -12,6 +12,8 @@ return new class extends Migration
      * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补，变动记 marketing_flash_sale_logs
      * 佣金按 marketing_commission_rules（商品>分类>system_settings 全局兜底）计佣，保护期后结算入账 user_accounts（biz_type=1），
      * 保护期内退款置失效，已结算退款走负额冲销记录（reversal_of_id 回指，唯一索引允许多 NULL 即原始记录互不冲突）；提现走 user_withdraw_orders 状态机
+     * 裂变三件套：拼团（团员 uk(team,user)+uk(order_no) 双重唯一防一单多团）、助力（参与 uk(activity,user) 一人一条，发奖完成态幂等，奖励对接券/积分流水）、
+     * 砍价（current_price 条件更新防并发超砍，uk(order_no) NULL 不参与约束即未下单互不冲突）；助力/帮砍入口挂风控黑名单检查
      */
     public function up(): void
     {
@@ -195,6 +197,164 @@ return new class extends Migration
             $table->index('flash_sale_item_id', 'idx_marketing_flash_sale_logs_item');
             $table->index('order_id', 'idx_marketing_flash_sale_logs_order_id');
         });
+
+        // 拼团活动表：成团人数/时限/限购，成团价对活动内 SKU 生效
+        Schema::create('marketing_group_buy_activities', function (Blueprint $table) {
+            $table->comment('拼团活动表');
+            $table->id();
+            $table->string('name', 100)->comment('活动名称');
+            $table->unsignedInteger('spu_id')->comment('商品SPU ID');
+            $table->unsignedInteger('group_size')->default(2)->comment('成团人数');
+            $table->dateTime('start_time')->comment('活动开始时间');
+            $table->dateTime('end_time')->comment('活动结束时间');
+            $table->unsignedInteger('per_limit')->default(1)->comment('每人限购(整个活动期)');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
+            $table->timestamps();
+            $table->index(['spu_id', 'status'], 'idx_marketing_group_buy_activities_spu_status');
+        });
+
+        // 拼团场次商品表：SKU 级成团价，下单时快照进订单项 price；库存走常规 locked_stock 防超卖
+        Schema::create('marketing_group_buy_items', function (Blueprint $table) {
+            $table->comment('拼团场次商品表');
+            $table->id();
+            $table->unsignedInteger('activity_id')->comment('拼团活动ID');
+            $table->unsignedInteger('sku_id')->comment('SKU ID');
+            $table->decimal('group_price', 10, 2)->comment('该SKU成团价,下单快照进订单项price');
+            $table->timestamps();
+            $table->unique(['activity_id', 'sku_id'], 'uk_marketing_group_buy_items_activity_sku');
+            $table->index('sku_id', 'idx_marketing_group_buy_items_sku_id');
+        });
+
+        // 拼团团表：人齐成团/超时解散，member_count 应用层与成员表同事务维护
+        Schema::create('marketing_group_buy_teams', function (Blueprint $table) {
+            $table->comment('拼团团表');
+            $table->id();
+            $table->unsignedInteger('activity_id')->comment('拼团活动ID');
+            $table->unsignedInteger('leader_user_id')->comment('团长用户ID');
+            $table->tinyInteger('status')->default(1)->comment('状态:1=拼团中,2=已成团,3=已解散(超时/取消)');
+            $table->unsignedInteger('member_count')->default(1)->comment('当前成员数');
+            $table->dateTime('expire_time')->comment('成团截止时间,超时扫描依据');
+            $table->dateTime('success_time')->nullable()->comment('成团时间');
+            $table->timestamps();
+            $table->index(['activity_id', 'status'], 'idx_marketing_group_buy_teams_activity_status');
+            $table->index(['status', 'expire_time'], 'idx_marketing_group_buy_teams_status_expire');
+            $table->index('leader_user_id', 'idx_marketing_group_buy_teams_leader');
+        });
+
+        // 拼团团员表：uk(team,user) 一团一单 + uk(order_no) 一单一团，双重唯一防重复参团与刷单
+        Schema::create('marketing_group_buy_team_members', function (Blueprint $table) {
+            $table->comment('拼团团员表');
+            $table->id();
+            $table->unsignedInteger('team_id')->comment('团ID');
+            $table->unsignedInteger('user_id')->comment('成员用户ID');
+            $table->string('order_no', 30)->comment('成员订单号,关联orders.order_no');
+            $table->dateTime('join_time')->comment('参团时间');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->unique(['team_id', 'user_id'], 'uk_marketing_group_buy_team_members_team_user');
+            $table->unique('order_no', 'uk_marketing_group_buy_team_members_order_no');
+            $table->index('user_id', 'idx_marketing_group_buy_team_members_user_id');
+        });
+
+        // 助力活动表：通用任务"邀N人得奖励"，奖励对接券或积分
+        Schema::create('marketing_assist_activities', function (Blueprint $table) {
+            $table->comment('助力活动表');
+            $table->id();
+            $table->string('name', 100)->comment('活动名称');
+            $table->tinyInteger('reward_type')->comment('奖励类型:1=优惠券,2=积分');
+            $table->unsignedInteger('reward_ref')->comment('奖励载体ID:券类型ID(marketing_coupons);积分场景存点数于config');
+            $table->unsignedInteger('required_count')->comment('所需助力人数');
+            $table->unsignedInteger('per_limit')->default(1)->comment('每人可发起次数');
+            $table->dateTime('start_time')->comment('开始时间');
+            $table->dateTime('end_time')->comment('结束时间');
+            $table->json('config')->nullable()->comment('扩展参数(积分数/阶梯奖励等)');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
+            $table->timestamps();
+        });
+
+        // 助力参与记录表：uk(activity,user) 一人一条，helper_count 达标触发发奖，完成态不重复发（发奖幂等）
+        Schema::create('marketing_assist_records', function (Blueprint $table) {
+            $table->comment('助力参与记录表');
+            $table->id();
+            $table->unsignedInteger('activity_id')->comment('助力活动ID');
+            $table->unsignedInteger('user_id')->comment('发起人用户ID');
+            $table->unsignedInteger('helper_count')->default(0)->comment('已助力人数,达required_count触发发奖');
+            $table->tinyInteger('status')->default(1)->comment('状态:1=进行中,2=已完成发奖,3=已过期');
+            $table->dateTime('finish_time')->nullable()->comment('完成时间');
+            $table->timestamps();
+            $table->unique(['activity_id', 'user_id'], 'uk_marketing_assist_records_activity_user');
+            $table->index('user_id', 'idx_marketing_assist_records_user_id');
+        });
+
+        // 助力人记录表：一人一助力，只追加；助力入口挂风控黑名单检查防刷
+        Schema::create('marketing_assist_helpers', function (Blueprint $table) {
+            $table->comment('助力人记录表');
+            $table->id();
+            $table->unsignedInteger('record_id')->comment('助力参与记录ID');
+            $table->unsignedInteger('helper_user_id')->comment('助力人用户ID');
+            $table->timestamp('create_time')->useCurrent()->comment('助力时间');
+            $table->unique(['record_id', 'helper_user_id'], 'uk_marketing_assist_helpers_record_helper');
+            $table->index('helper_user_id', 'idx_marketing_assist_helpers_helper_user_id');
+        });
+
+        // 砍价活动表：时段/状态，价格区间在 item 按 SKU 配置
+        Schema::create('marketing_bargain_activities', function (Blueprint $table) {
+            $table->comment('砍价活动表');
+            $table->id();
+            $table->string('name', 100)->comment('活动名称');
+            $table->unsignedInteger('spu_id')->comment('商品SPU ID');
+            $table->dateTime('start_time')->comment('开始时间');
+            $table->dateTime('end_time')->comment('结束时间');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
+            $table->timestamps();
+            $table->index(['spu_id', 'status'], 'idx_marketing_bargain_activities_spu_status');
+        });
+
+        // 砍价场次商品表：SKU 级价格区间，砍到 floor_price 即可按当前价下单
+        Schema::create('marketing_bargain_items', function (Blueprint $table) {
+            $table->comment('砍价场次商品表');
+            $table->id();
+            $table->unsignedInteger('activity_id')->comment('砍价活动ID');
+            $table->unsignedInteger('sku_id')->comment('SKU ID');
+            $table->decimal('original_price', 10, 2)->comment('起始价(发起时售价口径)');
+            $table->decimal('floor_price', 10, 2)->comment('底价(砍到底价即可下单;floor<=original 应用校验)');
+            $table->unsignedInteger('max_cut_count')->default(0)->comment('最大帮砍刀数,0=不限,金额收敛到底价');
+            $table->json('config')->nullable()->comment('玩法参数(随机递减算法边界/首刀上限等,应用层约定)');
+            $table->timestamps();
+            $table->unique(['activity_id', 'sku_id'], 'uk_marketing_bargain_items_activity_sku');
+            $table->index('sku_id', 'idx_marketing_bargain_items_sku_id');
+        });
+
+        // 砍价单表：current_price 条件更新防并发超砍（where current_price - cut >= floor_price）；超时/取消不可下单
+        Schema::create('marketing_bargain_records', function (Blueprint $table) {
+            $table->comment('砍价单表');
+            $table->id();
+            $table->string('bargain_no', 32)->comment('砍价单号,全局唯一');
+            $table->unsignedInteger('item_id')->comment('砍价场次商品ID');
+            $table->unsignedInteger('user_id')->comment('发起人用户ID');
+            $table->decimal('current_price', 10, 2)->comment('当前价,逐刀递减且>=floor_price由条件更新保证');
+            $table->unsignedInteger('cut_count')->default(0)->comment('已砍刀数');
+            $table->tinyInteger('status')->default(1)->comment('状态:1=砍价中,2=到底价待下单,3=已下单,4=超时失败,5=已取消');
+            $table->dateTime('expire_time')->comment('砍价截止时间,超时扫描依据');
+            $table->dateTime('success_time')->nullable()->comment('到底价时间');
+            $table->string('order_no', 30)->nullable()->comment('成交订单号,下单后回填;NULL=未下单,NULL不参与唯一约束');
+            $table->timestamps();
+            $table->unique('bargain_no', 'uk_marketing_bargain_records_bargain_no');
+            $table->unique('order_no', 'uk_marketing_bargain_records_order_no');
+            $table->index(['user_id', 'status'], 'idx_marketing_bargain_records_user_status');
+            $table->index(['status', 'expire_time'], 'idx_marketing_bargain_records_status_expire');
+        });
+
+        // 帮砍记录表：一人一刀，只追加，cut_amount 与砍价单条件更新同事务；入口挂风控黑名单检查防刷
+        Schema::create('marketing_bargain_helpers', function (Blueprint $table) {
+            $table->comment('帮砍记录表');
+            $table->id();
+            $table->unsignedInteger('record_id')->comment('砍价单ID');
+            $table->unsignedInteger('helper_user_id')->comment('帮砍人用户ID');
+            $table->decimal('cut_amount', 10, 2)->comment('本刀砍掉金额(与record条件更新同事务)');
+            $table->timestamp('create_time')->useCurrent()->comment('帮砍时间');
+            $table->unique(['record_id', 'helper_user_id'], 'uk_marketing_bargain_helpers_record_helper');
+            $table->index('helper_user_id', 'idx_marketing_bargain_helpers_helper_user_id');
+        });
     }
 
     /**
@@ -202,6 +362,17 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('marketing_bargain_helpers');
+        Schema::dropIfExists('marketing_bargain_records');
+        Schema::dropIfExists('marketing_bargain_items');
+        Schema::dropIfExists('marketing_bargain_activities');
+        Schema::dropIfExists('marketing_assist_helpers');
+        Schema::dropIfExists('marketing_assist_records');
+        Schema::dropIfExists('marketing_assist_activities');
+        Schema::dropIfExists('marketing_group_buy_team_members');
+        Schema::dropIfExists('marketing_group_buy_teams');
+        Schema::dropIfExists('marketing_group_buy_items');
+        Schema::dropIfExists('marketing_group_buy_activities');
         Schema::dropIfExists('marketing_flash_sale_logs');
         Schema::dropIfExists('marketing_distribution_commissions');
         Schema::dropIfExists('marketing_distribution_relations');

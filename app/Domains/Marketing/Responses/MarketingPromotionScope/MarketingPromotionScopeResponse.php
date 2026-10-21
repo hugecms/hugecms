@@ -1,0 +1,128 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Marketing\Responses\MarketingPromotionScope;
+
+use Juling\Foundation\Support\Traits\HasSerializableAttributes;
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(schema: 'MarketingPromotionScopeResponse')]
+class MarketingPromotionScopeResponse implements \JsonSerializable
+{
+    use HasSerializableAttributes;
+
+    #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
+    private int $id;
+
+    #[OA\Property(property: 'promotionId', description: '促销活动ID,关联marketing_promotions', type: 'integer')]
+    private int $promotionId;
+
+    #[OA\Property(property: 'scopeType', description: '范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致', type: 'string')]
+    private string $scopeType;
+
+    #[OA\Property(property: 'targetId', description: '目标ID,按scope_type指向分类/品牌/商品', type: 'integer')]
+    private int $targetId;
+
+    #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
+    private string $createdAt;
+
+    #[OA\Property(property: 'updatedAt', description: '更新时间', type: 'string')]
+    private string $updatedAt;
+
+    /**
+     * 获取ID
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * 设置ID
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * 获取促销活动ID,关联marketing_promotions
+     */
+    public function getPromotionId(): int
+    {
+        return $this->promotionId;
+    }
+
+    /**
+     * 设置促销活动ID,关联marketing_promotions
+     */
+    public function setPromotionId(int $promotionId): void
+    {
+        $this->promotionId = $promotionId;
+    }
+
+    /**
+     * 获取范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+     */
+    public function getScopeType(): string
+    {
+        return $this->scopeType;
+    }
+
+    /**
+     * 设置范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+     */
+    public function setScopeType(string $scopeType): void
+    {
+        $this->scopeType = $scopeType;
+    }
+
+    /**
+     * 获取目标ID,按scope_type指向分类/品牌/商品
+     */
+    public function getTargetId(): int
+    {
+        return $this->targetId;
+    }
+
+    /**
+     * 设置目标ID,按scope_type指向分类/品牌/商品
+     */
+    public function setTargetId(int $targetId): void
+    {
+        $this->targetId = $targetId;
+    }
+
+    /**
+     * 获取创建时间
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * 设置创建时间
+     */
+    public function setCreatedAt(string $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * 获取更新时间
+     */
+    public function getUpdatedAt(): string
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * 设置更新时间
+     */
+    public function setUpdatedAt(string $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+}

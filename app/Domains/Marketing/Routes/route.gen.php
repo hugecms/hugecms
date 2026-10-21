@@ -6,6 +6,13 @@
 
 declare(strict_types=1);
 
+use App\Domains\Marketing\Controllers\MarketingAssistActivityController;
+use App\Domains\Marketing\Controllers\MarketingAssistHelperController;
+use App\Domains\Marketing\Controllers\MarketingAssistRecordController;
+use App\Domains\Marketing\Controllers\MarketingBargainActivityController;
+use App\Domains\Marketing\Controllers\MarketingBargainHelperController;
+use App\Domains\Marketing\Controllers\MarketingBargainItemController;
+use App\Domains\Marketing\Controllers\MarketingBargainRecordController;
 use App\Domains\Marketing\Controllers\MarketingCommissionRuleController;
 use App\Domains\Marketing\Controllers\MarketingCouponController;
 use App\Domains\Marketing\Controllers\MarketingDistributionCommissionController;
@@ -14,10 +21,86 @@ use App\Domains\Marketing\Controllers\MarketingDistributionUserController;
 use App\Domains\Marketing\Controllers\MarketingFlashSaleController;
 use App\Domains\Marketing\Controllers\MarketingFlashSaleItemController;
 use App\Domains\Marketing\Controllers\MarketingFlashSaleLogController;
+use App\Domains\Marketing\Controllers\MarketingGroupBuyActivityController;
+use App\Domains\Marketing\Controllers\MarketingGroupBuyItemController;
+use App\Domains\Marketing\Controllers\MarketingGroupBuyTeamController;
+use App\Domains\Marketing\Controllers\MarketingGroupBuyTeamMemberController;
 use App\Domains\Marketing\Controllers\MarketingPromotionController;
+use App\Domains\Marketing\Controllers\MarketingPromotionLadderController;
+use App\Domains\Marketing\Controllers\MarketingPromotionScopeController;
 use App\Domains\Marketing\Controllers\MarketingUserCouponController;
 use Illuminate\Support\Facades\Route;
 
+// 查询助力活�列表接口
+Route::post('marketingAssistActivity/search', [MarketingAssistActivityController::class, 'search']);
+// 新增助力活�接口
+Route::post('marketingAssistActivity/store', [MarketingAssistActivityController::class, 'store']);
+// 获取助力活�详情接口
+Route::get('marketingAssistActivity/show', [MarketingAssistActivityController::class, 'show'])->name('marketingAssistActivity.show');
+// 更新助力活�接口
+Route::put('marketingAssistActivity/update', [MarketingAssistActivityController::class, 'update']);
+// 删除助力活�接口
+Route::post('marketingAssistActivity/destroy', [MarketingAssistActivityController::class, 'destroy']);
+// 查询助力人记录列表接口
+Route::post('marketingAssistHelper/search', [MarketingAssistHelperController::class, 'search']);
+// 新增助力人记录接口
+Route::post('marketingAssistHelper/store', [MarketingAssistHelperController::class, 'store']);
+// 获取助力人记录详情接口
+Route::get('marketingAssistHelper/show', [MarketingAssistHelperController::class, 'show'])->name('marketingAssistHelper.show');
+// 更新助力人记录接口
+Route::put('marketingAssistHelper/update', [MarketingAssistHelperController::class, 'update']);
+// 删除助力人记录接口
+Route::post('marketingAssistHelper/destroy', [MarketingAssistHelperController::class, 'destroy']);
+// 查询助力参与记录列表接口
+Route::post('marketingAssistRecord/search', [MarketingAssistRecordController::class, 'search']);
+// 新增助力参与记录接口
+Route::post('marketingAssistRecord/store', [MarketingAssistRecordController::class, 'store']);
+// 获取助力参与记录详情接口
+Route::get('marketingAssistRecord/show', [MarketingAssistRecordController::class, 'show'])->name('marketingAssistRecord.show');
+// 更新助力参与记录接口
+Route::put('marketingAssistRecord/update', [MarketingAssistRecordController::class, 'update']);
+// 删除助力参与记录接口
+Route::post('marketingAssistRecord/destroy', [MarketingAssistRecordController::class, 'destroy']);
+// 查询砍价活�列表接口
+Route::post('marketingBargainActivity/search', [MarketingBargainActivityController::class, 'search']);
+// 新增砍价活�接口
+Route::post('marketingBargainActivity/store', [MarketingBargainActivityController::class, 'store']);
+// 获取砍价活�详情接口
+Route::get('marketingBargainActivity/show', [MarketingBargainActivityController::class, 'show'])->name('marketingBargainActivity.show');
+// 更新砍价活�接口
+Route::put('marketingBargainActivity/update', [MarketingBargainActivityController::class, 'update']);
+// 删除砍价活�接口
+Route::post('marketingBargainActivity/destroy', [MarketingBargainActivityController::class, 'destroy']);
+// 查询帮砍记录列表接口
+Route::post('marketingBargainHelper/search', [MarketingBargainHelperController::class, 'search']);
+// 新增帮砍记录接口
+Route::post('marketingBargainHelper/store', [MarketingBargainHelperController::class, 'store']);
+// 获取帮砍记录详情接口
+Route::get('marketingBargainHelper/show', [MarketingBargainHelperController::class, 'show'])->name('marketingBargainHelper.show');
+// 更新帮砍记录接口
+Route::put('marketingBargainHelper/update', [MarketingBargainHelperController::class, 'update']);
+// 删除帮砍记录接口
+Route::post('marketingBargainHelper/destroy', [MarketingBargainHelperController::class, 'destroy']);
+// 查询砍价场次商品列表接口
+Route::post('marketingBargainItem/search', [MarketingBargainItemController::class, 'search']);
+// 新增砍价场次商品接口
+Route::post('marketingBargainItem/store', [MarketingBargainItemController::class, 'store']);
+// 获取砍价场次商品详情接口
+Route::get('marketingBargainItem/show', [MarketingBargainItemController::class, 'show'])->name('marketingBargainItem.show');
+// 更新砍价场次商品接口
+Route::put('marketingBargainItem/update', [MarketingBargainItemController::class, 'update']);
+// 删除砍价场次商品接口
+Route::post('marketingBargainItem/destroy', [MarketingBargainItemController::class, 'destroy']);
+// 查询砍价单列表接口
+Route::post('marketingBargainRecord/search', [MarketingBargainRecordController::class, 'search']);
+// 新增砍价单接口
+Route::post('marketingBargainRecord/store', [MarketingBargainRecordController::class, 'store']);
+// 获取砍价单详情接口
+Route::get('marketingBargainRecord/show', [MarketingBargainRecordController::class, 'show'])->name('marketingBargainRecord.show');
+// 更新砍价单接口
+Route::put('marketingBargainRecord/update', [MarketingBargainRecordController::class, 'update']);
+// 删除砍价单接口
+Route::post('marketingBargainRecord/destroy', [MarketingBargainRecordController::class, 'destroy']);
 // 查询佣金规则列表接口
 Route::post('marketingCommissionRule/search', [MarketingCommissionRuleController::class, 'search']);
 // 新增佣金规则接口
@@ -98,6 +181,46 @@ Route::get('marketingFlashSaleLog/show', [MarketingFlashSaleLogController::class
 Route::put('marketingFlashSaleLog/update', [MarketingFlashSaleLogController::class, 'update']);
 // 删除秒杀库存流水接口
 Route::post('marketingFlashSaleLog/destroy', [MarketingFlashSaleLogController::class, 'destroy']);
+// 查询拼团活�列表接口
+Route::post('marketingGroupBuyActivity/search', [MarketingGroupBuyActivityController::class, 'search']);
+// 新增拼团活�接口
+Route::post('marketingGroupBuyActivity/store', [MarketingGroupBuyActivityController::class, 'store']);
+// 获取拼团活�详情接口
+Route::get('marketingGroupBuyActivity/show', [MarketingGroupBuyActivityController::class, 'show'])->name('marketingGroupBuyActivity.show');
+// 更新拼团活�接口
+Route::put('marketingGroupBuyActivity/update', [MarketingGroupBuyActivityController::class, 'update']);
+// 删除拼团活�接口
+Route::post('marketingGroupBuyActivity/destroy', [MarketingGroupBuyActivityController::class, 'destroy']);
+// 查询拼团场次商品列表接口
+Route::post('marketingGroupBuyItem/search', [MarketingGroupBuyItemController::class, 'search']);
+// 新增拼团场次商品接口
+Route::post('marketingGroupBuyItem/store', [MarketingGroupBuyItemController::class, 'store']);
+// 获取拼团场次商品详情接口
+Route::get('marketingGroupBuyItem/show', [MarketingGroupBuyItemController::class, 'show'])->name('marketingGroupBuyItem.show');
+// 更新拼团场次商品接口
+Route::put('marketingGroupBuyItem/update', [MarketingGroupBuyItemController::class, 'update']);
+// 删除拼团场次商品接口
+Route::post('marketingGroupBuyItem/destroy', [MarketingGroupBuyItemController::class, 'destroy']);
+// 查询拼团团列表接口
+Route::post('marketingGroupBuyTeam/search', [MarketingGroupBuyTeamController::class, 'search']);
+// 新增拼团团接口
+Route::post('marketingGroupBuyTeam/store', [MarketingGroupBuyTeamController::class, 'store']);
+// 获取拼团团详情接口
+Route::get('marketingGroupBuyTeam/show', [MarketingGroupBuyTeamController::class, 'show'])->name('marketingGroupBuyTeam.show');
+// 更新拼团团接口
+Route::put('marketingGroupBuyTeam/update', [MarketingGroupBuyTeamController::class, 'update']);
+// 删除拼团团接口
+Route::post('marketingGroupBuyTeam/destroy', [MarketingGroupBuyTeamController::class, 'destroy']);
+// 查询拼团团员列表接口
+Route::post('marketingGroupBuyTeamMember/search', [MarketingGroupBuyTeamMemberController::class, 'search']);
+// 新增拼团团员接口
+Route::post('marketingGroupBuyTeamMember/store', [MarketingGroupBuyTeamMemberController::class, 'store']);
+// 获取拼团团员详情接口
+Route::get('marketingGroupBuyTeamMember/show', [MarketingGroupBuyTeamMemberController::class, 'show'])->name('marketingGroupBuyTeamMember.show');
+// 更新拼团团员接口
+Route::put('marketingGroupBuyTeamMember/update', [MarketingGroupBuyTeamMemberController::class, 'update']);
+// 删除拼团团员接口
+Route::post('marketingGroupBuyTeamMember/destroy', [MarketingGroupBuyTeamMemberController::class, 'destroy']);
 // 查询促销活�列表接口
 Route::post('marketingPromotion/search', [MarketingPromotionController::class, 'search']);
 // 新增促销活�接口
@@ -108,6 +231,26 @@ Route::get('marketingPromotion/show', [MarketingPromotionController::class, 'sho
 Route::put('marketingPromotion/update', [MarketingPromotionController::class, 'update']);
 // 删除促销活�接口
 Route::post('marketingPromotion/destroy', [MarketingPromotionController::class, 'destroy']);
+// 查询促销满减阶梯列表接口
+Route::post('marketingPromotionLadder/search', [MarketingPromotionLadderController::class, 'search']);
+// 新增促销满减阶梯接口
+Route::post('marketingPromotionLadder/store', [MarketingPromotionLadderController::class, 'store']);
+// 获取促销满减阶梯详情接口
+Route::get('marketingPromotionLadder/show', [MarketingPromotionLadderController::class, 'show'])->name('marketingPromotionLadder.show');
+// 更新促销满减阶梯接口
+Route::put('marketingPromotionLadder/update', [MarketingPromotionLadderController::class, 'update']);
+// 删除促销满减阶梯接口
+Route::post('marketingPromotionLadder/destroy', [MarketingPromotionLadderController::class, 'destroy']);
+// 查询促销适用范围列表接口
+Route::post('marketingPromotionScope/search', [MarketingPromotionScopeController::class, 'search']);
+// 新增促销适用范围接口
+Route::post('marketingPromotionScope/store', [MarketingPromotionScopeController::class, 'store']);
+// 获取促销适用范围详情接口
+Route::get('marketingPromotionScope/show', [MarketingPromotionScopeController::class, 'show'])->name('marketingPromotionScope.show');
+// 更新促销适用范围接口
+Route::put('marketingPromotionScope/update', [MarketingPromotionScopeController::class, 'update']);
+// 删除促销适用范围接口
+Route::post('marketingPromotionScope/destroy', [MarketingPromotionScopeController::class, 'destroy']);
 // 查询用户优惠券列表接口
 Route::post('marketingUserCoupon/search', [MarketingUserCouponController::class, 'search']);
 // 新增用户优惠券接口
