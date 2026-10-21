@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、钱包、浏览足迹、每日签到
-     * 前台用户账户表 users 由基础迁移 0001_01_01_000000 创建
+     * 用户域：资料、关注、收货地址、收藏、短信验证码、社交登录绑定、会员等级、资金账户（余额/冻结双字段+双快照流水）、
+     * 积分流水、提现单状态机、浏览足迹、每日签到
+     * 前台用户账户表 users 由基础迁移 0001_01_01_000000 创建（users 仅存积分余额，资金余额独立 user_accounts）
+     * 提现走 user_withdraw_orders 状态机（冻结扣 user_accounts.frozen）；充值无需申请单——在线支付走 payments(biz_type=recharge) 回调入账，人工到账走 UserAccountService::adjust
      * 站内通知复用 Laravel notifications 表，见 notify 域迁移
      */
     public function up(): void
@@ -109,33 +111,72 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 用户资金申请表：充值/提现申请单，与余额(users)、流水(user_account_logs)职责区分
-        Schema::create('user_fund_applications', function (Blueprint $table) {
-            $table->comment('用户资金申请表');
+        // 用户账户表：余额独立账户化，balance 可为负（欠款，不可用于消费/提现），frozen 为提现在途冻结
+        // 可用余额 = balance - frozen；任何变动必须落 user_account_logs 双快照流水
+        Schema::create('user_accounts', function (Blueprint $table) {
+            $table->comment('用户账户表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->string('type', 20)->comment('类型:recharge=充值,withdraw=提现');
-            $table->decimal('amount', 10, 2)->comment('申请金额');
-            $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=已到账,2=已拒绝');
-            $table->string('user_note', 255)->nullable()->comment('用户备注');
-            $table->string('admin_note', 255)->nullable()->comment('管理员备注');
-            $table->dateTime('paid_at')->nullable()->comment('到账时间');
+            $table->decimal('balance', 10, 2)->default(0)->comment('账户余额,可为负=欠款,欠款不可用于消费/提现');
+            $table->decimal('frozen', 10, 2)->default(0)->comment('冻结金额,提现审核/打款中在途');
             $table->timestamps();
-            $table->index(['user_id', 'status'], 'idx_user_fund_applications_user_status');
+            $table->unique('user_id', 'uk_user_accounts_user_id');
         });
 
-        // 用户资金/积分流水表：只记变动量，余额以 users 表为准，对账依据
+        // 用户资金流水表：只追加，每笔账户变动落双快照（balance_after/frozen_after），对账与审计依据
         Schema::create('user_account_logs', function (Blueprint $table) {
-            $table->comment('用户资金/积分流水表');
+            $table->comment('用户资金流水表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
-            $table->string('change_type', 30)->comment('变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整');
-            $table->decimal('change_amount', 10, 2)->default(0)->comment('资金变动,正数入负数出');
-            $table->integer('change_points')->default(0)->comment('积分变动,正数入负数出');
-            $table->string('description', 255)->comment('变动说明');
-            $table->unsignedInteger('related_id')->nullable()->comment('关联单据ID');
+            $table->tinyInteger('biz_type')->comment('业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整');
+            $table->decimal('amount', 10, 2)->default(0)->comment('变动金额,正数入负数出');
+            $table->decimal('balance_after', 10, 2)->comment('变动后余额快照');
+            $table->decimal('frozen_after', 10, 2)->comment('变动后冻结快照');
+            $table->string('biz_no', 64)->default('')->comment('关联业务单号,如提现单号/佣金记录号/充值单号');
+            $table->string('description', 255)->default('')->comment('变动说明');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->index(['user_id', 'create_time'], 'idx_user_account_logs_user_time');
+            $table->index('biz_no', 'idx_user_account_logs_biz_no');
+        });
+
+        // 用户积分流水表：积分与资金流水拆分独立记录，users.points 为积分余额，只追加
+        Schema::create('user_point_logs', function (Blueprint $table) {
+            $table->comment('用户积分流水表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('用户ID');
+            $table->tinyInteger('biz_type')->comment('业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送');
+            $table->integer('change_points')->default(0)->comment('积分变动,正数入负数出');
+            $table->unsignedInteger('points_after')->comment('变动后积分余额快照');
+            $table->string('biz_no', 64)->default('')->comment('关联业务单号');
+            $table->string('description', 255)->default('')->comment('变动说明');
+            $table->timestamp('create_time')->useCurrent()->comment('创建时间');
+            $table->index(['user_id', 'create_time'], 'idx_user_point_logs_user_time');
+        });
+
+        // 用户提现单表：状态机 10待审核→20审核通过→30打款中→40成功；10→50审核拒绝；30→60打款失败已回退
+        // 微信商家转账本期不集成，打款走插件占位+人工标记；冻结走 user_accounts.frozen
+        Schema::create('user_withdraw_orders', function (Blueprint $table) {
+            $table->comment('用户提现单表');
+            $table->id();
+            $table->string('withdraw_no', 32)->comment('提现单号,应用层生成');
+            $table->unsignedInteger('user_id')->comment('用户ID');
+            $table->decimal('amount', 10, 2)->comment('提现金额');
+            $table->string('channel', 20)->default('manual')->comment('打款渠道:manual=人工线下打款,微信商家转账后续扩展');
+            $table->string('channel_order_no', 64)->nullable()->comment('渠道打款单号,回填防重复打款');
+            $table->string('account_type', 20)->default('')->comment('收款方式:bank=银行卡,wechat=微信,alipay=支付宝');
+            $table->string('account_name', 50)->default('')->comment('收款人姓名');
+            $table->string('account_no', 64)->default('')->comment('收款账号');
+            $table->tinyInteger('status')->default(10)->comment('状态:10=待审核,20=审核通过,30=打款中,40=成功,50=审核拒绝,60=打款失败已回退');
+            $table->string('user_note', 255)->default('')->comment('用户备注');
+            $table->string('admin_note', 255)->default('')->comment('审核备注');
+            $table->string('fail_reason', 255)->default('')->comment('打款失败原因');
+            $table->dateTime('audit_at')->nullable()->comment('审核时间');
+            $table->dateTime('paid_at')->nullable()->comment('打款标记时间(成功或失败)');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unique('withdraw_no', 'uk_user_withdraw_orders_withdraw_no');
+            $table->unique(['channel', 'channel_order_no'], 'uk_user_withdraw_orders_channel_order_no');
+            $table->index(['user_id', 'status'], 'idx_user_withdraw_orders_user_status');
         });
 
         // 浏览足迹表：最近浏览的文章/商品，重复浏览仅更新时间（应用层 upsert touch），表不膨胀
@@ -171,8 +212,10 @@ return new class extends Migration
     {
         Schema::dropIfExists('user_sign_ins');
         Schema::dropIfExists('user_browsing_histories');
+        Schema::dropIfExists('user_withdraw_orders');
+        Schema::dropIfExists('user_point_logs');
         Schema::dropIfExists('user_account_logs');
-        Schema::dropIfExists('user_fund_applications');
+        Schema::dropIfExists('user_accounts');
         Schema::dropIfExists('user_ranks');
         Schema::dropIfExists('user_socials');
         Schema::dropIfExists('user_sms_codes');

@@ -16,15 +16,17 @@ class UserAccountLogEntity implements \JsonSerializable
 
     public const string getUserId = 'user_id'; // 用户ID
 
-    public const string getChangeType = 'change_type'; // 变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整
+    public const string getBizType = 'biz_type'; // 业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
 
-    public const string getChangeAmount = 'change_amount'; // 资金变动,正数入负数出
+    public const string getAmount = 'amount'; // 变动金额,正数入负数出
 
-    public const string getChangePoints = 'change_points'; // 积分变动,正数入负数出
+    public const string getBalanceAfter = 'balance_after'; // 变动后余额快照
+
+    public const string getFrozenAfter = 'frozen_after'; // 变动后冻结快照
+
+    public const string getBizNo = 'biz_no'; // 关联业务单号
 
     public const string getDescription = 'description'; // 变动说明
-
-    public const string getRelatedId = 'related_id'; // 关联单据ID
 
     public const string getCreateTime = 'create_time'; // 创建时间
 
@@ -34,20 +36,23 @@ class UserAccountLogEntity implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'changeType', description: '变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整', type: 'string')]
-    private string $changeType;
+    #[OA\Property(property: 'bizType', description: '业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整', type: 'integer')]
+    private int $bizType;
 
-    #[OA\Property(property: 'changeAmount', description: '资金变动,正数入负数出', type: 'string')]
-    private string $changeAmount;
+    #[OA\Property(property: 'amount', description: '变动金额,正数入负数出', type: 'string')]
+    private string $amount;
 
-    #[OA\Property(property: 'changePoints', description: '积分变动,正数入负数出', type: 'integer')]
-    private int $changePoints;
+    #[OA\Property(property: 'balanceAfter', description: '变动后余额快照', type: 'string')]
+    private string $balanceAfter;
+
+    #[OA\Property(property: 'frozenAfter', description: '变动后冻结快照', type: 'string')]
+    private string $frozenAfter;
+
+    #[OA\Property(property: 'bizNo', description: '关联业务单号', type: 'string')]
+    private string $bizNo;
 
     #[OA\Property(property: 'description', description: '变动说明', type: 'string')]
     private string $description;
-
-    #[OA\Property(property: 'relatedId', description: '关联单据ID', type: 'integer')]
-    private int $relatedId;
 
     #[OA\Property(property: 'createTime', description: '创建时间', type: 'string')]
     private string $createTime;
@@ -85,51 +90,83 @@ class UserAccountLogEntity implements \JsonSerializable
     }
 
     /**
-     * 获取变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整
+     * 获取业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
      */
-    public function getChangeType(): string
+    public function getBizType(): int
     {
-        return $this->changeType;
+        return $this->bizType;
     }
 
     /**
-     * 设置变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整
+     * 设置业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
      */
-    public function setChangeType(string $changeType): void
+    public function setBizType(int $bizType): void
     {
-        $this->changeType = $changeType;
+        $this->bizType = $bizType;
     }
 
     /**
-     * 获取资金变动,正数入负数出
+     * 获取变动金额,正数入负数出
      */
-    public function getChangeAmount(): string
+    public function getAmount(): string
     {
-        return $this->changeAmount;
+        return $this->amount;
     }
 
     /**
-     * 设置资金变动,正数入负数出
+     * 设置变动金额,正数入负数出
      */
-    public function setChangeAmount(string $changeAmount): void
+    public function setAmount(string $amount): void
     {
-        $this->changeAmount = $changeAmount;
+        $this->amount = $amount;
     }
 
     /**
-     * 获取积分变动,正数入负数出
+     * 获取变动后余额快照
      */
-    public function getChangePoints(): int
+    public function getBalanceAfter(): string
     {
-        return $this->changePoints;
+        return $this->balanceAfter;
     }
 
     /**
-     * 设置积分变动,正数入负数出
+     * 设置变动后余额快照
      */
-    public function setChangePoints(int $changePoints): void
+    public function setBalanceAfter(string $balanceAfter): void
     {
-        $this->changePoints = $changePoints;
+        $this->balanceAfter = $balanceAfter;
+    }
+
+    /**
+     * 获取变动后冻结快照
+     */
+    public function getFrozenAfter(): string
+    {
+        return $this->frozenAfter;
+    }
+
+    /**
+     * 设置变动后冻结快照
+     */
+    public function setFrozenAfter(string $frozenAfter): void
+    {
+        $this->frozenAfter = $frozenAfter;
+    }
+
+    /**
+     * 获取关联业务单号
+     */
+    public function getBizNo(): string
+    {
+        return $this->bizNo;
+    }
+
+    /**
+     * 设置关联业务单号
+     */
+    public function setBizNo(string $bizNo): void
+    {
+        $this->bizNo = $bizNo;
     }
 
     /**
@@ -146,22 +183,6 @@ class UserAccountLogEntity implements \JsonSerializable
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * 获取关联单据ID
-     */
-    public function getRelatedId(): int
-    {
-        return $this->relatedId;
-    }
-
-    /**
-     * 设置关联单据ID
-     */
-    public function setRelatedId(int $relatedId): void
-    {
-        $this->relatedId = $relatedId;
     }
 
     /**

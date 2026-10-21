@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SystemSettingsSeeder::class,
+            SystemRiskSeeder::class,
             RegionSeeder::class,
         ]);
     }

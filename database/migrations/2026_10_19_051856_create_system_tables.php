@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词、短信发送流水、IP黑名单、应用注册
+     * 系统域：系统配置、附件、数据字典、行政区划、审计日志（登录/操作）、敏感词、短信发送流水、IP黑名单、应用注册、风控（规则/事件）
      */
     public function up(): void
     {
@@ -175,6 +175,38 @@ return new class extends Migration
             $table->unique('code', 'uk_system_apps_code');
             $table->unique('appid', 'uk_system_apps_appid');
         });
+
+        // 风控规则表：本期实现黑名单与提现高频两个检查器，其余类型建规则占位
+        Schema::create('system_risk_rules', function (Blueprint $table) {
+            $table->comment('风控规则表');
+            $table->id();
+            $table->string('name', 50)->comment('规则名称');
+            $table->tinyInteger('rule_type')->comment('规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级');
+            $table->string('condition_expr', 255)->default('')->comment('条件参数(JSON),如黑名单{"user_ids":[1,2]}、高频{"max_count":3,"window_minutes":60}');
+            $table->tinyInteger('action')->default(1)->comment('处置动作:1=拦截,2=标记放行');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
+            $table->timestamps();
+            $table->index(['rule_type', 'status'], 'idx_system_risk_rules_type_status');
+        });
+
+        // 风控事件表：命中即落库可追溯，申诉字段本期落数据，申诉流 UI 留后台页面后续实现
+        Schema::create('system_risk_records', function (Blueprint $table) {
+            $table->comment('风控事件表');
+            $table->id();
+            $table->unsignedInteger('user_id')->comment('触发用户ID');
+            $table->unsignedInteger('rule_id')->comment('命中规则ID,关联system_risk_rules');
+            $table->tinyInteger('object_type')->comment('对象类型:1=订单,2=优惠券,3=提现,4=售后');
+            $table->string('object_no', 64)->default('')->comment('对象单号,如提现单号/订单号');
+            $table->tinyInteger('action')->comment('处置快照:1=拦截,2=标记放行');
+            $table->tinyInteger('appeal_status')->default(0)->comment('申诉状态:0=无,1=申诉中,2=申诉通过,3=申诉驳回');
+            $table->string('appeal_note', 255)->default('')->comment('申诉理由');
+            $table->string('handle_note', 255)->default('')->comment('申诉处理说明');
+            $table->dateTime('handled_at')->nullable()->comment('申诉处理时间');
+            $table->string('remark', 255)->default('')->comment('命中详情,如规则参数与实际值');
+            $table->timestamps();
+            $table->index(['user_id', 'rule_id'], 'idx_system_risk_records_user_rule');
+            $table->index(['object_type', 'object_no'], 'idx_system_risk_records_object');
+        });
     }
 
     /**
@@ -182,6 +214,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('system_risk_records');
+        Schema::dropIfExists('system_risk_rules');
         Schema::dropIfExists('system_apps');
         Schema::dropIfExists('system_ip_blacklists');
         Schema::dropIfExists('system_sms_logs');

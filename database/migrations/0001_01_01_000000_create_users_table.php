@@ -21,8 +21,7 @@ return new class extends Migration
             $table->string('phone', 20)->nullable()->comment('手机号');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=正常');
             $table->unsignedInteger('rank_id')->default(0)->comment('会员等级ID,0=默认等级');
-            $table->decimal('balance', 10, 2)->default(0)->comment('账户余额');
-            $table->unsignedInteger('points')->default(0)->comment('积分');
+            $table->unsignedInteger('points')->default(0)->comment('积分余额');
             $table->dateTime('last_login_time')->nullable()->comment('最后登录时间');
             $table->string('last_login_ip', 45)->nullable()->comment('最后登录IP');
             $table->timestamps();

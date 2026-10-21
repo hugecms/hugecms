@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * 支付域：通用支付单、支付渠道配置、回调流水留痕
-     * 支付单与业务解耦：biz_type/biz_id 关联订单支付或余额充值（user_fund_applications）
+     * 支付单与业务解耦：biz_type/biz_id 关联订单支付或余额充值（充值回调后走 UserAccountService::credit 入账）
      * 幂等：回调按 unique(channel,notify_id) 去重，单据状态流转用条件更新（where status=0）
      */
     public function up(): void

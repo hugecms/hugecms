@@ -7021,6 +7021,285 @@
                 ]
             }
         },
+        "/marketingDistributionUser/search": {
+            "post": {
+                "tags": [
+                    "分销员模块"
+                ],
+                "summary": "查询分销员列表接口",
+                "operationId": "c86d461cb80c00f95555a59f21a94aba",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前页码",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "每页分页数",
+                        "required": false,
+                        "example": 10
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingCommissionRuleQueryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingCommissionRuleQueryResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingDistributionUser/store": {
+            "post": {
+                "tags": [
+                    "分销员模块"
+                ],
+                "summary": "新增分销员接口",
+                "operationId": "4bce3ada2026c8563bb5123489c8a6ce",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingCommissionRuleCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingCommissionRuleResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingDistributionUser/show": {
+            "get": {
+                "tags": [
+                    "分销员模块"
+                ],
+                "summary": "获取分销员详情接口",
+                "operationId": "b7a8ec15feb8e598260f1739c50ed24d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingCommissionRuleResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingDistributionUser/update": {
+            "put": {
+                "tags": [
+                    "分销员模块"
+                ],
+                "summary": "更新分销员接口",
+                "operationId": "d7a4d5a646e0d53198d9dbe261e6a8b1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingCommissionRuleUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingCommissionRuleResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingDistributionUser/destroy": {
+            "post": {
+                "tags": [
+                    "分销员模块"
+                ],
+                "summary": "删除分销员接口",
+                "operationId": "dae6a0192b3c0ca55b1ba6570553e350",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingCommissionRuleDestroyRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingCommissionRuleDestroyResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/marketingCoupon/search": {
             "post": {
                 "tags": [
@@ -7843,285 +8122,6 @@
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/MarketingDistributionRelationDestroyResponse"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/marketingDistributionUser/search": {
-            "post": {
-                "tags": [
-                    "分销员模块"
-                ],
-                "summary": "查询分销员列表接口",
-                "operationId": "2c686d5261aa213d0ca808c59a8e9b29",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "当前页码",
-                        "required": true,
-                        "example": 1
-                    },
-                    {
-                        "name": "pageSize",
-                        "in": "query",
-                        "description": "每页分页数",
-                        "required": false,
-                        "example": 10
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/MarketingDistributionUserQueryRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "code": {
-                                            "description": "状态码",
-                                            "type": "integer",
-                                            "example": 0
-                                        },
-                                        "message": {
-                                            "description": "消息",
-                                            "type": "string",
-                                            "example": "ok"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/MarketingDistributionUserQueryResponse"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/marketingDistributionUser/store": {
-            "post": {
-                "tags": [
-                    "分销员模块"
-                ],
-                "summary": "新增分销员接口",
-                "operationId": "c89e4ff922b14c0026e72b1315a0a9f8",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/MarketingDistributionUserCreateRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "code": {
-                                            "description": "状态码",
-                                            "type": "integer",
-                                            "example": 0
-                                        },
-                                        "message": {
-                                            "description": "消息",
-                                            "type": "string",
-                                            "example": "ok"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/MarketingDistributionUserResponse"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/marketingDistributionUser/show": {
-            "get": {
-                "tags": [
-                    "分销员模块"
-                ],
-                "summary": "获取分销员详情接口",
-                "operationId": "76f467912f846b11d46d90fa5f8bd4fd",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "ID",
-                        "required": true,
-                        "example": 1
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "code": {
-                                            "description": "状态码",
-                                            "type": "integer",
-                                            "example": 0
-                                        },
-                                        "message": {
-                                            "description": "消息",
-                                            "type": "string",
-                                            "example": "ok"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/MarketingDistributionUserResponse"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/marketingDistributionUser/update": {
-            "put": {
-                "tags": [
-                    "分销员模块"
-                ],
-                "summary": "更新分销员接口",
-                "operationId": "aa012cdd026f3f4065f7f8499d33539a",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "ID",
-                        "required": true,
-                        "example": 1
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/MarketingDistributionUserUpdateRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "code": {
-                                            "description": "状态码",
-                                            "type": "integer",
-                                            "example": 0
-                                        },
-                                        "message": {
-                                            "description": "消息",
-                                            "type": "string",
-                                            "example": "ok"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/MarketingDistributionUserResponse"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/marketingDistributionUser/destroy": {
-            "post": {
-                "tags": [
-                    "分销员模块"
-                ],
-                "summary": "删除分销员接口",
-                "operationId": "c40b6a2558f2e71e8cc86f5f3ec022f4",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/MarketingDistributionUserDestroyRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "code": {
-                                            "description": "状态码",
-                                            "type": "integer",
-                                            "example": 0
-                                        },
-                                        "message": {
-                                            "description": "消息",
-                                            "type": "string",
-                                            "example": "ok"
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/MarketingDistributionUserDestroyResponse"
                                         }
                                     },
                                     "type": "object"
@@ -21808,6 +21808,152 @@
                 ]
             }
         },
+        "/systemRiskRecord/search": {
+            "post": {
+                "tags": [
+                    "风控事件模块"
+                ],
+                "summary": "查询风控事件列表接口",
+                "operationId": "8b892dc26dd8176ef30b44936146ada9",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前页码",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "每页分页数",
+                        "required": false,
+                        "example": 10
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SystemRiskRecordQueryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SystemRiskRecordQueryResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/systemRiskRecord/show": {
+            "get": {
+                "tags": [
+                    "风控事件模块"
+                ],
+                "summary": "获取风控事件详情接口",
+                "operationId": "5208a8f342eeaeacb1a4a205322ad2f4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SystemRiskRecordResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/systemRiskRecord/appeal": {
+            "post": {
+                "tags": [
+                    "风控事件模块"
+                ],
+                "summary": "风控事件申诉处理接口",
+                "operationId": "37a04aa7d4d5d113815c53bc490c4766",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SystemRiskRecordAppealRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/systemSensitiveWord/search": {
             "post": {
                 "tags": [
@@ -22630,6 +22776,171 @@
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/SystemSmsLogDestroyResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userAccount/search": {
+            "post": {
+                "tags": [
+                    "用户账户模块"
+                ],
+                "summary": "查询用户账户列表接口",
+                "operationId": "f63f697634243c5240f313a0bd05b625",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前页码",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "每页分页数",
+                        "required": false,
+                        "example": 10
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserAccountQueryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "App\\Domains\\User\\Responses\\UserAccount\\UserAccountQueryResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userAccount/show": {
+            "get": {
+                "tags": [
+                    "用户账户模块"
+                ],
+                "summary": "获取用户账户详情接口",
+                "operationId": "118a468105df323a92a23c5eaf629a9c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserAccountResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userAccount/adjust": {
+            "post": {
+                "tags": [
+                    "用户账户模块"
+                ],
+                "summary": "人工调整余额接口",
+                "operationId": "f042aa65871b3293f6146e14ec702841",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserAccountAdjustRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
                                         }
                                     },
                                     "type": "object"
@@ -25984,6 +26295,239 @@
                                 }
                             }
                         }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userWithdrawOrder/search": {
+            "post": {
+                "tags": [
+                    "提现单模块"
+                ],
+                "summary": "查询提现单列表接口",
+                "operationId": "df79693d195f6ffded3f236b438b12e4",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "当前页码",
+                        "required": true,
+                        "example": 1
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "每页分页数",
+                        "required": false,
+                        "example": 10
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserWithdrawOrderQueryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserWithdrawOrderQueryResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userWithdrawOrder/show": {
+            "get": {
+                "tags": [
+                    "提现单模块"
+                ],
+                "summary": "获取提现单详情接口",
+                "operationId": "9284e9c1a917b467a167e67474d8d44a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "App\\Domains\\User\\Responses\\UserWithdrawOrder\\UserWithdrawOrderResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userWithdrawOrder/audit": {
+            "post": {
+                "tags": [
+                    "提现单模块"
+                ],
+                "summary": "提现单审核接口",
+                "operationId": "76ce0202cd0e6e2daf60180bdda036e5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserWithdrawOrderAuditRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userWithdrawOrder/markPaying": {
+            "post": {
+                "tags": [
+                    "提现单模块"
+                ],
+                "summary": "标记打款中接口",
+                "operationId": "eccccd10c0e2c1d8ff453f146dd7bc3a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserWithdrawOrderAuditRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userWithdrawOrder/markSuccess": {
+            "post": {
+                "tags": [
+                    "提现单模块"
+                ],
+                "summary": "标记打款成功接口",
+                "operationId": "414bcd613c9ee329e7f999e763ed1a79",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserWithdrawOrderMarkSuccessRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/userWithdrawOrder/markFail": {
+            "post": {
+                "tags": [
+                    "提现单模块"
+                ],
+                "summary": "标记打款失败接口",
+                "operationId": "f497425a0869bc8890ecb92902d4f3e6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserWithdrawOrderMarkFailRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 },
                 "security": [
@@ -34311,6 +34855,43 @@
                 },
                 "type": "object"
             },
+            "MarketingCommissionRuleEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "scopeType": {
+                        "description": "范围类型:1=分类默认,2=商品覆盖",
+                        "type": "integer"
+                    },
+                    "scopeId": {
+                        "description": "目标ID,scope_type=1指向分类,2指向商品",
+                        "type": "integer"
+                    },
+                    "level1Rate": {
+                        "description": "一级佣金比例(%),如5.00表示5%",
+                        "type": "string"
+                    },
+                    "level2Rate": {
+                        "description": "二级佣金比例(%)",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=停用,1=启用",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "MarketingCouponEntity": {
                 "properties": {
                     "id": {
@@ -34417,6 +34998,18 @@
                     "settledAt": {
                         "description": "结算时间",
                         "type": "string"
+                    },
+                    "settleTime": {
+                        "description": "应结算时间=订单完成时间+保护期,到期由结算流程入账",
+                        "type": "string"
+                    },
+                    "reversalRecordId": {
+                        "description": "冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录",
+                        "type": "integer"
+                    },
+                    "reversalOfId": {
+                        "description": "原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录",
+                        "type": "integer"
                     },
                     "createdAt": {
                         "description": "创建时间",
@@ -34758,6 +35351,118 @@
                     "updatedAt": {
                         "description": "更新时间",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingCommissionRuleCreateRequest": {
+                "required": [
+                    "userId",
+                    "inviterId",
+                    "level",
+                    "totalCommission",
+                    "settledCommission",
+                    "status"
+                ],
+                "properties": {
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "inviterId": {
+                        "description": "上级分销员用户ID,0=无上级",
+                        "type": "integer"
+                    },
+                    "level": {
+                        "description": "分销员等级:1=普通,2=高级",
+                        "type": "integer"
+                    },
+                    "totalCommission": {
+                        "description": "累计佣金",
+                        "type": "string"
+                    },
+                    "settledCommission": {
+                        "description": "已结算佣金,可提现=total-settled",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=待审核,1=通过,2=拒绝,3=冻结",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingCommissionRuleDestroyRequest": {
+                "required": [
+                    "ids"
+                ],
+                "properties": {
+                    "ids": {
+                        "description": "数据ID集合",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingCommissionRuleQueryRequest": {
+                "required": [],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "inviterId": {
+                        "description": "上级分销员用户ID,0=无上级",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingCommissionRuleUpdateRequest": {
+                "required": [
+                    "id",
+                    "userId",
+                    "inviterId",
+                    "level",
+                    "totalCommission",
+                    "settledCommission",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "inviterId": {
+                        "description": "上级分销员用户ID,0=无上级",
+                        "type": "integer"
+                    },
+                    "level": {
+                        "description": "分销员等级:1=普通,2=高级",
+                        "type": "integer"
+                    },
+                    "totalCommission": {
+                        "description": "累计佣金",
+                        "type": "string"
+                    },
+                    "settledCommission": {
+                        "description": "已结算佣金,可提现=total-settled",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=待审核,1=通过,2=拒绝,3=冻结",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -35894,6 +36599,119 @@
                 },
                 "type": "object"
             },
+            "MarketingCommissionRuleDestroyResponse": {
+                "properties": {
+                    "status": {
+                        "description": "状态:1成功，2失败",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingCommissionRuleQueryResponse": {
+                "properties": {
+                    "currentPage": {
+                        "description": "当前页码",
+                        "type": "integer"
+                    },
+                    "data": {
+                        "description": "数据列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingCommissionRuleResponse"
+                        }
+                    },
+                    "firstPageUrl": {
+                        "description": "首页URL",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "当前页面上的开始位置",
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "description": "最后页码",
+                        "type": "integer"
+                    },
+                    "lastPageUrl": {
+                        "description": "最后页URL",
+                        "type": "string"
+                    },
+                    "links": {
+                        "description": "分页链接的数组",
+                        "type": "array",
+                        "items": {
+                            "$ref": "App\\Http\\Responses\\PaginateLinkVo"
+                        }
+                    },
+                    "nextPageUrl": {
+                        "description": "下一页URL",
+                        "type": "string"
+                    },
+                    "path": {
+                        "description": "分页URL",
+                        "type": "string"
+                    },
+                    "perPage": {
+                        "description": "每页显示的记录数量",
+                        "type": "integer"
+                    },
+                    "prevPageUrl": {
+                        "description": "上一页URL",
+                        "type": "string"
+                    },
+                    "to": {
+                        "description": "当前页面上的最后位置",
+                        "type": "integer"
+                    },
+                    "total": {
+                        "description": "数据总数",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingCommissionRuleResponse": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "inviterId": {
+                        "description": "上级分销员用户ID,0=无上级",
+                        "type": "integer"
+                    },
+                    "level": {
+                        "description": "分销员等级:1=普通,2=高级",
+                        "type": "integer"
+                    },
+                    "totalCommission": {
+                        "description": "累计佣金",
+                        "type": "string"
+                    },
+                    "settledCommission": {
+                        "description": "已结算佣金,可提现=total-settled",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=待审核,1=通过,2=拒绝,3=冻结",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "MarketingCouponDestroyResponse": {
                 "properties": {
                     "status": {
@@ -36138,12 +36956,24 @@
                         "type": "string"
                     },
                     "status": {
-                        "description": "状态:0=待结算,1=已结算,2=已失效(退款)",
+                        "description": "状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)",
                         "type": "integer"
                     },
                     "settledAt": {
-                        "description": "结算时间",
+                        "description": "实际结算入账时间",
                         "type": "string"
+                    },
+                    "settleTime": {
+                        "description": "应结算时间=订单完成时间+保护期,到期由结算流程入账",
+                        "type": "string"
+                    },
+                    "reversalRecordId": {
+                        "description": "冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录",
+                        "type": "integer"
+                    },
+                    "reversalOfId": {
+                        "description": "原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录",
+                        "type": "integer"
                     },
                     "createdAt": {
                         "description": "创建时间",
@@ -47635,6 +48465,100 @@
                 },
                 "type": "object"
             },
+            "SystemRiskRecordEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "触发用户ID",
+                        "type": "integer"
+                    },
+                    "ruleId": {
+                        "description": "命中规则ID,关联system_risk_rules",
+                        "type": "integer"
+                    },
+                    "objectType": {
+                        "description": "对象类型:1=订单,2=优惠券,3=提现,4=售后",
+                        "type": "integer"
+                    },
+                    "objectNo": {
+                        "description": "对象单号,如提现单号/订单号",
+                        "type": "string"
+                    },
+                    "action": {
+                        "description": "处置快照:1=拦截,2=标记放行",
+                        "type": "integer"
+                    },
+                    "appealStatus": {
+                        "description": "申诉状态:0=无,1=申诉中,2=申诉通过,3=申诉驳回",
+                        "type": "integer"
+                    },
+                    "appealNote": {
+                        "description": "申诉理由",
+                        "type": "string"
+                    },
+                    "handleNote": {
+                        "description": "申诉处理说明",
+                        "type": "string"
+                    },
+                    "handledAt": {
+                        "description": "申诉处理时间",
+                        "type": "string"
+                    },
+                    "remark": {
+                        "description": "命中详情,如规则参数与实际值",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "规则名称",
+                        "type": "string"
+                    },
+                    "ruleType": {
+                        "description": "规则类型:1=用户黑名单,2=提现高频,3=异常领券,4=佣金套利,5=休眠分级",
+                        "type": "integer"
+                    },
+                    "conditionExpr": {
+                        "description": "条件参数(JSON)",
+                        "type": "string"
+                    },
+                    "action": {
+                        "description": "处置动作:1=拦截,2=标记放行",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "状态:0=停用,1=启用",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "SystemSensitiveWordEntity": {
                 "properties": {
                     "id": {
@@ -48728,6 +49652,227 @@
                     "createTime": {
                         "description": "创建时间",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordAppealRequest": {
+                "required": [
+                    "id",
+                    "pass"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "风控事件ID",
+                        "type": "integer"
+                    },
+                    "pass": {
+                        "description": "申诉是否通过:true=通过解除拦截,false=驳回",
+                        "type": "boolean"
+                    },
+                    "handleNote": {
+                        "description": "申诉处理说明",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordCreateRequest": {
+                "required": [
+                    "ip",
+                    "reason",
+                    "expiredAt",
+                    "userType",
+                    "userId"
+                ],
+                "properties": {
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    },
+                    "reason": {
+                        "description": "拉黑原因",
+                        "type": "string"
+                    },
+                    "expiredAt": {
+                        "description": "过期时间,空=永久",
+                        "type": "string"
+                    },
+                    "userType": {
+                        "description": "操作账户类型:admin,system",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "操作人ID",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordDestroyRequest": {
+                "required": [
+                    "ids"
+                ],
+                "properties": {
+                    "ids": {
+                        "description": "数据ID集合",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordQueryRequest": {
+                "required": [],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "触发用户ID",
+                        "type": "integer"
+                    },
+                    "ruleId": {
+                        "description": "命中规则ID",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordUpdateRequest": {
+                "required": [
+                    "id",
+                    "ip",
+                    "reason",
+                    "expiredAt",
+                    "userType",
+                    "userId"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    },
+                    "reason": {
+                        "description": "拉黑原因",
+                        "type": "string"
+                    },
+                    "expiredAt": {
+                        "description": "过期时间,空=永久",
+                        "type": "string"
+                    },
+                    "userType": {
+                        "description": "操作账户类型:admin,system",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "操作人ID",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleCreateRequest": {
+                "required": [
+                    "ip",
+                    "reason",
+                    "expiredAt",
+                    "userType",
+                    "userId"
+                ],
+                "properties": {
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    },
+                    "reason": {
+                        "description": "拉黑原因",
+                        "type": "string"
+                    },
+                    "expiredAt": {
+                        "description": "过期时间,空=永久",
+                        "type": "string"
+                    },
+                    "userType": {
+                        "description": "操作账户类型:admin,system",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "操作人ID",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleDestroyRequest": {
+                "required": [
+                    "ids"
+                ],
+                "properties": {
+                    "ids": {
+                        "description": "数据ID集合",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleQueryRequest": {
+                "required": [],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleUpdateRequest": {
+                "required": [
+                    "id",
+                    "ip",
+                    "reason",
+                    "expiredAt",
+                    "userType",
+                    "userId"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    },
+                    "reason": {
+                        "description": "拉黑原因",
+                        "type": "string"
+                    },
+                    "expiredAt": {
+                        "description": "过期时间,空=永久",
+                        "type": "string"
+                    },
+                    "userType": {
+                        "description": "操作账户类型:admin,system",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "操作人ID",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -49986,6 +51131,224 @@
                 },
                 "type": "object"
             },
+            "SystemRiskRecordDestroyResponse": {
+                "properties": {
+                    "status": {
+                        "description": "状态:1成功，2失败",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordQueryResponse": {
+                "properties": {
+                    "currentPage": {
+                        "description": "当前页码",
+                        "type": "integer"
+                    },
+                    "data": {
+                        "description": "数据列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SystemRiskRecordResponse"
+                        }
+                    },
+                    "firstPageUrl": {
+                        "description": "首页URL",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "当前页面上的开始位置",
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "description": "最后页码",
+                        "type": "integer"
+                    },
+                    "lastPageUrl": {
+                        "description": "最后页URL",
+                        "type": "string"
+                    },
+                    "links": {
+                        "description": "分页链接的数组",
+                        "type": "array",
+                        "items": {
+                            "$ref": "App\\Http\\Responses\\PaginateLinkVo"
+                        }
+                    },
+                    "nextPageUrl": {
+                        "description": "下一页URL",
+                        "type": "string"
+                    },
+                    "path": {
+                        "description": "分页URL",
+                        "type": "string"
+                    },
+                    "perPage": {
+                        "description": "每页显示的记录数量",
+                        "type": "integer"
+                    },
+                    "prevPageUrl": {
+                        "description": "上一页URL",
+                        "type": "string"
+                    },
+                    "to": {
+                        "description": "当前页面上的最后位置",
+                        "type": "integer"
+                    },
+                    "total": {
+                        "description": "数据总数",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRecordResponse": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    },
+                    "reason": {
+                        "description": "拉黑原因",
+                        "type": "string"
+                    },
+                    "expiredAt": {
+                        "description": "过期时间,空=永久",
+                        "type": "string"
+                    },
+                    "userType": {
+                        "description": "操作账户类型:admin,system",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "操作人ID",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleDestroyResponse": {
+                "properties": {
+                    "status": {
+                        "description": "状态:1成功，2失败",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleQueryResponse": {
+                "properties": {
+                    "currentPage": {
+                        "description": "当前页码",
+                        "type": "integer"
+                    },
+                    "data": {
+                        "description": "数据列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SystemRiskRuleResponse"
+                        }
+                    },
+                    "firstPageUrl": {
+                        "description": "首页URL",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "当前页面上的开始位置",
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "description": "最后页码",
+                        "type": "integer"
+                    },
+                    "lastPageUrl": {
+                        "description": "最后页URL",
+                        "type": "string"
+                    },
+                    "links": {
+                        "description": "分页链接的数组",
+                        "type": "array",
+                        "items": {
+                            "$ref": "App\\Http\\Responses\\PaginateLinkVo"
+                        }
+                    },
+                    "nextPageUrl": {
+                        "description": "下一页URL",
+                        "type": "string"
+                    },
+                    "path": {
+                        "description": "分页URL",
+                        "type": "string"
+                    },
+                    "perPage": {
+                        "description": "每页显示的记录数量",
+                        "type": "integer"
+                    },
+                    "prevPageUrl": {
+                        "description": "上一页URL",
+                        "type": "string"
+                    },
+                    "to": {
+                        "description": "当前页面上的最后位置",
+                        "type": "integer"
+                    },
+                    "total": {
+                        "description": "数据总数",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SystemRiskRuleResponse": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "ip": {
+                        "description": "IP地址,支持IPv4/IPv6",
+                        "type": "string"
+                    },
+                    "reason": {
+                        "description": "拉黑原因",
+                        "type": "string"
+                    },
+                    "expiredAt": {
+                        "description": "过期时间,空=永久",
+                        "type": "string"
+                    },
+                    "userType": {
+                        "description": "操作账户类型:admin,system",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "操作人ID",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "SystemSensitiveWordDestroyResponse": {
                 "properties": {
                     "status": {
@@ -50321,6 +51684,35 @@
                 },
                 "type": "object"
             },
+            "UserAccountEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "balance": {
+                        "description": "账户余额,可为负=欠款",
+                        "type": "string"
+                    },
+                    "frozen": {
+                        "description": "冻结金额,提现审核/打款中在途",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "UserAccountLogEntity": {
                 "properties": {
                     "id": {
@@ -50331,25 +51723,29 @@
                         "description": "用户ID",
                         "type": "integer"
                     },
-                    "changeType": {
-                        "description": "变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整",
-                        "type": "string"
-                    },
-                    "changeAmount": {
-                        "description": "资金变动,正数入负数出",
-                        "type": "string"
-                    },
-                    "changePoints": {
-                        "description": "积分变动,正数入负数出",
+                    "bizType": {
+                        "description": "业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整",
                         "type": "integer"
+                    },
+                    "amount": {
+                        "description": "变动金额,正数入负数出",
+                        "type": "string"
+                    },
+                    "balanceAfter": {
+                        "description": "变动后余额快照",
+                        "type": "string"
+                    },
+                    "frozenAfter": {
+                        "description": "变动后冻结快照",
+                        "type": "string"
+                    },
+                    "bizNo": {
+                        "description": "关联业务单号",
+                        "type": "string"
                     },
                     "description": {
                         "description": "变动说明",
                         "type": "string"
-                    },
-                    "relatedId": {
-                        "description": "关联单据ID",
-                        "type": "integer"
                     },
                     "createTime": {
                         "description": "创建时间",
@@ -50576,6 +51972,43 @@
                 },
                 "type": "object"
             },
+            "UserPointLogEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "bizType": {
+                        "description": "业务类型:1=签到奖励,2=下单抵扣,3=订单积分奖励,4=退款返还,5=积分兑换,6=人工调整,7=注册赠送",
+                        "type": "integer"
+                    },
+                    "changePoints": {
+                        "description": "积分变动,正数入负数出",
+                        "type": "integer"
+                    },
+                    "pointsAfter": {
+                        "description": "变动后积分余额快照",
+                        "type": "integer"
+                    },
+                    "bizNo": {
+                        "description": "关联业务单号",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "变动说明",
+                        "type": "string"
+                    },
+                    "createTime": {
+                        "description": "创建时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "UserProfileEntity": {
                 "properties": {
                     "userId": {
@@ -50765,6 +52198,79 @@
                 },
                 "type": "object"
             },
+            "UserWithdrawOrderEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "withdrawNo": {
+                        "description": "提现单号",
+                        "type": "string"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "amount": {
+                        "description": "提现金额",
+                        "type": "string"
+                    },
+                    "channel": {
+                        "description": "打款渠道:manual=人工线下打款",
+                        "type": "string"
+                    },
+                    "channelOrderNo": {
+                        "description": "渠道打款单号,回填防重复打款",
+                        "type": "string"
+                    },
+                    "accountType": {
+                        "description": "收款方式:bank=银行卡,wechat=微信,alipay=支付宝",
+                        "type": "string"
+                    },
+                    "accountName": {
+                        "description": "收款人姓名",
+                        "type": "string"
+                    },
+                    "accountNo": {
+                        "description": "收款账号",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:10=待审核,20=审核通过,30=打款中,40=成功,50=审核拒绝,60=打款失败已回退",
+                        "type": "integer"
+                    },
+                    "userNote": {
+                        "description": "用户备注",
+                        "type": "string"
+                    },
+                    "adminNote": {
+                        "description": "审核备注",
+                        "type": "string"
+                    },
+                    "failReason": {
+                        "description": "打款失败原因",
+                        "type": "string"
+                    },
+                    "auditAt": {
+                        "description": "审核时间",
+                        "type": "string"
+                    },
+                    "paidAt": {
+                        "description": "打款标记时间",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "UserAccountLogCreateRequest": {
                 "required": [
                     "userId",
@@ -50883,6 +52389,41 @@
                     "createTime": {
                         "description": "创建时间",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserAccountAdjustRequest": {
+                "required": [
+                    "userId",
+                    "amount",
+                    "description"
+                ],
+                "properties": {
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "amount": {
+                        "description": "调整金额,有符号,负数扣减可致欠款",
+                        "type": "string"
+                    },
+                    "bizNo": {
+                        "description": "关联业务单号",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "调整说明",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserAccountQueryRequest": {
+                "properties": {
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -51381,6 +52922,128 @@
                     },
                     "paidAt": {
                         "description": "到账时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogCreateRequest": {
+                "required": [
+                    "userId",
+                    "changeType",
+                    "changeAmount",
+                    "changePoints",
+                    "description",
+                    "relatedId",
+                    "createTime"
+                ],
+                "properties": {
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "changeType": {
+                        "description": "变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整",
+                        "type": "string"
+                    },
+                    "changeAmount": {
+                        "description": "资金变动,正数入负数出",
+                        "type": "string"
+                    },
+                    "changePoints": {
+                        "description": "积分变动,正数入负数出",
+                        "type": "integer"
+                    },
+                    "description": {
+                        "description": "变动说明",
+                        "type": "string"
+                    },
+                    "relatedId": {
+                        "description": "关联单据ID",
+                        "type": "integer"
+                    },
+                    "createTime": {
+                        "description": "创建时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogDestroyRequest": {
+                "required": [
+                    "ids"
+                ],
+                "properties": {
+                    "ids": {
+                        "description": "数据ID集合",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogQueryRequest": {
+                "required": [],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "createTime": {
+                        "description": "创建时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogUpdateRequest": {
+                "required": [
+                    "id",
+                    "userId",
+                    "changeType",
+                    "changeAmount",
+                    "changePoints",
+                    "description",
+                    "relatedId",
+                    "createTime"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "changeType": {
+                        "description": "变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整",
+                        "type": "string"
+                    },
+                    "changeAmount": {
+                        "description": "资金变动,正数入负数出",
+                        "type": "string"
+                    },
+                    "changePoints": {
+                        "description": "积分变动,正数入负数出",
+                        "type": "integer"
+                    },
+                    "description": {
+                        "description": "变动说明",
+                        "type": "string"
+                    },
+                    "relatedId": {
+                        "description": "关联单据ID",
+                        "type": "integer"
+                    },
+                    "createTime": {
+                        "description": "创建时间",
                         "type": "string"
                     }
                 },
@@ -51947,6 +53610,77 @@
                 },
                 "type": "object"
             },
+            "UserWithdrawOrderAuditRequest": {
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "提现单ID",
+                        "type": "integer"
+                    },
+                    "pass": {
+                        "description": "是否通过:审核接口用,true=通过,false=拒绝",
+                        "type": "boolean"
+                    },
+                    "adminNote": {
+                        "description": "审核备注",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserWithdrawOrderMarkFailRequest": {
+                "required": [
+                    "id",
+                    "reason"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "提现单ID",
+                        "type": "integer"
+                    },
+                    "reason": {
+                        "description": "打款失败原因",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserWithdrawOrderMarkSuccessRequest": {
+                "required": [
+                    "id",
+                    "channelOrderNo"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "提现单ID",
+                        "type": "integer"
+                    },
+                    "channelOrderNo": {
+                        "description": "渠道打款单号(线下打款回填转账凭证号)",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserWithdrawOrderQueryRequest": {
+                "properties": {
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "状态:10=待审核,20=审核通过,30=打款中,40=成功,50=审核拒绝,60=打款失败已回退",
+                        "type": "integer"
+                    },
+                    "withdrawNo": {
+                        "description": "提现单号",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "UserCreateRequest": {
                 "required": [
                     "username",
@@ -52185,28 +53919,65 @@
                         "description": "用户ID",
                         "type": "integer"
                     },
-                    "changeType": {
-                        "description": "变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整",
-                        "type": "string"
-                    },
-                    "changeAmount": {
-                        "description": "资金变动,正数入负数出",
-                        "type": "string"
-                    },
-                    "changePoints": {
-                        "description": "积分变动,正数入负数出",
+                    "bizType": {
+                        "description": "业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整",
                         "type": "integer"
+                    },
+                    "amount": {
+                        "description": "变动金额,正数入负数出",
+                        "type": "string"
+                    },
+                    "balanceAfter": {
+                        "description": "变动后余额快照",
+                        "type": "string"
+                    },
+                    "frozenAfter": {
+                        "description": "变动后冻结快照",
+                        "type": "string"
+                    },
+                    "bizNo": {
+                        "description": "关联业务单号",
+                        "type": "string"
                     },
                     "description": {
                         "description": "变动说明",
                         "type": "string"
                     },
-                    "relatedId": {
-                        "description": "关联单据ID",
-                        "type": "integer"
-                    },
                     "createTime": {
                         "description": "创建时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserAccountResponse": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "balance": {
+                        "description": "账户余额,可为负=欠款",
+                        "type": "string"
+                    },
+                    "frozen": {
+                        "description": "冻结金额,提现审核/打款中在途",
+                        "type": "string"
+                    },
+                    "available": {
+                        "description": "可用余额=balance-frozen",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
                         "type": "string"
                     }
                 },
@@ -52724,6 +54495,119 @@
                     },
                     "updatedAt": {
                         "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogDestroyResponse": {
+                "properties": {
+                    "status": {
+                        "description": "状态:1成功，2失败",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogQueryResponse": {
+                "properties": {
+                    "currentPage": {
+                        "description": "当前页码",
+                        "type": "integer"
+                    },
+                    "data": {
+                        "description": "数据列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserPointLogResponse"
+                        }
+                    },
+                    "firstPageUrl": {
+                        "description": "首页URL",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "当前页面上的开始位置",
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "description": "最后页码",
+                        "type": "integer"
+                    },
+                    "lastPageUrl": {
+                        "description": "最后页URL",
+                        "type": "string"
+                    },
+                    "links": {
+                        "description": "分页链接的数组",
+                        "type": "array",
+                        "items": {
+                            "$ref": "App\\Http\\Responses\\PaginateLinkVo"
+                        }
+                    },
+                    "nextPageUrl": {
+                        "description": "下一页URL",
+                        "type": "string"
+                    },
+                    "path": {
+                        "description": "分页URL",
+                        "type": "string"
+                    },
+                    "perPage": {
+                        "description": "每页显示的记录数量",
+                        "type": "integer"
+                    },
+                    "prevPageUrl": {
+                        "description": "上一页URL",
+                        "type": "string"
+                    },
+                    "to": {
+                        "description": "当前页面上的最后位置",
+                        "type": "integer"
+                    },
+                    "total": {
+                        "description": "数据总数",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UserPointLogResponse": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "用户ID",
+                        "type": "integer"
+                    },
+                    "bizType": {
+                        "description": "业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整",
+                        "type": "integer"
+                    },
+                    "amount": {
+                        "description": "变动金额,正数入负数出",
+                        "type": "string"
+                    },
+                    "balanceAfter": {
+                        "description": "变动后余额快照",
+                        "type": "string"
+                    },
+                    "frozenAfter": {
+                        "description": "变动后冻结快照",
+                        "type": "string"
+                    },
+                    "bizNo": {
+                        "description": "关联业务单号",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "变动说明",
+                        "type": "string"
+                    },
+                    "createTime": {
+                        "description": "创建时间",
                         "type": "string"
                     }
                 },
@@ -53274,6 +55158,69 @@
                     "updatedAt": {
                         "description": "更新时间",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserWithdrawOrderQueryResponse": {
+                "properties": {
+                    "currentPage": {
+                        "description": "当前页码",
+                        "type": "integer"
+                    },
+                    "data": {
+                        "description": "数据列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "App\\Domains\\User\\Responses\\UserWithdrawOrder\\UserWithdrawOrderResponse"
+                        }
+                    },
+                    "firstPageUrl": {
+                        "description": "首页URL",
+                        "type": "string"
+                    },
+                    "from": {
+                        "description": "当前页面上的开始位置",
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "description": "最后页码",
+                        "type": "integer"
+                    },
+                    "lastPageUrl": {
+                        "description": "最后页URL",
+                        "type": "string"
+                    },
+                    "links": {
+                        "description": "分页链接的数组",
+                        "type": "array",
+                        "items": {
+                            "$ref": "App\\Http\\Responses\\PaginateLinkVo"
+                        }
+                    },
+                    "nextPageUrl": {
+                        "description": "下一页URL",
+                        "type": "string"
+                    },
+                    "path": {
+                        "description": "分页URL",
+                        "type": "string"
+                    },
+                    "perPage": {
+                        "description": "每页显示的记录数量",
+                        "type": "integer"
+                    },
+                    "prevPageUrl": {
+                        "description": "上一页URL",
+                        "type": "string"
+                    },
+                    "to": {
+                        "description": "当前页面上的最后位置",
+                        "type": "integer"
+                    },
+                    "total": {
+                        "description": "数据总数",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -55485,6 +57432,10 @@
             "description": "表单提交数据模块"
         },
         {
+            "name": "分销员模块",
+            "description": "分销员模块"
+        },
+        {
             "name": "优惠券类型模块",
             "description": "优惠券类型模块"
         },
@@ -55495,10 +57446,6 @@
         {
             "name": "分销绑定关系模块",
             "description": "分销绑定关系模块"
-        },
-        {
-            "name": "分销员模块",
-            "description": "分销员模块"
         },
         {
             "name": "秒杀活�模块",
@@ -55697,6 +57644,10 @@
             "description": "行政区划模块"
         },
         {
+            "name": "风控事件模块",
+            "description": "风控事件模块"
+        },
+        {
             "name": "敏感词模块",
             "description": "敏感词模块"
         },
@@ -55707,6 +57658,10 @@
         {
             "name": "短信发送流水模块",
             "description": "短信发送流水模块"
+        },
+        {
+            "name": "用户账户模块",
+            "description": "用户账户模块"
         },
         {
             "name": "用户资金/积分流水模块",
@@ -55755,6 +57710,10 @@
         {
             "name": "社交登录绑定模块",
             "description": "社交登录绑定模块"
+        },
+        {
+            "name": "提现单模块",
+            "description": "提现单模块"
         },
         {
             "name": "公众号群发记录模块",

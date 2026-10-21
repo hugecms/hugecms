@@ -32,7 +32,13 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
 
     public const string getStatus = 'status'; // 状态:0=待结算,1=已结算,2=已失效(退款)
 
-    public const string getSettledAt = 'settled_at'; // 结算时间
+    public const string getSettledAt = 'settled_at'; // 实际结算入账时间
+
+    public const string getSettleTime = 'settle_time'; // 应结算时间=订单完成时间+保护期,到期由结算流程入账
+
+    public const string getReversalRecordId = 'reversal_record_id'; // 冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录
+
+    public const string getReversalOfId = 'reversal_of_id'; // 原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录
 
     public const string getCreatedAt = 'created_at'; // 创建时间
 
@@ -70,6 +76,15 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
 
     #[OA\Property(property: 'settledAt', description: '结算时间', type: 'string')]
     private string $settledAt;
+
+    #[OA\Property(property: 'settleTime', description: '应结算时间=订单完成时间+保护期,到期由结算流程入账', type: 'string')]
+    private string $settleTime;
+
+    #[OA\Property(property: 'reversalRecordId', description: '冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录', type: 'integer')]
+    private int $reversalRecordId;
+
+    #[OA\Property(property: 'reversalOfId', description: '原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录', type: 'integer')]
+    private ?int $reversalOfId;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
     private string $createdAt;
@@ -251,6 +266,54 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     public function setSettledAt(string $settledAt): void
     {
         $this->settledAt = $settledAt;
+    }
+
+    /**
+     * 获取应结算时间=订单完成时间+保护期,到期由结算流程入账
+     */
+    public function getSettleTime(): string
+    {
+        return $this->settleTime;
+    }
+
+    /**
+     * 设置应结算时间=订单完成时间+保护期,到期由结算流程入账
+     */
+    public function setSettleTime(string $settleTime): void
+    {
+        $this->settleTime = $settleTime;
+    }
+
+    /**
+     * 获取冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录
+     */
+    public function getReversalRecordId(): int
+    {
+        return $this->reversalRecordId;
+    }
+
+    /**
+     * 设置冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录
+     */
+    public function setReversalRecordId(int $reversalRecordId): void
+    {
+        $this->reversalRecordId = $reversalRecordId;
+    }
+
+    /**
+     * 获取原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录
+     */
+    public function getReversalOfId(): ?int
+    {
+        return $this->reversalOfId;
+    }
+
+    /**
+     * 设置原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录
+     */
+    public function setReversalOfId(?int $reversalOfId): void
+    {
+        $this->reversalOfId = $reversalOfId;
     }
 
     /**

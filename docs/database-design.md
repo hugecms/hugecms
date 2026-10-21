@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件 / 13 个业务域 / 93 表 + 1 视图，`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件 / 13 个业务域 / 98 表 + 1 视图，`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景
@@ -9,14 +9,14 @@
 
 | 域 | 迁移文件 | 表 |
 |---|---|---|
-| 用户 | `051854_create_user_tables.php` | user_profiles、user_followers、user_addresses、user_favorites、user_sms_codes、user_socials、user_ranks、user_account_logs、user_fund_applications、user_browsing_histories、user_sign_ins（users 由基础迁移创建） |
+| 用户 | `051854_create_user_tables.php` | user_profiles、user_followers、user_addresses、user_favorites、user_sms_codes、user_socials、user_ranks、user_accounts、user_account_logs、user_point_logs、user_withdraw_orders、user_browsing_histories、user_sign_ins（users 由基础迁移创建） |
 | 管理 | `051855_create_admin_tables.php` | admin_roles、admin_users、admin_role_users、admin_permissions、admin_role_permissions、admin_login_logs |
-| 系统 | `051856_create_system_tables.php` | system_settings、system_attachments、system_dicts、system_dict_items、system_regions、system_operation_logs、system_sensitive_words、system_sms_logs、system_ip_blacklists、system_apps |
+| 系统 | `051856_create_system_tables.php` | system_settings、system_attachments、system_dicts、system_dict_items、system_regions、system_operation_logs、system_sensitive_words、system_sms_logs、system_ip_blacklists、system_apps、system_risk_rules、system_risk_records |
 | 站点 | `051857_create_website_tables.php` | site_ad_positions、site_banners、site_navs、site_friend_links、site_search_keywords、site_statistics_daily |
 | 内容 | `051903_create_content_tables.php` | content_categories、content_articles、content_article_contents、content_tags、content_article_tags、content_comments、content_comment_likes、content_pages、content_topics、content_topic_items |
 | 商品 | `051904_create_product_tables.php` | product_categories、product_brands、products、product_skus、product_attributes、product_attribute_values、product_member_prices、product_volume_prices、product_stock_logs、product_reviews、product_stock_reminders |
 | 订单 | `051905_create_order_tables.php` | orders、order_items、order_promotions、order_carts、order_shipments、order_shipment_items、order_refunds、order_refund_items、order_refund_logs、order_logs、order_invoices |
-| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
+| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_commission_rules、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
 | 物流 | `054331_create_logistics_tables.php` | shipping_methods、shipping_areas、shipping_area_regions、shipping_shipment_tracks |
 | 消息 | `054332_create_notify_tables.php` | notifications（Laravel Notification database channel）、email_subscriptions |
 | 支付 | `055447_create_payment_tables.php` | payments、payment_channels、payment_callbacks |
@@ -53,11 +53,14 @@
 
 ### 3. 优惠拆分与退款返还
 
-`order_promotions` 逐笔记录订单优惠明细（type：coupon / points / promotion，含名称快照与 related_id），使 `orders.discount_amount` 可拆解、每场活动真实让利可聚合。退款时按明细返还：券回 `marketing_user_coupons`（status 重置）、积分回用户（user_account_logs.change_points 流水）、佣金置失效。
+`order_promotions` 逐笔记录订单优惠明细（type：coupon / points / promotion，含名称快照与 related_id），使 `orders.discount_amount` 可拆解、每场活动真实让利可聚合。退款时按明细返还：券回 `marketing_user_coupons`（status 重置）、积分回用户（user_point_logs 流水）、佣金按保护期状态冲销（见资金机制）。
 
 ### 4. 资金与积分
 
-余额以 `users.balance` 为准，任何变动必须落 `user_account_logs`（change_balance/change_points，含 from/to 余额快照）；充值/提现走 `user_fund_applications` 申请单（审核制），提现与佣金提现复用同表。佣金结算：订单确认完成后 `marketing_distribution_commissions` 记账，提现复用申请单。
+资金以独立账户 `user_accounts` 为准（balance 可负=欠款不可消费/提现，frozen 为提现在途；可用余额 = balance - frozen），users 表仅存积分余额。任何资金变动走 `UserAccountService` 唯一写路径：条件更新守卫（`UPDATE ... WHERE`，受影响行数=0 即业务规则失败）+ 落 `user_account_logs` 双快照流水（balance_after/frozen_after），`SUM(amount) === balance` 恒可对账。
+提现走 `user_withdraw_orders` 状态机（10待审核→20审核通过→30打款中→40成功；10→50拒绝；30→60失败回退），申请即冻结、拒绝/失败解冻回退、成功冻结核销；打款回调以 `WHERE status=30` 条件更新幂等，`uk(channel, channel_order_no)` 防重复打款（多个 NULL 天然互不冲突）。充值不设申请单：在线支付走 `payments`（biz_type=recharge）回调入账，人工到账走 `adjust` 调账，`user_account_logs` 全程留痕。
+佣金按 `marketing_commission_rules`（商品覆盖>分类默认>system_settings 全局兜底）计佣：订单完成后建待结算记录（settle_time=完成时间+保护期），到期结算入账；保护期内退款置失效（未动资金），已结算退款落负额冲销记录（reversal_of_id 回指原记录，唯一索引即冲销幂等键）并扣回入账（可扣成欠款），分销员 total/settled_commission 计数同步双扣。
+积分流水独立 `user_point_logs`（有符号 + points_after 快照），users.points 为余额。风控由 `system_risk_rules`（condition_expr JSON 参数化）+ `system_risk_records`（命中留痕、申诉四态）承载，提现等资金动作前置检查。
 
 ### 5. 微信多端与触达降级
 

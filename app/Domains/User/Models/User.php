@@ -34,7 +34,6 @@ class User extends Model
         'phone',
         'status',
         'rank_id',
-        'balance',
         'points',
         'last_login_time',
         'last_login_ip',

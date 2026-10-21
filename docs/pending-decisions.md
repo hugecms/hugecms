@@ -44,6 +44,17 @@
 - **触发条件**：决定经营卡密/券码类商品时——需建 virtual_cards 发码表（购买发放/激活核销），且订单流程需支持免物流发货；纯积分兑换场景已被 users.points + order_promotions.points 覆盖，无需提前建表。
 - **状态**：待业务信号。
 
+### 7. P1 资金闭环方案（已拍板）
+
+- **拍板内容**（2026-10-21）：①资金账户独立 `user_accounts`（balance 可负 + frozen），users.balance 列移除，流水双快照；②提现走 `user_withdraw_orders` 状态机（user_fund_applications 已删除：充值在线走 payments 回调、人工走 adjust，无需申请单）；③佣金冲销链（保护期 + 负额冲销记录）本期补齐；④佣金规则引擎 `marketing_commission_rules`（商品覆盖>分类默认>全局兜底）；⑤风控最小集 `system_risk_rules/records`。
+- **状态**：已实施并测试通过（P1）。
+
+### 8. 微信商家转账（提现自动打款）集成时机
+
+- **现状**：`user_withdraw_orders` 状态机已就绪，打款动作由 `App\Plugins\Pay\PayService::withdraw()` 占位（返回空渠道单号，人工线下打款、后台标记回填凭证号）。
+- **触发条件**：微信支付商户号资质办理完成、开通商家转账权限后，扩展 `channel=wechat` 并在插件内接入 V3 转账 API（easywechat/yansongda 已安装）。
+- **状态**：待资质（不阻塞，人工打款可运营）。
+
 ## 维护约定
 
 - 任一决策点拍板后：更新本文件状态 → 涉及 schema 的走独立 alter 迁移（生产库禁止 migrate:fresh）→ 涉及配置的落 system_settings 初始数据。

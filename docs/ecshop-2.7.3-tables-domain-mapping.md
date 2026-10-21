@@ -79,7 +79,7 @@
 |---|---|---|
 | ecs_users | 会员主表 | users + user_profiles（users 已含 rank_id/balance/points） |
 | ecs_user_rank | 会员等级 | user_ranks |
-| ecs_user_account | 充值/提现申请 | user_fund_applications |
+| ecs_user_account | 会员余额/资金记录 | user_accounts（账户）+ user_account_logs（流水）；充值走 payments 回调/人工 adjust，提现走 user_withdraw_orders（原 user_fund_applications 申请单方案已废弃删除） |
 | ecs_account_log | 资金/积分流水 | user_account_logs |
 | ecs_user_address | 收货地址 | user_addresses |
 | ecs_collect_goods | 收藏 | user_favorites |
@@ -166,7 +166,7 @@
 3. **region 归属**：已放系统域（system_regions），物流域仅保留配送方式相关表。
 4. **可丢弃表**：sessions、sessions_data、error_log、stats、searchengine、adsense、admin_message、user_feed 等运行时/低价值数据建议排除，实际需迁移业务表约 65~70 张。
 5. **已补充的能力**（本次迁移已落地）：商品属性体系（3 张）、价格策略（2 张）、营销促销基础（marketing_* 3 张）、钱包（2 张 + users 钱包字段）、物流（3 张）、消息通知（Laravel notifications + 邮件订阅）、导航（1 张）、会员等级（1 张 + users.rank_id）、支付域（payments/payment_channels 2 张）。
-6. **支付域独立**：支付单与业务解耦，`payments.biz_type/biz_id` 同时服务订单支付与余额充值（user_fund_applications），原 order_payments 已并入支付域。
+6. **支付域独立**：支付单与业务解耦，`payments.biz_type/biz_id` 同时服务订单支付与余额充值（充值回调后走 UserAccountService::credit 入账），原 order_payments 已并入支付域。
 7. **通知不过度设计**：站内通知用 Laravel notifications（database channel），邮件走 Notification 邮件通道，发送队列用框架 jobs；已移除自建的 notify_templates/notify_jobs/user_notifications。
 8. **贺卡/包装**：ECShop 付费附件概念陈旧，建议废弃或降级为字典项，不建表。
 9. **并发库存**：products/product_skus 增加 `locked_stock`，可售=stock-locked_stock；下单锁定用条件更新（`where stock-locked_stock>=n`）防超卖，支付成功核减、取消/超时释放；product_stock_logs 保留事后追溯。

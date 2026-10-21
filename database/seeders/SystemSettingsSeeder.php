@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class SystemSettingsSeeder extends Seeder
 {
     /**
-     * 初始化站点配置：basic 基础 + seo 分组
+     * 初始化站点配置：basic 基础 + seo + distribution 分销 + funds 资金 + risk 风控
      */
     public function run(): void
     {
@@ -31,6 +31,13 @@ class SystemSettingsSeeder extends Seeder
             ['group' => 'seo', 'key' => 'site_keywords', 'title' => 'SEO关键词', 'value' => '', 'type' => 'text'],
             ['group' => 'seo', 'key' => 'site_title', 'title' => 'SEO标题', 'value' => '', 'type' => 'text'],
             ['group' => 'seo', 'key' => 'site_description_seo', 'title' => 'SEO描述', 'value' => '', 'type' => 'textarea'],
+            ['group' => 'distribution', 'key' => 'distribution.level1_rate', 'title' => '一级佣金比例(%)', 'value' => '5.00', 'type' => 'number'],
+            ['group' => 'distribution', 'key' => 'distribution.level2_rate', 'title' => '二级佣金比例(%)', 'value' => '2.00', 'type' => 'number'],
+            ['group' => 'distribution', 'key' => 'distribution.protect_days', 'title' => '佣金保护期(天)', 'value' => '7', 'type' => 'number'],
+            ['group' => 'funds', 'key' => 'withdraw.min_amount', 'title' => '提现最低金额(元)', 'value' => '10.00', 'type' => 'number'],
+            ['group' => 'funds', 'key' => 'withdraw.daily_limit', 'title' => '每日提现申请次数上限', 'value' => '1', 'type' => 'number'],
+            ['group' => 'risk', 'key' => 'risk.withdraw_high_freq.max_count', 'title' => '提现高频阈值(次/窗口)', 'value' => '3', 'type' => 'number'],
+            ['group' => 'risk', 'key' => 'risk.withdraw_high_freq.window_minutes', 'title' => '提现高频统计窗口(分钟)', 'value' => '60', 'type' => 'number'],
         ];
 
         DB::table('system_settings')->insert(array_map(

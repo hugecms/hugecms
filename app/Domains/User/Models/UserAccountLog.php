@@ -29,11 +29,12 @@ class UserAccountLog extends Model
      */
     protected $fillable = [
         'user_id',
-        'change_type',
-        'change_amount',
-        'change_points',
+        'biz_type',
+        'amount',
+        'balance_after',
+        'frozen_after',
+        'biz_no',
         'description',
-        'related_id',
         'create_time',
     ];
 }

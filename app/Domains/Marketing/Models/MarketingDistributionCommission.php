@@ -38,5 +38,8 @@ class MarketingDistributionCommission extends Model
         'amount',
         'status',
         'settled_at',
+        'settle_time',
+        'reversal_record_id',
+        'reversal_of_id',
     ];
 }

@@ -20,12 +20,17 @@ enum MarketingDistributionCommissionStatusEnum: int implements EnumMethodInterfa
     case Status0 = 0;
 
     /**
-     * 已结算
+     * 已结算(负额冲销记录亦为此态)
      */
     case Status1 = 1;
 
     /**
-     * 已失效(退款)
+     * 已失效(保护期内退款)
      */
     case Status2 = 2;
+
+    /**
+     * 已冲销(结算后退款,原记录侧)
+     */
+    case Status3 = 3;
 }

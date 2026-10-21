@@ -10,7 +10,8 @@ return new class extends Migration
      * 营销域：优惠券（类型/用户领取）、促销活动（满减/折扣，范围与阶梯拆子表）、秒杀/限时购、分销返佣（两级分销）
      * 促销范围/优惠参数为 promotion_id 关联子表（marketing_promotion_scopes/marketing_promotion_ladders），保存整体替换，算价引擎按 ladder 逐档匹配
      * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补，变动记 marketing_flash_sale_logs
-     * 佣金发放走 user_account_logs 入账，提现复用 user_fund_applications(withdraw)；分销比例/结算条件配置于 system_settings
+     * 佣金按 marketing_commission_rules（商品>分类>system_settings 全局兜底）计佣，保护期后结算入账 user_accounts（biz_type=1），
+     * 保护期内退款置失效，已结算退款走负额冲销记录（reversal_of_id 回指，唯一索引允许多 NULL 即原始记录互不冲突）；提现走 user_withdraw_orders 状态机
      */
     public function up(): void
     {
@@ -116,6 +117,20 @@ return new class extends Migration
             $table->index(['product_id', 'status'], 'idx_marketing_flash_sale_items_product_status');
         });
 
+        // 佣金规则表：分类默认/商品覆盖两级比例，命中优先级 商品>分类>system_settings 全局兜底
+        Schema::create('marketing_commission_rules', function (Blueprint $table) {
+            $table->comment('佣金规则表');
+            $table->id();
+            $table->tinyInteger('scope_type')->comment('范围类型:1=分类默认,2=商品覆盖');
+            $table->unsignedInteger('scope_id')->comment('目标ID,scope_type=1指向分类,2指向商品');
+            $table->decimal('level1_rate', 5, 2)->comment('一级佣金比例(%),如5.00表示5%');
+            $table->decimal('level2_rate', 5, 2)->comment('二级佣金比例(%)');
+            $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
+            $table->timestamps();
+            $table->unique(['scope_type', 'scope_id'], 'uk_marketing_commission_rules_scope_type_id');
+            $table->index('status', 'idx_marketing_commission_rules_status');
+        });
+
         // 分销员表：用户申请成为分销员，审核通过后可推广计佣
         Schema::create('marketing_distribution_users', function (Blueprint $table) {
             $table->comment('分销员表');
@@ -143,7 +158,8 @@ return new class extends Migration
             $table->index('distributor_id', 'idx_marketing_distribution_relations_distributor_id');
         });
 
-        // 分销佣金流水表：订单确认完成后结算，退款将佣金置为已失效
+        // 分销佣金流水表：订单完成后按保护期生成待结算记录，到期结算入账 user_accounts
+        // 保护期内退款置失效（未动资金）；已结算退款走负额冲销记录（reversal_of_id 回指原记录，唯一索引允许多 NULL 即原始记录互不冲突）
         Schema::create('marketing_distribution_commissions', function (Blueprint $table) {
             $table->comment('分销佣金流水表');
             $table->id();
@@ -154,10 +170,14 @@ return new class extends Migration
             $table->tinyInteger('level')->comment('层级:1=一级,2=二级');
             $table->decimal('order_amount', 10, 2)->comment('计佣基数(商品实付)');
             $table->decimal('rate', 5, 2)->comment('佣金比例(%),如5.00表示5%');
-            $table->decimal('amount', 10, 2)->comment('佣金金额');
-            $table->tinyInteger('status')->default(0)->comment('状态:0=待结算,1=已结算,2=已失效(退款)');
-            $table->dateTime('settled_at')->nullable()->comment('结算时间');
+            $table->decimal('amount', 10, 2)->comment('佣金金额,冲销记录为负值');
+            $table->tinyInteger('status')->default(0)->comment('状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)');
+            $table->dateTime('settled_at')->nullable()->comment('实际结算入账时间');
+            $table->dateTime('settle_time')->nullable()->comment('应结算时间=订单完成时间+保护期,到期由结算流程入账');
+            $table->unsignedInteger('reversal_record_id')->default(0)->comment('冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录');
+            $table->unsignedInteger('reversal_of_id')->nullable()->comment('原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录');
             $table->timestamps();
+            $table->unique('reversal_of_id', 'uk_marketing_distribution_commissions_reversal_of');
             $table->index(['distributor_id', 'status'], 'idx_marketing_distribution_commissions_distributor_status');
             $table->index('order_id', 'idx_marketing_distribution_commissions_order_id');
         });
@@ -186,6 +206,7 @@ return new class extends Migration
         Schema::dropIfExists('marketing_distribution_commissions');
         Schema::dropIfExists('marketing_distribution_relations');
         Schema::dropIfExists('marketing_distribution_users');
+        Schema::dropIfExists('marketing_commission_rules');
         Schema::dropIfExists('marketing_flash_sale_items');
         Schema::dropIfExists('marketing_flash_sales');
         Schema::dropIfExists('marketing_promotion_ladders');

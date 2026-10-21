@@ -12,7 +12,6 @@ use App\Domains\User\Controllers\UserBrowsingHistoryController;
 use App\Domains\User\Controllers\UserController;
 use App\Domains\User\Controllers\UserFavoriteController;
 use App\Domains\User\Controllers\UserFollowerController;
-use App\Domains\User\Controllers\UserFundApplicationController;
 use App\Domains\User\Controllers\UserProfileController;
 use App\Domains\User\Controllers\UserRankController;
 use App\Domains\User\Controllers\UserSignInController;
@@ -81,15 +80,10 @@ Route::put('userFollower/update', [UserFollowerController::class, 'update']);
 // 删除关注关系接口
 Route::post('userFollower/destroy', [UserFollowerController::class, 'destroy']);
 // 查询用户资金申请列表接口
-Route::post('userFundApplication/search', [UserFundApplicationController::class, 'search']);
 // 新增用户资金申请接口
-Route::post('userFundApplication/store', [UserFundApplicationController::class, 'store']);
 // 获取用户资金申请详情接口
-Route::get('userFundApplication/show', [UserFundApplicationController::class, 'show'])->name('userFundApplication.show');
 // 更新用户资金申请接口
-Route::put('userFundApplication/update', [UserFundApplicationController::class, 'update']);
 // 删除用户资金申请接口
-Route::post('userFundApplication/destroy', [UserFundApplicationController::class, 'destroy']);
 // 查询用户资料列表接口
 Route::post('userProfile/search', [UserProfileController::class, 'search']);
 // 新增用户资料接口
