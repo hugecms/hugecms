@@ -34636,22 +34636,6 @@
                         "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
                         "type": "string"
                     },
-                    "rangeValues": {
-                        "description": "范围内ID列表(JSON),all 时为空",
-                        "type": "string"
-                    },
-                    "minAmount": {
-                        "description": "门槛金额,0=无门槛",
-                        "type": "string"
-                    },
-                    "reduceAmount": {
-                        "description": "满减金额,满减活动必填",
-                        "type": "string"
-                    },
-                    "discountRate": {
-                        "description": "折扣率,如8.5表示85折,折扣活动必填",
-                        "type": "string"
-                    },
                     "startTime": {
                         "description": "活动开始时间",
                         "type": "string"
@@ -34662,6 +34646,68 @@
                     },
                     "status": {
                         "description": "状态:0=停用,1=启用",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionLadderEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "promotionId": {
+                        "description": "促销活动ID",
+                        "type": "integer"
+                    },
+                    "minAmount": {
+                        "description": "门槛金额,0=无门槛",
+                        "type": "string"
+                    },
+                    "reduceAmount": {
+                        "description": "满减金额,full_reduce类型必填",
+                        "type": "string"
+                    },
+                    "discountRate": {
+                        "description": "折扣率,如8.5表示85折,discount类型必填",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionScopeEntity": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "promotionId": {
+                        "description": "促销活动ID",
+                        "type": "integer"
+                    },
+                    "scopeType": {
+                        "description": "范围类型:category=分类,brand=品牌,product=商品",
+                        "type": "string"
+                    },
+                    "targetId": {
+                        "description": "目标ID",
                         "type": "integer"
                     },
                     "createdAt": {
@@ -35603,13 +35649,10 @@
                     "name",
                     "type",
                     "rangeType",
-                    "rangeValues",
-                    "minAmount",
-                    "reduceAmount",
-                    "discountRate",
                     "startTime",
                     "endTime",
-                    "status"
+                    "status",
+                    "ladders"
                 ],
                 "properties": {
                     "name": {
@@ -35624,21 +35667,19 @@
                         "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
                         "type": "string"
                     },
-                    "rangeValues": {
-                        "description": "范围内ID列表(JSON),all 时为空",
-                        "type": "string"
+                    "scopes": {
+                        "description": "适用范围列表,rangeType=all 时不传",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionScopeEntity"
+                        }
                     },
-                    "minAmount": {
-                        "description": "门槛金额,0=无门槛",
-                        "type": "string"
-                    },
-                    "reduceAmount": {
-                        "description": "满减金额,满减活动必填",
-                        "type": "string"
-                    },
-                    "discountRate": {
-                        "description": "折扣率,如8.5表示85折,折扣活动必填",
-                        "type": "string"
+                    "ladders": {
+                        "description": "优惠档位列表,至少一档,满减档必填满减金额/折扣档必填折扣率",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionLadderEntity"
+                        }
                     },
                     "startTime": {
                         "description": "活动开始时间",
@@ -35686,13 +35727,10 @@
                     "name",
                     "type",
                     "rangeType",
-                    "rangeValues",
-                    "minAmount",
-                    "reduceAmount",
-                    "discountRate",
                     "startTime",
                     "endTime",
-                    "status"
+                    "status",
+                    "ladders"
                 ],
                 "properties": {
                     "id": {
@@ -35711,21 +35749,19 @@
                         "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
                         "type": "string"
                     },
-                    "rangeValues": {
-                        "description": "范围内ID列表(JSON),all 时为空",
-                        "type": "string"
+                    "scopes": {
+                        "description": "适用范围列表,rangeType=all 时不传",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionScopeEntity"
+                        }
                     },
-                    "minAmount": {
-                        "description": "门槛金额,0=无门槛",
-                        "type": "string"
-                    },
-                    "reduceAmount": {
-                        "description": "满减金额,满减活动必填",
-                        "type": "string"
-                    },
-                    "discountRate": {
-                        "description": "折扣率,如8.5表示85折,折扣活动必填",
-                        "type": "string"
+                    "ladders": {
+                        "description": "优惠档位列表,至少一档,满减档必填满减金额/折扣档必填折扣率",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionLadderEntity"
+                        }
                     },
                     "startTime": {
                         "description": "活动开始时间",
@@ -36759,21 +36795,19 @@
                         "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
                         "type": "string"
                     },
-                    "rangeValues": {
-                        "description": "范围内ID列表(JSON),all 时为空",
-                        "type": "string"
+                    "scopes": {
+                        "description": "适用范围列表,rangeType=all 时为空",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionScopeEntity"
+                        }
                     },
-                    "minAmount": {
-                        "description": "门槛金额,0=无门槛",
-                        "type": "string"
-                    },
-                    "reduceAmount": {
-                        "description": "满减金额,满减活动必填",
-                        "type": "string"
-                    },
-                    "discountRate": {
-                        "description": "折扣率,如8.5表示85折,折扣活动必填",
-                        "type": "string"
+                    "ladders": {
+                        "description": "优惠档位列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionLadderEntity"
+                        }
                     },
                     "startTime": {
                         "description": "活动开始时间",

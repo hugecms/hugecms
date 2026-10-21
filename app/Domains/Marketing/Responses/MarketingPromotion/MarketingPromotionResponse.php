@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Marketing\Responses\MarketingPromotion;
 
+use App\Domains\Marketing\Entities\MarketingPromotionLadderEntity;
+use App\Domains\Marketing\Entities\MarketingPromotionScopeEntity;
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;
 use OpenApi\Attributes as OA;
 
@@ -24,17 +26,11 @@ class MarketingPromotionResponse implements \JsonSerializable
     #[OA\Property(property: 'rangeType', description: '适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品', type: 'string')]
     private string $rangeType;
 
-    #[OA\Property(property: 'rangeValues', description: '范围内ID列表(JSON),all 时为空', type: 'string')]
-    private string $rangeValues;
+    #[OA\Property(property: 'scopes', description: '适用范围列表,rangeType=all 时为空', type: 'array', items: new OA\Items(ref: MarketingPromotionScopeEntity::class))]
+    private array $scopes;
 
-    #[OA\Property(property: 'minAmount', description: '门槛金额,0=无门槛', type: 'string')]
-    private string $minAmount;
-
-    #[OA\Property(property: 'reduceAmount', description: '满减金额,满减活动必填', type: 'string')]
-    private string $reduceAmount;
-
-    #[OA\Property(property: 'discountRate', description: '折扣率,如8.5表示85折,折扣活动必填', type: 'string')]
-    private string $discountRate;
+    #[OA\Property(property: 'ladders', description: '优惠档位列表', type: 'array', items: new OA\Items(ref: MarketingPromotionLadderEntity::class))]
+    private array $ladders;
 
     #[OA\Property(property: 'startTime', description: '活动开始时间', type: 'string')]
     private string $startTime;
@@ -116,67 +112,35 @@ class MarketingPromotionResponse implements \JsonSerializable
     }
 
     /**
-     * 获取范围内ID列表(JSON),all 时为空
+     * 获取适用范围列表,rangeType=all 时为空
      */
-    public function getRangeValues(): string
+    public function getScopes(): array
     {
-        return $this->rangeValues;
+        return $this->scopes;
     }
 
     /**
-     * 设置范围内ID列表(JSON),all 时为空
+     * 设置适用范围列表,rangeType=all 时为空
      */
-    public function setRangeValues(string $rangeValues): void
+    public function setScopes(array $scopes): void
     {
-        $this->rangeValues = $rangeValues;
+        $this->scopes = $scopes;
     }
 
     /**
-     * 获取门槛金额,0=无门槛
+     * 获取优惠档位列表
      */
-    public function getMinAmount(): string
+    public function getLadders(): array
     {
-        return $this->minAmount;
+        return $this->ladders;
     }
 
     /**
-     * 设置门槛金额,0=无门槛
+     * 设置优惠档位列表
      */
-    public function setMinAmount(string $minAmount): void
+    public function setLadders(array $ladders): void
     {
-        $this->minAmount = $minAmount;
-    }
-
-    /**
-     * 获取满减金额,满减活动必填
-     */
-    public function getReduceAmount(): string
-    {
-        return $this->reduceAmount;
-    }
-
-    /**
-     * 设置满减金额,满减活动必填
-     */
-    public function setReduceAmount(string $reduceAmount): void
-    {
-        $this->reduceAmount = $reduceAmount;
-    }
-
-    /**
-     * 获取折扣率,如8.5表示85折,折扣活动必填
-     */
-    public function getDiscountRate(): string
-    {
-        return $this->discountRate;
-    }
-
-    /**
-     * 设置折扣率,如8.5表示85折,折扣活动必填
-     */
-    public function setDiscountRate(string $discountRate): void
-    {
-        $this->discountRate = $discountRate;
+        $this->ladders = $ladders;
     }
 
     /**

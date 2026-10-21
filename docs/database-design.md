@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件 / 13 个业务域 / 91 表 + 1 视图，`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件 / 13 个业务域 / 93 表 + 1 视图，`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景
@@ -16,7 +16,7 @@
 | 内容 | `051903_create_content_tables.php` | content_categories、content_articles、content_article_contents、content_tags、content_article_tags、content_comments、content_comment_likes、content_pages、content_topics、content_topic_items |
 | 商品 | `051904_create_product_tables.php` | product_categories、product_brands、products、product_skus、product_attributes、product_attribute_values、product_member_prices、product_volume_prices、product_stock_logs、product_reviews、product_stock_reminders |
 | 订单 | `051905_create_order_tables.php` | orders、order_items、order_promotions、order_carts、order_shipments、order_shipment_items、order_refunds、order_refund_items、order_refund_logs、order_logs、order_invoices |
-| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
+| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
 | 物流 | `054331_create_logistics_tables.php` | shipping_methods、shipping_areas、shipping_area_regions、shipping_shipment_tracks |
 | 消息 | `054332_create_notify_tables.php` | notifications（Laravel Notification database channel）、email_subscriptions |
 | 支付 | `055447_create_payment_tables.php` | payments、payment_channels、payment_callbacks |
@@ -31,7 +31,7 @@
 4. **软删除**：资金单据与主数据加 softDeletes（orders、payments、order_refunds、user_addresses、products、product_skus 等），物理删除禁用；纯流水表靠归档治理。
 5. **无外键**：全库不加 FK，一致性由应用层保证——状态机条件更新（`where status=旧值`）+ 资金/库存流水可追溯，避免外键锁与归档/分库受阻。
 6. **快照哲学**：历史单据记当时值，不随主表变化——订单收货人与价格、评价商品名、分销绑定层级、推送 openid、退换货金额。
-7. **JSON 字段**：统一用 `json` 类型列（products.images、refund_logs.images、coupons.range_values 等），配合 Eloquent array/object cast。
+7. **JSON 字段**：统一用 `json` 类型列（products.images、refund_logs.images 等），配合 Eloquent array/object cast；范围圈选类多值不走 JSON——需按索引反查命中的一律拆子表（如 marketing_promotion_scopes，下单热路径反查活动命中）。
 8. **金额**：`decimal(10,2)`；比例类 `decimal(5,2)`（百分数）或 `decimal(3,1)`（折扣率）。
 9. **枚举**：tinyint + 注释枚举（注释即文档），需要运营可配时升级为字典表（system_dicts）。
 

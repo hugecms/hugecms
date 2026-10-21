@@ -20,14 +20,6 @@ class MarketingPromotionEntity implements \JsonSerializable
 
     public const string getRangeType = 'range_type'; // 适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品
 
-    public const string getRangeValues = 'range_values'; // 范围内ID列表(JSON),all 时为空
-
-    public const string getMinAmount = 'min_amount'; // 门槛金额,0=无门槛
-
-    public const string getReduceAmount = 'reduce_amount'; // 满减金额,满减活动必填
-
-    public const string getDiscountRate = 'discount_rate'; // 折扣率,如8.5表示85折,折扣活动必填
-
     public const string getStartTime = 'start_time'; // 活动开始时间
 
     public const string getEndTime = 'end_time'; // 活动结束时间
@@ -49,18 +41,6 @@ class MarketingPromotionEntity implements \JsonSerializable
 
     #[OA\Property(property: 'rangeType', description: '适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品', type: 'string')]
     private string $rangeType;
-
-    #[OA\Property(property: 'rangeValues', description: '范围内ID列表(JSON),all 时为空', type: 'string')]
-    private string $rangeValues;
-
-    #[OA\Property(property: 'minAmount', description: '门槛金额,0=无门槛', type: 'string')]
-    private string $minAmount;
-
-    #[OA\Property(property: 'reduceAmount', description: '满减金额,满减活动必填', type: 'string')]
-    private string $reduceAmount;
-
-    #[OA\Property(property: 'discountRate', description: '折扣率,如8.5表示85折,折扣活动必填', type: 'string')]
-    private string $discountRate;
 
     #[OA\Property(property: 'startTime', description: '活动开始时间', type: 'string')]
     private string $startTime;
@@ -139,70 +119,6 @@ class MarketingPromotionEntity implements \JsonSerializable
     public function setRangeType(string $rangeType): void
     {
         $this->rangeType = $rangeType;
-    }
-
-    /**
-     * 获取范围内ID列表(JSON),all 时为空
-     */
-    public function getRangeValues(): string
-    {
-        return $this->rangeValues;
-    }
-
-    /**
-     * 设置范围内ID列表(JSON),all 时为空
-     */
-    public function setRangeValues(string $rangeValues): void
-    {
-        $this->rangeValues = $rangeValues;
-    }
-
-    /**
-     * 获取门槛金额,0=无门槛
-     */
-    public function getMinAmount(): string
-    {
-        return $this->minAmount;
-    }
-
-    /**
-     * 设置门槛金额,0=无门槛
-     */
-    public function setMinAmount(string $minAmount): void
-    {
-        $this->minAmount = $minAmount;
-    }
-
-    /**
-     * 获取满减金额,满减活动必填
-     */
-    public function getReduceAmount(): string
-    {
-        return $this->reduceAmount;
-    }
-
-    /**
-     * 设置满减金额,满减活动必填
-     */
-    public function setReduceAmount(string $reduceAmount): void
-    {
-        $this->reduceAmount = $reduceAmount;
-    }
-
-    /**
-     * 获取折扣率,如8.5表示85折,折扣活动必填
-     */
-    public function getDiscountRate(): string
-    {
-        return $this->discountRate;
-    }
-
-    /**
-     * 设置折扣率,如8.5表示85折,折扣活动必填
-     */
-    public function setDiscountRate(string $discountRate): void
-    {
-        $this->discountRate = $discountRate;
     }
 
     /**

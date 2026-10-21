@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 营销域：优惠券（类型/用户领取）、促销活动（满减/折扣）、秒杀/限时购、分销返佣（两级分销）
+     * 营销域：优惠券（类型/用户领取）、促销活动（满减/折扣，范围与阶梯拆子表）、秒杀/限时购、分销返佣（两级分销）
+     * 促销范围/优惠参数为 promotion_id 关联子表（marketing_promotion_scopes/marketing_promotion_ladders），保存整体替换，算价引擎按 ladder 逐档匹配
      * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补，变动记 marketing_flash_sale_logs
      * 佣金发放走 user_account_logs 入账，提现复用 user_fund_applications(withdraw)；分销比例/结算条件配置于 system_settings
      */
@@ -46,21 +47,42 @@ return new class extends Migration
             $table->index(['user_id', 'status'], 'idx_marketing_user_coupons_user_status');
         });
 
-        // 促销活动表：满减/折扣，支持按范围生效
+        // 促销活动表：满减/折扣主档，范围与优惠参数拆子表
         Schema::create('marketing_promotions', function (Blueprint $table) {
             $table->comment('促销活动表');
             $table->id();
             $table->string('name', 100)->comment('活动名称');
             $table->string('type', 20)->comment('类型:full_reduce=满减,discount=折扣');
             $table->string('range_type', 20)->default('all')->comment('适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品');
-            $table->json('range_values')->nullable()->comment('范围内ID列表(JSON),all 时为空');
-            $table->decimal('min_amount', 10, 2)->default(0)->comment('门槛金额,0=无门槛');
-            $table->decimal('reduce_amount', 10, 2)->nullable()->comment('满减金额,满减活动必填');
-            $table->decimal('discount_rate', 3, 1)->nullable()->comment('折扣率,如8.5表示85折,折扣活动必填');
             $table->dateTime('start_time')->nullable()->comment('活动开始时间');
             $table->dateTime('end_time')->nullable()->comment('活动结束时间');
             $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
             $table->timestamps();
+            $table->index(['status', 'start_time', 'end_time'], 'idx_marketing_promotions_status_time');
+        });
+
+        // 促销适用范围表：range_type=all 时无行，其余按 scope_type 逐条圈定
+        Schema::create('marketing_promotion_scopes', function (Blueprint $table) {
+            $table->comment('促销适用范围表');
+            $table->id();
+            $table->unsignedInteger('promotion_id')->comment('促销活动ID,关联marketing_promotions');
+            $table->string('scope_type', 20)->comment('范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致');
+            $table->unsignedInteger('target_id')->comment('目标ID,按scope_type指向分类/品牌/商品');
+            $table->timestamps();
+            $table->unique(['promotion_id', 'scope_type', 'target_id'], 'uk_marketing_promotion_scopes_promotion_scope_target');
+            $table->index(['scope_type', 'target_id'], 'idx_marketing_promotion_scopes_scope_target');
+        });
+
+        // 促销满减阶梯表：单档=无阶梯，多档=满减阶梯（如满100-10/满200-30）；优惠参数只存本表
+        Schema::create('marketing_promotion_ladders', function (Blueprint $table) {
+            $table->comment('促销满减阶梯表');
+            $table->id();
+            $table->unsignedInteger('promotion_id')->comment('促销活动ID,关联marketing_promotions');
+            $table->decimal('min_amount', 10, 2)->default(0)->comment('门槛金额,0=无门槛');
+            $table->decimal('reduce_amount', 10, 2)->nullable()->comment('满减金额,full_reduce类型必填');
+            $table->decimal('discount_rate', 3, 1)->nullable()->comment('折扣率,如8.5表示85折,discount类型必填');
+            $table->timestamps();
+            $table->unique(['promotion_id', 'min_amount'], 'uk_marketing_promotion_ladders_promotion_min_amount');
         });
 
         // 秒杀活动表：按时间段组织，同时间段内可含多个场次商品
@@ -166,6 +188,8 @@ return new class extends Migration
         Schema::dropIfExists('marketing_distribution_users');
         Schema::dropIfExists('marketing_flash_sale_items');
         Schema::dropIfExists('marketing_flash_sales');
+        Schema::dropIfExists('marketing_promotion_ladders');
+        Schema::dropIfExists('marketing_promotion_scopes');
         Schema::dropIfExists('marketing_promotions');
         Schema::dropIfExists('marketing_user_coupons');
         Schema::dropIfExists('marketing_coupons');

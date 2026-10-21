@@ -89,12 +89,16 @@ class MarketingPromotionController extends BaseController
     public function store(MarketingPromotionCreateRequest $createRequest): JsonResponse
     {
         $requestData = $createRequest->post();
+        // Entity::from 会静默丢弃未知键，scopes/ladders 必须在转换前显式取出
+        $scopes = $requestData[MarketingPromotionCreateRequest::getScopes] ?? [];
+        $ladders = $requestData[MarketingPromotionCreateRequest::getLadders];
 
         DB::beginTransaction();
         try {
             $input = MarketingPromotionEntity::from($requestData);
 
-            if ($this->marketingPromotionService->save($input->toEntity())) {
+            $promotionId = $this->marketingPromotionService->savePromotion($input->toEntity(), $scopes, $ladders);
+            if ($promotionId > 0) {
                 DB::commit();
 
                 return $this->success();
@@ -128,7 +132,7 @@ class MarketingPromotionController extends BaseController
         $id = \intval($request->query('id', '0'));
 
         try {
-            $marketingPromotion = $this->marketingPromotionService->getOneById($id);
+            $marketingPromotion = $this->marketingPromotionService->getDetailById($id);
             if (empty($marketingPromotion)) {
                 throw new BusinessException(BusinessEnum::NOT_FOUND);
             }
@@ -161,6 +165,9 @@ class MarketingPromotionController extends BaseController
     {
         $id = \intval($updateRequest->query('id', '0'));
         $requestData = $updateRequest->post();
+        // Entity::from 会静默丢弃未知键，scopes/ladders 必须在转换前显式取出
+        $scopes = $requestData[MarketingPromotionUpdateRequest::getScopes] ?? [];
+        $ladders = $requestData[MarketingPromotionUpdateRequest::getLadders];
 
         DB::beginTransaction();
         try {
@@ -171,7 +178,7 @@ class MarketingPromotionController extends BaseController
 
             $input = MarketingPromotionEntity::from($requestData);
 
-            $this->marketingPromotionService->updateById($input->toEntity(), $id);
+            $this->marketingPromotionService->updatePromotion($input->toEntity(), $id, $scopes, $ladders);
 
             DB::commit();
 
