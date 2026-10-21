@@ -15,6 +15,129 @@
         }
     ],
     "paths": {
+        "/account": {
+            "get": {
+                "tags": [
+                    "我的账户"
+                ],
+                "summary": "我的账户概览",
+                "operationId": "0b2829e5378533b4ff4b97b54f165e2a",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/accountLog/search": {
+            "post": {
+                "tags": [
+                    "我的账户"
+                ],
+                "summary": "我的资金流水分页",
+                "operationId": "1f7cb405262292371a3fa3bface6d98e",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pointLog/search": {
+            "post": {
+                "tags": [
+                    "我的账户"
+                ],
+                "summary": "我的积分流水分页",
+                "operationId": "6944697dbd3d83263254cf8791093cfd",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/assist/initiate": {
+            "post": {
+                "tags": [
+                    "助力"
+                ],
+                "summary": "发起助力",
+                "operationId": "85e0f71e2e86209cd68deb44078dec9f",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/assist/help": {
+            "post": {
+                "tags": [
+                    "助力"
+                ],
+                "summary": "为好友助力",
+                "operationId": "f3670bc218e40963fede97116740f1b3",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/assist/record": {
+            "get": {
+                "tags": [
+                    "助力"
+                ],
+                "summary": "我的助力进度",
+                "operationId": "2f015421e5eaae4a3f6c888a3f15c82c",
+                "parameters": [
+                    {
+                        "name": "activityId",
+                        "in": "query",
+                        "description": "活动ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "login": {
             "get": {
                 "tags": [
@@ -22,6 +145,195 @@
                 ],
                 "summary": "登录",
                 "operationId": "5f70595622b09c5557a0a6250f402eae"
+            }
+        },
+        "/bargain/initiate": {
+            "post": {
+                "tags": [
+                    "砍价"
+                ],
+                "summary": "发起砍价",
+                "operationId": "337784fba4e55980626d8abf814ad3b5",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/bargain/cut": {
+            "post": {
+                "tags": [
+                    "砍价"
+                ],
+                "summary": "为好友砍一刀",
+                "operationId": "653bbf450d735cba8b7292e6a7da6d8e",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/bargain/detail": {
+            "get": {
+                "tags": [
+                    "砍价"
+                ],
+                "summary": "砍价单详情",
+                "operationId": "a65a26b2f363ac1d7f5aa0d4561a710b",
+                "parameters": [
+                    {
+                        "name": "recordId",
+                        "in": "query",
+                        "description": "砍价单ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/bargain/order": {
+            "post": {
+                "tags": [
+                    "砍价"
+                ],
+                "summary": "砍到低价后下单回填",
+                "operationId": "e45e454cc6522eefafe44fa00f387713",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/groupBuy/team": {
+            "get": {
+                "tags": [
+                    "拼团"
+                ],
+                "summary": "拼团详情",
+                "operationId": "ab17b6c7d9ea529f4756b5a0d5ca81b2",
+                "parameters": [
+                    {
+                        "name": "teamId",
+                        "in": "query",
+                        "description": "团ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/groupBuy/open": {
+            "post": {
+                "tags": [
+                    "拼团"
+                ],
+                "summary": "开团(下单后调用,orderNo 为订单号)",
+                "operationId": "be8f6ab5da831c66ed5d3717b2671d19",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/groupBuy/join": {
+            "post": {
+                "tags": [
+                    "拼团"
+                ],
+                "summary": "参团(下单后调用,orderNo 为订单号)",
+                "operationId": "f706c907e2e06f8ad1549565849403f4",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/withdrawOrder/apply": {
+            "post": {
+                "tags": [
+                    "提现"
+                ],
+                "summary": "申请提现",
+                "operationId": "16a9aae64ac7f769c0fd8b7f45c212f5",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/withdrawOrder/search": {
+            "post": {
+                "tags": [
+                    "提现"
+                ],
+                "summary": "我的提现单分页",
+                "operationId": "2d723b5dcdf49c00611dc3c4eac9b5d3",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -39,8 +351,28 @@
     },
     "tags": [
         {
+            "name": "我的账户",
+            "description": "我的账户"
+        },
+        {
+            "name": "助力",
+            "description": "助力"
+        },
+        {
             "name": "登录",
             "description": "登录"
+        },
+        {
+            "name": "砍价",
+            "description": "砍价"
+        },
+        {
+            "name": "拼团",
+            "description": "拼团"
+        },
+        {
+            "name": "提现",
+            "description": "提现"
         }
     ]
 }

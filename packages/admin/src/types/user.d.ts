@@ -5,8 +5,7 @@ export interface IUserCreateRequest {
   phone: string, // 手机号
   status: number, // 状态:0=禁用,1=正常
   rankId: number, // 会员等级ID,0=默认等级
-  balance: string, // 账户余额
-  points: number, // 积分
+  points: number, // 积分余额
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
 }
@@ -30,8 +29,7 @@ export interface IUserUpdateRequest {
   phone: string, // 手机号
   status: number, // 状态:0=禁用,1=正常
   rankId: number, // 会员等级ID,0=默认等级
-  balance: string, // 账户余额
-  points: number, // 积分
+  points: number, // 积分余额
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
 }
@@ -63,8 +61,7 @@ export interface IUserResponse {
   phone: string, // 手机号
   status: number, // 状态:0=禁用,1=正常
   rankId: number, // 会员等级ID,0=默认等级
-  balance: string, // 账户余额
-  points: number, // 积分
+  points: number, // 积分余额
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
   createdAt: string, // 创建时间

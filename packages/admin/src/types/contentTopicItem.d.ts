@@ -3,7 +3,6 @@ export interface IContentTopicItemCreateRequest {
   targetType: string, // 目标类型:article,product
   targetId: number, // 目标ID
   sort: number, // 排序
-  createTime: string, // 创建时间
 }
 
 export interface IContentTopicItemDestroyRequest {
@@ -23,7 +22,6 @@ export interface IContentTopicItemUpdateRequest {
   targetType: string, // 目标类型:article,product
   targetId: number, // 目标ID
   sort: number, // 排序
-  createTime: string, // 创建时间
 }
 
 export interface IContentTopicItemDestroyResponse {
@@ -52,6 +50,7 @@ export interface IContentTopicItemResponse {
   targetType: string, // 目标类型:article,product
   targetId: number, // 目标ID
   sort: number, // 排序
-  createTime: string, // 创建时间
+  createdAt: string, // 创建时间
+  updatedAt: string, // 更新时间
 }
 

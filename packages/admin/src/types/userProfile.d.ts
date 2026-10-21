@@ -13,10 +13,12 @@ export interface IUserProfileDestroyRequest {
 }
 
 export interface IUserProfileQueryRequest {
+  id?: number, // ID
   userId?: number, // 用户ID
 }
 
 export interface IUserProfileUpdateRequest {
+  id: number, // ID
   userId: number, // 用户ID
   nickname: string, // 昵称
   avatar: string, // 头像
@@ -47,6 +49,7 @@ export interface IUserProfileQueryResponse {
 }
 
 export interface IUserProfileResponse {
+  id: number, // ID
   userId: number, // 用户ID
   nickname: string, // 昵称
   avatar: string, // 头像

@@ -1,10 +1,11 @@
 export interface IUserAccountLogCreateRequest {
   userId: number, // 用户ID
-  changeType: string, // 变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整
-  changeAmount: string, // 资金变动,正数入负数出
-  changePoints: number, // 积分变动,正数入负数出
+  bizType: number, // 业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
+  amount: string, // 变动金额,正数入负数出
+  balanceAfter: string, // 变动后余额快照
+  frozenAfter: string, // 变动后冻结快照
+  bizNo: string, // 关联业务单号,如提现单号/佣金记录号/充值单号
   description: string, // 变动说明
-  relatedId: number, // 关联单据ID
   createTime: string, // 创建时间
 }
 
@@ -15,17 +16,19 @@ export interface IUserAccountLogDestroyRequest {
 export interface IUserAccountLogQueryRequest {
   id?: number, // ID
   userId?: number, // 用户ID
+  bizNo?: string, // 关联业务单号,如提现单号/佣金记录号/充值单号
   createTime?: string, // 创建时间
 }
 
 export interface IUserAccountLogUpdateRequest {
   id: number, // ID
   userId: number, // 用户ID
-  changeType: string, // 变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整
-  changeAmount: string, // 资金变动,正数入负数出
-  changePoints: number, // 积分变动,正数入负数出
+  bizType: number, // 业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
+  amount: string, // 变动金额,正数入负数出
+  balanceAfter: string, // 变动后余额快照
+  frozenAfter: string, // 变动后冻结快照
+  bizNo: string, // 关联业务单号,如提现单号/佣金记录号/充值单号
   description: string, // 变动说明
-  relatedId: number, // 关联单据ID
   createTime: string, // 创建时间
 }
 
@@ -52,11 +55,12 @@ export interface IUserAccountLogQueryResponse {
 export interface IUserAccountLogResponse {
   id: number, // ID
   userId: number, // 用户ID
-  changeType: string, // 变动类型:recharge=充值,withdraw=提现,order_pay=订单消费,refund=退款返现,points_exchange=积分兑换,admin=人工调整
-  changeAmount: string, // 资金变动,正数入负数出
-  changePoints: number, // 积分变动,正数入负数出
+  bizType: number, // 业务类型:1=佣金入账,2=提现冻结,3=提现完成,4=提现失败回退,5=冲销扣回,6=余额消费冻结,7=余额消费完成,8=余额消费退回,9=充值入账,10=人工调整
+  amount: string, // 变动金额,正数入负数出
+  balanceAfter: string, // 变动后余额快照
+  frozenAfter: string, // 变动后冻结快照
+  bizNo: string, // 关联业务单号,如提现单号/佣金记录号/充值单号
   description: string, // 变动说明
-  relatedId: number, // 关联单据ID
   createTime: string, // 创建时间
 }
 
