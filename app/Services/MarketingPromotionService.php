@@ -9,6 +9,7 @@ use App\Domains\Marketing\Entities\MarketingPromotionScopeEntity;
 use App\Domains\Marketing\Repositories\MarketingPromotionLadderRepository;
 use App\Domains\Marketing\Repositories\MarketingPromotionRepository;
 use App\Domains\Marketing\Repositories\MarketingPromotionScopeRepository;
+use Illuminate\Validation\ValidationException;
 use Juling\Foundation\Contracts\ServiceInterface;
 use Juling\Foundation\Services\CommonService;
 
@@ -26,10 +27,12 @@ class MarketingPromotionService extends CommonService implements ServiceInterfac
     }
 
     /**
-     * 新增促销活动及范围/档位子表，返回促销活动ID
+     * 新增促销活动及范围/档位子表，返回促销活动ID（含业务联动校验）
      */
     public function savePromotion(array $entity, array $scopes, array $ladders): int
     {
+        $this->validate($entity, $scopes, $ladders);
+
         $promotionId = intval($this->insertGetId($entity));
 
         $this->scopeRepository->saveAll($this->mapScopes($promotionId, $scopes));
@@ -39,10 +42,12 @@ class MarketingPromotionService extends CommonService implements ServiceInterfac
     }
 
     /**
-     * 更新促销活动并整体替换范围/档位子表
+     * 更新促销活动并整体替换范围/档位子表（含业务联动校验）
      */
     public function updatePromotion(array $entity, int $id, array $scopes, array $ladders): bool
     {
+        $this->validate($entity, $scopes, $ladders);
+
         // 父表数据未变化时 updateById 返回 false，不能作为成功判据，以子表整体替换为准
         $this->updateById($entity, $id);
 
@@ -102,6 +107,95 @@ class MarketingPromotionService extends CommonService implements ServiceInterfac
         $this->ladderRepository->delete(['promotion_id' => $ids]);
 
         return parent::removeByIds($ids);
+    }
+
+    /**
+     * 业务联动校验：类型与档位优惠参数互斥、适用范围与范围列表一致、范围目标去重、门槛金额不重复
+     * 以 ValidationException 抛出（字段路径键），HTTP 层渲染 422 + errors，前端可直接定位字段
+     */
+    private function validate(array $entity, array $scopes, array $ladders): void
+    {
+        $type = $entity['type'] ?? '';
+        $rangeType = $entity['range_type'] ?? '';
+        $errors = [];
+
+        if (! in_array($type, ['full_reduce', 'discount'], true)) {
+            $errors['type'] = ['类型错误,仅支持full_reduce=满减,discount=折扣'];
+        }
+        if (! in_array($rangeType, ['all', 'category', 'brand', 'product'], true)) {
+            $errors['rangeType'] = ['适用范围错误,仅支持all=全场,category=指定分类,brand=指定品牌,product=指定商品'];
+        }
+        if ($ladders === []) {
+            $errors['ladders'] = ['请设置优惠档位'];
+        }
+
+        $minAmounts = [];
+        foreach ($ladders as $index => $ladder) {
+            if (! is_array($ladder)) {
+                continue;
+            }
+
+            $minAmount = $ladder['minAmount'] ?? null;
+            $reduceAmount = $ladder['reduceAmount'] ?? null;
+            $discountRate = $ladder['discountRate'] ?? null;
+
+            if ($minAmount === null || $minAmount === '') {
+                $errors["ladders.{$index}.minAmount"] = ['档位门槛金额必填'];
+            } elseif (in_array((string) $minAmount, $minAmounts, true)) {
+                $errors["ladders.{$index}.minAmount"] = ['档位门槛金额不能重复'];
+            } else {
+                $minAmounts[] = (string) $minAmount;
+            }
+
+            if ($type === 'full_reduce') {
+                if (in_array($reduceAmount, [null, ''], true)) {
+                    $errors["ladders.{$index}.reduceAmount"] = ['满减活动每档必须设置满减金额'];
+                }
+                if ($discountRate !== null && $discountRate !== '') {
+                    $errors["ladders.{$index}.discountRate"] = ['满减活动档位不能设置折扣率'];
+                }
+            }
+
+            if ($type === 'discount') {
+                if (in_array($discountRate, [null, ''], true)) {
+                    $errors["ladders.{$index}.discountRate"] = ['折扣活动每档必须设置折扣率'];
+                }
+                if ($reduceAmount !== null && $reduceAmount !== '') {
+                    $errors["ladders.{$index}.reduceAmount"] = ['折扣活动档位不能设置满减金额'];
+                }
+            }
+        }
+
+        $combinations = [];
+        if ($rangeType === 'all') {
+            if ($scopes !== []) {
+                $errors['scopes'] = ['全场活动不能设置适用范围'];
+            }
+        } elseif ($scopes === []) {
+            $errors['scopes'] = ['请设置适用范围'];
+        } else {
+            foreach ($scopes as $index => $scope) {
+                if (! is_array($scope)) {
+                    continue;
+                }
+
+                $scopeType = $scope['scopeType'] ?? '';
+                if ($scopeType !== $rangeType) {
+                    $errors["scopes.{$index}.scopeType"] = ['范围类型必须与适用范围一致'];
+                }
+
+                $combination = $scopeType.':'.($scope['targetId'] ?? '');
+                if (in_array($combination, $combinations, true)) {
+                    $errors["scopes.{$index}.targetId"] = ['适用范围目标重复'];
+                } else {
+                    $combinations[] = $combination;
+                }
+            }
+        }
+
+        if ($errors !== []) {
+            throw ValidationException::withMessages($errors);
+        }
     }
 
     /**

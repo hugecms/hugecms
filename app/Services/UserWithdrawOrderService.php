@@ -64,7 +64,7 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
 
         try {
             return (int) DB::transaction(function () use ($userId, $input, $amount, $withdrawNo): int {
-                $this->accountService->freeze($userId, $amount, UserAccountLogBizTypeEnum::WithdrawFreeze->value, $withdrawNo, '提现申请冻结');
+                $this->accountService->freeze($userId, $amount, UserAccountLogBizTypeEnum::BizType2->value, $withdrawNo, '提现申请冻结');
 
                 return (int) $this->repository->builder()->insertGetId([
                     'withdraw_no' => $withdrawNo,
@@ -74,7 +74,7 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
                     'account_type' => (string) ($input['accountType'] ?? ''),
                     'account_name' => (string) ($input['accountName'] ?? ''),
                     'account_no' => (string) ($input['accountNo'] ?? ''),
-                    'status' => UserWithdrawOrderStatusEnum::Pending->value,
+                    'status' => UserWithdrawOrderStatusEnum::Status10->value,
                     'user_note' => (string) ($input['userNote'] ?? ''),
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -95,8 +95,8 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
         $order = $this->getOrder($id);
 
         DB::transaction(function () use ($order, $pass, $adminNote): void {
-            $target = $pass ? UserWithdrawOrderStatusEnum::Approved : UserWithdrawOrderStatusEnum::Rejected;
-            $affected = $this->transition($order->id, UserWithdrawOrderStatusEnum::Pending, [
+            $target = $pass ? UserWithdrawOrderStatusEnum::Status20 : UserWithdrawOrderStatusEnum::Status50;
+            $affected = $this->transition($order->id, UserWithdrawOrderStatusEnum::Status10, [
                 'status' => $target->value,
                 'admin_note' => $adminNote,
                 'audit_at' => now(),
@@ -116,7 +116,7 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
                 $this->accountService->unfreeze(
                     (int) $order->user_id,
                     floatval($order->amount),
-                    UserAccountLogBizTypeEnum::WithdrawRefund->value,
+                    UserAccountLogBizTypeEnum::BizType4->value,
                     (string) $order->withdraw_no,
                     '提现审核拒绝回退',
                 );
@@ -131,8 +131,8 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
     {
         $order = $this->getOrder($id);
 
-        $affected = $this->transition($id, UserWithdrawOrderStatusEnum::Approved, [
-            'status' => UserWithdrawOrderStatusEnum::Paying->value,
+        $affected = $this->transition($id, UserWithdrawOrderStatusEnum::Status20, [
+            'status' => UserWithdrawOrderStatusEnum::Status30->value,
         ]);
         if ($affected === 0) {
             throw new BusinessException('当前状态不可发起打款', 40024);
@@ -156,8 +156,8 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
 
         try {
             DB::transaction(function () use ($order, $channelOrderNo): void {
-                $affected = $this->transition((int) $order->id, UserWithdrawOrderStatusEnum::Paying, [
-                    'status' => UserWithdrawOrderStatusEnum::Success->value,
+                $affected = $this->transition((int) $order->id, UserWithdrawOrderStatusEnum::Status30, [
+                    'status' => UserWithdrawOrderStatusEnum::Status40->value,
                     'channel_order_no' => $channelOrderNo,
                     'paid_at' => now(),
                 ]);
@@ -165,7 +165,7 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
                 if ($affected === 0) {
                     // 幂等重放：同单同渠道单号已成功则直接返回
                     $current = $this->getOrder((int) $order->id);
-                    if ((int) $current->status === UserWithdrawOrderStatusEnum::Success->value
+                    if ((int) $current->status === UserWithdrawOrderStatusEnum::Status40->value
                         && (string) $current->channel_order_no === $channelOrderNo) {
                         return;
                     }
@@ -202,15 +202,15 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
         $order = $this->getOrder($id);
 
         DB::transaction(function () use ($order, $reason): void {
-            $affected = $this->transition((int) $order->id, UserWithdrawOrderStatusEnum::Paying, [
-                'status' => UserWithdrawOrderStatusEnum::Failed->value,
+            $affected = $this->transition((int) $order->id, UserWithdrawOrderStatusEnum::Status30, [
+                'status' => UserWithdrawOrderStatusEnum::Status60->value,
                 'fail_reason' => $reason,
                 'paid_at' => now(),
             ]);
 
             if ($affected === 0) {
                 $current = $this->getOrder((int) $order->id);
-                if ((int) $current->status === UserWithdrawOrderStatusEnum::Failed->value) {
+                if ((int) $current->status === UserWithdrawOrderStatusEnum::Status60->value) {
                     return;
                 }
 
@@ -220,7 +220,7 @@ class UserWithdrawOrderService extends CommonService implements ServiceInterface
             $this->accountService->unfreeze(
                 (int) $order->user_id,
                 floatval($order->amount),
-                UserAccountLogBizTypeEnum::WithdrawRefund->value,
+                UserAccountLogBizTypeEnum::BizType4->value,
                 (string) $order->withdraw_no,
                 '提现打款失败回退',
             );

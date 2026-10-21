@@ -126,7 +126,7 @@ class MarketingCommissionService extends CommonService implements ServiceInterfa
                     $this->accountService->credit(
                         (int) $record->distributor_id,
                         floatval($record->amount),
-                        UserAccountLogBizTypeEnum::CommissionCredit->value,
+                        UserAccountLogBizTypeEnum::BizType1->value,
                         'COMM'.$record->id,
                         '佣金结算入账',
                     );

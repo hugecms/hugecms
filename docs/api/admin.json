@@ -46,6 +46,209 @@
                 }
             }
         },
+        "/marketingPromotionFull/create": {
+            "post": {
+                "tags": [
+                    "促销活动(主子表)"
+                ],
+                "summary": "创建促销活动(含范围与档位)",
+                "operationId": "1183c402f7d8a48cd8430017d5221b43",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingPromotionFullCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingPromotionFullResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingPromotionFull/update": {
+            "post": {
+                "tags": [
+                    "促销活动(主子表)"
+                ],
+                "summary": "更新促销活动(整体替换范围与档位)",
+                "operationId": "d9f3ad53a0997a0dd1e8d21fa84f30ff",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingPromotionFullUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingPromotionFullResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingPromotionFull/show": {
+            "get": {
+                "tags": [
+                    "促销活动(主子表)"
+                ],
+                "summary": "促销活动详情(含范围与档位)",
+                "operationId": "7437facf2e7f9225968de712b6cf84a0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "促销活动ID",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingPromotionFullResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/marketingPromotionFull/destroy": {
+            "post": {
+                "tags": [
+                    "促销活动(主子表)"
+                ],
+                "summary": "删除促销活动(级联清理范围与档位)",
+                "operationId": "e889ed0e3bbc24dfe42773ffe5a0b519",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarketingPromotionFullDestroyRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "状态码",
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "message": {
+                                            "description": "消息",
+                                            "type": "string",
+                                            "example": "ok"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MarketingPromotionFullDestroyResponse"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/adminPermission/search": {
             "post": {
                 "tags": [
@@ -31045,6 +31248,142 @@
                 },
                 "type": "object"
             },
+            "MarketingPromotionFullCreateRequest": {
+                "required": [
+                    "name",
+                    "type",
+                    "rangeType",
+                    "startTime",
+                    "endTime",
+                    "status",
+                    "ladders"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "活动名称",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "类型:full_reduce=满减,discount=折扣",
+                        "type": "string"
+                    },
+                    "rangeType": {
+                        "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
+                        "type": "string"
+                    },
+                    "scopes": {
+                        "description": "适用范围列表,rangeType=all 时不传",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionScopeEntity"
+                        }
+                    },
+                    "ladders": {
+                        "description": "优惠档位列表,至少一档",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionLadderEntity"
+                        }
+                    },
+                    "startTime": {
+                        "description": "活动开始时间",
+                        "type": "string"
+                    },
+                    "endTime": {
+                        "description": "活动结束时间",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=停用,1=启用",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionFullDestroyRequest": {
+                "required": [
+                    "ids"
+                ],
+                "properties": {
+                    "ids": {
+                        "description": "促销活动ID集合",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionFullQueryRequest": {
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "促销活动ID",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionFullUpdateRequest": {
+                "required": [
+                    "id",
+                    "name",
+                    "type",
+                    "rangeType",
+                    "startTime",
+                    "endTime",
+                    "status",
+                    "ladders"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "促销活动ID(query 参数)",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "活动名称",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "类型:full_reduce=满减,discount=折扣",
+                        "type": "string"
+                    },
+                    "rangeType": {
+                        "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
+                        "type": "string"
+                    },
+                    "scopes": {
+                        "description": "适用范围列表,rangeType=all 时不传",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionScopeEntity"
+                        }
+                    },
+                    "ladders": {
+                        "description": "优惠档位列表,至少一档",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionLadderEntity"
+                        }
+                    },
+                    "startTime": {
+                        "description": "活动开始时间",
+                        "type": "string"
+                    },
+                    "endTime": {
+                        "description": "活动结束时间",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=停用,1=启用",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
             "AuthLoginResponse": {
                 "properties": {
                     "token": {
@@ -31054,6 +31393,70 @@
                     "expires": {
                         "description": "expires",
                         "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionFullDestroyResponse": {
+                "properties": {
+                    "status": {
+                        "description": "状态:1成功，2失败",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "MarketingPromotionFullResponse": {
+                "properties": {
+                    "id": {
+                        "description": "ID",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "活动名称",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "类型:full_reduce=满减,discount=折扣",
+                        "type": "string"
+                    },
+                    "rangeType": {
+                        "description": "适用范围:all=全场,category=指定分类,brand=指定品牌,product=指定商品",
+                        "type": "string"
+                    },
+                    "scopes": {
+                        "description": "适用范围列表,rangeType=all 时为空",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionScopeEntity"
+                        }
+                    },
+                    "ladders": {
+                        "description": "优惠档位列表",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MarketingPromotionLadderEntity"
+                        }
+                    },
+                    "startTime": {
+                        "description": "活动开始时间",
+                        "type": "string"
+                    },
+                    "endTime": {
+                        "description": "活动结束时间",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "状态:0=停用,1=启用",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "创建时间",
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "description": "更新时间",
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -62382,6 +62785,10 @@
         {
             "name": "认证模块",
             "description": "认证模块"
+        },
+        {
+            "name": "促销活动(主子表)",
+            "description": "促销活动(主子表)"
         },
         {
             "name": "后台权限模块",

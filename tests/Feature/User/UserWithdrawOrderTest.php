@@ -50,7 +50,7 @@ class UserWithdrawOrderTest extends TestCase
      */
     private function fundedUser(float $amount): int
     {
-        $this->accountService->credit(1, $amount, UserAccountLogBizTypeEnum::RechargeCredit->value);
+        $this->accountService->credit(1, $amount, UserAccountLogBizTypeEnum::BizType9->value);
 
         return 1;
     }

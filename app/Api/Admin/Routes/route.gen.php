@@ -7,7 +7,16 @@
 declare(strict_types=1);
 
 use App\Api\Admin\Controllers\AuthController;
+use App\Api\Admin\Controllers\MarketingPromotionFullController;
 use Illuminate\Support\Facades\Route;
 
 // 管理员登录接口
 Route::post('auth/login', [AuthController::class, 'login']);
+// 创建促销活动(含范围与档位)
+Route::post('marketingPromotionFull/create', [MarketingPromotionFullController::class, 'create']);
+// 更新促销活动(整体替换范围与档位)
+Route::post('marketingPromotionFull/update', [MarketingPromotionFullController::class, 'update']);
+// 促销活动详情(含范围与档位)
+Route::get('marketingPromotionFull/show', [MarketingPromotionFullController::class, 'show'])->name('marketingPromotionFull.show');
+// 删除促销活动(级联清理范围与档位)
+Route::post('marketingPromotionFull/destroy', [MarketingPromotionFullController::class, 'destroy']);

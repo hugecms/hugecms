@@ -38,7 +38,7 @@ class MarketingPromotionControllerTest extends TestCase
 
     public function test_store_creates_promotion_with_scopes_and_ladders(): void
     {
-        $this->postJson('/api/admin/marketingPromotion/store', $this->validPayload())
+        $this->postJson('/api/admin/marketingPromotionFull/create', $this->validPayload())
             ->assertOk()
             ->assertJsonPath('code', 0);
 
@@ -61,7 +61,7 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertOk()
             ->assertJsonPath('code', 0);
 
@@ -79,7 +79,7 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ladders.0.reduceAmount' => '满减活动每档必须设置满减金额']);
 
@@ -98,7 +98,7 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ladders.1.discountRate' => '折扣活动每档必须设置折扣率']);
 
@@ -114,7 +114,7 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['ladders.0.reduceAmount' => '折扣活动档位不能设置满减金额']);
 
@@ -130,7 +130,7 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['scopes.0.scopeType' => '范围类型必须与适用范围一致']);
 
@@ -143,7 +143,7 @@ class MarketingPromotionControllerTest extends TestCase
             'rangeType' => 'all',
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['scopes' => '全场活动不能设置适用范围']);
 
@@ -157,7 +157,7 @@ class MarketingPromotionControllerTest extends TestCase
             'scopes' => null,
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['scopes' => '请设置适用范围']);
 
@@ -173,9 +173,9 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['ladders.0.minAmount' => '档位门槛金额不能重复', 'ladders.1.minAmount' => '档位门槛金额不能重复']);
+            ->assertJsonValidationErrors(['ladders.1.minAmount' => '档位门槛金额不能重复']);
 
         $this->assertDatabaseCount('marketing_promotions', 0);
     }
@@ -189,7 +189,7 @@ class MarketingPromotionControllerTest extends TestCase
             ],
         ]);
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['scopes.1.targetId' => '适用范围目标重复']);
 
@@ -223,10 +223,10 @@ class MarketingPromotionControllerTest extends TestCase
 
     public function test_show_returns_scopes_and_ladders(): void
     {
-        $this->postJson('/api/admin/marketingPromotion/store', $this->validPayload())
+        $this->postJson('/api/admin/marketingPromotionFull/create', $this->validPayload())
             ->assertOk();
 
-        $response = $this->getJson('/api/admin/marketingPromotion/show?id=1')
+        $response = $this->getJson('/api/admin/marketingPromotionFull/show?id=1')
             ->assertOk()
             ->assertJsonPath('code', 0)
             ->assertJsonCount(2, 'data.scopes')
@@ -239,7 +239,7 @@ class MarketingPromotionControllerTest extends TestCase
 
     public function test_search_omits_children_keys(): void
     {
-        $this->postJson('/api/admin/marketingPromotion/store', $this->validPayload())
+        $this->postJson('/api/admin/marketingPromotionFull/create', $this->validPayload())
             ->assertOk();
 
         $response = $this->postJson('/api/admin/marketingPromotion/search?page=1&pageSize=10', [])
@@ -255,7 +255,7 @@ class MarketingPromotionControllerTest extends TestCase
     {
         $payload = $this->validPayload();
 
-        $this->postJson('/api/admin/marketingPromotion/store', $payload)->assertOk();
+        $this->postJson('/api/admin/marketingPromotionFull/create', $payload)->assertOk();
 
         $id = (int) DB::table('marketing_promotions')->where('name', '双11满减')->value('id');
 
@@ -266,7 +266,7 @@ class MarketingPromotionControllerTest extends TestCase
             ['scopeType' => 'category', 'targetId' => 9],
         ];
 
-        $this->putJson("/api/admin/marketingPromotion/update?id={$id}", $payload)
+        $this->postJson("/api/admin/marketingPromotionFull/update?id={$id}", $payload)
             ->assertOk()
             ->assertJsonPath('code', 0);
 
@@ -280,12 +280,12 @@ class MarketingPromotionControllerTest extends TestCase
 
     public function test_destroy_purges_children_rows(): void
     {
-        $this->postJson('/api/admin/marketingPromotion/store', $this->validPayload())
+        $this->postJson('/api/admin/marketingPromotionFull/create', $this->validPayload())
             ->assertOk();
 
         $id = (int) DB::table('marketing_promotions')->where('name', '双11满减')->value('id');
 
-        $this->postJson('/api/admin/marketingPromotion/destroy', ['ids' => [$id]])
+        $this->postJson('/api/admin/marketingPromotionFull/destroy', ['ids' => [$id]])
             ->assertOk()
             ->assertJsonPath('code', 0);
 

@@ -98,14 +98,15 @@ class BargainService
                     throw new BusinessException('您已为该好友砍过价', 40067);
                 }
 
-                // 条件更新防并发超砍：仅当 current_price 够减时生效（金额内联字面量，跨 MySQL/sqlite 一致）
+                // 条件更新防并发超砍：仅当 current_price 够减时生效
+                // ROUND 强制两位量化——sqlite REAL 二进制残差会让浮点连减后的比较偶发误判，量化后跨 MySQL/sqlite 一致
                 $newPrice = round(floatval($record->current_price) - $cutAmount, 2);
                 $affected = $this->recordRepository->builder()
                     ->where('id', $record->id)
                     ->where('status', 1)
-                    ->whereRaw('current_price >= '.number_format($floorPrice + $cutAmount, 2, '.', ''))
+                    ->whereRaw('ROUND(current_price, 2) - '.number_format($cutAmount, 2, '.', '').' >= '.number_format($floorPrice, 2, '.', ''))
                     ->update([
-                        'current_price' => DB::raw('current_price - '.number_format($cutAmount, 2, '.', '')),
+                        'current_price' => DB::raw('ROUND(current_price - '.number_format($cutAmount, 2, '.', '').', 2)'),
                         'cut_count' => DB::raw('cut_count + 1'),
                         'updated_at' => now(),
                     ]);
