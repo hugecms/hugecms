@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * 网站域：广告位定义、轮播图/广告、友情链接、导航、搜索热词、每日统计汇总
+     * 网站域：广告位定义、广告（图片/跳转/投放时段）、友情链接、导航、搜索热词、每日统计汇总
      */
     public function up(): void
     {
-        // 广告位定义表：site_banners.position 关联本表 code，消除魔法字符串，后台投放时下拉选择
+        // 广告位定义表：site_ads.position_code 关联本表 code，消除魔法字符串，后台投放时下拉选择
         Schema::create('site_ad_positions', function (Blueprint $table) {
             $table->comment('广告位定义表');
             $table->id();
@@ -24,11 +24,11 @@ return new class extends Migration
             $table->unique('code', 'uk_site_ad_positions_code');
         });
 
-        // 轮播图/广告表：按广告位标识分组展示
-        Schema::create('site_banners', function (Blueprint $table) {
-            $table->comment('轮播图/广告表');
+        // 广告表：按广告位标识分组投放，支持排序与投放时段
+        Schema::create('site_ads', function (Blueprint $table) {
+            $table->comment('广告表');
             $table->id();
-            $table->string('position', 50)->comment('广告位标识,如:home_top');
+            $table->string('position_code', 50)->comment('广告位标识,关联site_ad_positions.code,如:home_top');
             $table->string('title', 100)->comment('标题');
             $table->string('image', 255)->comment('图片地址');
             $table->string('link', 255)->nullable()->comment('跳转链接');
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->dateTime('start_time')->nullable()->comment('投放开始时间');
             $table->dateTime('end_time')->nullable()->comment('投放结束时间');
             $table->timestamps();
-            $table->index('position', 'idx_site_banners_position');
+            $table->index('position_code', 'idx_site_ads_position_code');
         });
 
         // 友情链接表
@@ -85,7 +85,7 @@ return new class extends Migration
 
         // 每日统计汇总表：定时任务凌晨聚合前一天数据，一天一行，报表/运营看板数据源
         // 明细以 orders/payments/user_account_logs 为准，本表仅为查询加速的汇总层
-        Schema::create('site_statistics_daily', function (Blueprint $table) {
+        Schema::create('site_daily_statistics', function (Blueprint $table) {
             $table->comment('每日统计汇总表');
             $table->id();
             $table->date('stat_date')->comment('统计日期');
@@ -99,7 +99,7 @@ return new class extends Migration
             $table->unsignedInteger('refund_count')->default(0)->comment('退款笔数');
             $table->decimal('refund_amount', 10, 2)->default(0)->comment('退款金额');
             $table->timestamps();
-            $table->unique('stat_date', 'uk_site_statistics_daily_stat_date');
+            $table->unique('stat_date', 'uk_site_daily_statistics_stat_date');
         });
     }
 
@@ -108,11 +108,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('site_statistics_daily');
+        Schema::dropIfExists('site_daily_statistics');
         Schema::dropIfExists('site_search_keywords');
         Schema::dropIfExists('site_navs');
         Schema::dropIfExists('site_links');
-        Schema::dropIfExists('site_banners');
+        Schema::dropIfExists('site_ads');
         Schema::dropIfExists('site_ad_positions');
     }
 };

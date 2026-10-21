@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionRelationRepository;
-use App\Domains\Marketing\Repositories\MarketingDistributionUserRepository;
 use App\Domains\User\Enums\UserAccountLogBizTypeEnum;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +23,6 @@ class MarketingCommissionService extends CommonService implements ServiceInterfa
     public function __construct(
         private readonly MarketingDistributionCommissionRepository $repository,
         private readonly MarketingDistributionRelationRepository $relationRepository,
-        private readonly MarketingDistributionUserRepository $distributionUserRepository,
         private readonly MarketingCommissionRuleService $ruleService,
         private readonly UserAccountService $accountService,
     ) {}
@@ -231,7 +229,7 @@ class MarketingCommissionService extends CommonService implements ServiceInterfa
      */
     private function incrementCommission(int $distributorId, string $column, float $amount): void
     {
-        $this->distributionUserRepository->builder()
+        DB::table('marketing_distributors')
             ->where('user_id', $distributorId)
             ->update([
                 $column => DB::raw($column.' + '.number_format($amount, 2, '.', '')),

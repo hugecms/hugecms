@@ -1,4 +1,4 @@
-export interface IMarketingCommissionRuleCreateRequest {
+export interface IMarketingDistributionCommissionRuleCreateRequest {
   scopeType: number, // 范围类型:1=分类默认,2=商品覆盖
   scopeId: number, // 目标ID,scope_type=1指向分类,2指向商品
   level1Rate: string, // 一级佣金比例(%),如5.00表示5%
@@ -6,18 +6,18 @@ export interface IMarketingCommissionRuleCreateRequest {
   status: number, // 状态:0=停用,1=启用
 }
 
-export interface IMarketingCommissionRuleDestroyRequest {
+export interface IMarketingDistributionCommissionRuleDestroyRequest {
   ids: number[], // 数据ID集合
 }
 
-export interface IMarketingCommissionRuleQueryRequest {
+export interface IMarketingDistributionCommissionRuleQueryRequest {
   id?: number, // ID
   scopeType?: number, // 范围类型:1=分类默认,2=商品覆盖
   scopeId?: number, // 目标ID,scope_type=1指向分类,2指向商品
   status?: number, // 状态:0=停用,1=启用
 }
 
-export interface IMarketingCommissionRuleUpdateRequest {
+export interface IMarketingDistributionCommissionRuleUpdateRequest {
   id: number, // ID
   scopeType: number, // 范围类型:1=分类默认,2=商品覆盖
   scopeId: number, // 目标ID,scope_type=1指向分类,2指向商品
@@ -26,13 +26,13 @@ export interface IMarketingCommissionRuleUpdateRequest {
   status: number, // 状态:0=停用,1=启用
 }
 
-export interface IMarketingCommissionRuleDestroyResponse {
+export interface IMarketingDistributionCommissionRuleDestroyResponse {
   status: number, // 状态:1成功，2失败
 }
 
-export interface IMarketingCommissionRuleQueryResponse {
+export interface IMarketingDistributionCommissionRuleQueryResponse {
   currentPage: number, // 当前页码
-  data: IMarketingCommissionRuleResponse[], // 数据列表
+  data: IMarketingDistributionCommissionRuleResponse[], // 数据列表
   firstPageUrl: string, // 首页URL
   from: number, // 当前页面上的开始位置
   lastPage: number, // 最后页码
@@ -46,7 +46,7 @@ export interface IMarketingCommissionRuleQueryResponse {
   total: number, // 数据总数
 }
 
-export interface IMarketingCommissionRuleResponse {
+export interface IMarketingDistributionCommissionRuleResponse {
   id: number, // ID
   scopeType: number, // 范围类型:1=分类默认,2=商品覆盖
   scopeId: number, // 目标ID,scope_type=1指向分类,2指向商品

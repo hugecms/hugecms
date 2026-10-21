@@ -1,3 +1,7 @@
+Remove-Item -Path app/Domains -Recurse -Force
+Remove-Item -Path packages/admin/src/api -Recurse -Force
+Remove-Item -Path packages/admin/src/types -Recurse -Force
+
 php artisan gen:entity
 php artisan gen:model
 php artisan gen:dao
@@ -7,8 +11,11 @@ php artisan gen:route
 php artisan gen:enums
 
 vendor/bin/pint app bootstrap config database public routes
+
 vendor/bin/openapi app/Api/Admin app/Domains -o docs/api/admin.json
 vendor/bin/openapi app/Api/Common -o docs/api/common.json
 vendor/bin/openapi app/Api/Portal -o docs/api/portal.json
 vendor/bin/openapi app/Api/Shop -o docs/api/shop.json
 vendor/bin/openapi app/Api/User -o docs/api/user.json
+
+php artisan gen:typescript

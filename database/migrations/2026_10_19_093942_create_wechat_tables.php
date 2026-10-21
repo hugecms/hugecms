@@ -12,7 +12,7 @@ return new class extends Migration
      * 基于 w7corp/easywechat；小程序登录/公众号网页授权落 user_socials
      * (platform 约定:wechat_official=公众号,wechat_miniapp=小程序,wechat_open=扫码),UnionID 跨端打通
      * 触达降级链路：微信(模板/订阅消息) → 站内信(notifications) → 短信，统一查询视图 v_notify_touch_logs
-     * 订阅消息为一次性授权，可发次数由 wechat_subscribes 扣减管理
+     * 订阅消息为一次性授权，可发次数由 wechat_subscriptions 扣减管理
      * 全表携带 appid：openid/模板/二维码均按 appid 隔离，支持多公众号/小程序矩阵，换绑应用不串数据
      */
     public function up(): void
@@ -56,7 +56,7 @@ return new class extends Migration
         });
 
         // 用户订阅授权表：一次性订阅消息次数账本，授权加一发送减一
-        Schema::create('wechat_subscribes', function (Blueprint $table) {
+        Schema::create('wechat_subscriptions', function (Blueprint $table) {
             $table->comment('用户订阅授权表');
             $table->id();
             $table->string('appid', 32)->comment('授权所在小程序AppID');
@@ -66,7 +66,7 @@ return new class extends Migration
             $table->unsignedInteger('remain')->default(0)->comment('剩余可发次数,发送成功后扣减');
             $table->dateTime('last_subscribed_at')->nullable()->comment('最近授权时间');
             $table->timestamps();
-            $table->unique(['user_id', 'appid', 'template_id'], 'uk_wechat_subscribes_user_app_template');
+            $table->unique(['user_id', 'appid', 'template_id'], 'uk_wechat_subscriptions_user_app_template');
         });
 
         // 微信消息推送记录表：发送留痕与失败排查，失败按 error 判断是否走降级链路
@@ -148,7 +148,7 @@ return new class extends Migration
         Schema::dropIfExists('wechat_broadcasts');
         Schema::dropIfExists('wechat_qrcodes');
         Schema::dropIfExists('wechat_messages');
-        Schema::dropIfExists('wechat_subscribes');
+        Schema::dropIfExists('wechat_subscriptions');
         Schema::dropIfExists('wechat_templates');
         Schema::dropIfExists('wechat_fans');
     }

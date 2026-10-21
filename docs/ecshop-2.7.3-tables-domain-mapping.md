@@ -102,8 +102,8 @@
 
 | ECShop 表 | 说明 | 去向 |
 |---|---|---|
-| ecs_ad | 广告 | site_banners |
-| ecs_ad_position | 广告位 | site_banners.position 字段 |
+| ecs_ad | 广告 | site_ads |
+| ecs_ad_position | 广告位 | site_ad_positions（site_ads.position_code 关联其 code） |
 | ecs_ad_custom | 自定义广告播放器 | 建议废弃 |
 | ecs_adsense | 广告点击统计 | 建议废弃或并入统计 |
 | ecs_friend_link | 友情链接 | site_links |

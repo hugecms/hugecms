@@ -10,7 +10,7 @@ return new class extends Migration
      * 营销域：优惠券（类型/用户领取）、促销活动（满减/折扣，范围与阶梯拆子表）、秒杀/限时购、分销返佣（两级分销）
      * 促销范围/优惠参数为 promotion_id 关联子表（marketing_promotion_scopes/marketing_promotion_ladders），保存整体替换，算价引擎按 ladder 逐档匹配
      * 秒杀库存走 sold_stock 原子自增（where sold_stock + n <= total_stock），订单取消回补，变动记 marketing_flash_sale_logs
-     * 佣金按 marketing_commission_rules（商品>分类>system_settings 全局兜底）计佣，保护期后结算入账 user_accounts（biz_type=1），
+     * 佣金按 marketing_distribution_commission_rules（商品>分类>system_settings 全局兜底）计佣，保护期后结算入账 user_accounts（biz_type=1），
      * 保护期内退款置失效，已结算退款走负额冲销记录（reversal_of_id 回指，唯一索引允许多 NULL 即原始记录互不冲突）；提现走 user_withdraw_orders 状态机
      * 裂变三件套：拼团（团员 uk(team,user)+uk(order_no) 双重唯一防一单多团）、助力（参与 uk(activity,user) 一人一条，发奖完成态幂等，奖励对接券/积分流水）、
      * 砍价（current_price 条件更新防并发超砍，uk(order_no) NULL 不参与约束即未下单互不冲突）；助力/帮砍入口挂风控黑名单检查
@@ -123,7 +123,7 @@ return new class extends Migration
         });
 
         // 佣金规则表：分类默认/商品覆盖两级比例，命中优先级 商品>分类>system_settings 全局兜底
-        Schema::create('marketing_commission_rules', function (Blueprint $table) {
+        Schema::create('marketing_distribution_commission_rules', function (Blueprint $table) {
             $table->comment('佣金规则表');
             $table->id();
             $table->tinyInteger('scope_type')->comment('范围类型:1=分类默认,2=商品覆盖');
@@ -132,12 +132,12 @@ return new class extends Migration
             $table->decimal('level2_rate', 5, 2)->comment('二级佣金比例(%)');
             $table->tinyInteger('status')->default(1)->comment('状态:0=停用,1=启用');
             $table->timestamps();
-            $table->unique(['scope_type', 'scope_id'], 'uk_marketing_commission_rules_scope_type_id');
-            $table->index('status', 'idx_marketing_commission_rules_status');
+            $table->unique(['scope_type', 'scope_id'], 'uk_marketing_distribution_commission_rules_scope_type_id');
+            $table->index('status', 'idx_marketing_distribution_commission_rules_status');
         });
 
         // 分销员表：用户申请成为分销员，审核通过后可推广计佣
-        Schema::create('marketing_distribution_users', function (Blueprint $table) {
+        Schema::create('marketing_distributors', function (Blueprint $table) {
             $table->comment('分销员表');
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
@@ -147,8 +147,8 @@ return new class extends Migration
             $table->decimal('settled_commission', 10, 2)->default(0)->comment('已结算佣金,可提现=total-settled');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待审核,1=通过,2=拒绝,3=冻结');
             $table->timestamps();
-            $table->unique('user_id', 'uk_marketing_distribution_users_user_id');
-            $table->index('inviter_id', 'idx_marketing_distribution_users_inviter_id');
+            $table->unique('user_id', 'uk_marketing_distributors_user_id');
+            $table->index('inviter_id', 'idx_marketing_distributors_inviter_id');
         });
 
         // 分销绑定关系表：下单人与分销员的层级快照，绑定后下单即计佣，防层级变更漏算
@@ -379,8 +379,8 @@ return new class extends Migration
         Schema::dropIfExists('marketing_flash_sale_logs');
         Schema::dropIfExists('marketing_distribution_commissions');
         Schema::dropIfExists('marketing_distribution_relations');
-        Schema::dropIfExists('marketing_distribution_users');
-        Schema::dropIfExists('marketing_commission_rules');
+        Schema::dropIfExists('marketing_distributors');
+        Schema::dropIfExists('marketing_distribution_commission_rules');
         Schema::dropIfExists('marketing_flash_sale_items');
         Schema::dropIfExists('marketing_flash_sales');
         Schema::dropIfExists('marketing_promotion_ladders');

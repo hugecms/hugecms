@@ -54,7 +54,7 @@ return new class extends Migration
         });
 
         // 文章正文表：与文章一对一
-        Schema::create('content_article_contents', function (Blueprint $table) {
+        Schema::create('content_article_bodies', function (Blueprint $table) {
             $table->comment('文章正文表');
             $table->unsignedInteger('article_id')->comment('文章ID');
             $table->longText('content')->comment('正文(富文本)');
@@ -171,7 +171,7 @@ return new class extends Migration
         Schema::dropIfExists('content_comments');
         Schema::dropIfExists('content_article_tags');
         Schema::dropIfExists('content_tags');
-        Schema::dropIfExists('content_article_contents');
+        Schema::dropIfExists('content_article_bodies');
         Schema::dropIfExists('content_articles');
         Schema::dropIfExists('content_categories');
     }

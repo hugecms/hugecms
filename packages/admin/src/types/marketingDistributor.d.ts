@@ -1,4 +1,4 @@
-export interface IMarketingDistributionUserCreateRequest {
+export interface IMarketingDistributorCreateRequest {
   userId: number, // 用户ID
   inviterId: number, // 上级分销员用户ID,0=无上级
   level: number, // 分销员等级:1=普通,2=高级
@@ -7,17 +7,17 @@ export interface IMarketingDistributionUserCreateRequest {
   status: number, // 状态:0=待审核,1=通过,2=拒绝,3=冻结
 }
 
-export interface IMarketingDistributionUserDestroyRequest {
+export interface IMarketingDistributorDestroyRequest {
   ids: number[], // 数据ID集合
 }
 
-export interface IMarketingDistributionUserQueryRequest {
+export interface IMarketingDistributorQueryRequest {
   id?: number, // ID
   userId?: number, // 用户ID
   inviterId?: number, // 上级分销员用户ID,0=无上级
 }
 
-export interface IMarketingDistributionUserUpdateRequest {
+export interface IMarketingDistributorUpdateRequest {
   id: number, // ID
   userId: number, // 用户ID
   inviterId: number, // 上级分销员用户ID,0=无上级
@@ -27,13 +27,13 @@ export interface IMarketingDistributionUserUpdateRequest {
   status: number, // 状态:0=待审核,1=通过,2=拒绝,3=冻结
 }
 
-export interface IMarketingDistributionUserDestroyResponse {
+export interface IMarketingDistributorDestroyResponse {
   status: number, // 状态:1成功，2失败
 }
 
-export interface IMarketingDistributionUserQueryResponse {
+export interface IMarketingDistributorQueryResponse {
   currentPage: number, // 当前页码
-  data: IMarketingDistributionUserResponse[], // 数据列表
+  data: IMarketingDistributorResponse[], // 数据列表
   firstPageUrl: string, // 首页URL
   from: number, // 当前页面上的开始位置
   lastPage: number, // 最后页码
@@ -47,7 +47,7 @@ export interface IMarketingDistributionUserQueryResponse {
   total: number, // 数据总数
 }
 
-export interface IMarketingDistributionUserResponse {
+export interface IMarketingDistributorResponse {
   id: number, // ID
   userId: number, // 用户ID
   inviterId: number, // 上级分销员用户ID,0=无上级

@@ -1,4 +1,4 @@
-export interface IWechatSubscribeCreateRequest {
+export interface IWechatSubscriptionCreateRequest {
   appid: string, // 授权所在小程序AppID
   userId: number, // 用户ID
   templateId: number, // 模板ID,关联wechat_templates
@@ -7,18 +7,18 @@ export interface IWechatSubscribeCreateRequest {
   lastSubscribedAt: string, // 最近授权时间
 }
 
-export interface IWechatSubscribeDestroyRequest {
+export interface IWechatSubscriptionDestroyRequest {
   ids: number[], // 数据ID集合
 }
 
-export interface IWechatSubscribeQueryRequest {
+export interface IWechatSubscriptionQueryRequest {
   id?: number, // ID
   appid?: string, // 授权所在小程序AppID
   userId?: number, // 用户ID
   templateId?: number, // 模板ID,关联wechat_templates
 }
 
-export interface IWechatSubscribeUpdateRequest {
+export interface IWechatSubscriptionUpdateRequest {
   id: number, // ID
   appid: string, // 授权所在小程序AppID
   userId: number, // 用户ID
@@ -28,13 +28,13 @@ export interface IWechatSubscribeUpdateRequest {
   lastSubscribedAt: string, // 最近授权时间
 }
 
-export interface IWechatSubscribeDestroyResponse {
+export interface IWechatSubscriptionDestroyResponse {
   status: number, // 状态:1成功，2失败
 }
 
-export interface IWechatSubscribeQueryResponse {
+export interface IWechatSubscriptionQueryResponse {
   currentPage: number, // 当前页码
-  data: IWechatSubscribeResponse[], // 数据列表
+  data: IWechatSubscriptionResponse[], // 数据列表
   firstPageUrl: string, // 首页URL
   from: number, // 当前页面上的开始位置
   lastPage: number, // 最后页码
@@ -48,7 +48,7 @@ export interface IWechatSubscribeQueryResponse {
   total: number, // 数据总数
 }
 
-export interface IWechatSubscribeResponse {
+export interface IWechatSubscriptionResponse {
   id: number, // ID
   appid: string, // 授权所在小程序AppID
   userId: number, // 用户ID

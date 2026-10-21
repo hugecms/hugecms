@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件 / 13 个业务域 / 109 表 + 1 视图，`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件 / 13 个业务域 / 118 张业务表 + 1 视图（另有 7 张 Laravel 框架表），`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景
@@ -10,18 +10,18 @@
 | 域 | 迁移文件 | 表 |
 |---|---|---|
 | 用户 | `051854_create_user_tables.php` | user_profiles、user_followers、user_addresses、user_favorites、user_sms_codes、user_socials、user_ranks、user_accounts、user_account_logs、user_point_logs、user_withdraw_orders、user_browsing_histories、user_sign_ins（users 由基础迁移创建） |
-| 管理 | `051855_create_admin_tables.php` | admin_roles、admin_users、admin_role_users、admin_permissions、admin_role_permissions、admin_login_logs |
-| 系统 | `051856_create_system_tables.php` | system_settings、system_attachments、system_dicts、system_dict_items、system_regions、system_operation_logs、system_sensitive_words、system_sms_logs、system_ip_blacklists、system_apps、system_risk_rules、system_risk_records |
-| 站点 | `051857_create_website_tables.php` | site_ad_positions、site_banners、site_navs、site_friend_links、site_search_keywords、site_statistics_daily |
-| 内容 | `051903_create_content_tables.php` | content_categories、content_articles、content_article_contents、content_tags、content_article_tags、content_comments、content_comment_likes、content_pages、content_topics、content_topic_items |
-| 商品 | `051904_create_product_tables.php` | product_categories、product_brands、products、product_skus、product_attributes、product_attribute_values、product_member_prices、product_volume_prices、product_stock_logs、product_reviews、product_stock_reminders |
+| 管理 | `051855_create_admin_tables.php` | admin_roles、admin_users、admin_user_roles、admin_permissions、admin_role_permissions |
+| 系统 | `051856_create_system_tables.php` | system_settings、system_attachments、system_dicts、system_dict_items、system_regions、system_login_logs、system_operation_logs、system_sensitive_words、system_sms_logs、system_ip_blacklists、system_apps、system_risk_rules、system_risk_records |
+| 站点 | `051857_create_website_tables.php` | site_ad_positions、site_ads、site_navs、site_links、site_search_keywords、site_daily_statistics |
+| 内容 | `051903_create_content_tables.php` | content_categories、content_articles、content_article_bodies、content_tags、content_article_tags、content_comments、content_comment_likes、content_pages、content_topics、content_topic_items |
+| 商品 | `051904_create_product_tables.php` | product_categories、product_brands、products、product_skus、product_types、product_attributes、product_attribute_values、product_member_prices、product_volume_prices、product_stock_logs、product_reviews、product_stock_reminders |
 | 订单 | `051905_create_order_tables.php` | orders、order_items、order_promotions、order_carts、order_shipments、order_shipment_items、order_refunds、order_refund_items、order_refund_logs、order_logs、order_invoices |
-| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_group_buy_activities、marketing_group_buy_items、marketing_group_buy_teams、marketing_group_buy_team_members、marketing_assist_activities、marketing_assist_records、marketing_assist_helpers、marketing_bargain_activities、marketing_bargain_items、marketing_bargain_records、marketing_bargain_helpers、marketing_commission_rules、marketing_distribution_users、marketing_distribution_relations、marketing_distribution_commissions |
+| 营销 | `054330_create_marketing_tables.php` | marketing_coupons、marketing_user_coupons、marketing_promotions、marketing_promotion_scopes、marketing_promotion_ladders、marketing_flash_sales、marketing_flash_sale_items、marketing_flash_sale_logs、marketing_group_buy_activities、marketing_group_buy_items、marketing_group_buy_teams、marketing_group_buy_team_members、marketing_assist_activities、marketing_assist_records、marketing_assist_helpers、marketing_bargain_activities、marketing_bargain_items、marketing_bargain_records、marketing_bargain_helpers、marketing_distribution_commission_rules、marketing_distributors、marketing_distribution_relations、marketing_distribution_commissions |
 | 物流 | `054331_create_logistics_tables.php` | shipping_methods、shipping_areas、shipping_area_regions、shipping_shipment_tracks |
 | 消息 | `054332_create_notify_tables.php` | notifications（Laravel Notification database channel）、email_subscriptions |
 | 支付 | `055447_create_payment_tables.php` | payments、payment_channels、payment_callbacks |
 | 客服 | `092639_create_chat_tables.php` | chat_sessions、chat_messages、chat_services、chat_quick_replies、chat_bot_rules、chat_faqs |
-| 微信 | `093942_create_wechat_tables.php` | wechat_fans、wechat_templates、wechat_subscribes、wechat_messages、wechat_qrcodes、wechat_broadcasts、视图 v_notify_touch_logs |
+| 微信 | `093942_create_wechat_tables.php` | wechat_fans、wechat_templates、wechat_subscriptions、wechat_messages、wechat_qrcodes、wechat_broadcasts、视图 v_notify_touch_logs |
 
 ## 二、设计规范（全库约定）
 
@@ -59,14 +59,14 @@
 
 资金以独立账户 `user_accounts` 为准（balance 可负=欠款不可消费/提现，frozen 为提现在途；可用余额 = balance - frozen），users 表仅存积分余额。任何资金变动走 `UserAccountService` 唯一写路径：条件更新守卫（`UPDATE ... WHERE`，受影响行数=0 即业务规则失败）+ 落 `user_account_logs` 双快照流水（balance_after/frozen_after），`SUM(amount) === balance` 恒可对账。
 提现走 `user_withdraw_orders` 状态机（10待审核→20审核通过→30打款中→40成功；10→50拒绝；30→60失败回退），申请即冻结、拒绝/失败解冻回退、成功冻结核销；打款回调以 `WHERE status=30` 条件更新幂等，`uk(channel, channel_order_no)` 防重复打款（多个 NULL 天然互不冲突）。充值不设申请单：在线支付走 `payments`（biz_type=recharge）回调入账，人工到账走 `adjust` 调账，`user_account_logs` 全程留痕。
-佣金按 `marketing_commission_rules`（商品覆盖>分类默认>system_settings 全局兜底）计佣：订单完成后建待结算记录（settle_time=完成时间+保护期），到期结算入账；保护期内退款置失效（未动资金），已结算退款落负额冲销记录（reversal_of_id 回指原记录，唯一索引即冲销幂等键）并扣回入账（可扣成欠款），分销员 total/settled_commission 计数同步双扣。
+佣金按 `marketing_distribution_commission_rules`（商品覆盖>分类默认>system_settings 全局兜底）计佣：订单完成后建待结算记录（settle_time=完成时间+保护期），到期结算入账；保护期内退款置失效（未动资金），已结算退款落负额冲销记录（reversal_of_id 回指原记录，唯一索引即冲销幂等键）并扣回入账（可扣成欠款），分销员 total/settled_commission 计数同步双扣。
 积分流水独立 `user_point_logs`（有符号 + points_after 快照），users.points 为余额。风控由 `system_risk_rules`（condition_expr JSON 参数化）+ `system_risk_records`（命中留痕、申诉四态）承载，提现等资金动作前置检查。
 
 ### 5. 微信多端与触达降级
 
 - 账号归一：小程序/公众号/开放平台授权统一落 `user_socials`（platform 约定值），UnionID 跨端打通；粉丝资产独立 `wechat_fans`（user_id 注册后回填）。
 - 全表 appid 隔离：openid、模板、订阅授权、二维码均按 appid 唯一，支持多公众号/小程序矩阵，换绑不串数据；`system_apps` 为 appid 字典与应用注册中心（secret 加密存储）。
-- 触达降级链路：微信（模板消息/一次性订阅消息）→ 站内信（Laravel notifications）→ 短信；`wechat_subscribes` 是订阅消息次数账本（授权加一、发送减一）；视图 `v_notify_touch_logs` 统一三渠道触达记录（status 语义归一），零侵入。
+- 触达降级链路：微信（模板消息/一次性订阅消息）→ 站内信（Laravel notifications）→ 短信；`wechat_subscriptions` 是订阅消息次数账本（授权加一、发送减一）；视图 `v_notify_touch_logs` 统一三渠道触达记录（status 语义归一），零侵入。
 
 ### 6. 客服 IM 与机器人分流
 
@@ -89,6 +89,6 @@
 ## 四、可运营性设计
 
 - **配置分层**：`.env`（基础设施）→ `system_apps`（应用身份/密钥）→ `payment_channels`（按端支付配置）→ `system_settings`（全局运营配置）。
-- **统计分层**：明细在各业务表，`site_statistics_daily` 只做每日汇总加速层，口径变更可重算。
+- **统计分层**：明细在各业务表，`site_daily_statistics` 只做每日汇总加速层，口径变更可重算。
 - **归因闭环**：带参二维码（wechat_qrcodes）记扫码/注册双计数 → 分销绑定（relations 快照）→ 佣金流水（commissions），渠道 ROI 可算。
 - **审计完备**：订单日志、售后协商日志、操作日志、支付回调、库存流水、秒杀流水——事后一切可解释。

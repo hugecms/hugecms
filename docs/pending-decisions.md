@@ -5,9 +5,9 @@
 
 ## 决策点清单
 
-### 1. site_statistics_daily 的 pv/uv 数据源
+### 1. site_daily_statistics 的 pv/uv 数据源
 
-- **现状**：库内无访问日志明细表，`site_statistics_daily` 的 pv/uv 字段没有数据生产方。
+- **现状**：库内无访问日志明细表，`site_daily_statistics` 的 pv/uv 字段没有数据生产方。
 - **选项**：A. 接第三方统计（百度统计/matomo）API 定时拉取落表；B. 自建轻量访问日志表 + 埋点。
 - **建议**：A——首期业务量小，自建埋点成本高收益低；访问明细表待 BI 需求成型再评估。
 - **状态**：待拍板（不阻塞，统计功能上线前必须定）。
@@ -46,7 +46,7 @@
 
 ### 7. P1 资金闭环方案（已拍板）
 
-- **拍板内容**（2026-10-21）：①资金账户独立 `user_accounts`（balance 可负 + frozen），users.balance 列移除，流水双快照；②提现走 `user_withdraw_orders` 状态机（user_fund_applications 已删除：充值在线走 payments 回调、人工走 adjust，无需申请单）；③佣金冲销链（保护期 + 负额冲销记录）本期补齐；④佣金规则引擎 `marketing_commission_rules`（商品覆盖>分类默认>全局兜底）；⑤风控最小集 `system_risk_rules/records`。
+- **拍板内容**（2026-10-21）：①资金账户独立 `user_accounts`（balance 可负 + frozen），users.balance 列移除，流水双快照；②提现走 `user_withdraw_orders` 状态机（user_fund_applications 已删除：充值在线走 payments 回调、人工走 adjust，无需申请单）；③佣金冲销链（保护期 + 负额冲销记录）本期补齐；④佣金规则引擎 `marketing_distribution_commission_rules`（商品覆盖>分类默认>全局兜底）；⑤风控最小集 `system_risk_rules/records`。
 - **状态**：已实施并测试通过（P1）。
 
 ### 8. 微信商家转账（提现自动打款）集成时机

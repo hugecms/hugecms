@@ -1,5 +1,5 @@
-export interface ISiteBannerCreateRequest {
-  position: string, // 广告位标识,如:home_top
+export interface ISiteAdCreateRequest {
+  positionCode: string, // 广告位标识,关联site_ad_positions.code,如:home_top
   title: string, // 标题
   image: string, // 图片地址
   link: string, // 跳转链接
@@ -10,18 +10,18 @@ export interface ISiteBannerCreateRequest {
   endTime: string, // 投放结束时间
 }
 
-export interface ISiteBannerDestroyRequest {
+export interface ISiteAdDestroyRequest {
   ids: number[], // 数据ID集合
 }
 
-export interface ISiteBannerQueryRequest {
+export interface ISiteAdQueryRequest {
   id?: number, // ID
-  position?: string, // 广告位标识,如:home_top
+  positionCode?: string, // 广告位标识,关联site_ad_positions.code,如:home_top
 }
 
-export interface ISiteBannerUpdateRequest {
+export interface ISiteAdUpdateRequest {
   id: number, // ID
-  position: string, // 广告位标识,如:home_top
+  positionCode: string, // 广告位标识,关联site_ad_positions.code,如:home_top
   title: string, // 标题
   image: string, // 图片地址
   link: string, // 跳转链接
@@ -32,13 +32,13 @@ export interface ISiteBannerUpdateRequest {
   endTime: string, // 投放结束时间
 }
 
-export interface ISiteBannerDestroyResponse {
+export interface ISiteAdDestroyResponse {
   status: number, // 状态:1成功，2失败
 }
 
-export interface ISiteBannerQueryResponse {
+export interface ISiteAdQueryResponse {
   currentPage: number, // 当前页码
-  data: ISiteBannerResponse[], // 数据列表
+  data: ISiteAdResponse[], // 数据列表
   firstPageUrl: string, // 首页URL
   from: number, // 当前页面上的开始位置
   lastPage: number, // 最后页码
@@ -52,9 +52,9 @@ export interface ISiteBannerQueryResponse {
   total: number, // 数据总数
 }
 
-export interface ISiteBannerResponse {
+export interface ISiteAdResponse {
   id: number, // ID
-  position: string, // 广告位标识,如:home_top
+  positionCode: string, // 广告位标识,关联site_ad_positions.code,如:home_top
   title: string, // 标题
   image: string, // 图片地址
   link: string, // 跳转链接
@@ -66,4 +66,3 @@ export interface ISiteBannerResponse {
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间
 }
-

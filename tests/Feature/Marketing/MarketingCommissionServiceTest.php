@@ -7,7 +7,6 @@ namespace Tests\Feature\Marketing;
 use App\Domains\Marketing\Repositories\MarketingCommissionRuleRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionRelationRepository;
-use App\Domains\Marketing\Repositories\MarketingDistributionUserRepository;
 use App\Domains\System\Repositories\SystemSettingRepository;
 use App\Domains\User\Repositories\UserAccountLogRepository;
 use App\Domains\User\Repositories\UserAccountRepository;
@@ -43,7 +42,6 @@ class MarketingCommissionServiceTest extends TestCase
         $this->service = new MarketingCommissionService(
             new MarketingDistributionCommissionRepository,
             new MarketingDistributionRelationRepository,
-            new MarketingDistributionUserRepository,
             new MarketingCommissionRuleService(
                 new MarketingCommissionRuleRepository,
                 new SystemSettingRepository,
@@ -58,7 +56,7 @@ class MarketingCommissionServiceTest extends TestCase
     private function seedTwoLevelChain(): void
     {
         foreach ([self::LEVEL1_DISTRIBUTOR, self::LEVEL2_DISTRIBUTOR] as $distributorId) {
-            DB::table('marketing_distribution_users')->insert([
+            DB::table('marketing_distributors')->insert([
                 'user_id' => $distributorId,
                 'status' => 1,
                 'created_at' => now(),
@@ -96,7 +94,7 @@ class MarketingCommissionServiceTest extends TestCase
         $this->assertDatabaseHas('marketing_distribution_commissions', [
             'distributor_id' => self::LEVEL2_DISTRIBUTOR, 'level' => 2, 'amount' => '2.00', 'status' => 0,
         ]);
-        $this->assertDatabaseHas('marketing_distribution_users', [
+        $this->assertDatabaseHas('marketing_distributors', [
             'user_id' => self::LEVEL1_DISTRIBUTOR, 'total_commission' => '5.00',
         ]);
     }
@@ -124,7 +122,7 @@ class MarketingCommissionServiceTest extends TestCase
             'distributor_id' => self::LEVEL1_DISTRIBUTOR, 'status' => 1,
         ]);
         $this->assertDatabaseHas('user_account_logs', ['biz_type' => 1, 'amount' => '5.00']);
-        $this->assertDatabaseHas('marketing_distribution_users', [
+        $this->assertDatabaseHas('marketing_distributors', [
             'user_id' => self::LEVEL1_DISTRIBUTOR, 'settled_commission' => '5.00',
         ]);
     }
@@ -183,7 +181,7 @@ class MarketingCommissionServiceTest extends TestCase
         $this->assertDatabaseHas('user_account_logs', ['biz_type' => 5, 'amount' => '-5.00']);
 
         // 分销员计数双扣：可提现 = total - settled 不虚高
-        $distributor = DB::table('marketing_distribution_users')
+        $distributor = DB::table('marketing_distributors')
             ->where('user_id', self::LEVEL1_DISTRIBUTOR)->first();
         $this->assertSame(0.0, floatval($distributor->total_commission));
         $this->assertSame(0.0, floatval($distributor->settled_commission));

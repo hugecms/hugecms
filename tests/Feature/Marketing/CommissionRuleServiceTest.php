@@ -29,7 +29,7 @@ class CommissionRuleServiceTest extends TestCase
 
     private function createRule(int $scopeType, int $scopeId, float $level1, float $level2, int $status = 1): void
     {
-        DB::table('marketing_commission_rules')->insert([
+        DB::table('marketing_distribution_commission_rules')->insert([
             'scope_type' => $scopeType,
             'scope_id' => $scopeId,
             'level1_rate' => $level1,
