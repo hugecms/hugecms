@@ -7,7 +7,7 @@ namespace App\Api\Admin\Responses\Auth;
 use Juling\Foundation\Support\Traits\HasSerializableAttributes;
 use OpenApi\Attributes as OA;
 
-#[OA\Schema(schema: LoginResponse::class)]
+#[OA\Schema(schema: 'AuthLoginResponse')]
 class LoginResponse
 {
     use HasSerializableAttributes;

@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: LoginRequest::class,
+    schema: 'AuthLoginRequest',
     required: [
         self::getUsername,
         self::getPassword,
