@@ -2,7 +2,7 @@ export interface IProductReviewCreateRequest {
   orderId: number, // 订单ID,已购验证依据
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   userId: number, // 评价用户ID
   rating: number, // 评分:1-5星
   content: string, // 评价内容
@@ -32,7 +32,7 @@ export interface IProductReviewUpdateRequest {
   orderId: number, // 订单ID,已购验证依据
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   userId: number, // 评价用户ID
   rating: number, // 评分:1-5星
   content: string, // 评价内容
@@ -70,7 +70,7 @@ export interface IProductReviewResponse {
   orderId: number, // 订单ID,已购验证依据
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   userId: number, // 评价用户ID
   rating: number, // 评分:1-5星
   content: string, // 评价内容

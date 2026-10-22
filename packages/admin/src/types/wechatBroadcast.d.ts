@@ -2,11 +2,11 @@ export interface IWechatBroadcastCreateRequest {
   appid: string, // 群发公众号AppID
   type: string, // 类型:news=图文,text=文本,image=图片
   content: string, // 群发内容(JSON),图文为素材列表
-  target: string, // 目标:all=全部粉丝,或标签ID列表
+  target: string, // 目标:all=全部粉丝;或标签ID列表
   sendCount: number, // 送达数
   status: number, // 状态:0=待发送,1=已发送,2=发送失败
   msgId: string, // 微信群发消息ID,回拉发送结果用
-  userType: string, // 操作账户类型:admin,system
+  userType: string, // 操作账户类型:admin=后台,system=系统
   userId: number, // 操作人ID
   sentAt: string, // 发送时间
 }
@@ -24,11 +24,11 @@ export interface IWechatBroadcastUpdateRequest {
   appid: string, // 群发公众号AppID
   type: string, // 类型:news=图文,text=文本,image=图片
   content: string, // 群发内容(JSON),图文为素材列表
-  target: string, // 目标:all=全部粉丝,或标签ID列表
+  target: string, // 目标:all=全部粉丝;或标签ID列表
   sendCount: number, // 送达数
   status: number, // 状态:0=待发送,1=已发送,2=发送失败
   msgId: string, // 微信群发消息ID,回拉发送结果用
-  userType: string, // 操作账户类型:admin,system
+  userType: string, // 操作账户类型:admin=后台,system=系统
   userId: number, // 操作人ID
   sentAt: string, // 发送时间
 }
@@ -58,11 +58,11 @@ export interface IWechatBroadcastResponse {
   appid: string, // 群发公众号AppID
   type: string, // 类型:news=图文,text=文本,image=图片
   content: string, // 群发内容(JSON),图文为素材列表
-  target: string, // 目标:all=全部粉丝,或标签ID列表
+  target: string, // 目标:all=全部粉丝;或标签ID列表
   sendCount: number, // 送达数
   status: number, // 状态:0=待发送,1=已发送,2=发送失败
   msgId: string, // 微信群发消息ID,回拉发送结果用
-  userType: string, // 操作账户类型:admin,system
+  userType: string, // 操作账户类型:admin=后台,system=系统
   userId: number, // 操作人ID
   sentAt: string, // 发送时间
   createdAt: string, // 创建时间

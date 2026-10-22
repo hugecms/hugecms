@@ -1,6 +1,6 @@
 export interface IUserBrowsingHistoryCreateRequest {
   userId: number, // 用户ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   createTime: string, // 最近浏览时间,重复浏览更新
 }
@@ -12,7 +12,7 @@ export interface IUserBrowsingHistoryDestroyRequest {
 export interface IUserBrowsingHistoryQueryRequest {
   id?: number, // ID
   userId?: number, // 用户ID
-  targetType?: string, // 目标类型:article,product
+  targetType?: string, // 目标类型:article=文章,product=商品
   targetId?: number, // 目标ID
   createTime?: string, // 最近浏览时间,重复浏览更新
 }
@@ -20,7 +20,7 @@ export interface IUserBrowsingHistoryQueryRequest {
 export interface IUserBrowsingHistoryUpdateRequest {
   id: number, // ID
   userId: number, // 用户ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   createTime: string, // 最近浏览时间,重复浏览更新
 }
@@ -48,7 +48,7 @@ export interface IUserBrowsingHistoryQueryResponse {
 export interface IUserBrowsingHistoryResponse {
   id: number, // ID
   userId: number, // 用户ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   createTime: string, // 最近浏览时间,重复浏览更新
 }

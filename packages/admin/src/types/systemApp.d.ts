@@ -1,12 +1,12 @@
 export interface ISystemAppCreateRequest {
-  code: string, // 应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+  code: string, // 应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
   name: string, // 应用名称
-  type: string, // 应用类型:web,h5,wechat,app
+  type: string, // 应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用
   appid: string, // 微信类应用AppID,非微信应用为空
   secret: string, // 应用密钥,加密存储
   config: string, // 扩展配置(JSON):token,aes_key,推送参数,API域名,商户号绑定等
   sort: number, // 排序
-  status: number, // 状态:0=停用,1=启用,停用即一键下线该端
+  status: number, // 状态:0=停用,1=启用;停用即一键下线该端
 }
 
 export interface ISystemAppDestroyRequest {
@@ -15,20 +15,20 @@ export interface ISystemAppDestroyRequest {
 
 export interface ISystemAppQueryRequest {
   id?: number, // ID
-  code?: string, // 应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+  code?: string, // 应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
   appid?: string, // 微信类应用AppID,非微信应用为空
 }
 
 export interface ISystemAppUpdateRequest {
   id: number, // ID
-  code: string, // 应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+  code: string, // 应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
   name: string, // 应用名称
-  type: string, // 应用类型:web,h5,wechat,app
+  type: string, // 应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用
   appid: string, // 微信类应用AppID,非微信应用为空
   secret: string, // 应用密钥,加密存储
   config: string, // 扩展配置(JSON):token,aes_key,推送参数,API域名,商户号绑定等
   sort: number, // 排序
-  status: number, // 状态:0=停用,1=启用,停用即一键下线该端
+  status: number, // 状态:0=停用,1=启用;停用即一键下线该端
 }
 
 export interface ISystemAppDestroyResponse {
@@ -53,14 +53,14 @@ export interface ISystemAppQueryResponse {
 
 export interface ISystemAppResponse {
   id: number, // ID
-  code: string, // 应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+  code: string, // 应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
   name: string, // 应用名称
-  type: string, // 应用类型:web,h5,wechat,app
+  type: string, // 应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用
   appid: string, // 微信类应用AppID,非微信应用为空
   secret: string, // 应用密钥,加密存储
   config: string, // 扩展配置(JSON):token,aes_key,推送参数,API域名,商户号绑定等
   sort: number, // 排序
-  status: number, // 状态:0=停用,1=启用,停用即一键下线该端
+  status: number, // 状态:0=停用,1=启用;停用即一键下线该端
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间
 }

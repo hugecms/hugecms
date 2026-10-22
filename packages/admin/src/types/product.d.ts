@@ -2,6 +2,7 @@ export interface IProductCreateRequest {
   categoryId: number, // 分类ID
   brandId: number, // 品牌ID
   typeId: number, // 商品类型ID,关联属性体系
+  freightTemplateId: number, // 运费模板ID,关联shipping_methods,空=按默认配送方式计费
   name: string, // 商品名称
   sn: string, // 商品编码
   subtitle: string, // 副标题
@@ -32,6 +33,7 @@ export interface IProductUpdateRequest {
   categoryId: number, // 分类ID
   brandId: number, // 品牌ID
   typeId: number, // 商品类型ID,关联属性体系
+  freightTemplateId: number, // 运费模板ID,关联shipping_methods,空=按默认配送方式计费
   name: string, // 商品名称
   sn: string, // 商品编码
   subtitle: string, // 副标题
@@ -70,6 +72,7 @@ export interface IProductResponse {
   categoryId: number, // 分类ID
   brandId: number, // 品牌ID
   typeId: number, // 商品类型ID,关联属性体系
+  freightTemplateId: number, // 运费模板ID,关联shipping_methods,空=按默认配送方式计费
   name: string, // 商品名称
   sn: string, // 商品编码
   subtitle: string, // 副标题

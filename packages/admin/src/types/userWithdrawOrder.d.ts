@@ -2,7 +2,7 @@ export interface IUserWithdrawOrderCreateRequest {
   withdrawNo: string, // 提现单号,应用层生成
   userId: number, // 用户ID
   amount: string, // 提现金额
-  channel: string, // 打款渠道:manual=人工线下打款,微信商家转账后续扩展
+  channel: string, // 打款渠道:manual=人工线下打款;微信商家转账后续扩展
   channelOrderNo: string, // 渠道打款单号,回填防重复打款
   accountType: string, // 收款方式:bank=银行卡,wechat=微信,alipay=支付宝
   accountName: string, // 收款人姓名
@@ -23,7 +23,7 @@ export interface IUserWithdrawOrderQueryRequest {
   id?: number, // ID
   withdrawNo?: string, // 提现单号,应用层生成
   userId?: number, // 用户ID
-  channel?: string, // 打款渠道:manual=人工线下打款,微信商家转账后续扩展
+  channel?: string, // 打款渠道:manual=人工线下打款;微信商家转账后续扩展
   channelOrderNo?: string, // 渠道打款单号,回填防重复打款
   status?: number, // 状态:10=待审核,20=审核通过,30=打款中,40=成功,50=审核拒绝,60=打款失败已回退
 }
@@ -33,7 +33,7 @@ export interface IUserWithdrawOrderUpdateRequest {
   withdrawNo: string, // 提现单号,应用层生成
   userId: number, // 用户ID
   amount: string, // 提现金额
-  channel: string, // 打款渠道:manual=人工线下打款,微信商家转账后续扩展
+  channel: string, // 打款渠道:manual=人工线下打款;微信商家转账后续扩展
   channelOrderNo: string, // 渠道打款单号,回填防重复打款
   accountType: string, // 收款方式:bank=银行卡,wechat=微信,alipay=支付宝
   accountName: string, // 收款人姓名
@@ -71,7 +71,7 @@ export interface IUserWithdrawOrderResponse {
   withdrawNo: string, // 提现单号,应用层生成
   userId: number, // 用户ID
   amount: string, // 提现金额
-  channel: string, // 打款渠道:manual=人工线下打款,微信商家转账后续扩展
+  channel: string, // 打款渠道:manual=人工线下打款;微信商家转账后续扩展
   channelOrderNo: string, // 渠道打款单号,回填防重复打款
   accountType: string, // 收款方式:bank=银行卡,wechat=微信,alipay=支付宝
   accountName: string, // 收款人姓名

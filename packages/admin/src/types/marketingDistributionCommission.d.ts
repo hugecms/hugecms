@@ -7,7 +7,7 @@ export interface IMarketingDistributionCommissionCreateRequest {
   orderAmount: string, // 计佣基数(商品实付)
   rate: string, // 佣金比例(%),如5.00表示5%
   amount: string, // 佣金金额,冲销记录为负值
-  status: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+  status: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
   settledAt: string, // 实际结算入账时间
   settleTime: string, // 应结算时间=订单完成时间+保护期,到期由结算流程入账
   reversalRecordId: number, // 冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录
@@ -22,7 +22,7 @@ export interface IMarketingDistributionCommissionQueryRequest {
   id?: number, // ID
   distributorId?: number, // 分销员用户ID
   orderId?: number, // 订单ID
-  status?: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+  status?: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
   reversalOfId?: number, // 原佣金记录ID,NULL=本记录为原始计佣记录,冲销记录回指原记录
 }
 
@@ -36,7 +36,7 @@ export interface IMarketingDistributionCommissionUpdateRequest {
   orderAmount: string, // 计佣基数(商品实付)
   rate: string, // 佣金比例(%),如5.00表示5%
   amount: string, // 佣金金额,冲销记录为负值
-  status: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+  status: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
   settledAt: string, // 实际结算入账时间
   settleTime: string, // 应结算时间=订单完成时间+保护期,到期由结算流程入账
   reversalRecordId: number, // 冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录
@@ -73,7 +73,7 @@ export interface IMarketingDistributionCommissionResponse {
   orderAmount: string, // 计佣基数(商品实付)
   rate: string, // 佣金比例(%),如5.00表示5%
   amount: string, // 佣金金额,冲销记录为负值
-  status: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+  status: number, // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
   settledAt: string, // 实际结算入账时间
   settleTime: string, // 应结算时间=订单完成时间+保护期,到期由结算流程入账
   reversalRecordId: number, // 冲销记录ID,0=未被冲销,原记录侧回指负额冲销记录

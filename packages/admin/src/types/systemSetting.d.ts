@@ -1,9 +1,9 @@
 export interface ISystemSettingCreateRequest {
-  group: string, // 配置分组:basic=基础,seo,upload
+  group: string, // 配置分组:basic=基础,seo=SEO,upload=上传
   key: string, // 配置键,如:site_name
   title: string, // 配置名称,用于后台表单展示
   value: string, // 配置值
-  type: string, // 值类型:text,number,select,radio
+  type: string, // 值类型:text=文本,number=数字,select=下拉单选,radio=单选
 }
 
 export interface ISystemSettingDestroyRequest {
@@ -12,17 +12,17 @@ export interface ISystemSettingDestroyRequest {
 
 export interface ISystemSettingQueryRequest {
   id?: number, // ID
-  group?: string, // 配置分组:basic=基础,seo,upload
+  group?: string, // 配置分组:basic=基础,seo=SEO,upload=上传
   key?: string, // 配置键,如:site_name
 }
 
 export interface ISystemSettingUpdateRequest {
   id: number, // ID
-  group: string, // 配置分组:basic=基础,seo,upload
+  group: string, // 配置分组:basic=基础,seo=SEO,upload=上传
   key: string, // 配置键,如:site_name
   title: string, // 配置名称,用于后台表单展示
   value: string, // 配置值
-  type: string, // 值类型:text,number,select,radio
+  type: string, // 值类型:text=文本,number=数字,select=下拉单选,radio=单选
 }
 
 export interface ISystemSettingDestroyResponse {
@@ -47,11 +47,11 @@ export interface ISystemSettingQueryResponse {
 
 export interface ISystemSettingResponse {
   id: number, // ID
-  group: string, // 配置分组:basic=基础,seo,upload
+  group: string, // 配置分组:basic=基础,seo=SEO,upload=上传
   key: string, // 配置键,如:site_name
   title: string, // 配置名称,用于后台表单展示
   value: string, // 配置值
-  type: string, // 值类型:text,number,select,radio
+  type: string, // 值类型:text=文本,number=数字,select=下拉单选,radio=单选
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间
 }

@@ -1,6 +1,6 @@
 export interface IContentTopicItemCreateRequest {
   topicId: number, // 专题ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   sort: number, // 排序
 }
@@ -12,14 +12,14 @@ export interface IContentTopicItemDestroyRequest {
 export interface IContentTopicItemQueryRequest {
   id?: number, // ID
   topicId?: number, // 专题ID
-  targetType?: string, // 目标类型:article,product
+  targetType?: string, // 目标类型:article=文章,product=商品
   targetId?: number, // 目标ID
 }
 
 export interface IContentTopicItemUpdateRequest {
   id: number, // ID
   topicId: number, // 专题ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   sort: number, // 排序
 }
@@ -47,7 +47,7 @@ export interface IContentTopicItemQueryResponse {
 export interface IContentTopicItemResponse {
   id: number, // ID
   topicId: number, // 专题ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   sort: number, // 排序
   createdAt: string, // 创建时间

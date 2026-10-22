@@ -6,6 +6,8 @@ export interface IOrderRefundCreateRequest {
   amount: string, // 退款金额
   reason: string, // 退款原因
   adminNote: string, // 商家审核备注/拒绝原因
+  auditTime: string, // 审核时间
+  operatorId: number, // 审核操作人ID,关联admin_users
   images: string, // 申请凭证图片(JSON数组)
   returnExpressCompany: string, // 退货物流公司,退货退款时填写
   returnExpressNo: string, // 退货物流单号
@@ -32,6 +34,8 @@ export interface IOrderRefundUpdateRequest {
   amount: string, // 退款金额
   reason: string, // 退款原因
   adminNote: string, // 商家审核备注/拒绝原因
+  auditTime: string, // 审核时间
+  operatorId: number, // 审核操作人ID,关联admin_users
   images: string, // 申请凭证图片(JSON数组)
   returnExpressCompany: string, // 退货物流公司,退货退款时填写
   returnExpressNo: string, // 退货物流单号
@@ -68,6 +72,8 @@ export interface IOrderRefundResponse {
   amount: string, // 退款金额
   reason: string, // 退款原因
   adminNote: string, // 商家审核备注/拒绝原因
+  auditTime: string, // 审核时间
+  operatorId: number, // 审核操作人ID,关联admin_users
   images: string, // 申请凭证图片(JSON数组)
   returnExpressCompany: string, // 退货物流公司,退货退款时填写
   returnExpressNo: string, // 退货物流单号

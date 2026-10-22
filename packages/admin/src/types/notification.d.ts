@@ -1,9 +1,9 @@
 export interface INotificationCreateRequest {
-  type: string, // 通知类型(通知类名)
-  notifiableType: string, // 通知目标类型,如:App\Models\User
-  notifiableId: number, // 通知目标ID
-  data: string, // 通知数据(JSON)
-  readAt: string, // 已读时间,空=未读
+  type: string, // 
+  notifiableType: string, // 
+  notifiableId: number, // 
+  data: string, // 
+  readAt: string, // 
 }
 
 export interface INotificationDestroyRequest {
@@ -12,17 +12,17 @@ export interface INotificationDestroyRequest {
 
 export interface INotificationQueryRequest {
   id?: string, // ID
-  notifiableType?: string, // 通知目标类型,如:App\Models\User
-  notifiableId?: number, // 通知目标ID
+  notifiableType?: string, // 
+  notifiableId?: number, // 
 }
 
 export interface INotificationUpdateRequest {
   id: string, // ID
-  type: string, // 通知类型(通知类名)
-  notifiableType: string, // 通知目标类型,如:App\Models\User
-  notifiableId: number, // 通知目标ID
-  data: string, // 通知数据(JSON)
-  readAt: string, // 已读时间,空=未读
+  type: string, // 
+  notifiableType: string, // 
+  notifiableId: number, // 
+  data: string, // 
+  readAt: string, // 
 }
 
 export interface INotificationDestroyResponse {
@@ -47,11 +47,11 @@ export interface INotificationQueryResponse {
 
 export interface INotificationResponse {
   id: string, // ID
-  type: string, // 通知类型(通知类名)
-  notifiableType: string, // 通知目标类型,如:App\Models\User
-  notifiableId: number, // 通知目标ID
-  data: string, // 通知数据(JSON)
-  readAt: string, // 已读时间,空=未读
+  type: string, // 
+  notifiableType: string, // 
+  notifiableId: number, // 
+  data: string, // 
+  readAt: string, // 
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间
 }

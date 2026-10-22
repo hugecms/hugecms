@@ -1,5 +1,5 @@
 export interface IPaymentChannelCreateRequest {
-  code: string, // 渠道标识:wechat,alipay,balance
+  code: string, // 渠道标识:wechat=微信支付,alipay=支付宝,balance=余额
   appid: string, // 应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号
   name: string, // 渠道名称
   config: string, // 渠道配置(JSON):商户号/密钥等
@@ -13,13 +13,13 @@ export interface IPaymentChannelDestroyRequest {
 
 export interface IPaymentChannelQueryRequest {
   id?: number, // ID
-  code?: string, // 渠道标识:wechat,alipay,balance
+  code?: string, // 渠道标识:wechat=微信支付,alipay=支付宝,balance=余额
   appid?: string, // 应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号
 }
 
 export interface IPaymentChannelUpdateRequest {
   id: number, // ID
-  code: string, // 渠道标识:wechat,alipay,balance
+  code: string, // 渠道标识:wechat=微信支付,alipay=支付宝,balance=余额
   appid: string, // 应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号
   name: string, // 渠道名称
   config: string, // 渠道配置(JSON):商户号/密钥等
@@ -49,7 +49,7 @@ export interface IPaymentChannelQueryResponse {
 
 export interface IPaymentChannelResponse {
   id: number, // ID
-  code: string, // 渠道标识:wechat,alipay,balance
+  code: string, // 渠道标识:wechat=微信支付,alipay=支付宝,balance=余额
   appid: string, // 应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号
   name: string, // 渠道名称
   config: string, // 渠道配置(JSON):商户号/密钥等

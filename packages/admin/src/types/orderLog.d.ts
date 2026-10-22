@@ -2,7 +2,7 @@ export interface IOrderLogCreateRequest {
   orderId: number, // 订单ID
   fromStatus: number, // 变更前状态
   toStatus: number, // 变更后状态
-  operatorType: string, // 操作账户类型:admin,user,system
+  operatorType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   operatorId: number, // 操作人ID
   operator: string, // 操作人名称快照
   note: string, // 操作备注
@@ -23,7 +23,7 @@ export interface IOrderLogUpdateRequest {
   orderId: number, // 订单ID
   fromStatus: number, // 变更前状态
   toStatus: number, // 变更后状态
-  operatorType: string, // 操作账户类型:admin,user,system
+  operatorType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   operatorId: number, // 操作人ID
   operator: string, // 操作人名称快照
   note: string, // 操作备注
@@ -55,7 +55,7 @@ export interface IOrderLogResponse {
   orderId: number, // 订单ID
   fromStatus: number, // 变更前状态
   toStatus: number, // 变更后状态
-  operatorType: string, // 操作账户类型:admin,user,system
+  operatorType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   operatorId: number, // 操作人ID
   operator: string, // 操作人名称快照
   note: string, // 操作备注

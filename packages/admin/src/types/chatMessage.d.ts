@@ -2,7 +2,7 @@ export interface IChatMessageCreateRequest {
   sessionId: number, // 会话ID
   senderType: string, // 发送者类型:user=用户,admin=客服,bot=机器人,system=系统
   senderId: number, // 发送者ID,system为0
-  type: string, // 消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件
+  type: string, // 消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件
   content: string, // 消息内容,文本或卡片数据(JSON)
   createTime: string, // 创建时间,消息只追加不修改
 }
@@ -21,7 +21,7 @@ export interface IChatMessageUpdateRequest {
   sessionId: number, // 会话ID
   senderType: string, // 发送者类型:user=用户,admin=客服,bot=机器人,system=系统
   senderId: number, // 发送者ID,system为0
-  type: string, // 消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件
+  type: string, // 消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件
   content: string, // 消息内容,文本或卡片数据(JSON)
   createTime: string, // 创建时间,消息只追加不修改
 }
@@ -51,7 +51,7 @@ export interface IChatMessageResponse {
   sessionId: number, // 会话ID
   senderType: string, // 发送者类型:user=用户,admin=客服,bot=机器人,system=系统
   senderId: number, // 发送者ID,system为0
-  type: string, // 消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件
+  type: string, // 消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件
   content: string, // 消息内容,文本或卡片数据(JSON)
   createTime: string, // 创建时间,消息只追加不修改
 }

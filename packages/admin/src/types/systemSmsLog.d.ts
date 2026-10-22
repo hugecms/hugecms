@@ -3,7 +3,7 @@ export interface ISystemSmsLogCreateRequest {
   template: string, // 模板标识,如:verify_code
   content: string, // 短信内容
   params: string, // 模板变量(JSON)
-  gateway: string, // 发送网关:aliyun,tencent,qiniu等
+  gateway: string, // 发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛
   status: number, // 状态:0=发送中,1=成功,2=失败
   messageId: string, // 网关消息ID
   error: string, // 失败原因
@@ -29,7 +29,7 @@ export interface ISystemSmsLogUpdateRequest {
   template: string, // 模板标识,如:verify_code
   content: string, // 短信内容
   params: string, // 模板变量(JSON)
-  gateway: string, // 发送网关:aliyun,tencent,qiniu等
+  gateway: string, // 发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛
   status: number, // 状态:0=发送中,1=成功,2=失败
   messageId: string, // 网关消息ID
   error: string, // 失败原因
@@ -64,7 +64,7 @@ export interface ISystemSmsLogResponse {
   template: string, // 模板标识,如:verify_code
   content: string, // 短信内容
   params: string, // 模板变量(JSON)
-  gateway: string, // 发送网关:aliyun,tencent,qiniu等
+  gateway: string, // 发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛
   status: number, // 状态:0=发送中,1=成功,2=失败
   messageId: string, // 网关消息ID
   error: string, // 失败原因

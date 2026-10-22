@@ -1,7 +1,7 @@
 export interface IUserSmsCodeCreateRequest {
   phone: string, // 手机号
   code: string, // 验证码
-  scene: string, // 场景:register,login,reset_password
+  scene: string, // 场景:register=注册,login=登录,reset_password=重置密码
   expireAt: string, // 过期时间
   usedAt: string, // 使用时间
   ip: string, // 发送IP,用于防刷
@@ -15,7 +15,7 @@ export interface IUserSmsCodeDestroyRequest {
 export interface IUserSmsCodeQueryRequest {
   id?: number, // ID
   phone?: string, // 手机号
-  scene?: string, // 场景:register,login,reset_password
+  scene?: string, // 场景:register=注册,login=登录,reset_password=重置密码
   ip?: string, // 发送IP,用于防刷
   createTime?: string, // 创建时间
 }
@@ -24,7 +24,7 @@ export interface IUserSmsCodeUpdateRequest {
   id: number, // ID
   phone: string, // 手机号
   code: string, // 验证码
-  scene: string, // 场景:register,login,reset_password
+  scene: string, // 场景:register=注册,login=登录,reset_password=重置密码
   expireAt: string, // 过期时间
   usedAt: string, // 使用时间
   ip: string, // 发送IP,用于防刷
@@ -55,7 +55,7 @@ export interface IUserSmsCodeResponse {
   id: number, // ID
   phone: string, // 手机号
   code: string, // 验证码
-  scene: string, // 场景:register,login,reset_password
+  scene: string, // 场景:register=注册,login=登录,reset_password=重置密码
   expireAt: string, // 过期时间
   usedAt: string, // 使用时间
   ip: string, // 发送IP,用于防刷

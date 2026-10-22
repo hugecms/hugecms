@@ -4,6 +4,7 @@ export interface IAdminUserCreateRequest {
   phone: string, // 手机号
   password: string, // 密码哈希
   status: number, // 状态:0=禁用,1=正常
+  isSuper: number, // 超级管理员:0=否,1=是;超管不受角色权限限制
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
 }
@@ -26,6 +27,7 @@ export interface IAdminUserUpdateRequest {
   phone: string, // 手机号
   password: string, // 密码哈希
   status: number, // 状态:0=禁用,1=正常
+  isSuper: number, // 超级管理员:0=否,1=是;超管不受角色权限限制
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
 }
@@ -56,6 +58,7 @@ export interface IAdminUserResponse {
   email: string, // 邮箱
   phone: string, // 手机号
   status: number, // 状态:0=禁用,1=正常
+  isSuper: number, // 超级管理员:0=否,1=是;超管不受角色权限限制
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
   createdAt: string, // 创建时间

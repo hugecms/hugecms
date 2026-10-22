@@ -66,3 +66,4 @@ export interface ISiteAdResponse {
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间
 }
+

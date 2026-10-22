@@ -1,9 +1,12 @@
 export interface IOrderItemCreateRequest {
   orderId: number, // 订单ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   productName: string, // 商品名称快照
   skuSpecs: string, // 规格快照
+  skuNo: string, // SKU编号快照
+  skuName: string, // SKU名称快照
+  skuImage: string, // SKU图片快照
   image: string, // 商品图快照
   price: string, // 成交单价
   quantity: number, // 数量
@@ -25,9 +28,12 @@ export interface IOrderItemUpdateRequest {
   id: number, // ID
   orderId: number, // 订单ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   productName: string, // 商品名称快照
   skuSpecs: string, // 规格快照
+  skuNo: string, // SKU编号快照
+  skuName: string, // SKU名称快照
+  skuImage: string, // SKU图片快照
   image: string, // 商品图快照
   price: string, // 成交单价
   quantity: number, // 数量
@@ -59,9 +65,12 @@ export interface IOrderItemResponse {
   id: number, // ID
   orderId: number, // 订单ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   productName: string, // 商品名称快照
   skuSpecs: string, // 规格快照
+  skuNo: string, // SKU编号快照
+  skuName: string, // SKU名称快照
+  skuImage: string, // SKU图片快照
   image: string, // 商品图快照
   price: string, // 成交单价
   quantity: number, // 数量

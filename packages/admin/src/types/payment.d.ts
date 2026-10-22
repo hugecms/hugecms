@@ -3,12 +3,15 @@ export interface IPaymentCreateRequest {
   userId: number, // 付款用户ID
   bizType: string, // 业务类型:order=订单支付,recharge=余额充值
   bizId: number, // 业务单据ID,如:订单ID/充值申请ID
-  payMethod: string, // 支付方式:wechat,alipay,balance
+  payMethod: string, // 支付方式:wechat=微信支付,alipay=支付宝,balance=余额
   appid: string, // 发起支付的应用AppID,关联system_apps,多端回调定位依据
   amount: string, // 支付金额
-  status: number, // 状态:0=待支付,1=成功,2=失败
+  status: number, // 状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)
   tradeNo: string, // 第三方交易号
   paidAt: string, // 支付成功时间
+  expireTime: string, // 支付超时时间,超时关单依据
+  closedAt: string, // 关闭时间
+  failReason: string, // 失败原因
 }
 
 export interface IPaymentDestroyRequest {
@@ -30,12 +33,15 @@ export interface IPaymentUpdateRequest {
   userId: number, // 付款用户ID
   bizType: string, // 业务类型:order=订单支付,recharge=余额充值
   bizId: number, // 业务单据ID,如:订单ID/充值申请ID
-  payMethod: string, // 支付方式:wechat,alipay,balance
+  payMethod: string, // 支付方式:wechat=微信支付,alipay=支付宝,balance=余额
   appid: string, // 发起支付的应用AppID,关联system_apps,多端回调定位依据
   amount: string, // 支付金额
-  status: number, // 状态:0=待支付,1=成功,2=失败
+  status: number, // 状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)
   tradeNo: string, // 第三方交易号
   paidAt: string, // 支付成功时间
+  expireTime: string, // 支付超时时间,超时关单依据
+  closedAt: string, // 关闭时间
+  failReason: string, // 失败原因
 }
 
 export interface IPaymentDestroyResponse {
@@ -64,12 +70,15 @@ export interface IPaymentResponse {
   userId: number, // 付款用户ID
   bizType: string, // 业务类型:order=订单支付,recharge=余额充值
   bizId: number, // 业务单据ID,如:订单ID/充值申请ID
-  payMethod: string, // 支付方式:wechat,alipay,balance
+  payMethod: string, // 支付方式:wechat=微信支付,alipay=支付宝,balance=余额
   appid: string, // 发起支付的应用AppID,关联system_apps,多端回调定位依据
   amount: string, // 支付金额
-  status: number, // 状态:0=待支付,1=成功,2=失败
+  status: number, // 状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)
   tradeNo: string, // 第三方交易号
   paidAt: string, // 支付成功时间
+  expireTime: string, // 支付超时时间,超时关单依据
+  closedAt: string, // 关闭时间
+  failReason: string, // 失败原因
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间
   deletedAt: string, // 删除时间

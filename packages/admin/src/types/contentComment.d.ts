@@ -1,6 +1,6 @@
 export interface IContentCommentCreateRequest {
   userId: number, // 评论用户ID
-  targetType: string, // 目标类型:article=文章,商品评价走product_reviews表
+  targetType: string, // 目标类型:article=文章;商品评价走product_reviews表
   targetId: number, // 目标ID
   parentId: number, // 父评论ID,0=顶级
   content: string, // 评论内容
@@ -15,14 +15,14 @@ export interface IContentCommentDestroyRequest {
 export interface IContentCommentQueryRequest {
   id?: number, // ID
   userId?: number, // 评论用户ID
-  targetType?: string, // 目标类型:article=文章,商品评价走product_reviews表
+  targetType?: string, // 目标类型:article=文章;商品评价走product_reviews表
   targetId?: number, // 目标ID
 }
 
 export interface IContentCommentUpdateRequest {
   id: number, // ID
   userId: number, // 评论用户ID
-  targetType: string, // 目标类型:article=文章,商品评价走product_reviews表
+  targetType: string, // 目标类型:article=文章;商品评价走product_reviews表
   targetId: number, // 目标ID
   parentId: number, // 父评论ID,0=顶级
   content: string, // 评论内容
@@ -53,7 +53,7 @@ export interface IContentCommentQueryResponse {
 export interface IContentCommentResponse {
   id: number, // ID
   userId: number, // 评论用户ID
-  targetType: string, // 目标类型:article=文章,商品评价走product_reviews表
+  targetType: string, // 目标类型:article=文章;商品评价走product_reviews表
   targetId: number, // 目标ID
   parentId: number, // 父评论ID,0=顶级
   content: string, // 评论内容

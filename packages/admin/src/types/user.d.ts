@@ -6,6 +6,7 @@ export interface IUserCreateRequest {
   status: number, // 状态:0=禁用,1=正常
   rankId: number, // 会员等级ID,0=默认等级
   points: number, // 积分余额
+  shareCode: string, // 推广码,分销/分享归因载体
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
 }
@@ -19,6 +20,7 @@ export interface IUserQueryRequest {
   username?: string, // 用户名
   email?: string, // 邮箱
   phone?: string, // 手机号
+  shareCode?: string, // 推广码,分销/分享归因载体
 }
 
 export interface IUserUpdateRequest {
@@ -30,6 +32,7 @@ export interface IUserUpdateRequest {
   status: number, // 状态:0=禁用,1=正常
   rankId: number, // 会员等级ID,0=默认等级
   points: number, // 积分余额
+  shareCode: string, // 推广码,分销/分享归因载体
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
 }
@@ -62,6 +65,7 @@ export interface IUserResponse {
   status: number, // 状态:0=禁用,1=正常
   rankId: number, // 会员等级ID,0=默认等级
   points: number, // 积分余额
+  shareCode: string, // 推广码,分销/分享归因载体
   lastLoginTime: string, // 最后登录时间
   lastLoginIp: string, // 最后登录IP
   createdAt: string, // 创建时间

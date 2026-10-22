@@ -1,6 +1,6 @@
 export interface IMarketingPromotionScopeCreateRequest {
   promotionId: number, // 促销活动ID,关联marketing_promotions
-  scopeType: string, // 范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+  scopeType: string, // 范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
   targetId: number, // 目标ID,按scope_type指向分类/品牌/商品
 }
 
@@ -11,14 +11,14 @@ export interface IMarketingPromotionScopeDestroyRequest {
 export interface IMarketingPromotionScopeQueryRequest {
   id?: number, // ID
   promotionId?: number, // 促销活动ID,关联marketing_promotions
-  scopeType?: string, // 范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+  scopeType?: string, // 范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
   targetId?: number, // 目标ID,按scope_type指向分类/品牌/商品
 }
 
 export interface IMarketingPromotionScopeUpdateRequest {
   id: number, // ID
   promotionId: number, // 促销活动ID,关联marketing_promotions
-  scopeType: string, // 范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+  scopeType: string, // 范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
   targetId: number, // 目标ID,按scope_type指向分类/品牌/商品
 }
 
@@ -45,7 +45,7 @@ export interface IMarketingPromotionScopeQueryResponse {
 export interface IMarketingPromotionScopeResponse {
   id: number, // ID
   promotionId: number, // 促销活动ID,关联marketing_promotions
-  scopeType: string, // 范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+  scopeType: string, // 范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
   targetId: number, // 目标ID,按scope_type指向分类/品牌/商品
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间

@@ -6,7 +6,7 @@ export interface IChatSessionCreateRequest {
   status: number, // 状态:1=进行中,2=已结束
   userLastReadId: number, // 用户已读消息水位(消息ID),会话级已读
   serverLastReadId: number, // 客服已读消息水位(消息ID)
-  rating: number, // 满意度评分:0=未评,1-5星
+  rating: number, // 满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星
   ratedAt: string, // 评分时间
   assignedAt: string, // 分配客服时间
   closedAt: string, // 结束时间
@@ -34,7 +34,7 @@ export interface IChatSessionUpdateRequest {
   status: number, // 状态:1=进行中,2=已结束
   userLastReadId: number, // 用户已读消息水位(消息ID),会话级已读
   serverLastReadId: number, // 客服已读消息水位(消息ID)
-  rating: number, // 满意度评分:0=未评,1-5星
+  rating: number, // 满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星
   ratedAt: string, // 评分时间
   assignedAt: string, // 分配客服时间
   closedAt: string, // 结束时间
@@ -70,7 +70,7 @@ export interface IChatSessionResponse {
   status: number, // 状态:1=进行中,2=已结束
   userLastReadId: number, // 用户已读消息水位(消息ID),会话级已读
   serverLastReadId: number, // 客服已读消息水位(消息ID)
-  rating: number, // 满意度评分:0=未评,1-5星
+  rating: number, // 满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星
   ratedAt: string, // 评分时间
   assignedAt: string, // 分配客服时间
   closedAt: string, // 结束时间

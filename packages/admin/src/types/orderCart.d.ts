@@ -1,7 +1,7 @@
 export interface IOrderCartCreateRequest {
   userId: number, // 用户ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   productName: string, // 商品名称快照
   image: string, // 商品图快照
   price: string, // 加购时价格快照
@@ -17,14 +17,14 @@ export interface IOrderCartQueryRequest {
   id?: number, // ID
   userId?: number, // 用户ID
   productId?: number, // 商品ID
-  skuId?: number, // SKU ID,0=单规格
+  skuId?: number, // SKU ID,关联product_skus
 }
 
 export interface IOrderCartUpdateRequest {
   id: number, // ID
   userId: number, // 用户ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   productName: string, // 商品名称快照
   image: string, // 商品图快照
   price: string, // 加购时价格快照
@@ -56,7 +56,7 @@ export interface IOrderCartResponse {
   id: number, // ID
   userId: number, // 用户ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   productName: string, // 商品名称快照
   image: string, // 商品图快照
   price: string, // 加购时价格快照

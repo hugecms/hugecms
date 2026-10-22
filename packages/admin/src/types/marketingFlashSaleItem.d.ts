@@ -1,7 +1,7 @@
 export interface IMarketingFlashSaleItemCreateRequest {
   saleId: number, // 秒杀活动ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   originalPrice: string, // 原价快照
   price: string, // 秒杀价
   totalStock: number, // 秒杀总量
@@ -19,7 +19,7 @@ export interface IMarketingFlashSaleItemQueryRequest {
   id?: number, // ID
   saleId?: number, // 秒杀活动ID
   productId?: number, // 商品ID
-  skuId?: number, // SKU ID,0=单规格
+  skuId?: number, // SKU ID,关联product_skus
   status?: number, // 状态:0=下架,1=上架
 }
 
@@ -27,7 +27,7 @@ export interface IMarketingFlashSaleItemUpdateRequest {
   id: number, // ID
   saleId: number, // 秒杀活动ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   originalPrice: string, // 原价快照
   price: string, // 秒杀价
   totalStock: number, // 秒杀总量
@@ -61,7 +61,7 @@ export interface IMarketingFlashSaleItemResponse {
   id: number, // ID
   saleId: number, // 秒杀活动ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   originalPrice: string, // 原价快照
   price: string, // 秒杀价
   totalStock: number, // 秒杀总量

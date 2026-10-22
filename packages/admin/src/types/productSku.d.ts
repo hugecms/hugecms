@@ -1,9 +1,15 @@
 export interface IProductSkuCreateRequest {
   productId: number, // 商品ID
   specs: string, // 规格值(JSON),如:{&quot;颜色&quot;:&quot;红&quot;,&quot;尺码&quot;:&quot;L&quot;}
+  skuNo: string, // SKU编号
+  barcode: string, // 条码,仓储/扫码出入库
+  image: string, // SKU图片
   price: string, // 售价
+  linePrice: string, // 划线价(市场价展示)
+  costPrice: string, // 成本价,毛利核算
+  weight: string, // 重量(kg),运费计算
   stock: number, // 库存
-  lockedStock: number, // 锁定库存(下单未支付),可售=stock-locked_stock
+  warnStock: number, // 库存预警线,库存&lt;=该值触发预警,0=不预警
   status: number, // 状态:0=禁用,1=启用
 }
 
@@ -14,15 +20,23 @@ export interface IProductSkuDestroyRequest {
 export interface IProductSkuQueryRequest {
   id?: number, // ID
   productId?: number, // 商品ID
+  skuNo?: string, // SKU编号
+  barcode?: string, // 条码,仓储/扫码出入库
 }
 
 export interface IProductSkuUpdateRequest {
   id: number, // ID
   productId: number, // 商品ID
   specs: string, // 规格值(JSON),如:{&quot;颜色&quot;:&quot;红&quot;,&quot;尺码&quot;:&quot;L&quot;}
+  skuNo: string, // SKU编号
+  barcode: string, // 条码,仓储/扫码出入库
+  image: string, // SKU图片
   price: string, // 售价
+  linePrice: string, // 划线价(市场价展示)
+  costPrice: string, // 成本价,毛利核算
+  weight: string, // 重量(kg),运费计算
   stock: number, // 库存
-  lockedStock: number, // 锁定库存(下单未支付),可售=stock-locked_stock
+  warnStock: number, // 库存预警线,库存&lt;=该值触发预警,0=不预警
   status: number, // 状态:0=禁用,1=启用
 }
 
@@ -50,9 +64,15 @@ export interface IProductSkuResponse {
   id: number, // ID
   productId: number, // 商品ID
   specs: string, // 规格值(JSON),如:{&quot;颜色&quot;:&quot;红&quot;,&quot;尺码&quot;:&quot;L&quot;}
+  skuNo: string, // SKU编号
+  barcode: string, // 条码,仓储/扫码出入库
+  image: string, // SKU图片
   price: string, // 售价
+  linePrice: string, // 划线价(市场价展示)
+  costPrice: string, // 成本价,毛利核算
+  weight: string, // 重量(kg),运费计算
   stock: number, // 库存
-  lockedStock: number, // 锁定库存(下单未支付),可售=stock-locked_stock
+  warnStock: number, // 库存预警线,库存&lt;=该值触发预警,0=不预警
   status: number, // 状态:0=禁用,1=启用
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间

@@ -1,6 +1,6 @@
 export interface IPaymentCallbackCreateRequest {
   paymentId: number, // 关联支付单ID,未匹配到支付单时为空
-  channel: string, // 渠道:wechat,alipay
+  channel: string, // 渠道:wechat=微信支付,alipay=支付宝
   eventType: string, // 事件类型:payment=支付通知,refund=退款通知
   notifyId: string, // 第三方通知唯一ID,幂等去重依据
   tradeNo: string, // 第三方交易号
@@ -18,7 +18,7 @@ export interface IPaymentCallbackDestroyRequest {
 export interface IPaymentCallbackQueryRequest {
   id?: number, // ID
   paymentId?: number, // 关联支付单ID,未匹配到支付单时为空
-  channel?: string, // 渠道:wechat,alipay
+  channel?: string, // 渠道:wechat=微信支付,alipay=支付宝
   notifyId?: string, // 第三方通知唯一ID,幂等去重依据
   tradeNo?: string, // 第三方交易号
 }
@@ -26,7 +26,7 @@ export interface IPaymentCallbackQueryRequest {
 export interface IPaymentCallbackUpdateRequest {
   id: number, // ID
   paymentId: number, // 关联支付单ID,未匹配到支付单时为空
-  channel: string, // 渠道:wechat,alipay
+  channel: string, // 渠道:wechat=微信支付,alipay=支付宝
   eventType: string, // 事件类型:payment=支付通知,refund=退款通知
   notifyId: string, // 第三方通知唯一ID,幂等去重依据
   tradeNo: string, // 第三方交易号
@@ -60,7 +60,7 @@ export interface IPaymentCallbackQueryResponse {
 export interface IPaymentCallbackResponse {
   id: number, // ID
   paymentId: number, // 关联支付单ID,未匹配到支付单时为空
-  channel: string, // 渠道:wechat,alipay
+  channel: string, // 渠道:wechat=微信支付,alipay=支付宝
   eventType: string, // 事件类型:payment=支付通知,refund=退款通知
   notifyId: string, // 第三方通知唯一ID,幂等去重依据
   tradeNo: string, // 第三方交易号

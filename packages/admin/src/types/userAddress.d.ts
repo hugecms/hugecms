@@ -2,7 +2,13 @@ export interface IUserAddressCreateRequest {
   userId: number, // 用户ID
   receiverName: string, // 收货人
   receiverPhone: string, // 收货电话
-  receiverRegion: string, // 省市区
+  receiverRegion: string, // 省市区(合并展示用)
+  receiverProvince: string, // 省
+  receiverCity: string, // 市
+  receiverDistrict: string, // 区县
+  receiverProvinceCode: string, // 省行政区划码,物流面单
+  receiverCityCode: string, // 市行政区划码
+  receiverDistrictCode: string, // 区县行政区划码
   receiverAddress: string, // 详细地址
   isDefault: number, // 默认地址:0=否,1=是
 }
@@ -21,7 +27,13 @@ export interface IUserAddressUpdateRequest {
   userId: number, // 用户ID
   receiverName: string, // 收货人
   receiverPhone: string, // 收货电话
-  receiverRegion: string, // 省市区
+  receiverRegion: string, // 省市区(合并展示用)
+  receiverProvince: string, // 省
+  receiverCity: string, // 市
+  receiverDistrict: string, // 区县
+  receiverProvinceCode: string, // 省行政区划码,物流面单
+  receiverCityCode: string, // 市行政区划码
+  receiverDistrictCode: string, // 区县行政区划码
   receiverAddress: string, // 详细地址
   isDefault: number, // 默认地址:0=否,1=是
 }
@@ -51,7 +63,13 @@ export interface IUserAddressResponse {
   userId: number, // 用户ID
   receiverName: string, // 收货人
   receiverPhone: string, // 收货电话
-  receiverRegion: string, // 省市区
+  receiverRegion: string, // 省市区(合并展示用)
+  receiverProvince: string, // 省
+  receiverCity: string, // 市
+  receiverDistrict: string, // 区县
+  receiverProvinceCode: string, // 省行政区划码,物流面单
+  receiverCityCode: string, // 市行政区划码
+  receiverDistrictCode: string, // 区县行政区划码
   receiverAddress: string, // 详细地址
   isDefault: number, // 默认地址:0=否,1=是
   createdAt: string, // 创建时间

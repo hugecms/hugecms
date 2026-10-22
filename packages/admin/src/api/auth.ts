@@ -1,17 +1,7 @@
-import { get, post } from '@/utils/request'
-import type { LoginParams, LoginResult, UserInfo } from '@/types/api'
+import { post } from '@/utils/request'
+import type { IAuthLoginRequest, IAuthLoginResponse } from '@/types/auth'
 
-/** 登录 */
-export function loginApi(data: LoginParams): Promise<LoginResult> {
-  return post<LoginResult>('/admin/auth/login', data)
-}
-
-/** 退出登录 */
-export function logoutApi(): Promise<null> {
-  return post<null>('/admin/auth/logout')
-}
-
-/** 当前登录用户信息 */
-export function getProfileApi(): Promise<UserInfo> {
-  return get<UserInfo>('/admin/auth/profile')
+/** [认证模块] 管理员登录接口 */
+export function authLoginApi(data: IAuthLoginRequest): Promise<IAuthLoginResponse> {
+  return post<IAuthLoginResponse>('admin/auth/login', data)
 }

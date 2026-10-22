@@ -1,6 +1,6 @@
 export interface IUserFavoriteCreateRequest {
   userId: number, // 用户ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   createTime: string, // 创建时间
 }
@@ -12,14 +12,14 @@ export interface IUserFavoriteDestroyRequest {
 export interface IUserFavoriteQueryRequest {
   id?: number, // ID
   userId?: number, // 用户ID
-  targetType?: string, // 目标类型:article,product
+  targetType?: string, // 目标类型:article=文章,product=商品
   targetId?: number, // 目标ID
 }
 
 export interface IUserFavoriteUpdateRequest {
   id: number, // ID
   userId: number, // 用户ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   createTime: string, // 创建时间
 }
@@ -47,7 +47,7 @@ export interface IUserFavoriteQueryResponse {
 export interface IUserFavoriteResponse {
   id: number, // ID
   userId: number, // 用户ID
-  targetType: string, // 目标类型:article,product
+  targetType: string, // 目标类型:article=文章,product=商品
   targetId: number, // 目标ID
   createTime: string, // 创建时间
 }

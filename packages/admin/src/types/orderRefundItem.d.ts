@@ -2,7 +2,7 @@ export interface IOrderRefundItemCreateRequest {
   refundId: number, // 退款单ID
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   quantity: number, // 退货数量
   amount: string, // 退款金额
   createTime: string, // 创建时间
@@ -23,7 +23,7 @@ export interface IOrderRefundItemUpdateRequest {
   refundId: number, // 退款单ID
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   quantity: number, // 退货数量
   amount: string, // 退款金额
   createTime: string, // 创建时间
@@ -54,7 +54,7 @@ export interface IOrderRefundItemResponse {
   refundId: number, // 退款单ID
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   quantity: number, // 退货数量
   amount: string, // 退款金额
   createTime: string, // 创建时间

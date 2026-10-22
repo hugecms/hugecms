@@ -2,7 +2,7 @@ export interface IFormFieldCreateRequest {
   formId: number, // 表单ID
   name: string, // 字段名称,如:联系电话
   fieldName: string, // 字段标识,英文,提交数据的键
-  type: string, // 类型:text,textarea,select,radio,checkbox,number,date,image,file
+  type: string, // 类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件
   options: string, // 选项(JSON),select/radio/checkbox用
   defaultValue: string, // 默认值
   isRequired: number, // 必填:0=否,1=是
@@ -26,7 +26,7 @@ export interface IFormFieldUpdateRequest {
   formId: number, // 表单ID
   name: string, // 字段名称,如:联系电话
   fieldName: string, // 字段标识,英文,提交数据的键
-  type: string, // 类型:text,textarea,select,radio,checkbox,number,date,image,file
+  type: string, // 类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件
   options: string, // 选项(JSON),select/radio/checkbox用
   defaultValue: string, // 默认值
   isRequired: number, // 必填:0=否,1=是
@@ -60,7 +60,7 @@ export interface IFormFieldResponse {
   formId: number, // 表单ID
   name: string, // 字段名称,如:联系电话
   fieldName: string, // 字段标识,英文,提交数据的键
-  type: string, // 类型:text,textarea,select,radio,checkbox,number,date,image,file
+  type: string, // 类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件
   options: string, // 选项(JSON),select/radio/checkbox用
   defaultValue: string, // 默认值
   isRequired: number, // 必填:0=否,1=是

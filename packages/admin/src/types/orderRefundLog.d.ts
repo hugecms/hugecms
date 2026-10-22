@@ -1,6 +1,6 @@
 export interface IOrderRefundLogCreateRequest {
   refundId: number, // 退款单ID
-  operatorType: string, // 操作账户类型:admin,user,system
+  operatorType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   operatorId: number, // 操作人ID
   operator: string, // 操作人名称快照
   content: string, // 协商内容/操作说明
@@ -20,7 +20,7 @@ export interface IOrderRefundLogQueryRequest {
 export interface IOrderRefundLogUpdateRequest {
   id: number, // ID
   refundId: number, // 退款单ID
-  operatorType: string, // 操作账户类型:admin,user,system
+  operatorType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   operatorId: number, // 操作人ID
   operator: string, // 操作人名称快照
   content: string, // 协商内容/操作说明
@@ -51,7 +51,7 @@ export interface IOrderRefundLogQueryResponse {
 export interface IOrderRefundLogResponse {
   id: number, // ID
   refundId: number, // 退款单ID
-  operatorType: string, // 操作账户类型:admin,user,system
+  operatorType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   operatorId: number, // 操作人ID
   operator: string, // 操作人名称快照
   content: string, // 协商内容/操作说明

@@ -1,4 +1,4 @@
-export interface ISiteDailyStatisticsCreateRequest {
+export interface ISiteDailyStatisticCreateRequest {
   statDate: string, // 统计日期
   pv: number, // 页面浏览量
   uv: number, // 独立访客数
@@ -11,16 +11,16 @@ export interface ISiteDailyStatisticsCreateRequest {
   refundAmount: string, // 退款金额
 }
 
-export interface ISiteDailyStatisticsDestroyRequest {
+export interface ISiteDailyStatisticDestroyRequest {
   ids: number[], // 数据ID集合
 }
 
-export interface ISiteDailyStatisticsQueryRequest {
+export interface ISiteDailyStatisticQueryRequest {
   id?: number, // ID
   statDate?: string, // 统计日期
 }
 
-export interface ISiteDailyStatisticsUpdateRequest {
+export interface ISiteDailyStatisticUpdateRequest {
   id: number, // ID
   statDate: string, // 统计日期
   pv: number, // 页面浏览量
@@ -34,13 +34,13 @@ export interface ISiteDailyStatisticsUpdateRequest {
   refundAmount: string, // 退款金额
 }
 
-export interface ISiteDailyStatisticsDestroyResponse {
+export interface ISiteDailyStatisticDestroyResponse {
   status: number, // 状态:1成功，2失败
 }
 
-export interface ISiteDailyStatisticsQueryResponse {
+export interface ISiteDailyStatisticQueryResponse {
   currentPage: number, // 当前页码
-  data: ISiteDailyStatisticsResponse[], // 数据列表
+  data: ISiteDailyStatisticResponse[], // 数据列表
   firstPageUrl: string, // 首页URL
   from: number, // 当前页面上的开始位置
   lastPage: number, // 最后页码
@@ -54,7 +54,7 @@ export interface ISiteDailyStatisticsQueryResponse {
   total: number, // 数据总数
 }
 
-export interface ISiteDailyStatisticsResponse {
+export interface ISiteDailyStatisticResponse {
   id: number, // ID
   statDate: string, // 统计日期
   pv: number, // 页面浏览量

@@ -1,11 +1,11 @@
 export interface ISystemAttachmentCreateRequest {
-  storage: string, // 存储驱动:local,oss,qiniu
+  storage: string, // 存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛
   filePath: string, // 文件路径
   fileName: string, // 原始文件名
   mimeType: string, // MIME类型
   fileSize: number, // 文件大小(字节)
-  module: string, // 所属模块:article,product
-  userType: string, // 上传账户类型:admin,user
+  module: string, // 所属模块:article=文章,product=商品
+  userType: string, // 上传账户类型:admin=后台,user=前台
   userId: number, // 上传人ID
   createTime: string, // 创建时间
 }
@@ -16,18 +16,18 @@ export interface ISystemAttachmentDestroyRequest {
 
 export interface ISystemAttachmentQueryRequest {
   id?: number, // ID
-  module?: string, // 所属模块:article,product
+  module?: string, // 所属模块:article=文章,product=商品
 }
 
 export interface ISystemAttachmentUpdateRequest {
   id: number, // ID
-  storage: string, // 存储驱动:local,oss,qiniu
+  storage: string, // 存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛
   filePath: string, // 文件路径
   fileName: string, // 原始文件名
   mimeType: string, // MIME类型
   fileSize: number, // 文件大小(字节)
-  module: string, // 所属模块:article,product
-  userType: string, // 上传账户类型:admin,user
+  module: string, // 所属模块:article=文章,product=商品
+  userType: string, // 上传账户类型:admin=后台,user=前台
   userId: number, // 上传人ID
   createTime: string, // 创建时间
 }
@@ -54,13 +54,13 @@ export interface ISystemAttachmentQueryResponse {
 
 export interface ISystemAttachmentResponse {
   id: number, // ID
-  storage: string, // 存储驱动:local,oss,qiniu
+  storage: string, // 存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛
   filePath: string, // 文件路径
   fileName: string, // 原始文件名
   mimeType: string, // MIME类型
   fileSize: number, // 文件大小(字节)
-  module: string, // 所属模块:article,product
-  userType: string, // 上传账户类型:admin,user
+  module: string, // 所属模块:article=文章,product=商品
+  userType: string, // 上传账户类型:admin=后台,user=前台
   userId: number, // 上传人ID
   createTime: string, // 创建时间
 }

@@ -1,7 +1,7 @@
 export interface IProductStockReminderCreateRequest {
   userId: number, // 登记用户ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格/不限规格
+  skuId: number, // SKU ID,0=不限规格
   status: number, // 状态:0=待提醒,1=已提醒,2=已取消
   notifiedAt: string, // 提醒时间
 }
@@ -14,7 +14,7 @@ export interface IProductStockReminderQueryRequest {
   id?: number, // ID
   userId?: number, // 登记用户ID
   productId?: number, // 商品ID
-  skuId?: number, // SKU ID,0=单规格/不限规格
+  skuId?: number, // SKU ID,0=不限规格
   status?: number, // 状态:0=待提醒,1=已提醒,2=已取消
 }
 
@@ -22,7 +22,7 @@ export interface IProductStockReminderUpdateRequest {
   id: number, // ID
   userId: number, // 登记用户ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格/不限规格
+  skuId: number, // SKU ID,0=不限规格
   status: number, // 状态:0=待提醒,1=已提醒,2=已取消
   notifiedAt: string, // 提醒时间
 }
@@ -51,7 +51,7 @@ export interface IProductStockReminderResponse {
   id: number, // ID
   userId: number, // 登记用户ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格/不限规格
+  skuId: number, // SKU ID,0=不限规格
   status: number, // 状态:0=待提醒,1=已提醒,2=已取消
   notifiedAt: string, // 提醒时间
   createdAt: string, // 创建时间

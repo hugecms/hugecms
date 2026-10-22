@@ -2,7 +2,7 @@ export interface ISystemIpBlacklistCreateRequest {
   ip: string, // IP地址,支持IPv4/IPv6
   reason: string, // 拉黑原因
   expiredAt: string, // 过期时间,空=永久
-  userType: string, // 操作账户类型:admin,system
+  userType: string, // 操作账户类型:admin=后台,system=系统
   userId: number, // 操作人ID
 }
 
@@ -20,7 +20,7 @@ export interface ISystemIpBlacklistUpdateRequest {
   ip: string, // IP地址,支持IPv4/IPv6
   reason: string, // 拉黑原因
   expiredAt: string, // 过期时间,空=永久
-  userType: string, // 操作账户类型:admin,system
+  userType: string, // 操作账户类型:admin=后台,system=系统
   userId: number, // 操作人ID
 }
 
@@ -49,7 +49,7 @@ export interface ISystemIpBlacklistResponse {
   ip: string, // IP地址,支持IPv4/IPv6
   reason: string, // 拉黑原因
   expiredAt: string, // 过期时间,空=永久
-  userType: string, // 操作账户类型:admin,system
+  userType: string, // 操作账户类型:admin=后台,system=系统
   userId: number, // 操作人ID
   createdAt: string, // 创建时间
   updatedAt: string, // 更新时间

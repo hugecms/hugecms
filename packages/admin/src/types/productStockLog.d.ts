@@ -1,12 +1,12 @@
 export interface IProductStockLogCreateRequest {
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格商品
+  skuId: number, // SKU ID,关联product_skus
   changeType: string, // 变动类型:order=下单占用,cancel=取消释放,refund=退货回补,adjust=人工调整
   changeQuantity: number, // 变动数量,正数入库负数出库
   beforeStock: number, // 变动前库存
   afterStock: number, // 变动后库存
   relatedId: number, // 关联单据ID(订单/退款单)
-  userType: string, // 操作账户类型:admin,user,system
+  userType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   userId: number, // 操作人ID
   remark: string, // 备注
   createTime: string, // 创建时间
@@ -19,20 +19,20 @@ export interface IProductStockLogDestroyRequest {
 export interface IProductStockLogQueryRequest {
   id?: number, // ID
   productId?: number, // 商品ID
-  skuId?: number, // SKU ID,0=单规格商品
+  skuId?: number, // SKU ID,关联product_skus
   relatedId?: number, // 关联单据ID(订单/退款单)
 }
 
 export interface IProductStockLogUpdateRequest {
   id: number, // ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格商品
+  skuId: number, // SKU ID,关联product_skus
   changeType: string, // 变动类型:order=下单占用,cancel=取消释放,refund=退货回补,adjust=人工调整
   changeQuantity: number, // 变动数量,正数入库负数出库
   beforeStock: number, // 变动前库存
   afterStock: number, // 变动后库存
   relatedId: number, // 关联单据ID(订单/退款单)
-  userType: string, // 操作账户类型:admin,user,system
+  userType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   userId: number, // 操作人ID
   remark: string, // 备注
   createTime: string, // 创建时间
@@ -61,13 +61,13 @@ export interface IProductStockLogQueryResponse {
 export interface IProductStockLogResponse {
   id: number, // ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格商品
+  skuId: number, // SKU ID,关联product_skus
   changeType: string, // 变动类型:order=下单占用,cancel=取消释放,refund=退货回补,adjust=人工调整
   changeQuantity: number, // 变动数量,正数入库负数出库
   beforeStock: number, // 变动前库存
   afterStock: number, // 变动后库存
   relatedId: number, // 关联单据ID(订单/退款单)
-  userType: string, // 操作账户类型:admin,user,system
+  userType: string, // 操作账户类型:admin=后台,user=前台,system=系统
   userId: number, // 操作人ID
   remark: string, // 备注
   createTime: string, // 创建时间

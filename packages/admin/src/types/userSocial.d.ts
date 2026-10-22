@@ -1,6 +1,6 @@
 export interface IUserSocialCreateRequest {
   userId: number, // 用户ID
-  platform: string, // 平台:wechat,qq,weibo,github
+  platform: string, // 平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub
   openId: string, // 第三方OpenID
   unionId: string, // 第三方UnionID,如微信多应用互通
   nickname: string, // 第三方昵称快照
@@ -14,14 +14,14 @@ export interface IUserSocialDestroyRequest {
 export interface IUserSocialQueryRequest {
   id?: number, // ID
   userId?: number, // 用户ID
-  platform?: string, // 平台:wechat,qq,weibo,github
+  platform?: string, // 平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub
   openId?: string, // 第三方OpenID
 }
 
 export interface IUserSocialUpdateRequest {
   id: number, // ID
   userId: number, // 用户ID
-  platform: string, // 平台:wechat,qq,weibo,github
+  platform: string, // 平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub
   openId: string, // 第三方OpenID
   unionId: string, // 第三方UnionID,如微信多应用互通
   nickname: string, // 第三方昵称快照
@@ -51,7 +51,7 @@ export interface IUserSocialQueryResponse {
 export interface IUserSocialResponse {
   id: number, // ID
   userId: number, // 用户ID
-  platform: string, // 平台:wechat,qq,weibo,github
+  platform: string, // 平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub
   openId: string, // 第三方OpenID
   unionId: string, // 第三方UnionID,如微信多应用互通
   nickname: string, // 第三方昵称快照

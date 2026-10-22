@@ -2,7 +2,7 @@ export interface IOrderShipmentItemCreateRequest {
   shipmentId: number, // 发货单ID
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   quantity: number, // 发货数量
   createTime: string, // 创建时间
 }
@@ -22,7 +22,7 @@ export interface IOrderShipmentItemUpdateRequest {
   shipmentId: number, // 发货单ID
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   quantity: number, // 发货数量
   createTime: string, // 创建时间
 }
@@ -52,7 +52,7 @@ export interface IOrderShipmentItemResponse {
   shipmentId: number, // 发货单ID
   orderItemId: number, // 订单明细ID
   productId: number, // 商品ID
-  skuId: number, // SKU ID,0=单规格
+  skuId: number, // SKU ID,关联product_skus
   quantity: number, // 发货数量
   createTime: string, // 创建时间
 }
