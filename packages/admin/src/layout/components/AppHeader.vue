@@ -176,8 +176,13 @@ async function handleCommand(command: string): Promise<void> {
 
 .header-action {
   font-size: 18px;
-  color: #303133;
+  color: #909399;
   cursor: pointer;
+  transition: color 0.15s;
+}
+
+.header-action:hover {
+  color: var(--el-color-primary);
 }
 
 .header-user {

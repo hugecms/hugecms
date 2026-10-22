@@ -25,3 +25,39 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+/* ============================================================
+ * 主题变量（方案 A：深蓝侧栏 + Ant 蓝主色）
+ * Element Plus 按需引入同样读取这些 CSS 变量，覆盖 :root 即可生效
+ * ============================================================ */
+:root {
+  /* 主色与衍生色 */
+  --el-color-primary: #1677ff;
+  --el-color-primary-light-3: #4c94ff;
+  --el-color-primary-light-5: #80b3ff;
+  --el-color-primary-light-7: #b3d1ff;
+  --el-color-primary-light-8: #cce0ff;
+  --el-color-primary-light-9: #e6f0ff;
+  --el-color-primary-dark-2: #0e5fd8;
+
+  /* 语义色 */
+  --el-color-success: #52c41a;
+  --el-color-warning: #faad14;
+  --el-color-danger: #ff4d4f;
+  --el-color-info: #909399;
+
+  /* 布局 token：一级深色导航 / 二级浅色导航 / 内容区 */
+  --app-primary-nav-bg: #001529;
+  --app-primary-nav-text: rgb(255 255 255 / 65%);
+  --app-primary-nav-text-active: #ffffff;
+  --app-primary-nav-active-bg: rgb(22 119 255 / 22%);
+  --app-secondary-nav-bg: #ffffff;
+  --app-secondary-nav-text: #4e5969;
+  --app-secondary-nav-active-bg: #e6f0ff;
+  --app-content-bg: #f5f7fa;
+  --app-border: #ebedf0;
+
+  /* 电商强调色：仅用于价格、活动标签、促销徽标，不做主色 */
+  --app-price-color: #fa541c;
+  --app-promotion-color: #ff6b00;
+}

@@ -16,7 +16,7 @@ export const productRoutes: RouteRecordRaw[] = [
       { path: 'volume-price', name: 'productVolumePrice', component: () => import('@/views/PlaceholderView.vue'), meta: { title: '阶梯价', permission: 'product:volumePrice' } }, // TODO(批次2)
       { path: 'review', name: 'productReview', component: () => import('@/views/PlaceholderView.vue'), meta: { title: '商品评价', permission: 'product:review' } }, // TODO(批次2)
       { path: 'stock-log', name: 'productStockLog', component: () => import('@/views/PlaceholderView.vue'), meta: { title: '库存流水', permission: 'product:stockLog' } }, // TODO(批次2)
-      { path: 'inventory', name: 'product:inventory', component: () => import('@/views/PlaceholderView.vue'), meta: { title: '库存管理', permission: 'product:inventory' } }, // TODO(批次2)
+      { path: 'inventory', name: 'productInventory', component: () => import('@/views/PlaceholderView.vue'), meta: { title: '库存管理', permission: 'product:inventory' } }, // TODO(批次2)
       { path: 'stock-reminder', name: 'productStockReminder', component: () => import('@/views/PlaceholderView.vue'), meta: { title: '到货提醒', permission: 'product:stockReminder' } }, // TODO(批次2)
     ],
   },

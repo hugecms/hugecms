@@ -31,9 +31,28 @@ export const useTabsStore = defineStore('tabs', () => {
     return next?.path ?? HOME.path
   }
 
+  /** 关闭其他（保留首页与指定标签） */
+  function closeOthers(keepPath: string): void {
+    tabs.value = tabs.value.filter((tab) => tab.path === HOME.path || tab.path === keepPath)
+  }
+
+  /** 关闭右侧（保留首页、指定标签及其左侧） */
+  function closeRight(path: string): void {
+    const index = tabs.value.findIndex((tab) => tab.path === path)
+    if (index === -1) {
+      return
+    }
+    tabs.value = tabs.value.filter((tab, idx) => idx <= index || tab.path === HOME.path)
+  }
+
+  /** 全部关闭（回到首页） */
+  function closeAll(): void {
+    reset()
+  }
+
   function reset(): void {
     tabs.value = [{ ...HOME }]
   }
 
-  return { tabs, addTab, closeTab, reset }
+  return { tabs, addTab, closeTab, closeOthers, closeRight, closeAll, reset }
 })

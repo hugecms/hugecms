@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import RefreshButton from '@/components/RefreshButton.vue'
 import type { IProductCategoryQueryRequest, IProductCategoryResponse } from '@/types/productCategory'
 import {
   productCategoryDestroyApi,
@@ -162,7 +163,7 @@ onMounted(() => {
     <el-card shadow="never">
       <div class="toolbar">
         <el-button type="primary" @click="openCreate(0)">新增顶级分类</el-button>
-        <el-button @click="fetchTree">刷新</el-button>
+        <RefreshButton class="toolbar__refresh" @click="fetchTree" />
       </div>
 
       <el-table
@@ -237,6 +238,12 @@ onMounted(() => {
 .toolbar {
   display: flex;
   gap: 8px;
+  align-items: center;
   margin-bottom: 12px;
+}
+
+/* 刷新为辅助操作：最右侧、icon 弱化 */
+.toolbar__refresh {
+  margin-left: auto;
 }
 </style>
