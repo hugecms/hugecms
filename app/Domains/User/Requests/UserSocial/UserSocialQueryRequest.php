@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
-        new OA\Property(property: self::getPlatform, description: '平台:wechat,qq,weibo,github', type: 'string'),
+        new OA\Property(property: self::getPlatform, description: '平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub', type: 'string'),
         new OA\Property(property: self::getOpenId, description: '第三方OpenID', type: 'string'),
     ]
 )]

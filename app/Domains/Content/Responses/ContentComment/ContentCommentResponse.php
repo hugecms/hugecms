@@ -18,7 +18,7 @@ class ContentCommentResponse implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '评论用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'targetType', description: '目标类型:article=文章,商品评价走product_reviews表', type: 'string')]
+    #[OA\Property(property: 'targetType', description: '目标类型:article=文章;商品评价走product_reviews表', type: 'string')]
     private string $targetType;
 
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
@@ -75,7 +75,7 @@ class ContentCommentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取目标类型:article=文章,商品评价走product_reviews表
+     * 获取目标类型:article=文章;商品评价走product_reviews表
      */
     public function getTargetType(): string
     {
@@ -83,7 +83,7 @@ class ContentCommentResponse implements \JsonSerializable
     }
 
     /**
-     * 设置目标类型:article=文章,商品评价走product_reviews表
+     * 设置目标类型:article=文章;商品评价走product_reviews表
      */
     public function setTargetType(string $targetType): void
     {

@@ -18,11 +18,23 @@ class ProductSkuEntity implements \JsonSerializable
 
     public const string getSpecs = 'specs'; // 规格值(JSON),如:{&quot;颜色&quot;:&quot;红&quot;,&quot;尺码&quot;:&quot;L&quot;}
 
+    public const string getSkuNo = 'sku_no'; // SKU编号
+
+    public const string getBarcode = 'barcode'; // 条码,仓储/扫码出入库
+
+    public const string getImage = 'image'; // SKU图片
+
     public const string getPrice = 'price'; // 售价
+
+    public const string getLinePrice = 'line_price'; // 划线价(市场价展示)
+
+    public const string getCostPrice = 'cost_price'; // 成本价,毛利核算
+
+    public const string getWeight = 'weight'; // 重量(kg),运费计算
 
     public const string getStock = 'stock'; // 库存
 
-    public const string getLockedStock = 'locked_stock'; // 锁定库存(下单未支付),可售=stock-locked_stock
+    public const string getWarnStock = 'warn_stock'; // 库存预警线,库存&lt;=该值触发预警,0=不预警
 
     public const string getStatus = 'status'; // 状态:0=禁用,1=启用
 
@@ -41,14 +53,32 @@ class ProductSkuEntity implements \JsonSerializable
     #[OA\Property(property: 'specs', description: '规格值(JSON),如:{&quot;颜色&quot;:&quot;红&quot;,&quot;尺码&quot;:&quot;L&quot;}', type: 'string')]
     private string $specs;
 
+    #[OA\Property(property: 'skuNo', description: 'SKU编号', type: 'string')]
+    private string $skuNo;
+
+    #[OA\Property(property: 'barcode', description: '条码,仓储/扫码出入库', type: 'string')]
+    private string $barcode;
+
+    #[OA\Property(property: 'image', description: 'SKU图片', type: 'string')]
+    private string $image;
+
     #[OA\Property(property: 'price', description: '售价', type: 'string')]
     private string $price;
+
+    #[OA\Property(property: 'linePrice', description: '划线价(市场价展示)', type: 'string')]
+    private string $linePrice;
+
+    #[OA\Property(property: 'costPrice', description: '成本价,毛利核算', type: 'string')]
+    private string $costPrice;
+
+    #[OA\Property(property: 'weight', description: '重量(kg),运费计算', type: 'string')]
+    private string $weight;
 
     #[OA\Property(property: 'stock', description: '库存', type: 'integer')]
     private int $stock;
 
-    #[OA\Property(property: 'lockedStock', description: '锁定库存(下单未支付),可售=stock-locked_stock', type: 'integer')]
-    private int $lockedStock;
+    #[OA\Property(property: 'warnStock', description: '库存预警线,库存&lt;=该值触发预警,0=不预警', type: 'integer')]
+    private int $warnStock;
 
     #[OA\Property(property: 'status', description: '状态:0=禁用,1=启用', type: 'integer')]
     private int $status;
@@ -111,6 +141,54 @@ class ProductSkuEntity implements \JsonSerializable
     }
 
     /**
+     * 获取SKU编号
+     */
+    public function getSkuNo(): string
+    {
+        return $this->skuNo;
+    }
+
+    /**
+     * 设置SKU编号
+     */
+    public function setSkuNo(string $skuNo): void
+    {
+        $this->skuNo = $skuNo;
+    }
+
+    /**
+     * 获取条码,仓储/扫码出入库
+     */
+    public function getBarcode(): string
+    {
+        return $this->barcode;
+    }
+
+    /**
+     * 设置条码,仓储/扫码出入库
+     */
+    public function setBarcode(string $barcode): void
+    {
+        $this->barcode = $barcode;
+    }
+
+    /**
+     * 获取SKU图片
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * 设置SKU图片
+     */
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
      * 获取售价
      */
     public function getPrice(): string
@@ -124,6 +202,54 @@ class ProductSkuEntity implements \JsonSerializable
     public function setPrice(string $price): void
     {
         $this->price = $price;
+    }
+
+    /**
+     * 获取划线价(市场价展示)
+     */
+    public function getLinePrice(): string
+    {
+        return $this->linePrice;
+    }
+
+    /**
+     * 设置划线价(市场价展示)
+     */
+    public function setLinePrice(string $linePrice): void
+    {
+        $this->linePrice = $linePrice;
+    }
+
+    /**
+     * 获取成本价,毛利核算
+     */
+    public function getCostPrice(): string
+    {
+        return $this->costPrice;
+    }
+
+    /**
+     * 设置成本价,毛利核算
+     */
+    public function setCostPrice(string $costPrice): void
+    {
+        $this->costPrice = $costPrice;
+    }
+
+    /**
+     * 获取重量(kg),运费计算
+     */
+    public function getWeight(): string
+    {
+        return $this->weight;
+    }
+
+    /**
+     * 设置重量(kg),运费计算
+     */
+    public function setWeight(string $weight): void
+    {
+        $this->weight = $weight;
     }
 
     /**
@@ -143,19 +269,19 @@ class ProductSkuEntity implements \JsonSerializable
     }
 
     /**
-     * 获取锁定库存(下单未支付),可售=stock-locked_stock
+     * 获取库存预警线,库存&lt;=该值触发预警,0=不预警
      */
-    public function getLockedStock(): int
+    public function getWarnStock(): int
     {
-        return $this->lockedStock;
+        return $this->warnStock;
     }
 
     /**
-     * 设置锁定库存(下单未支付),可售=stock-locked_stock
+     * 设置库存预警线,库存&lt;=该值触发预警,0=不预警
      */
-    public function setLockedStock(int $lockedStock): void
+    public function setWarnStock(int $warnStock): void
     {
-        $this->lockedStock = $lockedStock;
+        $this->warnStock = $warnStock;
     }
 
     /**

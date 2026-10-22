@@ -22,7 +22,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '评论用户ID', type: 'integer'),
-        new OA\Property(property: self::getTargetType, description: '目标类型:article=文章,商品评价走product_reviews表', type: 'string'),
+        new OA\Property(property: self::getTargetType, description: '目标类型:article=文章;商品评价走product_reviews表', type: 'string'),
         new OA\Property(property: self::getTargetId, description: '目标ID', type: 'integer'),
         new OA\Property(property: self::getParentId, description: '父评论ID,0=顶级', type: 'integer'),
         new OA\Property(property: self::getContent, description: '评论内容', type: 'string'),
@@ -67,7 +67,7 @@ class ContentCommentUpdateRequest extends FormRequest
         return [
             self::getId.'.required' => '请设置ID',
             self::getUserId.'.required' => '请设置评论用户ID',
-            self::getTargetType.'.required' => '请设置目标类型:article=文章,商品评价走product_reviews表',
+            self::getTargetType.'.required' => '请设置目标类型:article=文章;商品评价走product_reviews表',
             self::getTargetId.'.required' => '请设置目标ID',
             self::getParentId.'.required' => '请设置父评论ID,0=顶级',
             self::getContent.'.required' => '请设置评论内容',

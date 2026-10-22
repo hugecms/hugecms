@@ -6,14 +6,24 @@
 
 declare(strict_types=1);
 
+use App\Domains\Site\Controllers\SiteAdController;
 use App\Domains\Site\Controllers\SiteAdPositionController;
-use App\Domains\Site\Controllers\SiteBannerController;
+use App\Domains\Site\Controllers\SiteDailyStatisticController;
 use App\Domains\Site\Controllers\SiteLinkController;
 use App\Domains\Site\Controllers\SiteNavController;
 use App\Domains\Site\Controllers\SiteSearchKeywordController;
-use App\Domains\Site\Controllers\SiteStatisticsDailyController;
 use Illuminate\Support\Facades\Route;
 
+// 查询广告列表接口
+Route::post('siteAd/search', [SiteAdController::class, 'search']);
+// 新增广告接口
+Route::post('siteAd/store', [SiteAdController::class, 'store']);
+// 获取广告详情接口
+Route::get('siteAd/show', [SiteAdController::class, 'show'])->name('siteAd.show');
+// 更新广告接口
+Route::put('siteAd/update', [SiteAdController::class, 'update']);
+// 删除广告接口
+Route::post('siteAd/destroy', [SiteAdController::class, 'destroy']);
 // 查询广告位定义列表接口
 Route::post('siteAdPosition/search', [SiteAdPositionController::class, 'search']);
 // 新增广告位定义接口
@@ -24,16 +34,16 @@ Route::get('siteAdPosition/show', [SiteAdPositionController::class, 'show'])->na
 Route::put('siteAdPosition/update', [SiteAdPositionController::class, 'update']);
 // 删除广告位定义接口
 Route::post('siteAdPosition/destroy', [SiteAdPositionController::class, 'destroy']);
-// 查询轮播图/广告列表接口
-Route::post('siteBanner/search', [SiteBannerController::class, 'search']);
-// 新增轮播图/广告接口
-Route::post('siteBanner/store', [SiteBannerController::class, 'store']);
-// 获取轮播图/广告详情接口
-Route::get('siteBanner/show', [SiteBannerController::class, 'show'])->name('siteBanner.show');
-// 更新轮播图/广告接口
-Route::put('siteBanner/update', [SiteBannerController::class, 'update']);
-// 删除轮播图/广告接口
-Route::post('siteBanner/destroy', [SiteBannerController::class, 'destroy']);
+// 查询每日统计汇总列表接口
+Route::post('siteDailyStatistic/search', [SiteDailyStatisticController::class, 'search']);
+// 新增每日统计汇总接口
+Route::post('siteDailyStatistic/store', [SiteDailyStatisticController::class, 'store']);
+// 获取每日统计汇总详情接口
+Route::get('siteDailyStatistic/show', [SiteDailyStatisticController::class, 'show'])->name('siteDailyStatistic.show');
+// 更新每日统计汇总接口
+Route::put('siteDailyStatistic/update', [SiteDailyStatisticController::class, 'update']);
+// 删除每日统计汇总接口
+Route::post('siteDailyStatistic/destroy', [SiteDailyStatisticController::class, 'destroy']);
 // 查询友情链接列表接口
 Route::post('siteLink/search', [SiteLinkController::class, 'search']);
 // 新增友情链接接口
@@ -64,13 +74,3 @@ Route::get('siteSearchKeyword/show', [SiteSearchKeywordController::class, 'show'
 Route::put('siteSearchKeyword/update', [SiteSearchKeywordController::class, 'update']);
 // 删除搜索热词接口
 Route::post('siteSearchKeyword/destroy', [SiteSearchKeywordController::class, 'destroy']);
-// 查询每日统计汇总列表接口
-Route::post('siteStatisticsDaily/search', [SiteStatisticsDailyController::class, 'search']);
-// 新增每日统计汇总接口
-Route::post('siteStatisticsDaily/store', [SiteStatisticsDailyController::class, 'store']);
-// 获取每日统计汇总详情接口
-Route::get('siteStatisticsDaily/show', [SiteStatisticsDailyController::class, 'show'])->name('siteStatisticsDaily.show');
-// 更新每日统计汇总接口
-Route::put('siteStatisticsDaily/update', [SiteStatisticsDailyController::class, 'update']);
-// 删除每日统计汇总接口
-Route::post('siteStatisticsDaily/destroy', [SiteStatisticsDailyController::class, 'destroy']);

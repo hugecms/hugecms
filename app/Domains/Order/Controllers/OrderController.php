@@ -48,6 +48,18 @@ class OrderController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[OrderQueryRequest::getAttributedUserId])) {
+                $condition[] = [OrderEntity::getAttributedUserId, '=', $requestData[OrderQueryRequest::getAttributedUserId]];
+            }
+            if (isset($requestData[OrderQueryRequest::getCreatedAt])) {
+                $condition[] = [OrderEntity::getCreatedAt, '=', $requestData[OrderQueryRequest::getCreatedAt]];
+            }
+            if (isset($requestData[OrderQueryRequest::getOrderChannel])) {
+                $condition[] = [OrderEntity::getOrderChannel, '=', $requestData[OrderQueryRequest::getOrderChannel]];
+            }
+            if (isset($requestData[OrderQueryRequest::getCreatedAt])) {
+                $condition[] = [OrderEntity::getCreatedAt, '=', $requestData[OrderQueryRequest::getCreatedAt]];
+            }
             if (isset($requestData[OrderQueryRequest::getUserId])) {
                 $condition[] = [OrderEntity::getUserId, '=', $requestData[OrderQueryRequest::getUserId]];
             }
@@ -59,6 +71,9 @@ class OrderController extends BaseController
             }
             if (isset($requestData[OrderQueryRequest::getOrderNo])) {
                 $condition[] = [OrderEntity::getOrderNo, '=', $requestData[OrderQueryRequest::getOrderNo]];
+            }
+            if (isset($requestData[OrderQueryRequest::getRequestToken])) {
+                $condition[] = [OrderEntity::getRequestToken, '=', $requestData[OrderQueryRequest::getRequestToken]];
             }
 
             $result = $this->orderService->page($condition, $page, $pageSize);

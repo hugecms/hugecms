@@ -18,7 +18,10 @@ use OpenApi\Attributes as OA;
         self::getDiscountRate,
         self::getReceiveType,
         self::getTotal,
+        self::getReceivedCount,
         self::getPerLimit,
+        self::getValidType,
+        self::getValidDays,
         self::getStartTime,
         self::getEndTime,
         self::getStatus,
@@ -31,8 +34,11 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getReduceAmount, description: '满减金额,满减券必填', type: 'string'),
         new OA\Property(property: self::getDiscountRate, description: '折扣率,如8.5表示85折,折扣券必填', type: 'string'),
         new OA\Property(property: self::getReceiveType, description: '发放方式:manual=后台发放,order=下单赠送,register=注册赠送', type: 'string'),
-        new OA\Property(property: self::getTotal, description: '发放总量,0=不限', type: 'integer'),
+        new OA\Property(property: self::getTotal, description: '发放总量,0=不限;领券事务条件更新 received_count &lt; total 防超发', type: 'integer'),
+        new OA\Property(property: self::getReceivedCount, description: '已领取数量,领券事务内条件更新 received_count &lt; total 防超发', type: 'integer'),
         new OA\Property(property: self::getPerLimit, description: '每人限领', type: 'integer'),
+        new OA\Property(property: self::getValidType, description: '有效期方式:1=固定区间(start_time/end_time),2=领取后N天', type: 'integer'),
+        new OA\Property(property: self::getValidDays, description: '领取后有效天数,valid_type=2 时必填', type: 'integer'),
         new OA\Property(property: self::getStartTime, description: '有效期开始,空=领取即生效', type: 'string'),
         new OA\Property(property: self::getEndTime, description: '有效期结束', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态:0=停用,1=启用', type: 'integer'),
@@ -56,7 +62,13 @@ class MarketingCouponUpdateRequest extends FormRequest
 
     public const string getTotal = 'total';
 
+    public const string getReceivedCount = 'receivedCount';
+
     public const string getPerLimit = 'perLimit';
+
+    public const string getValidType = 'validType';
+
+    public const string getValidDays = 'validDays';
 
     public const string getStartTime = 'startTime';
 
@@ -75,7 +87,10 @@ class MarketingCouponUpdateRequest extends FormRequest
             self::getDiscountRate => 'required',
             self::getReceiveType => 'required',
             self::getTotal => 'required',
+            self::getReceivedCount => 'required',
             self::getPerLimit => 'required',
+            self::getValidType => 'required',
+            self::getValidDays => 'required',
             self::getStartTime => 'required',
             self::getEndTime => 'required',
             self::getStatus => 'required',
@@ -92,8 +107,11 @@ class MarketingCouponUpdateRequest extends FormRequest
             self::getReduceAmount.'.required' => '请设置满减金额,满减券必填',
             self::getDiscountRate.'.required' => '请设置折扣率,如8.5表示85折,折扣券必填',
             self::getReceiveType.'.required' => '请设置发放方式:manual=后台发放,order=下单赠送,register=注册赠送',
-            self::getTotal.'.required' => '请设置发放总量,0=不限',
+            self::getTotal.'.required' => '请设置发放总量,0=不限;领券事务条件更新 received_count &lt; total 防超发',
+            self::getReceivedCount.'.required' => '请设置已领取数量,领券事务内条件更新 received_count &lt; total 防超发',
             self::getPerLimit.'.required' => '请设置每人限领',
+            self::getValidType.'.required' => '请设置有效期方式:1=固定区间(start_time/end_time),2=领取后N天',
+            self::getValidDays.'.required' => '请设置领取后有效天数,valid_type=2 时必填',
             self::getStartTime.'.required' => '请设置有效期开始,空=领取即生效',
             self::getEndTime.'.required' => '请设置有效期结束',
             self::getStatus.'.required' => '请设置状态:0=停用,1=启用',

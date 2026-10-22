@@ -35,6 +35,8 @@ class OrderRefund extends Model
         'amount',
         'reason',
         'admin_note',
+        'audit_time',
+        'operator_id',
         'images',
         'return_express_company',
         'return_express_no',

@@ -22,17 +22,23 @@ class PaymentEntity implements \JsonSerializable
 
     public const string getBizId = 'biz_id'; // 业务单据ID,如:订单ID/充值申请ID
 
-    public const string getPayMethod = 'pay_method'; // 支付方式:wechat,alipay,balance
+    public const string getPayMethod = 'pay_method'; // 支付方式:wechat=微信支付,alipay=支付宝,balance=余额
 
     public const string getAppid = 'appid'; // 发起支付的应用AppID,关联system_apps,多端回调定位依据
 
     public const string getAmount = 'amount'; // 支付金额
 
-    public const string getStatus = 'status'; // 状态:0=待支付,1=成功,2=失败
+    public const string getStatus = 'status'; // 状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)
 
     public const string getTradeNo = 'trade_no'; // 第三方交易号
 
     public const string getPaidAt = 'paid_at'; // 支付成功时间
+
+    public const string getExpireTime = 'expire_time'; // 支付超时时间,超时关单依据
+
+    public const string getClosedAt = 'closed_at'; // 关闭时间
+
+    public const string getFailReason = 'fail_reason'; // 失败原因
 
     public const string getCreatedAt = 'created_at'; // 创建时间
 
@@ -55,7 +61,7 @@ class PaymentEntity implements \JsonSerializable
     #[OA\Property(property: 'bizId', description: '业务单据ID,如:订单ID/充值申请ID', type: 'integer')]
     private int $bizId;
 
-    #[OA\Property(property: 'payMethod', description: '支付方式:wechat,alipay,balance', type: 'string')]
+    #[OA\Property(property: 'payMethod', description: '支付方式:wechat=微信支付,alipay=支付宝,balance=余额', type: 'string')]
     private string $payMethod;
 
     #[OA\Property(property: 'appid', description: '发起支付的应用AppID,关联system_apps,多端回调定位依据', type: 'string')]
@@ -64,7 +70,7 @@ class PaymentEntity implements \JsonSerializable
     #[OA\Property(property: 'amount', description: '支付金额', type: 'string')]
     private string $amount;
 
-    #[OA\Property(property: 'status', description: '状态:0=待支付,1=成功,2=失败', type: 'integer')]
+    #[OA\Property(property: 'status', description: '状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)', type: 'integer')]
     private int $status;
 
     #[OA\Property(property: 'tradeNo', description: '第三方交易号', type: 'string')]
@@ -72,6 +78,15 @@ class PaymentEntity implements \JsonSerializable
 
     #[OA\Property(property: 'paidAt', description: '支付成功时间', type: 'string')]
     private string $paidAt;
+
+    #[OA\Property(property: 'expireTime', description: '支付超时时间,超时关单依据', type: 'string')]
+    private string $expireTime;
+
+    #[OA\Property(property: 'closedAt', description: '关闭时间', type: 'string')]
+    private string $closedAt;
+
+    #[OA\Property(property: 'failReason', description: '失败原因', type: 'string')]
+    private string $failReason;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
     private string $createdAt;
@@ -163,7 +178,7 @@ class PaymentEntity implements \JsonSerializable
     }
 
     /**
-     * 获取支付方式:wechat,alipay,balance
+     * 获取支付方式:wechat=微信支付,alipay=支付宝,balance=余额
      */
     public function getPayMethod(): string
     {
@@ -171,7 +186,7 @@ class PaymentEntity implements \JsonSerializable
     }
 
     /**
-     * 设置支付方式:wechat,alipay,balance
+     * 设置支付方式:wechat=微信支付,alipay=支付宝,balance=余额
      */
     public function setPayMethod(string $payMethod): void
     {
@@ -211,7 +226,7 @@ class PaymentEntity implements \JsonSerializable
     }
 
     /**
-     * 获取状态:0=待支付,1=成功,2=失败
+     * 获取状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)
      */
     public function getStatus(): int
     {
@@ -219,7 +234,7 @@ class PaymentEntity implements \JsonSerializable
     }
 
     /**
-     * 设置状态:0=待支付,1=成功,2=失败
+     * 设置状态:0=待支付,1=成功,2=失败,3=已关闭(超时/取消)
      */
     public function setStatus(int $status): void
     {
@@ -256,6 +271,54 @@ class PaymentEntity implements \JsonSerializable
     public function setPaidAt(string $paidAt): void
     {
         $this->paidAt = $paidAt;
+    }
+
+    /**
+     * 获取支付超时时间,超时关单依据
+     */
+    public function getExpireTime(): string
+    {
+        return $this->expireTime;
+    }
+
+    /**
+     * 设置支付超时时间,超时关单依据
+     */
+    public function setExpireTime(string $expireTime): void
+    {
+        $this->expireTime = $expireTime;
+    }
+
+    /**
+     * 获取关闭时间
+     */
+    public function getClosedAt(): string
+    {
+        return $this->closedAt;
+    }
+
+    /**
+     * 设置关闭时间
+     */
+    public function setClosedAt(string $closedAt): void
+    {
+        $this->closedAt = $closedAt;
+    }
+
+    /**
+     * 获取失败原因
+     */
+    public function getFailReason(): string
+    {
+        return $this->failReason;
+    }
+
+    /**
+     * 设置失败原因
+     */
+    public function setFailReason(string $failReason): void
+    {
+        $this->failReason = $failReason;
     }
 
     /**

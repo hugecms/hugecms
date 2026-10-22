@@ -18,7 +18,7 @@ class UserSocialResponse implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'platform', description: '平台:wechat,qq,weibo,github', type: 'string')]
+    #[OA\Property(property: 'platform', description: '平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub', type: 'string')]
     private string $platform;
 
     #[OA\Property(property: 'openId', description: '第三方OpenID', type: 'string')]
@@ -72,7 +72,7 @@ class UserSocialResponse implements \JsonSerializable
     }
 
     /**
-     * 获取平台:wechat,qq,weibo,github
+     * 获取平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub
      */
     public function getPlatform(): string
     {
@@ -80,7 +80,7 @@ class UserSocialResponse implements \JsonSerializable
     }
 
     /**
-     * 设置平台:wechat,qq,weibo,github
+     * 设置平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub
      */
     public function setPlatform(string $platform): void
     {

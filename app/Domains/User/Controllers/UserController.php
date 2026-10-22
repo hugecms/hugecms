@@ -57,6 +57,9 @@ class UserController extends BaseController
             if (isset($requestData[UserQueryRequest::getPhone])) {
                 $condition[] = [UserEntity::getPhone, '=', $requestData[UserQueryRequest::getPhone]];
             }
+            if (isset($requestData[UserQueryRequest::getShareCode])) {
+                $condition[] = [UserEntity::getShareCode, '=', $requestData[UserQueryRequest::getShareCode]];
+            }
             if (isset($requestData[UserQueryRequest::getUsername])) {
                 $condition[] = [UserEntity::getUsername, '=', $requestData[UserQueryRequest::getUsername]];
             }

@@ -39,15 +39,15 @@ Route::get('order/show', [OrderController::class, 'show'])->name('order.show');
 Route::put('order/update', [OrderController::class, 'update']);
 // 删除订单接口
 Route::post('order/destroy', [OrderController::class, 'destroy']);
-// 查询订单发�列表接口
+// 查询订单发票表(合规必需:用户开票申请与发票状态跟踪)列表接口
 Route::post('orderInvoice/search', [OrderInvoiceController::class, 'search']);
-// 新增订单发�接口
+// 新增订单发票表(合规必需:用户开票申请与发票状态跟踪)接口
 Route::post('orderInvoice/store', [OrderInvoiceController::class, 'store']);
-// 获取订单发�详情接口
+// 获取订单发票表(合规必需:用户开票申请与发票状态跟踪)详情接口
 Route::get('orderInvoice/show', [OrderInvoiceController::class, 'show'])->name('orderInvoice.show');
-// 更新订单发�接口
+// 更新订单发票表(合规必需:用户开票申请与发票状态跟踪)接口
 Route::put('orderInvoice/update', [OrderInvoiceController::class, 'update']);
-// 删除订单发�接口
+// 删除订单发票表(合规必需:用户开票申请与发票状态跟踪)接口
 Route::post('orderInvoice/destroy', [OrderInvoiceController::class, 'destroy']);
 // 查询订单明细列表接口
 Route::post('orderItem/search', [OrderItemController::class, 'search']);

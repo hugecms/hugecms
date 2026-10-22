@@ -19,7 +19,7 @@ use OpenApi\Attributes as OA;
     ],
     properties: [
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
-        new OA\Property(property: self::getPlatform, description: '平台:wechat,qq,weibo,github', type: 'string'),
+        new OA\Property(property: self::getPlatform, description: '平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub', type: 'string'),
         new OA\Property(property: self::getOpenId, description: '第三方OpenID', type: 'string'),
         new OA\Property(property: self::getUnionId, description: '第三方UnionID,如微信多应用互通', type: 'string'),
         new OA\Property(property: self::getNickname, description: '第三方昵称快照', type: 'string'),
@@ -56,7 +56,7 @@ class UserSocialCreateRequest extends FormRequest
     {
         return [
             self::getUserId.'.required' => '请设置用户ID',
-            self::getPlatform.'.required' => '请设置平台:wechat,qq,weibo,github',
+            self::getPlatform.'.required' => '请设置平台:wechat=微信,qq=QQ,weibo=微博,github=GitHub',
             self::getOpenId.'.required' => '请设置第三方OpenID',
             self::getUnionId.'.required' => '请设置第三方UnionID,如微信多应用互通',
             self::getNickname.'.required' => '请设置第三方昵称快照',

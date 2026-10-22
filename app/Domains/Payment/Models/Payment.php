@@ -38,5 +38,8 @@ class Payment extends Model
         'status',
         'trade_no',
         'paid_at',
+        'expire_time',
+        'closed_at',
+        'fail_reason',
     ];
 }

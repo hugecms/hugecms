@@ -20,7 +20,27 @@ enum ChatSessionRatingEnum: int implements EnumMethodInterface
     case Rating0 = 0;
 
     /**
-     * 5星
+     * 1星
      */
     case Rating1 = 1;
+
+    /**
+     * 2星
+     */
+    case Rating2 = 2;
+
+    /**
+     * 3星
+     */
+    case Rating3 = 3;
+
+    /**
+     * 4星
+     */
+    case Rating4 = 4;
+
+    /**
+     * 5星
+     */
+    case Rating5 = 5;
 }

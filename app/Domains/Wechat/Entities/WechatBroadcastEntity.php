@@ -20,7 +20,7 @@ class WechatBroadcastEntity implements \JsonSerializable
 
     public const string getContent = 'content'; // 群发内容(JSON),图文为素材列表
 
-    public const string getTarget = 'target'; // 目标:all=全部粉丝,或标签ID列表
+    public const string getTarget = 'target'; // 目标:all=全部粉丝;或标签ID列表
 
     public const string getSendCount = 'send_count'; // 送达数
 
@@ -28,7 +28,7 @@ class WechatBroadcastEntity implements \JsonSerializable
 
     public const string getMsgId = 'msg_id'; // 微信群发消息ID,回拉发送结果用
 
-    public const string getUserType = 'user_type'; // 操作账户类型:admin,system
+    public const string getUserType = 'user_type'; // 操作账户类型:admin=后台,system=系统
 
     public const string getUserId = 'user_id'; // 操作人ID
 
@@ -50,7 +50,7 @@ class WechatBroadcastEntity implements \JsonSerializable
     #[OA\Property(property: 'content', description: '群发内容(JSON),图文为素材列表', type: 'string')]
     private string $content;
 
-    #[OA\Property(property: 'target', description: '目标:all=全部粉丝,或标签ID列表', type: 'string')]
+    #[OA\Property(property: 'target', description: '目标:all=全部粉丝;或标签ID列表', type: 'string')]
     private string $target;
 
     #[OA\Property(property: 'sendCount', description: '送达数', type: 'integer')]
@@ -62,7 +62,7 @@ class WechatBroadcastEntity implements \JsonSerializable
     #[OA\Property(property: 'msgId', description: '微信群发消息ID,回拉发送结果用', type: 'string')]
     private string $msgId;
 
-    #[OA\Property(property: 'userType', description: '操作账户类型:admin,system', type: 'string')]
+    #[OA\Property(property: 'userType', description: '操作账户类型:admin=后台,system=系统', type: 'string')]
     private string $userType;
 
     #[OA\Property(property: 'userId', description: '操作人ID', type: 'integer')]
@@ -142,7 +142,7 @@ class WechatBroadcastEntity implements \JsonSerializable
     }
 
     /**
-     * 获取目标:all=全部粉丝,或标签ID列表
+     * 获取目标:all=全部粉丝;或标签ID列表
      */
     public function getTarget(): string
     {
@@ -150,7 +150,7 @@ class WechatBroadcastEntity implements \JsonSerializable
     }
 
     /**
-     * 设置目标:all=全部粉丝,或标签ID列表
+     * 设置目标:all=全部粉丝;或标签ID列表
      */
     public function setTarget(string $target): void
     {
@@ -206,7 +206,7 @@ class WechatBroadcastEntity implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,system
+     * 获取操作账户类型:admin=后台,system=系统
      */
     public function getUserType(): string
     {
@@ -214,7 +214,7 @@ class WechatBroadcastEntity implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,system
+     * 设置操作账户类型:admin=后台,system=系统
      */
     public function setUserType(string $userType): void
     {

@@ -36,6 +36,12 @@ class OrderRefundResponse implements \JsonSerializable
     #[OA\Property(property: 'adminNote', description: '商家审核备注/拒绝原因', type: 'string')]
     private string $adminNote;
 
+    #[OA\Property(property: 'auditTime', description: '审核时间', type: 'string')]
+    private string $auditTime;
+
+    #[OA\Property(property: 'operatorId', description: '审核操作人ID,关联admin_users', type: 'integer')]
+    private int $operatorId;
+
     #[OA\Property(property: 'images', description: '申请凭证图片(JSON数组)', type: 'string')]
     private string $images;
 
@@ -186,6 +192,38 @@ class OrderRefundResponse implements \JsonSerializable
     public function setAdminNote(string $adminNote): void
     {
         $this->adminNote = $adminNote;
+    }
+
+    /**
+     * 获取审核时间
+     */
+    public function getAuditTime(): string
+    {
+        return $this->auditTime;
+    }
+
+    /**
+     * 设置审核时间
+     */
+    public function setAuditTime(string $auditTime): void
+    {
+        $this->auditTime = $auditTime;
+    }
+
+    /**
+     * 获取审核操作人ID,关联admin_users
+     */
+    public function getOperatorId(): int
+    {
+        return $this->operatorId;
+    }
+
+    /**
+     * 设置审核操作人ID,关联admin_users
+     */
+    public function setOperatorId(int $operatorId): void
+    {
+        $this->operatorId = $operatorId;
     }
 
     /**

@@ -24,7 +24,7 @@ class OrderLogResponse implements \JsonSerializable
     #[OA\Property(property: 'toStatus', description: '变更后状态', type: 'integer')]
     private int $toStatus;
 
-    #[OA\Property(property: 'operatorType', description: '操作账户类型:admin,user,system', type: 'string')]
+    #[OA\Property(property: 'operatorType', description: '操作账户类型:admin=后台,user=前台,system=系统', type: 'string')]
     private string $operatorType;
 
     #[OA\Property(property: 'operatorId', description: '操作人ID', type: 'integer')]
@@ -104,7 +104,7 @@ class OrderLogResponse implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,user,system
+     * 获取操作账户类型:admin=后台,user=前台,system=系统
      */
     public function getOperatorType(): string
     {
@@ -112,7 +112,7 @@ class OrderLogResponse implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,user,system
+     * 设置操作账户类型:admin=后台,user=前台,system=系统
      */
     public function setOperatorType(string $operatorType): void
     {

@@ -20,7 +20,7 @@ class ChatMessageEntity implements \JsonSerializable
 
     public const string getSenderId = 'sender_id'; // 发送者ID,system为0
 
-    public const string getType = 'type'; // 消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件
+    public const string getType = 'type'; // 消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件
 
     public const string getContent = 'content'; // 消息内容,文本或卡片数据(JSON)
 
@@ -38,7 +38,7 @@ class ChatMessageEntity implements \JsonSerializable
     #[OA\Property(property: 'senderId', description: '发送者ID,system为0', type: 'integer')]
     private int $senderId;
 
-    #[OA\Property(property: 'type', description: '消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件', type: 'string')]
+    #[OA\Property(property: 'type', description: '消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件', type: 'string')]
     private string $type;
 
     #[OA\Property(property: 'content', description: '消息内容,文本或卡片数据(JSON)', type: 'string')]
@@ -112,7 +112,7 @@ class ChatMessageEntity implements \JsonSerializable
     }
 
     /**
-     * 获取消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件
+     * 获取消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件
      */
     public function getType(): string
     {
@@ -120,7 +120,7 @@ class ChatMessageEntity implements \JsonSerializable
     }
 
     /**
-     * 设置消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件
+     * 设置消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件
      */
     public function setType(string $type): void
     {

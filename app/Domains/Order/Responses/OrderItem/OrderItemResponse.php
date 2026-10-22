@@ -21,7 +21,7 @@ class OrderItemResponse implements \JsonSerializable
     #[OA\Property(property: 'productId', description: '商品ID', type: 'integer')]
     private int $productId;
 
-    #[OA\Property(property: 'skuId', description: 'SKU ID,0=单规格', type: 'integer')]
+    #[OA\Property(property: 'skuId', description: 'SKU ID,关联product_skus', type: 'integer')]
     private int $skuId;
 
     #[OA\Property(property: 'productName', description: '商品名称快照', type: 'string')]
@@ -29,6 +29,15 @@ class OrderItemResponse implements \JsonSerializable
 
     #[OA\Property(property: 'skuSpecs', description: '规格快照', type: 'string')]
     private string $skuSpecs;
+
+    #[OA\Property(property: 'skuNo', description: 'SKU编号快照', type: 'string')]
+    private string $skuNo;
+
+    #[OA\Property(property: 'skuName', description: 'SKU名称快照', type: 'string')]
+    private string $skuName;
+
+    #[OA\Property(property: 'skuImage', description: 'SKU图片快照', type: 'string')]
+    private string $skuImage;
 
     #[OA\Property(property: 'image', description: '商品图快照', type: 'string')]
     private string $image;
@@ -94,7 +103,7 @@ class OrderItemResponse implements \JsonSerializable
     }
 
     /**
-     * 获取SKU ID,0=单规格
+     * 获取SKU ID,关联product_skus
      */
     public function getSkuId(): int
     {
@@ -102,7 +111,7 @@ class OrderItemResponse implements \JsonSerializable
     }
 
     /**
-     * 设置SKU ID,0=单规格
+     * 设置SKU ID,关联product_skus
      */
     public function setSkuId(int $skuId): void
     {
@@ -139,6 +148,54 @@ class OrderItemResponse implements \JsonSerializable
     public function setSkuSpecs(string $skuSpecs): void
     {
         $this->skuSpecs = $skuSpecs;
+    }
+
+    /**
+     * 获取SKU编号快照
+     */
+    public function getSkuNo(): string
+    {
+        return $this->skuNo;
+    }
+
+    /**
+     * 设置SKU编号快照
+     */
+    public function setSkuNo(string $skuNo): void
+    {
+        $this->skuNo = $skuNo;
+    }
+
+    /**
+     * 获取SKU名称快照
+     */
+    public function getSkuName(): string
+    {
+        return $this->skuName;
+    }
+
+    /**
+     * 设置SKU名称快照
+     */
+    public function setSkuName(string $skuName): void
+    {
+        $this->skuName = $skuName;
+    }
+
+    /**
+     * 获取SKU图片快照
+     */
+    public function getSkuImage(): string
+    {
+        return $this->skuImage;
+    }
+
+    /**
+     * 设置SKU图片快照
+     */
+    public function setSkuImage(string $skuImage): void
+    {
+        $this->skuImage = $skuImage;
     }
 
     /**

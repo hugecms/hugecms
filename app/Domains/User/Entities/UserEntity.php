@@ -28,6 +28,8 @@ class UserEntity implements \JsonSerializable
 
     public const string getPoints = 'points'; // 积分余额
 
+    public const string getShareCode = 'share_code'; // 推广码,分销/分享归因载体
+
     public const string getLastLoginTime = 'last_login_time'; // 最后登录时间
 
     public const string getLastLoginIp = 'last_login_ip'; // 最后登录IP
@@ -61,6 +63,9 @@ class UserEntity implements \JsonSerializable
 
     #[OA\Property(property: 'points', description: '积分余额', type: 'integer')]
     private int $points;
+
+    #[OA\Property(property: 'shareCode', description: '推广码,分销/分享归因载体', type: 'string')]
+    private string $shareCode;
 
     #[OA\Property(property: 'lastLoginTime', description: '最后登录时间', type: 'string')]
     private string $lastLoginTime;
@@ -203,6 +208,22 @@ class UserEntity implements \JsonSerializable
     public function setPoints(int $points): void
     {
         $this->points = $points;
+    }
+
+    /**
+     * 获取推广码,分销/分享归因载体
+     */
+    public function getShareCode(): string
+    {
+        return $this->shareCode;
+    }
+
+    /**
+     * 设置推广码,分销/分享归因载体
+     */
+    public function setShareCode(string $shareCode): void
+    {
+        $this->shareCode = $shareCode;
     }
 
     /**

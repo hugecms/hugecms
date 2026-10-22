@@ -24,7 +24,7 @@ class OrderRefundItemResponse implements \JsonSerializable
     #[OA\Property(property: 'productId', description: '商品ID', type: 'integer')]
     private int $productId;
 
-    #[OA\Property(property: 'skuId', description: 'SKU ID,0=单规格', type: 'integer')]
+    #[OA\Property(property: 'skuId', description: 'SKU ID,关联product_skus', type: 'integer')]
     private int $skuId;
 
     #[OA\Property(property: 'quantity', description: '退货数量', type: 'integer')]
@@ -101,7 +101,7 @@ class OrderRefundItemResponse implements \JsonSerializable
     }
 
     /**
-     * 获取SKU ID,0=单规格
+     * 获取SKU ID,关联product_skus
      */
     public function getSkuId(): int
     {
@@ -109,7 +109,7 @@ class OrderRefundItemResponse implements \JsonSerializable
     }
 
     /**
-     * 设置SKU ID,0=单规格
+     * 设置SKU ID,关联product_skus
      */
     public function setSkuId(int $skuId): void
     {

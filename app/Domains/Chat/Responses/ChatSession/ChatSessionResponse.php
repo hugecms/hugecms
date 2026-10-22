@@ -36,7 +36,7 @@ class ChatSessionResponse implements \JsonSerializable
     #[OA\Property(property: 'serverLastReadId', description: '客服已读消息水位(消息ID)', type: 'integer')]
     private int $serverLastReadId;
 
-    #[OA\Property(property: 'rating', description: '满意度评分:0=未评,1-5星', type: 'integer')]
+    #[OA\Property(property: 'rating', description: '满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星', type: 'integer')]
     private int $rating;
 
     #[OA\Property(property: 'ratedAt', description: '评分时间', type: 'string')]
@@ -186,7 +186,7 @@ class ChatSessionResponse implements \JsonSerializable
     }
 
     /**
-     * 获取满意度评分:0=未评,1-5星
+     * 获取满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星
      */
     public function getRating(): int
     {
@@ -194,7 +194,7 @@ class ChatSessionResponse implements \JsonSerializable
     }
 
     /**
-     * 设置满意度评分:0=未评,1-5星
+     * 设置满意度评分:0=未评,1=1星,2=2星,3=3星,4=4星,5=5星
      */
     public function setRating(int $rating): void
     {

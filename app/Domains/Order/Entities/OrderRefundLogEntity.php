@@ -16,7 +16,7 @@ class OrderRefundLogEntity implements \JsonSerializable
 
     public const string getRefundId = 'refund_id'; // 退款单ID
 
-    public const string getOperatorType = 'operator_type'; // 操作账户类型:admin,user,system
+    public const string getOperatorType = 'operator_type'; // 操作账户类型:admin=后台,user=前台,system=系统
 
     public const string getOperatorId = 'operator_id'; // 操作人ID
 
@@ -34,7 +34,7 @@ class OrderRefundLogEntity implements \JsonSerializable
     #[OA\Property(property: 'refundId', description: '退款单ID', type: 'integer')]
     private int $refundId;
 
-    #[OA\Property(property: 'operatorType', description: '操作账户类型:admin,user,system', type: 'string')]
+    #[OA\Property(property: 'operatorType', description: '操作账户类型:admin=后台,user=前台,system=系统', type: 'string')]
     private string $operatorType;
 
     #[OA\Property(property: 'operatorId', description: '操作人ID', type: 'integer')]
@@ -85,7 +85,7 @@ class OrderRefundLogEntity implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,user,system
+     * 获取操作账户类型:admin=后台,user=前台,system=系统
      */
     public function getOperatorType(): string
     {
@@ -93,7 +93,7 @@ class OrderRefundLogEntity implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,user,system
+     * 设置操作账户类型:admin=后台,user=前台,system=系统
      */
     public function setOperatorType(string $operatorType): void
     {

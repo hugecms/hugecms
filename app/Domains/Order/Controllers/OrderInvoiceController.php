@@ -29,7 +29,7 @@ class OrderInvoiceController extends BaseController
         private readonly OrderInvoiceService $orderInvoiceService,
     ) {}
 
-    #[OA\Post(path: '/orderInvoice/search', summary: '查询订单发�列表接口', security: [['bearerAuth' => []]], tags: ['订单发�模块'])]
+    #[OA\Post(path: '/orderInvoice/search', summary: '查询订单发票表(合规必需:用户开票申请与发票状态跟踪)列表接口', security: [['bearerAuth' => []]], tags: ['订单发票表(合规必需:用户开票申请与发票状态跟踪)模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: OrderInvoiceQueryRequest::class))]
@@ -80,7 +80,7 @@ class OrderInvoiceController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/orderInvoice/store', summary: '新增订单发�接口', security: [['bearerAuth' => []]], tags: ['订单发�模块'])]
+    #[OA\Post(path: '/orderInvoice/store', summary: '新增订单发票表(合规必需:用户开票申请与发票状态跟踪)接口', security: [['bearerAuth' => []]], tags: ['订单发票表(合规必需:用户开票申请与发票状态跟踪)模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: OrderInvoiceCreateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -117,7 +117,7 @@ class OrderInvoiceController extends BaseController
         }
     }
 
-    #[OA\Get(path: '/orderInvoice/show', summary: '获取订单发�详情接口', security: [['bearerAuth' => []]], tags: ['订单发�模块'])]
+    #[OA\Get(path: '/orderInvoice/show', summary: '获取订单发票表(合规必需:用户开票申请与发票状态跟踪)详情接口', security: [['bearerAuth' => []]], tags: ['订单发票表(合规必需:用户开票申请与发票状态跟踪)模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -150,7 +150,7 @@ class OrderInvoiceController extends BaseController
         }
     }
 
-    #[OA\Put(path: '/orderInvoice/update', summary: '更新订单发�接口', security: [['bearerAuth' => []]], tags: ['订单发�模块'])]
+    #[OA\Put(path: '/orderInvoice/update', summary: '更新订单发票表(合规必需:用户开票申请与发票状态跟踪)接口', security: [['bearerAuth' => []]], tags: ['订单发票表(合规必需:用户开票申请与发票状态跟踪)模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: OrderInvoiceUpdateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
@@ -192,7 +192,7 @@ class OrderInvoiceController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/orderInvoice/destroy', summary: '删除订单发�接口', security: [['bearerAuth' => []]], tags: ['订单发�模块'])]
+    #[OA\Post(path: '/orderInvoice/destroy', summary: '删除订单发票表(合规必需:用户开票申请与发票状态跟踪)接口', security: [['bearerAuth' => []]], tags: ['订单发票表(合规必需:用户开票申请与发票状态跟踪)模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: OrderInvoiceDestroyRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [

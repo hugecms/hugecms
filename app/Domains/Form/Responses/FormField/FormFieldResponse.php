@@ -24,7 +24,7 @@ class FormFieldResponse implements \JsonSerializable
     #[OA\Property(property: 'fieldName', description: '字段标识,英文,提交数据的键', type: 'string')]
     private string $fieldName;
 
-    #[OA\Property(property: 'type', description: '类型:text,textarea,select,radio,checkbox,number,date,image,file', type: 'string')]
+    #[OA\Property(property: 'type', description: '类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件', type: 'string')]
     private string $type;
 
     #[OA\Property(property: 'options', description: '选项(JSON),select/radio/checkbox用', type: 'string')]
@@ -116,7 +116,7 @@ class FormFieldResponse implements \JsonSerializable
     }
 
     /**
-     * 获取类型:text,textarea,select,radio,checkbox,number,date,image,file
+     * 获取类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件
      */
     public function getType(): string
     {
@@ -124,7 +124,7 @@ class FormFieldResponse implements \JsonSerializable
     }
 
     /**
-     * 设置类型:text,textarea,select,radio,checkbox,number,date,image,file
+     * 设置类型:text=文本,textarea=多行文本,select=下拉单选,radio=单选,checkbox=多选,number=数字,date=日期,image=图片,file=文件
      */
     public function setType(string $type): void
     {

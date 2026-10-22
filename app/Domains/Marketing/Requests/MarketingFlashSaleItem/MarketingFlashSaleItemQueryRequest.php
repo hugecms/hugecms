@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getSaleId, description: '秒杀活动ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
-        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,关联product_skus', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=下架,1=上架', type: 'integer'),
     ]
 )]

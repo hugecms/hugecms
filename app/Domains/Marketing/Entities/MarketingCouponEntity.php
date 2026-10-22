@@ -26,9 +26,15 @@ class MarketingCouponEntity implements \JsonSerializable
 
     public const string getReceiveType = 'receive_type'; // 发放方式:manual=后台发放,order=下单赠送,register=注册赠送
 
-    public const string getTotal = 'total'; // 发放总量,0=不限
+    public const string getTotal = 'total'; // 发放总量,0=不限;领券事务条件更新 received_count &lt; total 防超发
+
+    public const string getReceivedCount = 'received_count'; // 已领取数量,领券事务内条件更新 received_count &lt; total 防超发
 
     public const string getPerLimit = 'per_limit'; // 每人限领
+
+    public const string getValidType = 'valid_type'; // 有效期方式:1=固定区间(start_time/end_time),2=领取后N天
+
+    public const string getValidDays = 'valid_days'; // 领取后有效天数,valid_type=2 时必填
 
     public const string getStartTime = 'start_time'; // 有效期开始,空=领取即生效
 
@@ -61,11 +67,20 @@ class MarketingCouponEntity implements \JsonSerializable
     #[OA\Property(property: 'receiveType', description: '发放方式:manual=后台发放,order=下单赠送,register=注册赠送', type: 'string')]
     private string $receiveType;
 
-    #[OA\Property(property: 'total', description: '发放总量,0=不限', type: 'integer')]
+    #[OA\Property(property: 'total', description: '发放总量,0=不限;领券事务条件更新 received_count &lt; total 防超发', type: 'integer')]
     private int $total;
+
+    #[OA\Property(property: 'receivedCount', description: '已领取数量,领券事务内条件更新 received_count &lt; total 防超发', type: 'integer')]
+    private int $receivedCount;
 
     #[OA\Property(property: 'perLimit', description: '每人限领', type: 'integer')]
     private int $perLimit;
+
+    #[OA\Property(property: 'validType', description: '有效期方式:1=固定区间(start_time/end_time),2=领取后N天', type: 'integer')]
+    private int $validType;
+
+    #[OA\Property(property: 'validDays', description: '领取后有效天数,valid_type=2 时必填', type: 'integer')]
+    private int $validDays;
 
     #[OA\Property(property: 'startTime', description: '有效期开始,空=领取即生效', type: 'string')]
     private string $startTime;
@@ -195,7 +210,7 @@ class MarketingCouponEntity implements \JsonSerializable
     }
 
     /**
-     * 获取发放总量,0=不限
+     * 获取发放总量,0=不限;领券事务条件更新 received_count &lt; total 防超发
      */
     public function getTotal(): int
     {
@@ -203,11 +218,27 @@ class MarketingCouponEntity implements \JsonSerializable
     }
 
     /**
-     * 设置发放总量,0=不限
+     * 设置发放总量,0=不限;领券事务条件更新 received_count &lt; total 防超发
      */
     public function setTotal(int $total): void
     {
         $this->total = $total;
+    }
+
+    /**
+     * 获取已领取数量,领券事务内条件更新 received_count &lt; total 防超发
+     */
+    public function getReceivedCount(): int
+    {
+        return $this->receivedCount;
+    }
+
+    /**
+     * 设置已领取数量,领券事务内条件更新 received_count &lt; total 防超发
+     */
+    public function setReceivedCount(int $receivedCount): void
+    {
+        $this->receivedCount = $receivedCount;
     }
 
     /**
@@ -224,6 +255,38 @@ class MarketingCouponEntity implements \JsonSerializable
     public function setPerLimit(int $perLimit): void
     {
         $this->perLimit = $perLimit;
+    }
+
+    /**
+     * 获取有效期方式:1=固定区间(start_time/end_time),2=领取后N天
+     */
+    public function getValidType(): int
+    {
+        return $this->validType;
+    }
+
+    /**
+     * 设置有效期方式:1=固定区间(start_time/end_time),2=领取后N天
+     */
+    public function setValidType(int $validType): void
+    {
+        $this->validType = $validType;
+    }
+
+    /**
+     * 获取领取后有效天数,valid_type=2 时必填
+     */
+    public function getValidDays(): int
+    {
+        return $this->validDays;
+    }
+
+    /**
+     * 设置领取后有效天数,valid_type=2 时必填
+     */
+    public function setValidDays(int $validDays): void
+    {
+        $this->validDays = $validDays;
     }
 
     /**

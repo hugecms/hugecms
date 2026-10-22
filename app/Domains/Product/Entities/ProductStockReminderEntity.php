@@ -18,7 +18,7 @@ class ProductStockReminderEntity implements \JsonSerializable
 
     public const string getProductId = 'product_id'; // 商品ID
 
-    public const string getSkuId = 'sku_id'; // SKU ID,0=单规格/不限规格
+    public const string getSkuId = 'sku_id'; // SKU ID,0=不限规格
 
     public const string getStatus = 'status'; // 状态:0=待提醒,1=已提醒,2=已取消
 
@@ -37,7 +37,7 @@ class ProductStockReminderEntity implements \JsonSerializable
     #[OA\Property(property: 'productId', description: '商品ID', type: 'integer')]
     private int $productId;
 
-    #[OA\Property(property: 'skuId', description: 'SKU ID,0=单规格/不限规格', type: 'integer')]
+    #[OA\Property(property: 'skuId', description: 'SKU ID,0=不限规格', type: 'integer')]
     private int $skuId;
 
     #[OA\Property(property: 'status', description: '状态:0=待提醒,1=已提醒,2=已取消', type: 'integer')]
@@ -101,7 +101,7 @@ class ProductStockReminderEntity implements \JsonSerializable
     }
 
     /**
-     * 获取SKU ID,0=单规格/不限规格
+     * 获取SKU ID,0=不限规格
      */
     public function getSkuId(): int
     {
@@ -109,7 +109,7 @@ class ProductStockReminderEntity implements \JsonSerializable
     }
 
     /**
-     * 设置SKU ID,0=单规格/不限规格
+     * 设置SKU ID,0=不限规格
      */
     public function setSkuId(int $skuId): void
     {

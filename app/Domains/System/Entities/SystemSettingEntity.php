@@ -14,7 +14,7 @@ class SystemSettingEntity implements \JsonSerializable
 
     public const string getId = 'id'; // ID
 
-    public const string getGroup = 'group'; // 配置分组:basic=基础,seo,upload
+    public const string getGroup = 'group'; // 配置分组:basic=基础,seo=SEO,upload=上传
 
     public const string getKey = 'key'; // 配置键,如:site_name
 
@@ -22,7 +22,7 @@ class SystemSettingEntity implements \JsonSerializable
 
     public const string getValue = 'value'; // 配置值
 
-    public const string getType = 'type'; // 值类型:text,number,select,radio
+    public const string getType = 'type'; // 值类型:text=文本,number=数字,select=下拉单选,radio=单选
 
     public const string getCreatedAt = 'created_at'; // 创建时间
 
@@ -31,7 +31,7 @@ class SystemSettingEntity implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'group', description: '配置分组:basic=基础,seo,upload', type: 'string')]
+    #[OA\Property(property: 'group', description: '配置分组:basic=基础,seo=SEO,upload=上传', type: 'string')]
     private string $group;
 
     #[OA\Property(property: 'key', description: '配置键,如:site_name', type: 'string')]
@@ -43,7 +43,7 @@ class SystemSettingEntity implements \JsonSerializable
     #[OA\Property(property: 'value', description: '配置值', type: 'string')]
     private string $value;
 
-    #[OA\Property(property: 'type', description: '值类型:text,number,select,radio', type: 'string')]
+    #[OA\Property(property: 'type', description: '值类型:text=文本,number=数字,select=下拉单选,radio=单选', type: 'string')]
     private string $type;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
@@ -69,7 +69,7 @@ class SystemSettingEntity implements \JsonSerializable
     }
 
     /**
-     * 获取配置分组:basic=基础,seo,upload
+     * 获取配置分组:basic=基础,seo=SEO,upload=上传
      */
     public function getGroup(): string
     {
@@ -77,7 +77,7 @@ class SystemSettingEntity implements \JsonSerializable
     }
 
     /**
-     * 设置配置分组:basic=基础,seo,upload
+     * 设置配置分组:basic=基础,seo=SEO,upload=上传
      */
     public function setGroup(string $group): void
     {
@@ -133,7 +133,7 @@ class SystemSettingEntity implements \JsonSerializable
     }
 
     /**
-     * 获取值类型:text,number,select,radio
+     * 获取值类型:text=文本,number=数字,select=下拉单选,radio=单选
      */
     public function getType(): string
     {
@@ -141,7 +141,7 @@ class SystemSettingEntity implements \JsonSerializable
     }
 
     /**
-     * 设置值类型:text,number,select,radio
+     * 设置值类型:text=文本,number=数字,select=下拉单选,radio=单选
      */
     public function setType(string $type): void
     {

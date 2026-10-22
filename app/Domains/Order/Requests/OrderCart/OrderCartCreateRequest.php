@@ -22,7 +22,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
-        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,关联product_skus', type: 'integer'),
         new OA\Property(property: self::getProductName, description: '商品名称快照', type: 'string'),
         new OA\Property(property: self::getImage, description: '商品图快照', type: 'string'),
         new OA\Property(property: self::getPrice, description: '加购时价格快照', type: 'string'),
@@ -67,7 +67,7 @@ class OrderCartCreateRequest extends FormRequest
         return [
             self::getUserId.'.required' => '请设置用户ID',
             self::getProductId.'.required' => '请设置商品ID',
-            self::getSkuId.'.required' => '请设置SKU ID,0=单规格',
+            self::getSkuId.'.required' => '请设置SKU ID,关联product_skus',
             self::getProductName.'.required' => '请设置商品名称快照',
             self::getImage.'.required' => '请设置商品图快照',
             self::getPrice.'.required' => '请设置加购时价格快照',

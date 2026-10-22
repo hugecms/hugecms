@@ -30,7 +30,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
 
     public const string getAmount = 'amount'; // 佣金金额,冲销记录为负值
 
-    public const string getStatus = 'status'; // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+    public const string getStatus = 'status'; // 状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
 
     public const string getSettledAt = 'settled_at'; // 实际结算入账时间
 
@@ -71,7 +71,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     #[OA\Property(property: 'amount', description: '佣金金额,冲销记录为负值', type: 'string')]
     private string $amount;
 
-    #[OA\Property(property: 'status', description: '状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)', type: 'integer')]
+    #[OA\Property(property: 'status', description: '状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)', type: 'integer')]
     private int $status;
 
     #[OA\Property(property: 'settledAt', description: '实际结算入账时间', type: 'string')]
@@ -237,7 +237,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 获取状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+     * 获取状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
      */
     public function getStatus(): int
     {
@@ -245,7 +245,7 @@ class MarketingDistributionCommissionEntity implements \JsonSerializable
     }
 
     /**
-     * 设置状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款,原记录侧)
+     * 设置状态:0=待结算,1=已结算(负额冲销记录亦为此态),2=已失效(保护期内退款),3=已冲销(结算后退款/原记录侧)
      */
     public function setStatus(int $status): void
     {

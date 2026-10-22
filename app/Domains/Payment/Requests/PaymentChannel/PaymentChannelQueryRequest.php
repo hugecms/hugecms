@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
-        new OA\Property(property: self::getCode, description: '渠道标识:wechat,alipay,balance', type: 'string'),
+        new OA\Property(property: self::getCode, description: '渠道标识:wechat=微信支付,alipay=支付宝,balance=余额', type: 'string'),
         new OA\Property(property: self::getAppid, description: '应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号', type: 'string'),
     ]
 )]

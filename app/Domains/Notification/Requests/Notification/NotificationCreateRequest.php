@@ -17,11 +17,11 @@ use OpenApi\Attributes as OA;
         self::getReadAt,
     ],
     properties: [
-        new OA\Property(property: self::getType, description: '通知类型(通知类名)', type: 'string'),
-        new OA\Property(property: self::getNotifiableType, description: '通知目标类型,如:App\Models\User', type: 'string'),
-        new OA\Property(property: self::getNotifiableId, description: '通知目标ID', type: 'integer'),
-        new OA\Property(property: self::getData, description: '通知数据(JSON)', type: 'string'),
-        new OA\Property(property: self::getReadAt, description: '已读时间,空=未读', type: 'string'),
+        new OA\Property(property: self::getType, description: '', type: 'string'),
+        new OA\Property(property: self::getNotifiableType, description: '', type: 'string'),
+        new OA\Property(property: self::getNotifiableId, description: '', type: 'integer'),
+        new OA\Property(property: self::getData, description: '', type: 'string'),
+        new OA\Property(property: self::getReadAt, description: '', type: 'string'),
     ]
 )]
 class NotificationCreateRequest extends FormRequest
@@ -50,11 +50,11 @@ class NotificationCreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            self::getType.'.required' => '请设置通知类型(通知类名)',
-            self::getNotifiableType.'.required' => '请设置通知目标类型,如:App\Models\User',
-            self::getNotifiableId.'.required' => '请设置通知目标ID',
-            self::getData.'.required' => '请设置通知数据(JSON)',
-            self::getReadAt.'.required' => '请设置已读时间,空=未读',
+            self::getType.'.required' => '请设置',
+            self::getNotifiableType.'.required' => '请设置',
+            self::getNotifiableId.'.required' => '请设置',
+            self::getData.'.required' => '请设置',
+            self::getReadAt.'.required' => '请设置',
         ];
     }
 }

@@ -29,7 +29,7 @@ class NotificationController extends BaseController
         private readonly NotificationService $notificationService,
     ) {}
 
-    #[OA\Post(path: '/notification/search', summary: '查询消息通知列表接口', security: [['bearerAuth' => []]], tags: ['消息通知模块'])]
+    #[OA\Post(path: '/notification/search', summary: '查询列表接口', security: [['bearerAuth' => []]], tags: ['模块'])]
     #[OA\Parameter(name: 'page', description: '当前页码', in: 'query', required: true, example: 1)]
     #[OA\Parameter(name: 'pageSize', description: '每页分页数', in: 'query', required: false, example: 10)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: NotificationQueryRequest::class))]
@@ -83,7 +83,7 @@ class NotificationController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/notification/store', summary: '新增消息通知接口', security: [['bearerAuth' => []]], tags: ['消息通知模块'])]
+    #[OA\Post(path: '/notification/store', summary: '新增接口', security: [['bearerAuth' => []]], tags: ['模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: NotificationCreateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -120,7 +120,7 @@ class NotificationController extends BaseController
         }
     }
 
-    #[OA\Get(path: '/notification/show', summary: '获取消息通知详情接口', security: [['bearerAuth' => []]], tags: ['消息通知模块'])]
+    #[OA\Get(path: '/notification/show', summary: '获取详情接口', security: [['bearerAuth' => []]], tags: ['模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [
@@ -153,7 +153,7 @@ class NotificationController extends BaseController
         }
     }
 
-    #[OA\Put(path: '/notification/update', summary: '更新消息通知接口', security: [['bearerAuth' => []]], tags: ['消息通知模块'])]
+    #[OA\Put(path: '/notification/update', summary: '更新接口', security: [['bearerAuth' => []]], tags: ['模块'])]
     #[OA\Parameter(name: 'id', description: 'ID', in: 'query', required: true, example: 1)]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: NotificationUpdateRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
@@ -195,7 +195,7 @@ class NotificationController extends BaseController
         }
     }
 
-    #[OA\Post(path: '/notification/destroy', summary: '删除消息通知接口', security: [['bearerAuth' => []]], tags: ['消息通知模块'])]
+    #[OA\Post(path: '/notification/destroy', summary: '删除接口', security: [['bearerAuth' => []]], tags: ['模块'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: NotificationDestroyRequest::class))]
     #[OA\Response(response: 200, description: 'OK', content: new OA\JsonContent(
         properties: [

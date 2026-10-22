@@ -48,11 +48,17 @@ class ProductSkuController extends BaseController
 
         try {
             $condition = [];
+            if (isset($requestData[ProductSkuQueryRequest::getBarcode])) {
+                $condition[] = [ProductSkuEntity::getBarcode, '=', $requestData[ProductSkuQueryRequest::getBarcode]];
+            }
             if (isset($requestData[ProductSkuQueryRequest::getProductId])) {
                 $condition[] = [ProductSkuEntity::getProductId, '=', $requestData[ProductSkuQueryRequest::getProductId]];
             }
             if (isset($requestData[ProductSkuQueryRequest::getId])) {
                 $condition[] = [ProductSkuEntity::getId, '=', $requestData[ProductSkuQueryRequest::getId]];
+            }
+            if (isset($requestData[ProductSkuQueryRequest::getSkuNo])) {
+                $condition[] = [ProductSkuEntity::getSkuNo, '=', $requestData[ProductSkuQueryRequest::getSkuNo]];
             }
 
             $result = $this->productSkuService->page($condition, $page, $pageSize);

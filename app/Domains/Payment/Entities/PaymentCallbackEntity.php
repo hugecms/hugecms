@@ -16,7 +16,7 @@ class PaymentCallbackEntity implements \JsonSerializable
 
     public const string getPaymentId = 'payment_id'; // 关联支付单ID,未匹配到支付单时为空
 
-    public const string getChannel = 'channel'; // 渠道:wechat,alipay
+    public const string getChannel = 'channel'; // 渠道:wechat=微信支付,alipay=支付宝
 
     public const string getEventType = 'event_type'; // 事件类型:payment=支付通知,refund=退款通知
 
@@ -40,7 +40,7 @@ class PaymentCallbackEntity implements \JsonSerializable
     #[OA\Property(property: 'paymentId', description: '关联支付单ID,未匹配到支付单时为空', type: 'integer')]
     private int $paymentId;
 
-    #[OA\Property(property: 'channel', description: '渠道:wechat,alipay', type: 'string')]
+    #[OA\Property(property: 'channel', description: '渠道:wechat=微信支付,alipay=支付宝', type: 'string')]
     private string $channel;
 
     #[OA\Property(property: 'eventType', description: '事件类型:payment=支付通知,refund=退款通知', type: 'string')]
@@ -100,7 +100,7 @@ class PaymentCallbackEntity implements \JsonSerializable
     }
 
     /**
-     * 获取渠道:wechat,alipay
+     * 获取渠道:wechat=微信支付,alipay=支付宝
      */
     public function getChannel(): string
     {
@@ -108,7 +108,7 @@ class PaymentCallbackEntity implements \JsonSerializable
     }
 
     /**
-     * 设置渠道:wechat,alipay
+     * 设置渠道:wechat=微信支付,alipay=支付宝
      */
     public function setChannel(string $channel): void
     {

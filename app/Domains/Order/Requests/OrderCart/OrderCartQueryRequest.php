@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
-        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,关联product_skus', type: 'integer'),
     ]
 )]
 class OrderCartQueryRequest extends FormRequest

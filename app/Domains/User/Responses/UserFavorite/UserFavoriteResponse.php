@@ -18,7 +18,7 @@ class UserFavoriteResponse implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'targetType', description: '目标类型:article,product', type: 'string')]
+    #[OA\Property(property: 'targetType', description: '目标类型:article=文章,product=商品', type: 'string')]
     private string $targetType;
 
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
@@ -60,7 +60,7 @@ class UserFavoriteResponse implements \JsonSerializable
     }
 
     /**
-     * 获取目标类型:article,product
+     * 获取目标类型:article=文章,product=商品
      */
     public function getTargetType(): string
     {
@@ -68,7 +68,7 @@ class UserFavoriteResponse implements \JsonSerializable
     }
 
     /**
-     * 设置目标类型:article,product
+     * 设置目标类型:article=文章,product=商品
      */
     public function setTargetType(string $targetType): void
     {

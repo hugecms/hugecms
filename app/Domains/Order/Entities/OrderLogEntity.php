@@ -20,7 +20,7 @@ class OrderLogEntity implements \JsonSerializable
 
     public const string getToStatus = 'to_status'; // 变更后状态
 
-    public const string getOperatorType = 'operator_type'; // 操作账户类型:admin,user,system
+    public const string getOperatorType = 'operator_type'; // 操作账户类型:admin=后台,user=前台,system=系统
 
     public const string getOperatorId = 'operator_id'; // 操作人ID
 
@@ -42,7 +42,7 @@ class OrderLogEntity implements \JsonSerializable
     #[OA\Property(property: 'toStatus', description: '变更后状态', type: 'integer')]
     private int $toStatus;
 
-    #[OA\Property(property: 'operatorType', description: '操作账户类型:admin,user,system', type: 'string')]
+    #[OA\Property(property: 'operatorType', description: '操作账户类型:admin=后台,user=前台,system=系统', type: 'string')]
     private string $operatorType;
 
     #[OA\Property(property: 'operatorId', description: '操作人ID', type: 'integer')]
@@ -122,7 +122,7 @@ class OrderLogEntity implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,user,system
+     * 获取操作账户类型:admin=后台,user=前台,system=系统
      */
     public function getOperatorType(): string
     {
@@ -130,7 +130,7 @@ class OrderLogEntity implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,user,system
+     * 设置操作账户类型:admin=后台,user=前台,system=系统
      */
     public function setOperatorType(string $operatorType): void
     {

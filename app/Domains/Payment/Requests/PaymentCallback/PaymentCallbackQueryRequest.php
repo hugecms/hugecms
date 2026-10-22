@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getPaymentId, description: '关联支付单ID,未匹配到支付单时为空', type: 'integer'),
-        new OA\Property(property: self::getChannel, description: '渠道:wechat,alipay', type: 'string'),
+        new OA\Property(property: self::getChannel, description: '渠道:wechat=微信支付,alipay=支付宝', type: 'string'),
         new OA\Property(property: self::getNotifyId, description: '第三方通知唯一ID,幂等去重依据', type: 'string'),
         new OA\Property(property: self::getTradeNo, description: '第三方交易号', type: 'string'),
     ]

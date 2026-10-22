@@ -15,6 +15,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getUsername, description: '用户名', type: 'string'),
         new OA\Property(property: self::getEmail, description: '邮箱', type: 'string'),
         new OA\Property(property: self::getPhone, description: '手机号', type: 'string'),
+        new OA\Property(property: self::getShareCode, description: '推广码,分销/分享归因载体', type: 'string'),
     ]
 )]
 class UserQueryRequest extends FormRequest
@@ -26,6 +27,8 @@ class UserQueryRequest extends FormRequest
     public const string getEmail = 'email';
 
     public const string getPhone = 'phone';
+
+    public const string getShareCode = 'shareCode';
 
     public function rules(): array
     {

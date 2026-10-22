@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
-        new OA\Property(property: self::getModule, description: '所属模块:article,product', type: 'string'),
+        new OA\Property(property: self::getModule, description: '所属模块:article=文章,product=商品', type: 'string'),
     ]
 )]
 class SystemAttachmentQueryRequest extends FormRequest

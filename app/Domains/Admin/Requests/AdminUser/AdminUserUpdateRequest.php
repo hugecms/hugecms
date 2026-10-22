@@ -16,6 +16,7 @@ use OpenApi\Attributes as OA;
         self::getPhone,
         self::getPassword,
         self::getStatus,
+        self::getIsSuper,
         self::getLastLoginTime,
         self::getLastLoginIp,
     ],
@@ -26,6 +27,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getPhone, description: '手机号', type: 'string'),
         new OA\Property(property: self::getPassword, description: '密码哈希', type: 'string'),
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=正常', type: 'integer'),
+        new OA\Property(property: self::getIsSuper, description: '超级管理员:0=否,1=是;超管不受角色权限限制', type: 'integer'),
         new OA\Property(property: self::getLastLoginTime, description: '最后登录时间', type: 'string'),
         new OA\Property(property: self::getLastLoginIp, description: '最后登录IP', type: 'string'),
     ]
@@ -44,6 +46,8 @@ class AdminUserUpdateRequest extends FormRequest
 
     public const string getStatus = 'status';
 
+    public const string getIsSuper = 'isSuper';
+
     public const string getLastLoginTime = 'lastLoginTime';
 
     public const string getLastLoginIp = 'lastLoginIp';
@@ -57,6 +61,7 @@ class AdminUserUpdateRequest extends FormRequest
             self::getPhone => 'required',
             self::getPassword => 'required',
             self::getStatus => 'required',
+            self::getIsSuper => 'required',
             self::getLastLoginTime => 'required',
             self::getLastLoginIp => 'required',
         ];
@@ -71,6 +76,7 @@ class AdminUserUpdateRequest extends FormRequest
             self::getPhone.'.required' => '请设置手机号',
             self::getPassword.'.required' => '请设置密码哈希',
             self::getStatus.'.required' => '请设置状态:0=禁用,1=正常',
+            self::getIsSuper.'.required' => '请设置超级管理员:0=否,1=是;超管不受角色权限限制',
             self::getLastLoginTime.'.required' => '请设置最后登录时间',
             self::getLastLoginIp.'.required' => '请设置最后登录IP',
         ];

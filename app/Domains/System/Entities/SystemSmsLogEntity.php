@@ -22,7 +22,7 @@ class SystemSmsLogEntity implements \JsonSerializable
 
     public const string getParams = 'params'; // 模板变量(JSON)
 
-    public const string getGateway = 'gateway'; // 发送网关:aliyun,tencent,qiniu等
+    public const string getGateway = 'gateway'; // 发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛
 
     public const string getStatus = 'status'; // 状态:0=发送中,1=成功,2=失败
 
@@ -51,7 +51,7 @@ class SystemSmsLogEntity implements \JsonSerializable
     #[OA\Property(property: 'params', description: '模板变量(JSON)', type: 'string')]
     private string $params;
 
-    #[OA\Property(property: 'gateway', description: '发送网关:aliyun,tencent,qiniu等', type: 'string')]
+    #[OA\Property(property: 'gateway', description: '发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛', type: 'string')]
     private string $gateway;
 
     #[OA\Property(property: 'status', description: '状态:0=发送中,1=成功,2=失败', type: 'integer')]
@@ -153,7 +153,7 @@ class SystemSmsLogEntity implements \JsonSerializable
     }
 
     /**
-     * 获取发送网关:aliyun,tencent,qiniu等
+     * 获取发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛
      */
     public function getGateway(): string
     {
@@ -161,7 +161,7 @@ class SystemSmsLogEntity implements \JsonSerializable
     }
 
     /**
-     * 设置发送网关:aliyun,tencent,qiniu等
+     * 设置发送网关:aliyun=阿里云,tencent=腾讯云,qiniu=七牛
      */
     public function setGateway(string $gateway): void
     {

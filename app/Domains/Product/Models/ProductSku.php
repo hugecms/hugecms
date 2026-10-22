@@ -30,9 +30,15 @@ class ProductSku extends Model
     protected $fillable = [
         'product_id',
         'specs',
+        'sku_no',
+        'barcode',
+        'image',
         'price',
+        'line_price',
+        'cost_price',
+        'weight',
         'stock',
-        'locked_stock',
+        'warn_stock',
         'status',
     ];
 }

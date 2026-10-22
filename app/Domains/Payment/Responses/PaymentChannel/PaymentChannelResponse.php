@@ -15,7 +15,7 @@ class PaymentChannelResponse implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'code', description: '渠道标识:wechat,alipay,balance', type: 'string')]
+    #[OA\Property(property: 'code', description: '渠道标识:wechat=微信支付,alipay=支付宝,balance=余额', type: 'string')]
     private string $code;
 
     #[OA\Property(property: 'appid', description: '应用AppID,空=通用配置,非空=该应用专属,同渠道不同应用可配不同商户号', type: 'string')]
@@ -56,7 +56,7 @@ class PaymentChannelResponse implements \JsonSerializable
     }
 
     /**
-     * 获取渠道标识:wechat,alipay,balance
+     * 获取渠道标识:wechat=微信支付,alipay=支付宝,balance=余额
      */
     public function getCode(): string
     {
@@ -64,7 +64,7 @@ class PaymentChannelResponse implements \JsonSerializable
     }
 
     /**
-     * 设置渠道标识:wechat,alipay,balance
+     * 设置渠道标识:wechat=微信支付,alipay=支付宝,balance=余额
      */
     public function setCode(string $code): void
     {

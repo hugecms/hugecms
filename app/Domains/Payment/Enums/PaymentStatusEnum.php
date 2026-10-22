@@ -28,4 +28,9 @@ enum PaymentStatusEnum: int implements EnumMethodInterface
      * 失败
      */
     case Status2 = 2;
+
+    /**
+     * 已关闭(超时/取消)
+     */
+    case Status3 = 3;
 }

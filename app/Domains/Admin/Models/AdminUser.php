@@ -33,6 +33,7 @@ class AdminUser extends Model
         'phone',
         'password',
         'status',
+        'is_super',
         'last_login_time',
         'last_login_ip',
     ];

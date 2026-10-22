@@ -20,7 +20,7 @@ enum SystemAppStatusEnum: int implements EnumMethodInterface
     case Status0 = 0;
 
     /**
-     * 启用
+     * 启用;停用即一键下线该端
      */
     case Status1 = 1;
 }

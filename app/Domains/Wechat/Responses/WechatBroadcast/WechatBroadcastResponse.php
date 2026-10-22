@@ -24,7 +24,7 @@ class WechatBroadcastResponse implements \JsonSerializable
     #[OA\Property(property: 'content', description: '群发内容(JSON),图文为素材列表', type: 'string')]
     private string $content;
 
-    #[OA\Property(property: 'target', description: '目标:all=全部粉丝,或标签ID列表', type: 'string')]
+    #[OA\Property(property: 'target', description: '目标:all=全部粉丝;或标签ID列表', type: 'string')]
     private string $target;
 
     #[OA\Property(property: 'sendCount', description: '送达数', type: 'integer')]
@@ -36,7 +36,7 @@ class WechatBroadcastResponse implements \JsonSerializable
     #[OA\Property(property: 'msgId', description: '微信群发消息ID,回拉发送结果用', type: 'string')]
     private string $msgId;
 
-    #[OA\Property(property: 'userType', description: '操作账户类型:admin,system', type: 'string')]
+    #[OA\Property(property: 'userType', description: '操作账户类型:admin=后台,system=系统', type: 'string')]
     private string $userType;
 
     #[OA\Property(property: 'userId', description: '操作人ID', type: 'integer')]
@@ -116,7 +116,7 @@ class WechatBroadcastResponse implements \JsonSerializable
     }
 
     /**
-     * 获取目标:all=全部粉丝,或标签ID列表
+     * 获取目标:all=全部粉丝;或标签ID列表
      */
     public function getTarget(): string
     {
@@ -124,7 +124,7 @@ class WechatBroadcastResponse implements \JsonSerializable
     }
 
     /**
-     * 设置目标:all=全部粉丝,或标签ID列表
+     * 设置目标:all=全部粉丝;或标签ID列表
      */
     public function setTarget(string $target): void
     {
@@ -180,7 +180,7 @@ class WechatBroadcastResponse implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,system
+     * 获取操作账户类型:admin=后台,system=系统
      */
     public function getUserType(): string
     {
@@ -188,7 +188,7 @@ class WechatBroadcastResponse implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,system
+     * 设置操作账户类型:admin=后台,system=系统
      */
     public function setUserType(string $userType): void
     {

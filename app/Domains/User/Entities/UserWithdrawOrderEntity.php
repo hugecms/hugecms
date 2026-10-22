@@ -20,7 +20,7 @@ class UserWithdrawOrderEntity implements \JsonSerializable
 
     public const string getAmount = 'amount'; // 提现金额
 
-    public const string getChannel = 'channel'; // 打款渠道:manual=人工线下打款,微信商家转账后续扩展
+    public const string getChannel = 'channel'; // 打款渠道:manual=人工线下打款;微信商家转账后续扩展
 
     public const string getChannelOrderNo = 'channel_order_no'; // 渠道打款单号,回填防重复打款
 
@@ -60,7 +60,7 @@ class UserWithdrawOrderEntity implements \JsonSerializable
     #[OA\Property(property: 'amount', description: '提现金额', type: 'string')]
     private string $amount;
 
-    #[OA\Property(property: 'channel', description: '打款渠道:manual=人工线下打款,微信商家转账后续扩展', type: 'string')]
+    #[OA\Property(property: 'channel', description: '打款渠道:manual=人工线下打款;微信商家转账后续扩展', type: 'string')]
     private string $channel;
 
     #[OA\Property(property: 'channelOrderNo', description: '渠道打款单号,回填防重复打款', type: 'string')]
@@ -167,7 +167,7 @@ class UserWithdrawOrderEntity implements \JsonSerializable
     }
 
     /**
-     * 获取打款渠道:manual=人工线下打款,微信商家转账后续扩展
+     * 获取打款渠道:manual=人工线下打款;微信商家转账后续扩展
      */
     public function getChannel(): string
     {
@@ -175,7 +175,7 @@ class UserWithdrawOrderEntity implements \JsonSerializable
     }
 
     /**
-     * 设置打款渠道:manual=人工线下打款,微信商家转账后续扩展
+     * 设置打款渠道:manual=人工线下打款;微信商家转账后续扩展
      */
     public function setChannel(string $channel): void
     {

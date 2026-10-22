@@ -22,7 +22,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getRefundId, description: '退款单ID', type: 'integer'),
-        new OA\Property(property: self::getOperatorType, description: '操作账户类型:admin,user,system', type: 'string'),
+        new OA\Property(property: self::getOperatorType, description: '操作账户类型:admin=后台,user=前台,system=系统', type: 'string'),
         new OA\Property(property: self::getOperatorId, description: '操作人ID', type: 'integer'),
         new OA\Property(property: self::getOperator, description: '操作人名称快照', type: 'string'),
         new OA\Property(property: self::getContent, description: '协商内容/操作说明', type: 'string'),
@@ -67,7 +67,7 @@ class OrderRefundLogUpdateRequest extends FormRequest
         return [
             self::getId.'.required' => '请设置ID',
             self::getRefundId.'.required' => '请设置退款单ID',
-            self::getOperatorType.'.required' => '请设置操作账户类型:admin,user,system',
+            self::getOperatorType.'.required' => '请设置操作账户类型:admin=后台,user=前台,system=系统',
             self::getOperatorId.'.required' => '请设置操作人ID',
             self::getOperator.'.required' => '请设置操作人名称快照',
             self::getContent.'.required' => '请设置协商内容/操作说明',

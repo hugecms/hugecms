@@ -16,6 +16,9 @@ use OpenApi\Attributes as OA;
         self::getSkuId,
         self::getProductName,
         self::getSkuSpecs,
+        self::getSkuNo,
+        self::getSkuName,
+        self::getSkuImage,
         self::getImage,
         self::getPrice,
         self::getQuantity,
@@ -26,9 +29,12 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getOrderId, description: '订单ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
-        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,关联product_skus', type: 'integer'),
         new OA\Property(property: self::getProductName, description: '商品名称快照', type: 'string'),
         new OA\Property(property: self::getSkuSpecs, description: '规格快照', type: 'string'),
+        new OA\Property(property: self::getSkuNo, description: 'SKU编号快照', type: 'string'),
+        new OA\Property(property: self::getSkuName, description: 'SKU名称快照', type: 'string'),
+        new OA\Property(property: self::getSkuImage, description: 'SKU图片快照', type: 'string'),
         new OA\Property(property: self::getImage, description: '商品图快照', type: 'string'),
         new OA\Property(property: self::getPrice, description: '成交单价', type: 'string'),
         new OA\Property(property: self::getQuantity, description: '数量', type: 'integer'),
@@ -50,6 +56,12 @@ class OrderItemUpdateRequest extends FormRequest
 
     public const string getSkuSpecs = 'skuSpecs';
 
+    public const string getSkuNo = 'skuNo';
+
+    public const string getSkuName = 'skuName';
+
+    public const string getSkuImage = 'skuImage';
+
     public const string getImage = 'image';
 
     public const string getPrice = 'price';
@@ -69,6 +81,9 @@ class OrderItemUpdateRequest extends FormRequest
             self::getSkuId => 'required',
             self::getProductName => 'required',
             self::getSkuSpecs => 'required',
+            self::getSkuNo => 'required',
+            self::getSkuName => 'required',
+            self::getSkuImage => 'required',
             self::getImage => 'required',
             self::getPrice => 'required',
             self::getQuantity => 'required',
@@ -83,9 +98,12 @@ class OrderItemUpdateRequest extends FormRequest
             self::getId.'.required' => '请设置ID',
             self::getOrderId.'.required' => '请设置订单ID',
             self::getProductId.'.required' => '请设置商品ID',
-            self::getSkuId.'.required' => '请设置SKU ID,0=单规格',
+            self::getSkuId.'.required' => '请设置SKU ID,关联product_skus',
             self::getProductName.'.required' => '请设置商品名称快照',
             self::getSkuSpecs.'.required' => '请设置规格快照',
+            self::getSkuNo.'.required' => '请设置SKU编号快照',
+            self::getSkuName.'.required' => '请设置SKU名称快照',
+            self::getSkuImage.'.required' => '请设置SKU图片快照',
             self::getImage.'.required' => '请设置商品图快照',
             self::getPrice.'.required' => '请设置成交单价',
             self::getQuantity.'.required' => '请设置数量',

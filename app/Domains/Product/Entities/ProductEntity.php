@@ -20,6 +20,8 @@ class ProductEntity implements \JsonSerializable
 
     public const string getTypeId = 'type_id'; // 商品类型ID,关联属性体系
 
+    public const string getFreightTemplateId = 'freight_template_id'; // 运费模板ID,关联shipping_methods,空=按默认配送方式计费
+
     public const string getName = 'name'; // 商品名称
 
     public const string getSn = 'sn'; // 商品编码
@@ -35,10 +37,6 @@ class ProductEntity implements \JsonSerializable
     public const string getPrice = 'price'; // 售价,多规格时为最低规格价
 
     public const string getMarketPrice = 'market_price'; // 市场价
-
-    public const string getStock = 'stock'; // 库存,单规格商品有效
-
-    public const string getLockedStock = 'locked_stock'; // 锁定库存(下单未支付),可售=stock-locked_stock
 
     public const string getSales = 'sales'; // 销量
 
@@ -64,6 +62,9 @@ class ProductEntity implements \JsonSerializable
     #[OA\Property(property: 'typeId', description: '商品类型ID,关联属性体系', type: 'integer')]
     private int $typeId;
 
+    #[OA\Property(property: 'freightTemplateId', description: '运费模板ID,关联shipping_methods,空=按默认配送方式计费', type: 'integer')]
+    private int $freightTemplateId;
+
     #[OA\Property(property: 'name', description: '商品名称', type: 'string')]
     private string $name;
 
@@ -87,12 +88,6 @@ class ProductEntity implements \JsonSerializable
 
     #[OA\Property(property: 'marketPrice', description: '市场价', type: 'string')]
     private string $marketPrice;
-
-    #[OA\Property(property: 'stock', description: '库存,单规格商品有效', type: 'integer')]
-    private int $stock;
-
-    #[OA\Property(property: 'lockedStock', description: '锁定库存(下单未支付),可售=stock-locked_stock', type: 'integer')]
-    private int $lockedStock;
 
     #[OA\Property(property: 'sales', description: '销量', type: 'integer')]
     private int $sales;
@@ -174,6 +169,22 @@ class ProductEntity implements \JsonSerializable
     public function setTypeId(int $typeId): void
     {
         $this->typeId = $typeId;
+    }
+
+    /**
+     * 获取运费模板ID,关联shipping_methods,空=按默认配送方式计费
+     */
+    public function getFreightTemplateId(): int
+    {
+        return $this->freightTemplateId;
+    }
+
+    /**
+     * 设置运费模板ID,关联shipping_methods,空=按默认配送方式计费
+     */
+    public function setFreightTemplateId(int $freightTemplateId): void
+    {
+        $this->freightTemplateId = $freightTemplateId;
     }
 
     /**
@@ -302,38 +313,6 @@ class ProductEntity implements \JsonSerializable
     public function setMarketPrice(string $marketPrice): void
     {
         $this->marketPrice = $marketPrice;
-    }
-
-    /**
-     * 获取库存,单规格商品有效
-     */
-    public function getStock(): int
-    {
-        return $this->stock;
-    }
-
-    /**
-     * 设置库存,单规格商品有效
-     */
-    public function setStock(int $stock): void
-    {
-        $this->stock = $stock;
-    }
-
-    /**
-     * 获取锁定库存(下单未支付),可售=stock-locked_stock
-     */
-    public function getLockedStock(): int
-    {
-        return $this->lockedStock;
-    }
-
-    /**
-     * 设置锁定库存(下单未支付),可售=stock-locked_stock
-     */
-    public function setLockedStock(int $lockedStock): void
-    {
-        $this->lockedStock = $lockedStock;
     }
 
     /**

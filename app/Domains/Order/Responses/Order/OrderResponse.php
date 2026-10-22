@@ -18,6 +18,18 @@ class OrderResponse implements \JsonSerializable
     #[OA\Property(property: 'orderNo', description: '订单号', type: 'string')]
     private string $orderNo;
 
+    #[OA\Property(property: 'requestToken', description: '下单请求幂等令牌,客户端生成,唯一约束防重复下单', type: 'string')]
+    private string $requestToken;
+
+    #[OA\Property(property: 'orderChannel', description: '下单渠道:web=PC网站,h5=移动网页,wechat_miniapp=微信小程序,wechat_official=微信公众号,app=原生应用', type: 'string')]
+    private string $orderChannel;
+
+    #[OA\Property(property: 'attributedUserId', description: '归因用户ID:分享者/分销员,佣金与ROI归因依据', type: 'integer')]
+    private int $attributedUserId;
+
+    #[OA\Property(property: 'attributionType', description: '归因类型:share=分享,distributor=分销,channel=渠道投放', type: 'string')]
+    private string $attributionType;
+
     #[OA\Property(property: 'userId', description: '下单用户ID', type: 'integer')]
     private int $userId;
 
@@ -36,7 +48,7 @@ class OrderResponse implements \JsonSerializable
     #[OA\Property(property: 'status', description: '状态:0=待支付,1=已支付(待发货),2=已发货(待收货),3=已完成,4=已取消,5=已关闭(超时未支付)', type: 'integer')]
     private int $status;
 
-    #[OA\Property(property: 'refundStatus', description: '售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写', type: 'integer')]
+    #[OA\Property(property: 'refundStatus', description: '售后状态:0=无,1=售后中,2=部分退款,3=整单退款;由order_refunds汇总回写', type: 'integer')]
     private int $refundStatus;
 
     #[OA\Property(property: 'receiverName', description: '收货人', type: 'string')]
@@ -45,14 +57,35 @@ class OrderResponse implements \JsonSerializable
     #[OA\Property(property: 'receiverPhone', description: '收货电话', type: 'string')]
     private string $receiverPhone;
 
-    #[OA\Property(property: 'receiverRegion', description: '省市区', type: 'string')]
+    #[OA\Property(property: 'receiverRegion', description: '省市区(合并展示用)', type: 'string')]
     private string $receiverRegion;
+
+    #[OA\Property(property: 'receiverProvince', description: '省', type: 'string')]
+    private string $receiverProvince;
+
+    #[OA\Property(property: 'receiverCity', description: '市', type: 'string')]
+    private string $receiverCity;
+
+    #[OA\Property(property: 'receiverDistrict', description: '区县', type: 'string')]
+    private string $receiverDistrict;
+
+    #[OA\Property(property: 'receiverProvinceCode', description: '省行政区划码,物流面单', type: 'string')]
+    private string $receiverProvinceCode;
+
+    #[OA\Property(property: 'receiverCityCode', description: '市行政区划码', type: 'string')]
+    private string $receiverCityCode;
+
+    #[OA\Property(property: 'receiverDistrictCode', description: '区县行政区划码', type: 'string')]
+    private string $receiverDistrictCode;
 
     #[OA\Property(property: 'receiverAddress', description: '详细地址', type: 'string')]
     private string $receiverAddress;
 
     #[OA\Property(property: 'buyerRemark', description: '买家备注', type: 'string')]
     private string $buyerRemark;
+
+    #[OA\Property(property: 'sellerRemark', description: '商家备注,客服/发货协作', type: 'string')]
+    private string $sellerRemark;
 
     #[OA\Property(property: 'payTime', description: '支付时间', type: 'string')]
     private string $payTime;
@@ -68,6 +101,9 @@ class OrderResponse implements \JsonSerializable
 
     #[OA\Property(property: 'cancelReason', description: '取消原因', type: 'string')]
     private string $cancelReason;
+
+    #[OA\Property(property: 'cancelType', description: '取消类型:1=用户取消,2=超时未支付,3=商家/系统取消', type: 'integer')]
+    private int $cancelType;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
     private string $createdAt;
@@ -108,6 +144,70 @@ class OrderResponse implements \JsonSerializable
     public function setOrderNo(string $orderNo): void
     {
         $this->orderNo = $orderNo;
+    }
+
+    /**
+     * 获取下单请求幂等令牌,客户端生成,唯一约束防重复下单
+     */
+    public function getRequestToken(): string
+    {
+        return $this->requestToken;
+    }
+
+    /**
+     * 设置下单请求幂等令牌,客户端生成,唯一约束防重复下单
+     */
+    public function setRequestToken(string $requestToken): void
+    {
+        $this->requestToken = $requestToken;
+    }
+
+    /**
+     * 获取下单渠道:web=PC网站,h5=移动网页,wechat_miniapp=微信小程序,wechat_official=微信公众号,app=原生应用
+     */
+    public function getOrderChannel(): string
+    {
+        return $this->orderChannel;
+    }
+
+    /**
+     * 设置下单渠道:web=PC网站,h5=移动网页,wechat_miniapp=微信小程序,wechat_official=微信公众号,app=原生应用
+     */
+    public function setOrderChannel(string $orderChannel): void
+    {
+        $this->orderChannel = $orderChannel;
+    }
+
+    /**
+     * 获取归因用户ID:分享者/分销员,佣金与ROI归因依据
+     */
+    public function getAttributedUserId(): int
+    {
+        return $this->attributedUserId;
+    }
+
+    /**
+     * 设置归因用户ID:分享者/分销员,佣金与ROI归因依据
+     */
+    public function setAttributedUserId(int $attributedUserId): void
+    {
+        $this->attributedUserId = $attributedUserId;
+    }
+
+    /**
+     * 获取归因类型:share=分享,distributor=分销,channel=渠道投放
+     */
+    public function getAttributionType(): string
+    {
+        return $this->attributionType;
+    }
+
+    /**
+     * 设置归因类型:share=分享,distributor=分销,channel=渠道投放
+     */
+    public function setAttributionType(string $attributionType): void
+    {
+        $this->attributionType = $attributionType;
     }
 
     /**
@@ -207,7 +307,7 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 获取售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写
+     * 获取售后状态:0=无,1=售后中,2=部分退款,3=整单退款;由order_refunds汇总回写
      */
     public function getRefundStatus(): int
     {
@@ -215,7 +315,7 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 设置售后状态:0=无,1=售后中,2=部分退款,3=整单退款,由order_refunds汇总回写
+     * 设置售后状态:0=无,1=售后中,2=部分退款,3=整单退款;由order_refunds汇总回写
      */
     public function setRefundStatus(int $refundStatus): void
     {
@@ -255,7 +355,7 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 获取省市区
+     * 获取省市区(合并展示用)
      */
     public function getReceiverRegion(): string
     {
@@ -263,11 +363,107 @@ class OrderResponse implements \JsonSerializable
     }
 
     /**
-     * 设置省市区
+     * 设置省市区(合并展示用)
      */
     public function setReceiverRegion(string $receiverRegion): void
     {
         $this->receiverRegion = $receiverRegion;
+    }
+
+    /**
+     * 获取省
+     */
+    public function getReceiverProvince(): string
+    {
+        return $this->receiverProvince;
+    }
+
+    /**
+     * 设置省
+     */
+    public function setReceiverProvince(string $receiverProvince): void
+    {
+        $this->receiverProvince = $receiverProvince;
+    }
+
+    /**
+     * 获取市
+     */
+    public function getReceiverCity(): string
+    {
+        return $this->receiverCity;
+    }
+
+    /**
+     * 设置市
+     */
+    public function setReceiverCity(string $receiverCity): void
+    {
+        $this->receiverCity = $receiverCity;
+    }
+
+    /**
+     * 获取区县
+     */
+    public function getReceiverDistrict(): string
+    {
+        return $this->receiverDistrict;
+    }
+
+    /**
+     * 设置区县
+     */
+    public function setReceiverDistrict(string $receiverDistrict): void
+    {
+        $this->receiverDistrict = $receiverDistrict;
+    }
+
+    /**
+     * 获取省行政区划码,物流面单
+     */
+    public function getReceiverProvinceCode(): string
+    {
+        return $this->receiverProvinceCode;
+    }
+
+    /**
+     * 设置省行政区划码,物流面单
+     */
+    public function setReceiverProvinceCode(string $receiverProvinceCode): void
+    {
+        $this->receiverProvinceCode = $receiverProvinceCode;
+    }
+
+    /**
+     * 获取市行政区划码
+     */
+    public function getReceiverCityCode(): string
+    {
+        return $this->receiverCityCode;
+    }
+
+    /**
+     * 设置市行政区划码
+     */
+    public function setReceiverCityCode(string $receiverCityCode): void
+    {
+        $this->receiverCityCode = $receiverCityCode;
+    }
+
+    /**
+     * 获取区县行政区划码
+     */
+    public function getReceiverDistrictCode(): string
+    {
+        return $this->receiverDistrictCode;
+    }
+
+    /**
+     * 设置区县行政区划码
+     */
+    public function setReceiverDistrictCode(string $receiverDistrictCode): void
+    {
+        $this->receiverDistrictCode = $receiverDistrictCode;
     }
 
     /**
@@ -300,6 +496,22 @@ class OrderResponse implements \JsonSerializable
     public function setBuyerRemark(string $buyerRemark): void
     {
         $this->buyerRemark = $buyerRemark;
+    }
+
+    /**
+     * 获取商家备注,客服/发货协作
+     */
+    public function getSellerRemark(): string
+    {
+        return $this->sellerRemark;
+    }
+
+    /**
+     * 设置商家备注,客服/发货协作
+     */
+    public function setSellerRemark(string $sellerRemark): void
+    {
+        $this->sellerRemark = $sellerRemark;
     }
 
     /**
@@ -380,6 +592,22 @@ class OrderResponse implements \JsonSerializable
     public function setCancelReason(string $cancelReason): void
     {
         $this->cancelReason = $cancelReason;
+    }
+
+    /**
+     * 获取取消类型:1=用户取消,2=超时未支付,3=商家/系统取消
+     */
+    public function getCancelType(): int
+    {
+        return $this->cancelType;
+    }
+
+    /**
+     * 设置取消类型:1=用户取消,2=超时未支付,3=商家/系统取消
+     */
+    public function setCancelType(int $cancelType): void
+    {
+        $this->cancelType = $cancelType;
     }
 
     /**

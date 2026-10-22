@@ -12,8 +12,8 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'string'),
-        new OA\Property(property: self::getNotifiableType, description: '通知目标类型,如:App\Models\User', type: 'string'),
-        new OA\Property(property: self::getNotifiableId, description: '通知目标ID', type: 'integer'),
+        new OA\Property(property: self::getNotifiableType, description: '', type: 'string'),
+        new OA\Property(property: self::getNotifiableId, description: '', type: 'integer'),
     ]
 )]
 class NotificationQueryRequest extends FormRequest

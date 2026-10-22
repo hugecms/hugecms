@@ -17,6 +17,7 @@ use OpenApi\Attributes as OA;
         self::getStatus,
         self::getRankId,
         self::getPoints,
+        self::getShareCode,
         self::getLastLoginTime,
         self::getLastLoginIp,
     ],
@@ -28,6 +29,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getStatus, description: '状态:0=禁用,1=正常', type: 'integer'),
         new OA\Property(property: self::getRankId, description: '会员等级ID,0=默认等级', type: 'integer'),
         new OA\Property(property: self::getPoints, description: '积分余额', type: 'integer'),
+        new OA\Property(property: self::getShareCode, description: '推广码,分销/分享归因载体', type: 'string'),
         new OA\Property(property: self::getLastLoginTime, description: '最后登录时间', type: 'string'),
         new OA\Property(property: self::getLastLoginIp, description: '最后登录IP', type: 'string'),
     ]
@@ -48,6 +50,8 @@ class UserCreateRequest extends FormRequest
 
     public const string getPoints = 'points';
 
+    public const string getShareCode = 'shareCode';
+
     public const string getLastLoginTime = 'lastLoginTime';
 
     public const string getLastLoginIp = 'lastLoginIp';
@@ -62,6 +66,7 @@ class UserCreateRequest extends FormRequest
             self::getStatus => 'required',
             self::getRankId => 'required',
             self::getPoints => 'required',
+            self::getShareCode => 'required',
             self::getLastLoginTime => 'required',
             self::getLastLoginIp => 'required',
         ];
@@ -77,6 +82,7 @@ class UserCreateRequest extends FormRequest
             self::getStatus.'.required' => '请设置状态:0=禁用,1=正常',
             self::getRankId.'.required' => '请设置会员等级ID,0=默认等级',
             self::getPoints.'.required' => '请设置积分余额',
+            self::getShareCode.'.required' => '请设置推广码,分销/分享归因载体',
             self::getLastLoginTime.'.required' => '请设置最后登录时间',
             self::getLastLoginIp.'.required' => '请设置最后登录IP',
         ];

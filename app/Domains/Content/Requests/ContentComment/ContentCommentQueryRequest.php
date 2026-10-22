@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '评论用户ID', type: 'integer'),
-        new OA\Property(property: self::getTargetType, description: '目标类型:article=文章,商品评价走product_reviews表', type: 'string'),
+        new OA\Property(property: self::getTargetType, description: '目标类型:article=文章;商品评价走product_reviews表', type: 'string'),
         new OA\Property(property: self::getTargetId, description: '目标ID', type: 'integer'),
     ]
 )]

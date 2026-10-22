@@ -18,7 +18,7 @@ class ProductStockLogResponse implements \JsonSerializable
     #[OA\Property(property: 'productId', description: '商品ID', type: 'integer')]
     private int $productId;
 
-    #[OA\Property(property: 'skuId', description: 'SKU ID,0=单规格商品', type: 'integer')]
+    #[OA\Property(property: 'skuId', description: 'SKU ID,关联product_skus', type: 'integer')]
     private int $skuId;
 
     #[OA\Property(property: 'changeType', description: '变动类型:order=下单占用,cancel=取消释放,refund=退货回补,adjust=人工调整', type: 'string')]
@@ -36,7 +36,7 @@ class ProductStockLogResponse implements \JsonSerializable
     #[OA\Property(property: 'relatedId', description: '关联单据ID(订单/退款单)', type: 'integer')]
     private int $relatedId;
 
-    #[OA\Property(property: 'userType', description: '操作账户类型:admin,user,system', type: 'string')]
+    #[OA\Property(property: 'userType', description: '操作账户类型:admin=后台,user=前台,system=系统', type: 'string')]
     private string $userType;
 
     #[OA\Property(property: 'userId', description: '操作人ID', type: 'integer')]
@@ -81,7 +81,7 @@ class ProductStockLogResponse implements \JsonSerializable
     }
 
     /**
-     * 获取SKU ID,0=单规格商品
+     * 获取SKU ID,关联product_skus
      */
     public function getSkuId(): int
     {
@@ -89,7 +89,7 @@ class ProductStockLogResponse implements \JsonSerializable
     }
 
     /**
-     * 设置SKU ID,0=单规格商品
+     * 设置SKU ID,关联product_skus
      */
     public function setSkuId(int $skuId): void
     {
@@ -177,7 +177,7 @@ class ProductStockLogResponse implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,user,system
+     * 获取操作账户类型:admin=后台,user=前台,system=系统
      */
     public function getUserType(): string
     {
@@ -185,7 +185,7 @@ class ProductStockLogResponse implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,user,system
+     * 设置操作账户类型:admin=后台,user=前台,system=系统
      */
     public function setUserType(string $userType): void
     {

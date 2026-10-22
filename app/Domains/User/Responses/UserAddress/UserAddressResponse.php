@@ -24,8 +24,26 @@ class UserAddressResponse implements \JsonSerializable
     #[OA\Property(property: 'receiverPhone', description: '收货电话', type: 'string')]
     private string $receiverPhone;
 
-    #[OA\Property(property: 'receiverRegion', description: '省市区', type: 'string')]
+    #[OA\Property(property: 'receiverRegion', description: '省市区(合并展示用)', type: 'string')]
     private string $receiverRegion;
+
+    #[OA\Property(property: 'receiverProvince', description: '省', type: 'string')]
+    private string $receiverProvince;
+
+    #[OA\Property(property: 'receiverCity', description: '市', type: 'string')]
+    private string $receiverCity;
+
+    #[OA\Property(property: 'receiverDistrict', description: '区县', type: 'string')]
+    private string $receiverDistrict;
+
+    #[OA\Property(property: 'receiverProvinceCode', description: '省行政区划码,物流面单', type: 'string')]
+    private string $receiverProvinceCode;
+
+    #[OA\Property(property: 'receiverCityCode', description: '市行政区划码', type: 'string')]
+    private string $receiverCityCode;
+
+    #[OA\Property(property: 'receiverDistrictCode', description: '区县行政区划码', type: 'string')]
+    private string $receiverDistrictCode;
 
     #[OA\Property(property: 'receiverAddress', description: '详细地址', type: 'string')]
     private string $receiverAddress;
@@ -107,7 +125,7 @@ class UserAddressResponse implements \JsonSerializable
     }
 
     /**
-     * 获取省市区
+     * 获取省市区(合并展示用)
      */
     public function getReceiverRegion(): string
     {
@@ -115,11 +133,107 @@ class UserAddressResponse implements \JsonSerializable
     }
 
     /**
-     * 设置省市区
+     * 设置省市区(合并展示用)
      */
     public function setReceiverRegion(string $receiverRegion): void
     {
         $this->receiverRegion = $receiverRegion;
+    }
+
+    /**
+     * 获取省
+     */
+    public function getReceiverProvince(): string
+    {
+        return $this->receiverProvince;
+    }
+
+    /**
+     * 设置省
+     */
+    public function setReceiverProvince(string $receiverProvince): void
+    {
+        $this->receiverProvince = $receiverProvince;
+    }
+
+    /**
+     * 获取市
+     */
+    public function getReceiverCity(): string
+    {
+        return $this->receiverCity;
+    }
+
+    /**
+     * 设置市
+     */
+    public function setReceiverCity(string $receiverCity): void
+    {
+        $this->receiverCity = $receiverCity;
+    }
+
+    /**
+     * 获取区县
+     */
+    public function getReceiverDistrict(): string
+    {
+        return $this->receiverDistrict;
+    }
+
+    /**
+     * 设置区县
+     */
+    public function setReceiverDistrict(string $receiverDistrict): void
+    {
+        $this->receiverDistrict = $receiverDistrict;
+    }
+
+    /**
+     * 获取省行政区划码,物流面单
+     */
+    public function getReceiverProvinceCode(): string
+    {
+        return $this->receiverProvinceCode;
+    }
+
+    /**
+     * 设置省行政区划码,物流面单
+     */
+    public function setReceiverProvinceCode(string $receiverProvinceCode): void
+    {
+        $this->receiverProvinceCode = $receiverProvinceCode;
+    }
+
+    /**
+     * 获取市行政区划码
+     */
+    public function getReceiverCityCode(): string
+    {
+        return $this->receiverCityCode;
+    }
+
+    /**
+     * 设置市行政区划码
+     */
+    public function setReceiverCityCode(string $receiverCityCode): void
+    {
+        $this->receiverCityCode = $receiverCityCode;
+    }
+
+    /**
+     * 获取区县行政区划码
+     */
+    public function getReceiverDistrictCode(): string
+    {
+        return $this->receiverDistrictCode;
+    }
+
+    /**
+     * 设置区县行政区划码
+     */
+    public function setReceiverDistrictCode(string $receiverDistrictCode): void
+    {
+        $this->receiverDistrictCode = $receiverDistrictCode;
     }
 
     /**

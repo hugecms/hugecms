@@ -16,7 +16,7 @@ class UserFavoriteEntity implements \JsonSerializable
 
     public const string getUserId = 'user_id'; // 用户ID
 
-    public const string getTargetType = 'target_type'; // 目标类型:article,product
+    public const string getTargetType = 'target_type'; // 目标类型:article=文章,product=商品
 
     public const string getTargetId = 'target_id'; // 目标ID
 
@@ -28,7 +28,7 @@ class UserFavoriteEntity implements \JsonSerializable
     #[OA\Property(property: 'userId', description: '用户ID', type: 'integer')]
     private int $userId;
 
-    #[OA\Property(property: 'targetType', description: '目标类型:article,product', type: 'string')]
+    #[OA\Property(property: 'targetType', description: '目标类型:article=文章,product=商品', type: 'string')]
     private string $targetType;
 
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
@@ -70,7 +70,7 @@ class UserFavoriteEntity implements \JsonSerializable
     }
 
     /**
-     * 获取目标类型:article,product
+     * 获取目标类型:article=文章,product=商品
      */
     public function getTargetType(): string
     {
@@ -78,7 +78,7 @@ class UserFavoriteEntity implements \JsonSerializable
     }
 
     /**
-     * 设置目标类型:article,product
+     * 设置目标类型:article=文章,product=商品
      */
     public function setTargetType(string $targetType): void
     {

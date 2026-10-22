@@ -15,7 +15,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'storage', description: '存储驱动:local,oss,qiniu', type: 'string')]
+    #[OA\Property(property: 'storage', description: '存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛', type: 'string')]
     private string $storage;
 
     #[OA\Property(property: 'filePath', description: '文件路径', type: 'string')]
@@ -30,10 +30,10 @@ class SystemAttachmentResponse implements \JsonSerializable
     #[OA\Property(property: 'fileSize', description: '文件大小(字节)', type: 'integer')]
     private int $fileSize;
 
-    #[OA\Property(property: 'module', description: '所属模块:article,product', type: 'string')]
+    #[OA\Property(property: 'module', description: '所属模块:article=文章,product=商品', type: 'string')]
     private string $module;
 
-    #[OA\Property(property: 'userType', description: '上传账户类型:admin,user', type: 'string')]
+    #[OA\Property(property: 'userType', description: '上传账户类型:admin=后台,user=前台', type: 'string')]
     private string $userType;
 
     #[OA\Property(property: 'userId', description: '上传人ID', type: 'integer')]
@@ -59,7 +59,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取存储驱动:local,oss,qiniu
+     * 获取存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛
      */
     public function getStorage(): string
     {
@@ -67,7 +67,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 设置存储驱动:local,oss,qiniu
+     * 设置存储驱动:local=本地,oss=阿里云OSS,qiniu=七牛
      */
     public function setStorage(string $storage): void
     {
@@ -139,7 +139,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取所属模块:article,product
+     * 获取所属模块:article=文章,product=商品
      */
     public function getModule(): string
     {
@@ -147,7 +147,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 设置所属模块:article,product
+     * 设置所属模块:article=文章,product=商品
      */
     public function setModule(string $module): void
     {
@@ -155,7 +155,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 获取上传账户类型:admin,user
+     * 获取上传账户类型:admin=后台,user=前台
      */
     public function getUserType(): string
     {
@@ -163,7 +163,7 @@ class SystemAttachmentResponse implements \JsonSerializable
     }
 
     /**
-     * 设置上传账户类型:admin,user
+     * 设置上传账户类型:admin=后台,user=前台
      */
     public function setUserType(string $userType): void
     {

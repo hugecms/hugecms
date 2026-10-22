@@ -32,6 +32,12 @@ class UserAddress extends Model
         'receiver_name',
         'receiver_phone',
         'receiver_region',
+        'receiver_province',
+        'receiver_city',
+        'receiver_district',
+        'receiver_province_code',
+        'receiver_city_code',
+        'receiver_district_code',
         'receiver_address',
         'is_default',
     ];

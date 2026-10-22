@@ -21,7 +21,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '登记用户ID', type: 'integer'),
         new OA\Property(property: self::getProductId, description: '商品ID', type: 'integer'),
-        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=单规格/不限规格', type: 'integer'),
+        new OA\Property(property: self::getSkuId, description: 'SKU ID,0=不限规格', type: 'integer'),
         new OA\Property(property: self::getStatus, description: '状态:0=待提醒,1=已提醒,2=已取消', type: 'integer'),
         new OA\Property(property: self::getNotifiedAt, description: '提醒时间', type: 'string'),
     ]
@@ -58,7 +58,7 @@ class ProductStockReminderUpdateRequest extends FormRequest
             self::getId.'.required' => '请设置ID',
             self::getUserId.'.required' => '请设置登记用户ID',
             self::getProductId.'.required' => '请设置商品ID',
-            self::getSkuId.'.required' => '请设置SKU ID,0=单规格/不限规格',
+            self::getSkuId.'.required' => '请设置SKU ID,0=不限规格',
             self::getStatus.'.required' => '请设置状态:0=待提醒,1=已提醒,2=已取消',
             self::getNotifiedAt.'.required' => '请设置提醒时间',
         ];

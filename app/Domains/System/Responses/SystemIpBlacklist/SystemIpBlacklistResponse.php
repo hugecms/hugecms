@@ -24,7 +24,7 @@ class SystemIpBlacklistResponse implements \JsonSerializable
     #[OA\Property(property: 'expiredAt', description: '过期时间,空=永久', type: 'string')]
     private string $expiredAt;
 
-    #[OA\Property(property: 'userType', description: '操作账户类型:admin,system', type: 'string')]
+    #[OA\Property(property: 'userType', description: '操作账户类型:admin=后台,system=系统', type: 'string')]
     private string $userType;
 
     #[OA\Property(property: 'userId', description: '操作人ID', type: 'integer')]
@@ -101,7 +101,7 @@ class SystemIpBlacklistResponse implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,system
+     * 获取操作账户类型:admin=后台,system=系统
      */
     public function getUserType(): string
     {
@@ -109,7 +109,7 @@ class SystemIpBlacklistResponse implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,system
+     * 设置操作账户类型:admin=后台,system=系统
      */
     public function setUserType(string $userType): void
     {

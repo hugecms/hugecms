@@ -35,6 +35,7 @@ class User extends Model
         'status',
         'rank_id',
         'points',
+        'share_code',
         'last_login_time',
         'last_login_ip',
     ];

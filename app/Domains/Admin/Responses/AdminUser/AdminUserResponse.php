@@ -27,6 +27,9 @@ class AdminUserResponse implements \JsonSerializable
     #[OA\Property(property: 'status', description: '状态:0=禁用,1=正常', type: 'integer')]
     private int $status;
 
+    #[OA\Property(property: 'isSuper', description: '超级管理员:0=否,1=是;超管不受角色权限限制', type: 'integer')]
+    private int $isSuper;
+
     #[OA\Property(property: 'lastLoginTime', description: '最后登录时间', type: 'string')]
     private string $lastLoginTime;
 
@@ -120,6 +123,22 @@ class AdminUserResponse implements \JsonSerializable
     public function setStatus(int $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * 获取超级管理员:0=否,1=是;超管不受角色权限限制
+     */
+    public function getIsSuper(): int
+    {
+        return $this->isSuper;
+    }
+
+    /**
+     * 设置超级管理员:0=否,1=是;超管不受角色权限限制
+     */
+    public function setIsSuper(int $isSuper): void
+    {
+        $this->isSuper = $isSuper;
     }
 
     /**

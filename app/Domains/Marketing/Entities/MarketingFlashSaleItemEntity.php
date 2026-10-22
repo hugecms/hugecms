@@ -18,7 +18,7 @@ class MarketingFlashSaleItemEntity implements \JsonSerializable
 
     public const string getProductId = 'product_id'; // 商品ID
 
-    public const string getSkuId = 'sku_id'; // SKU ID,0=单规格
+    public const string getSkuId = 'sku_id'; // SKU ID,关联product_skus
 
     public const string getOriginalPrice = 'original_price'; // 原价快照
 
@@ -47,7 +47,7 @@ class MarketingFlashSaleItemEntity implements \JsonSerializable
     #[OA\Property(property: 'productId', description: '商品ID', type: 'integer')]
     private int $productId;
 
-    #[OA\Property(property: 'skuId', description: 'SKU ID,0=单规格', type: 'integer')]
+    #[OA\Property(property: 'skuId', description: 'SKU ID,关联product_skus', type: 'integer')]
     private int $skuId;
 
     #[OA\Property(property: 'originalPrice', description: '原价快照', type: 'string')]
@@ -126,7 +126,7 @@ class MarketingFlashSaleItemEntity implements \JsonSerializable
     }
 
     /**
-     * 获取SKU ID,0=单规格
+     * 获取SKU ID,关联product_skus
      */
     public function getSkuId(): int
     {
@@ -134,7 +134,7 @@ class MarketingFlashSaleItemEntity implements \JsonSerializable
     }
 
     /**
-     * 设置SKU ID,0=单规格
+     * 设置SKU ID,关联product_skus
      */
     public function setSkuId(int $skuId): void
     {

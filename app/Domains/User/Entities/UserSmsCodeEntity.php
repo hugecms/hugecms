@@ -18,7 +18,7 @@ class UserSmsCodeEntity implements \JsonSerializable
 
     public const string getCode = 'code'; // 验证码
 
-    public const string getScene = 'scene'; // 场景:register,login,reset_password
+    public const string getScene = 'scene'; // 场景:register=注册,login=登录,reset_password=重置密码
 
     public const string getExpireAt = 'expire_at'; // 过期时间
 
@@ -37,7 +37,7 @@ class UserSmsCodeEntity implements \JsonSerializable
     #[OA\Property(property: 'code', description: '验证码', type: 'string')]
     private string $code;
 
-    #[OA\Property(property: 'scene', description: '场景:register,login,reset_password', type: 'string')]
+    #[OA\Property(property: 'scene', description: '场景:register=注册,login=登录,reset_password=重置密码', type: 'string')]
     private string $scene;
 
     #[OA\Property(property: 'expireAt', description: '过期时间', type: 'string')]
@@ -101,7 +101,7 @@ class UserSmsCodeEntity implements \JsonSerializable
     }
 
     /**
-     * 获取场景:register,login,reset_password
+     * 获取场景:register=注册,login=登录,reset_password=重置密码
      */
     public function getScene(): string
     {
@@ -109,7 +109,7 @@ class UserSmsCodeEntity implements \JsonSerializable
     }
 
     /**
-     * 设置场景:register,login,reset_password
+     * 设置场景:register=注册,login=登录,reset_password=重置密码
      */
     public function setScene(string $scene): void
     {

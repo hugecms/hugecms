@@ -21,7 +21,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getSessionId, description: '会话ID', type: 'integer'),
         new OA\Property(property: self::getSenderType, description: '发送者类型:user=用户,admin=客服,bot=机器人,system=系统', type: 'string'),
         new OA\Property(property: self::getSenderId, description: '发送者ID,system为0', type: 'integer'),
-        new OA\Property(property: self::getType, description: '消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件', type: 'string'),
+        new OA\Property(property: self::getType, description: '消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件', type: 'string'),
         new OA\Property(property: self::getContent, description: '消息内容,文本或卡片数据(JSON)', type: 'string'),
         new OA\Property(property: self::getCreateTime, description: '创建时间,消息只追加不修改', type: 'string'),
     ]
@@ -58,7 +58,7 @@ class ChatMessageCreateRequest extends FormRequest
             self::getSessionId.'.required' => '请设置会话ID',
             self::getSenderType.'.required' => '请设置发送者类型:user=用户,admin=客服,bot=机器人,system=系统',
             self::getSenderId.'.required' => '请设置发送者ID,system为0',
-            self::getType.'.required' => '请设置消息类型:text,image,product=商品卡片,order=订单卡片,system=系统事件',
+            self::getType.'.required' => '请设置消息类型:text=文本,image=图片,product=商品卡片,order=订单卡片,system=系统事件',
             self::getContent.'.required' => '请设置消息内容,文本或卡片数据(JSON)',
             self::getCreateTime.'.required' => '请设置创建时间,消息只追加不修改',
         ];

@@ -14,11 +14,11 @@ class SystemAppEntity implements \JsonSerializable
 
     public const string getId = 'id'; // ID
 
-    public const string getCode = 'code'; // 应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+    public const string getCode = 'code'; // 应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
 
     public const string getName = 'name'; // 应用名称
 
-    public const string getType = 'type'; // 应用类型:web,h5,wechat,app
+    public const string getType = 'type'; // 应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用
 
     public const string getAppid = 'appid'; // 微信类应用AppID,非微信应用为空
 
@@ -28,7 +28,7 @@ class SystemAppEntity implements \JsonSerializable
 
     public const string getSort = 'sort'; // 排序
 
-    public const string getStatus = 'status'; // 状态:0=停用,1=启用,停用即一键下线该端
+    public const string getStatus = 'status'; // 状态:0=停用,1=启用;停用即一键下线该端
 
     public const string getCreatedAt = 'created_at'; // 创建时间
 
@@ -37,13 +37,13 @@ class SystemAppEntity implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'integer')]
     private int $id;
 
-    #[OA\Property(property: 'code', description: '应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android', type: 'string')]
+    #[OA\Property(property: 'code', description: '应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用', type: 'string')]
     private string $code;
 
     #[OA\Property(property: 'name', description: '应用名称', type: 'string')]
     private string $name;
 
-    #[OA\Property(property: 'type', description: '应用类型:web,h5,wechat,app', type: 'string')]
+    #[OA\Property(property: 'type', description: '应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用', type: 'string')]
     private string $type;
 
     #[OA\Property(property: 'appid', description: '微信类应用AppID,非微信应用为空', type: 'string')]
@@ -58,7 +58,7 @@ class SystemAppEntity implements \JsonSerializable
     #[OA\Property(property: 'sort', description: '排序', type: 'integer')]
     private int $sort;
 
-    #[OA\Property(property: 'status', description: '状态:0=停用,1=启用,停用即一键下线该端', type: 'integer')]
+    #[OA\Property(property: 'status', description: '状态:0=停用,1=启用;停用即一键下线该端', type: 'integer')]
     private int $status;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
@@ -84,7 +84,7 @@ class SystemAppEntity implements \JsonSerializable
     }
 
     /**
-     * 获取应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+     * 获取应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
      */
     public function getCode(): string
     {
@@ -92,7 +92,7 @@ class SystemAppEntity implements \JsonSerializable
     }
 
     /**
-     * 设置应用标识:web,h5,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios,app_android
+     * 设置应用标识:web=PC网站,h5=移动网页,wechat_official=公众号,wechat_miniapp=小程序,wechat_open=开放平台扫码,app_ios=iOS应用,app_android=Android应用
      */
     public function setCode(string $code): void
     {
@@ -116,7 +116,7 @@ class SystemAppEntity implements \JsonSerializable
     }
 
     /**
-     * 获取应用类型:web,h5,wechat,app
+     * 获取应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用
      */
     public function getType(): string
     {
@@ -124,7 +124,7 @@ class SystemAppEntity implements \JsonSerializable
     }
 
     /**
-     * 设置应用类型:web,h5,wechat,app
+     * 设置应用类型:web=网页,h5=移动网页,wechat=微信,app=原生应用
      */
     public function setType(string $type): void
     {
@@ -196,7 +196,7 @@ class SystemAppEntity implements \JsonSerializable
     }
 
     /**
-     * 获取状态:0=停用,1=启用,停用即一键下线该端
+     * 获取状态:0=停用,1=启用;停用即一键下线该端
      */
     public function getStatus(): int
     {
@@ -204,7 +204,7 @@ class SystemAppEntity implements \JsonSerializable
     }
 
     /**
-     * 设置状态:0=停用,1=启用,停用即一键下线该端
+     * 设置状态:0=停用,1=启用;停用即一键下线该端
      */
     public function setStatus(int $status): void
     {

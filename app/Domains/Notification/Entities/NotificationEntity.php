@@ -14,15 +14,15 @@ class NotificationEntity implements \JsonSerializable
 
     public const string getId = 'id'; // ID
 
-    public const string getType = 'type'; // 通知类型(通知类名)
+    public const string getType = 'type';
 
-    public const string getNotifiableType = 'notifiable_type'; // 通知目标类型,如:App\Models\User
+    public const string getNotifiableType = 'notifiable_type';
 
-    public const string getNotifiableId = 'notifiable_id'; // 通知目标ID
+    public const string getNotifiableId = 'notifiable_id';
 
-    public const string getData = 'data'; // 通知数据(JSON)
+    public const string getData = 'data';
 
-    public const string getReadAt = 'read_at'; // 已读时间,空=未读
+    public const string getReadAt = 'read_at';
 
     public const string getCreatedAt = 'created_at'; // 创建时间
 
@@ -31,19 +31,19 @@ class NotificationEntity implements \JsonSerializable
     #[OA\Property(property: 'id', description: 'ID', type: 'string')]
     private string $id;
 
-    #[OA\Property(property: 'type', description: '通知类型(通知类名)', type: 'string')]
+    #[OA\Property(property: 'type', description: '', type: 'string')]
     private string $type;
 
-    #[OA\Property(property: 'notifiableType', description: '通知目标类型,如:App\Models\User', type: 'string')]
+    #[OA\Property(property: 'notifiableType', description: '', type: 'string')]
     private string $notifiableType;
 
-    #[OA\Property(property: 'notifiableId', description: '通知目标ID', type: 'integer')]
+    #[OA\Property(property: 'notifiableId', description: '', type: 'integer')]
     private int $notifiableId;
 
-    #[OA\Property(property: 'data', description: '通知数据(JSON)', type: 'string')]
+    #[OA\Property(property: 'data', description: '', type: 'string')]
     private string $data;
 
-    #[OA\Property(property: 'readAt', description: '已读时间,空=未读', type: 'string')]
+    #[OA\Property(property: 'readAt', description: '', type: 'string')]
     private string $readAt;
 
     #[OA\Property(property: 'createdAt', description: '创建时间', type: 'string')]
@@ -69,7 +69,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 获取通知类型(通知类名)
+     * 获取
      */
     public function getType(): string
     {
@@ -77,7 +77,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 设置通知类型(通知类名)
+     * 设置
      */
     public function setType(string $type): void
     {
@@ -85,7 +85,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 获取通知目标类型,如:App\Models\User
+     * 获取
      */
     public function getNotifiableType(): string
     {
@@ -93,7 +93,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 设置通知目标类型,如:App\Models\User
+     * 设置
      */
     public function setNotifiableType(string $notifiableType): void
     {
@@ -101,7 +101,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 获取通知目标ID
+     * 获取
      */
     public function getNotifiableId(): int
     {
@@ -109,7 +109,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 设置通知目标ID
+     * 设置
      */
     public function setNotifiableId(int $notifiableId): void
     {
@@ -117,7 +117,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 获取通知数据(JSON)
+     * 获取
      */
     public function getData(): string
     {
@@ -125,7 +125,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 设置通知数据(JSON)
+     * 设置
      */
     public function setData(string $data): void
     {
@@ -133,7 +133,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 获取已读时间,空=未读
+     * 获取
      */
     public function getReadAt(): string
     {
@@ -141,7 +141,7 @@ class NotificationEntity implements \JsonSerializable
     }
 
     /**
-     * 设置已读时间,空=未读
+     * 设置
      */
     public function setReadAt(string $readAt): void
     {

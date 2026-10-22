@@ -9,13 +9,13 @@ declare(strict_types=1);
 use App\Domains\Notification\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
-// 查询消息通知列表接口
+// 查询列表接口
 Route::post('notification/search', [NotificationController::class, 'search']);
-// 新增消息通知接口
+// 新增接口
 Route::post('notification/store', [NotificationController::class, 'store']);
-// 获取消息通知详情接口
+// 获取详情接口
 Route::get('notification/show', [NotificationController::class, 'show'])->name('notification.show');
-// 更新消息通知接口
+// 更新接口
 Route::put('notification/update', [NotificationController::class, 'update']);
-// 删除消息通知接口
+// 删除接口
 Route::post('notification/destroy', [NotificationController::class, 'destroy']);

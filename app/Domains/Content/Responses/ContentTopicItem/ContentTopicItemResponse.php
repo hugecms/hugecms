@@ -18,7 +18,7 @@ class ContentTopicItemResponse implements \JsonSerializable
     #[OA\Property(property: 'topicId', description: '专题ID', type: 'integer')]
     private int $topicId;
 
-    #[OA\Property(property: 'targetType', description: '目标类型:article,product', type: 'string')]
+    #[OA\Property(property: 'targetType', description: '目标类型:article=文章,product=商品', type: 'string')]
     private string $targetType;
 
     #[OA\Property(property: 'targetId', description: '目标ID', type: 'integer')]
@@ -66,7 +66,7 @@ class ContentTopicItemResponse implements \JsonSerializable
     }
 
     /**
-     * 获取目标类型:article,product
+     * 获取目标类型:article=文章,product=商品
      */
     public function getTargetType(): string
     {
@@ -74,7 +74,7 @@ class ContentTopicItemResponse implements \JsonSerializable
     }
 
     /**
-     * 设置目标类型:article,product
+     * 设置目标类型:article=文章,product=商品
      */
     public function setTargetType(string $targetType): void
     {

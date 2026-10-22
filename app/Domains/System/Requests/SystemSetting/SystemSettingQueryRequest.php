@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     required: [],
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
-        new OA\Property(property: self::getGroup, description: '配置分组:basic=基础,seo,upload', type: 'string'),
+        new OA\Property(property: self::getGroup, description: '配置分组:basic=基础,seo=SEO,upload=上传', type: 'string'),
         new OA\Property(property: self::getKey, description: '配置键,如:site_name', type: 'string'),
     ]
 )]

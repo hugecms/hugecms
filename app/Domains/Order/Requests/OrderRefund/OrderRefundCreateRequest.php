@@ -17,6 +17,8 @@ use OpenApi\Attributes as OA;
         self::getAmount,
         self::getReason,
         self::getAdminNote,
+        self::getAuditTime,
+        self::getOperatorId,
         self::getImages,
         self::getReturnExpressCompany,
         self::getReturnExpressNo,
@@ -31,6 +33,8 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::getAmount, description: '退款金额', type: 'string'),
         new OA\Property(property: self::getReason, description: '退款原因', type: 'string'),
         new OA\Property(property: self::getAdminNote, description: '商家审核备注/拒绝原因', type: 'string'),
+        new OA\Property(property: self::getAuditTime, description: '审核时间', type: 'string'),
+        new OA\Property(property: self::getOperatorId, description: '审核操作人ID,关联admin_users', type: 'integer'),
         new OA\Property(property: self::getImages, description: '申请凭证图片(JSON数组)', type: 'string'),
         new OA\Property(property: self::getReturnExpressCompany, description: '退货物流公司,退货退款时填写', type: 'string'),
         new OA\Property(property: self::getReturnExpressNo, description: '退货物流单号', type: 'string'),
@@ -54,6 +58,10 @@ class OrderRefundCreateRequest extends FormRequest
 
     public const string getAdminNote = 'adminNote';
 
+    public const string getAuditTime = 'auditTime';
+
+    public const string getOperatorId = 'operatorId';
+
     public const string getImages = 'images';
 
     public const string getReturnExpressCompany = 'returnExpressCompany';
@@ -74,6 +82,8 @@ class OrderRefundCreateRequest extends FormRequest
             self::getAmount => 'required',
             self::getReason => 'required',
             self::getAdminNote => 'required',
+            self::getAuditTime => 'required',
+            self::getOperatorId => 'required',
             self::getImages => 'required',
             self::getReturnExpressCompany => 'required',
             self::getReturnExpressNo => 'required',
@@ -92,6 +102,8 @@ class OrderRefundCreateRequest extends FormRequest
             self::getAmount.'.required' => '请设置退款金额',
             self::getReason.'.required' => '请设置退款原因',
             self::getAdminNote.'.required' => '请设置商家审核备注/拒绝原因',
+            self::getAuditTime.'.required' => '请设置审核时间',
+            self::getOperatorId.'.required' => '请设置审核操作人ID,关联admin_users',
             self::getImages.'.required' => '请设置申请凭证图片(JSON数组)',
             self::getReturnExpressCompany.'.required' => '请设置退货物流公司,退货退款时填写',
             self::getReturnExpressNo.'.required' => '请设置退货物流单号',

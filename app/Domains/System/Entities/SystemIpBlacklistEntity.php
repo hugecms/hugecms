@@ -20,7 +20,7 @@ class SystemIpBlacklistEntity implements \JsonSerializable
 
     public const string getExpiredAt = 'expired_at'; // 过期时间,空=永久
 
-    public const string getUserType = 'user_type'; // 操作账户类型:admin,system
+    public const string getUserType = 'user_type'; // 操作账户类型:admin=后台,system=系统
 
     public const string getUserId = 'user_id'; // 操作人ID
 
@@ -40,7 +40,7 @@ class SystemIpBlacklistEntity implements \JsonSerializable
     #[OA\Property(property: 'expiredAt', description: '过期时间,空=永久', type: 'string')]
     private string $expiredAt;
 
-    #[OA\Property(property: 'userType', description: '操作账户类型:admin,system', type: 'string')]
+    #[OA\Property(property: 'userType', description: '操作账户类型:admin=后台,system=系统', type: 'string')]
     private string $userType;
 
     #[OA\Property(property: 'userId', description: '操作人ID', type: 'integer')]
@@ -117,7 +117,7 @@ class SystemIpBlacklistEntity implements \JsonSerializable
     }
 
     /**
-     * 获取操作账户类型:admin,system
+     * 获取操作账户类型:admin=后台,system=系统
      */
     public function getUserType(): string
     {
@@ -125,7 +125,7 @@ class SystemIpBlacklistEntity implements \JsonSerializable
     }
 
     /**
-     * 设置操作账户类型:admin,system
+     * 设置操作账户类型:admin=后台,system=系统
      */
     public function setUserType(string $userType): void
     {

@@ -10,7 +10,7 @@ use App\Domains\Wechat\Controllers\WechatBroadcastController;
 use App\Domains\Wechat\Controllers\WechatFanController;
 use App\Domains\Wechat\Controllers\WechatMessageController;
 use App\Domains\Wechat\Controllers\WechatQrcodeController;
-use App\Domains\Wechat\Controllers\WechatSubscribeController;
+use App\Domains\Wechat\Controllers\WechatSubscriptionController;
 use App\Domains\Wechat\Controllers\WechatTemplateController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,15 +55,15 @@ Route::put('wechatQrcode/update', [WechatQrcodeController::class, 'update']);
 // 删除微信渠道二维码接口
 Route::post('wechatQrcode/destroy', [WechatQrcodeController::class, 'destroy']);
 // 查询用户订阅授权列表接口
-Route::post('wechatSubscribe/search', [WechatSubscribeController::class, 'search']);
+Route::post('wechatSubscription/search', [WechatSubscriptionController::class, 'search']);
 // 新增用户订阅授权接口
-Route::post('wechatSubscribe/store', [WechatSubscribeController::class, 'store']);
+Route::post('wechatSubscription/store', [WechatSubscriptionController::class, 'store']);
 // 获取用户订阅授权详情接口
-Route::get('wechatSubscribe/show', [WechatSubscribeController::class, 'show'])->name('wechatSubscribe.show');
+Route::get('wechatSubscription/show', [WechatSubscriptionController::class, 'show'])->name('wechatSubscription.show');
 // 更新用户订阅授权接口
-Route::put('wechatSubscribe/update', [WechatSubscribeController::class, 'update']);
+Route::put('wechatSubscription/update', [WechatSubscriptionController::class, 'update']);
 // 删除用户订阅授权接口
-Route::post('wechatSubscribe/destroy', [WechatSubscribeController::class, 'destroy']);
+Route::post('wechatSubscription/destroy', [WechatSubscriptionController::class, 'destroy']);
 // 查询微信消息模板列表接口
 Route::post('wechatTemplate/search', [WechatTemplateController::class, 'search']);
 // 新增微信消息模板接口

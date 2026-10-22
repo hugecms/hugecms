@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getPaymentId, description: '关联支付单ID,未匹配到支付单时为空', type: 'integer'),
-        new OA\Property(property: self::getChannel, description: '渠道:wechat,alipay', type: 'string'),
+        new OA\Property(property: self::getChannel, description: '渠道:wechat=微信支付,alipay=支付宝', type: 'string'),
         new OA\Property(property: self::getEventType, description: '事件类型:payment=支付通知,refund=退款通知', type: 'string'),
         new OA\Property(property: self::getNotifyId, description: '第三方通知唯一ID,幂等去重依据', type: 'string'),
         new OA\Property(property: self::getTradeNo, description: '第三方交易号', type: 'string'),
@@ -82,7 +82,7 @@ class PaymentCallbackUpdateRequest extends FormRequest
         return [
             self::getId.'.required' => '请设置ID',
             self::getPaymentId.'.required' => '请设置关联支付单ID,未匹配到支付单时为空',
-            self::getChannel.'.required' => '请设置渠道:wechat,alipay',
+            self::getChannel.'.required' => '请设置渠道:wechat=微信支付,alipay=支付宝',
             self::getEventType.'.required' => '请设置事件类型:payment=支付通知,refund=退款通知',
             self::getNotifyId.'.required' => '请设置第三方通知唯一ID,幂等去重依据',
             self::getTradeNo.'.required' => '请设置第三方交易号',

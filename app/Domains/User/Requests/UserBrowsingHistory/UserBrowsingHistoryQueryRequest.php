@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: self::getId, description: 'ID', type: 'integer'),
         new OA\Property(property: self::getUserId, description: '用户ID', type: 'integer'),
-        new OA\Property(property: self::getTargetType, description: '目标类型:article,product', type: 'string'),
+        new OA\Property(property: self::getTargetType, description: '目标类型:article=文章,product=商品', type: 'string'),
         new OA\Property(property: self::getTargetId, description: '目标ID', type: 'integer'),
         new OA\Property(property: self::getCreateTime, description: '最近浏览时间,重复浏览更新', type: 'string'),
     ]

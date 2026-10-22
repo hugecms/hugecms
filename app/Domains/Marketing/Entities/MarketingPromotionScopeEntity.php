@@ -16,7 +16,7 @@ class MarketingPromotionScopeEntity implements \JsonSerializable
 
     public const string getPromotionId = 'promotion_id'; // 促销活动ID,关联marketing_promotions
 
-    public const string getScopeType = 'scope_type'; // 范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+    public const string getScopeType = 'scope_type'; // 范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
 
     public const string getTargetId = 'target_id'; // 目标ID,按scope_type指向分类/品牌/商品
 
@@ -30,7 +30,7 @@ class MarketingPromotionScopeEntity implements \JsonSerializable
     #[OA\Property(property: 'promotionId', description: '促销活动ID,关联marketing_promotions', type: 'integer')]
     private int $promotionId;
 
-    #[OA\Property(property: 'scopeType', description: '范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致', type: 'string')]
+    #[OA\Property(property: 'scopeType', description: '范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致', type: 'string')]
     private string $scopeType;
 
     #[OA\Property(property: 'targetId', description: '目标ID,按scope_type指向分类/品牌/商品', type: 'integer')]
@@ -75,7 +75,7 @@ class MarketingPromotionScopeEntity implements \JsonSerializable
     }
 
     /**
-     * 获取范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+     * 获取范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
      */
     public function getScopeType(): string
     {
@@ -83,7 +83,7 @@ class MarketingPromotionScopeEntity implements \JsonSerializable
     }
 
     /**
-     * 设置范围类型:category=分类,brand=品牌,product=商品,与父表range_type一致
+     * 设置范围类型:category=分类,brand=品牌,product=商品;与父表range_type一致
      */
     public function setScopeType(string $scopeType): void
     {
