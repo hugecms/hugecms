@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件（4 个框架 + 13 个业务域）/ 117 张业务表 + 1 视图（另有 8 张 Laravel 框架表），`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件（4 个框架 + 13 个业务域）/ 116 张业务表（含 users 主表）+ 1 视图（另有 8 张 Laravel 框架表：password_reset_tokens/sessions/cache×2/jobs×3/notifications），`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景

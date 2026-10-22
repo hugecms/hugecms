@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Marketing;
 
-use App\Domains\Marketing\Repositories\MarketingCommissionRuleRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRepository;
+use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRuleRepository;
 use App\Domains\Marketing\Repositories\MarketingDistributionRelationRepository;
 use App\Domains\System\Repositories\SystemSettingRepository;
 use App\Domains\User\Repositories\UserAccountLogRepository;
@@ -43,7 +43,7 @@ class MarketingCommissionServiceTest extends TestCase
             new MarketingDistributionCommissionRepository,
             new MarketingDistributionRelationRepository,
             new MarketingCommissionRuleService(
-                new MarketingCommissionRuleRepository,
+                new MarketingDistributionCommissionRuleRepository,
                 new SystemSettingRepository,
             ),
             $this->accountService,

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Domains\Marketing\Repositories\MarketingCommissionRuleRepository;
+use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRuleRepository;
 use App\Domains\System\Repositories\SystemSettingRepository;
-use Illuminate\Support\Facades\DB;
 use Juling\Foundation\Contracts\ServiceInterface;
 use Juling\Foundation\Services\CommonService;
 
@@ -20,11 +19,11 @@ class MarketingCommissionRuleService extends CommonService implements ServiceInt
     public const int SCOPE_PRODUCT = 2;
 
     public function __construct(
-        private readonly MarketingCommissionRuleRepository $repository,
+        private readonly MarketingDistributionCommissionRuleRepository $repository,
         private readonly SystemSettingRepository $settingRepository,
     ) {}
 
-    public function getRepository(): MarketingCommissionRuleRepository
+    public function getRepository(): MarketingDistributionCommissionRuleRepository
     {
         return $this->repository;
     }
@@ -34,9 +33,8 @@ class MarketingCommissionRuleService extends CommonService implements ServiceInt
      */
     public function resolveRate(int $productId, int $categoryId): array
     {
-        // 规则表直查（表名由 codegen 生成的 Repository 维护，此处解耦以便表名演进）
         // 商品覆盖
-        $rule = DB::table('marketing_distribution_commission_rules')
+        $rule = $this->repository->builder()
             ->where('status', 1)
             ->where('scope_type', self::SCOPE_PRODUCT)
             ->where('scope_id', $productId)
@@ -46,7 +44,7 @@ class MarketingCommissionRuleService extends CommonService implements ServiceInt
         }
 
         // 分类默认
-        $rule = DB::table('marketing_distribution_commission_rules')
+        $rule = $this->repository->builder()
             ->where('status', 1)
             ->where('scope_type', self::SCOPE_CATEGORY)
             ->where('scope_id', $categoryId)

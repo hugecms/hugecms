@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Marketing;
 
-use App\Domains\Marketing\Repositories\MarketingCommissionRuleRepository;
+use App\Domains\Marketing\Repositories\MarketingDistributionCommissionRuleRepository;
 use App\Domains\System\Repositories\SystemSettingRepository;
 use App\Services\MarketingCommissionRuleService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +22,7 @@ class CommissionRuleServiceTest extends TestCase
         parent::setUp();
 
         $this->service = new MarketingCommissionRuleService(
-            new MarketingCommissionRuleRepository,
+            new MarketingDistributionCommissionRuleRepository,
             new SystemSettingRepository,
         );
     }
