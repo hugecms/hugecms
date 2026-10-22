@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 
 // 管理员登录接口
 Route::post('auth/login', [AuthController::class, 'login']);
+// 获取当前管理员信息
+Route::get('auth/me', [AuthController::class, 'me'])->name('auth.me');
+// 管理员退出登录
+Route::post('auth/logout', [AuthController::class, 'logout']);
 // 创建促销活动(含范围与档位)
 Route::post('marketingPromotionFull/create', [MarketingPromotionFullController::class, 'create']);
 // 更新促销活动(整体替换范围与档位)

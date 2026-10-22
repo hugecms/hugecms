@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Admin\Models\AdminUser;
 use App\Models\User;
 
 return [
@@ -42,6 +43,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // 管理端 API 鉴权：Sanctum Bearer token（$request->user('admin_user')）
+        'admin_user' => [
+            'driver' => 'sanctum',
+            'provider' => 'admin_users',
+        ],
+        // 登录凭据校验：session 驱动提供 attempt() 能力，仅供 LoginRequest 使用
+        'admin_login' => [
+            'driver' => 'session',
+            'provider' => 'admin_users',
+        ],
     ],
 
     /*
@@ -65,6 +76,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'admin_users' => [
+            'driver' => 'eloquent',
+            'model' => AdminUser::class,
         ],
 
         // 'users' => [
