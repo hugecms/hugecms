@@ -5,15 +5,15 @@ import { createPinia, setActivePinia } from 'pinia'
 import LoginView from '@/views/LoginView.vue'
 
 vi.mock('@/api/auth', () => ({
-  loginApi: vi.fn<(data: LoginParams) => Promise<LoginResult>>(),
-  logoutApi: vi.fn<() => Promise<null>>(),
-  getProfileApi: vi.fn<() => Promise<UserInfo>>(),
+  authLoginApi: vi.fn(),
+  authLogoutApi: vi.fn(),
+  authMeApi: vi.fn(),
 }))
 
-import { getProfileApi, loginApi } from '@/api/auth'
-import type { LoginParams, LoginResult, UserInfo } from '@/types/api'
+import { authLoginApi, authMeApi } from '@/api/auth'
+import type { IAuthMeResponse } from '@/types/auth'
 
-const mockUserInfo: UserInfo = { id: 1, username: 'admin', nickname: '管理员' }
+const mockMe: IAuthMeResponse = { id: 1, username: 'admin', email: null, isSuper: 1 }
 
 function buildRouter(initialUrl = '/'): Router {
   const router = createRouter({
@@ -53,8 +53,8 @@ describe('LoginView', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     localStorage.clear()
-    vi.mocked(loginApi).mockResolvedValue({ access_token: 'jwt-abc' })
-    vi.mocked(getProfileApi).mockResolvedValue(mockUserInfo)
+    vi.mocked(authLoginApi).mockResolvedValue({ token: 'jwt-abc', expires: 1793259307 })
+    vi.mocked(authMeApi).mockResolvedValue(mockMe)
   })
 
   it('渲染品牌与登录表单', async () => {
@@ -71,7 +71,7 @@ describe('LoginView', () => {
     await wrapper.find('form').trigger('submit')
     await flushPromises()
 
-    expect(loginApi).not.toHaveBeenCalled()
+    expect(authLoginApi).not.toHaveBeenCalled()
   })
 
   it('登录成功：调用接口、存储 token 并跳转仪表盘', async () => {
@@ -80,7 +80,7 @@ describe('LoginView', () => {
     await fillAndSubmit(wrapper)
 
     const userStore = useLoginStore()
-    expect(loginApi).toHaveBeenCalledWith({ username: 'admin', password: '123456' })
+    expect(authLoginApi).toHaveBeenCalledWith({ user_name: 'admin', password: '123456' })
     expect(userStore.token).toBe('jwt-abc')
     expect(router.currentRoute.value.path).toBe('/dashboard')
   })

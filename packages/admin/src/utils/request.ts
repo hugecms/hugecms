@@ -70,6 +70,11 @@ function getHttpErrorMessage(error: AxiosError): string {
   if (status === 404) {
     return '请求的资源不存在'
   }
+  // 422（Laravel 校验失败）：message 即用户可读文案（如"用户名或密码错误"）
+  if (status === 422) {
+    const data = error.response.data as { message?: string } | undefined
+    return data?.message || '提交的数据未通过校验'
+  }
   return `请求失败（${status}）`
 }
 

@@ -5,14 +5,24 @@ import { createPinia, setActivePinia } from 'pinia'
 import AppHeader from '@/layout/components/AppHeader.vue'
 import { useUserStore } from '@/stores/user'
 
-vi.mock('@/api/auth', () => ({
-  loginApi: vi.fn<(data: LoginParams) => Promise<LoginResult>>(),
-  logoutApi: vi.fn<() => Promise<null>>(),
-  getProfileApi: vi.fn<() => Promise<UserInfo>>(),
+vi.mock('@/api/dashboard', () => ({
+  dashboardTodoApi: vi.fn().mockResolvedValue({
+    pendingShipments: 0,
+    pendingRefunds: 0,
+    pendingWithdrawals: 0,
+    lowStock: 0,
+    pendingRiskAppeals: 0,
+  }),
 }))
 
-import { logoutApi } from '@/api/auth'
-import type { LoginParams, LoginResult, UserInfo } from '@/types/api'
+vi.mock('@/api/auth', () => ({
+  authLoginApi: vi.fn(),
+  authLogoutApi: vi.fn(),
+  authMeApi: vi.fn(),
+}))
+
+import { authLogoutApi } from '@/api/auth'
+import type { UserInfo } from '@/types/api'
 
 function buildRouter(): Router {
   return createRouter({
@@ -27,13 +37,13 @@ function buildRouter(): Router {
 describe('AppHeader', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.mocked(logoutApi).mockResolvedValue(null)
+    vi.mocked(authLogoutApi).mockResolvedValue(null)
   })
 
   it('展示用户昵称', () => {
     const userStore = useUserStore()
     userStore.token = 'jwt-token'
-    const userInfo: UserInfo = { id: 1, username: 'admin', nickname: '管理员' }
+    const userInfo: UserInfo = { id: 1, username: '管理员' }
     userStore.userInfo = userInfo
 
     const wrapper = mount(AppHeader, { global: { plugins: [buildRouter()] } })
@@ -54,7 +64,7 @@ describe('AppHeader', () => {
     dropdown.vm.$emit('command', 'logout')
     await flushPromises()
 
-    expect(logoutApi).toHaveBeenCalled()
+    expect(authLogoutApi).toHaveBeenCalled()
     expect(userStore.token).toBe('')
     expect(router.currentRoute.value.path).toBe('/login')
   })

@@ -1,0 +1,41 @@
+import type { Component } from 'vue'
+import {
+  ChatDotRound,
+  ChatLineSquare,
+  CreditCard,
+  DataAnalysis,
+  Document,
+  Goods,
+  Management,
+  Memo,
+  Menu,
+  Money,
+  Odometer,
+  Present,
+  Setting,
+  Shop,
+  Tickets,
+  User,
+  Van,
+} from '@element-plus/icons-vue'
+
+/** 菜单 icon 字符串名 → 组件映射（集中按需引入；缺失回退 Menu） */
+export const menuIcons = {
+  Odometer,
+  Goods,
+  Tickets,
+  Present,
+  User,
+  Document,
+  Shop,
+  ChatDotRound,
+  ChatLineSquare,
+  CreditCard,
+  Van,
+  Memo,
+  Management,
+  Setting,
+  DataAnalysis,
+  Menu,
+  Money,
+} as const satisfies Record<string, Component>

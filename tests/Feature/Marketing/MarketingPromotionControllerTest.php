@@ -4,14 +4,30 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Marketing;
 
+use App\Models\AdminUser;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class MarketingPromotionControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // admin 路由组已挂 admin.auth 中间件，测试以超管身份认证
+        $admin = AdminUser::create([
+            'username' => 'test-admin',
+            'password' => 'secret-123',
+            'status' => 1,
+            'is_super' => 1,
+        ]);
+        Sanctum::actingAs($admin, ['*'], 'admin_user');
+    }
 
     /**
      * 构造一份合法的满减活动载荷（指定分类范围 + 两档满减）

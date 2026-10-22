@@ -3,19 +3,22 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useUserStore } from '@/stores/user'
 
 vi.mock('@/api/auth', () => ({
-  loginApi: vi.fn<(data: LoginParams) => Promise<LoginResult>>(),
-  logoutApi: vi.fn<() => Promise<null>>(),
-  getProfileApi: vi.fn<() => Promise<UserInfo>>(),
+  authLoginApi: vi.fn(),
+  authLogoutApi: vi.fn(),
+  authMeApi: vi.fn(),
 }))
 
-import { loginApi, logoutApi, getProfileApi } from '@/api/auth'
-import type { LoginParams, LoginResult, UserInfo } from '@/types/api'
+import { authLoginApi, authLogoutApi, authMeApi } from '@/api/auth'
+import type { IAuthMeResponse } from '@/types/auth'
 
-const mockUserInfo: UserInfo = { id: 1, username: 'admin', nickname: '管理员' }
+const mockMe: IAuthMeResponse = { id: 1, username: 'admin', email: null, isSuper: 1 }
 
 describe('user store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    vi.mocked(authLoginApi).mockReset()
+    vi.mocked(authLogoutApi).mockReset()
+    vi.mocked(authMeApi).mockReset()
   })
 
   it('初始状态：无 token、无用户信息、未登录', () => {
@@ -25,16 +28,18 @@ describe('user store', () => {
     expect(userStore.userInfo).toBeNull()
     expect(userStore.isLoggedIn).toBe(false)
     expect(userStore.nickname).toBe('')
+    expect(userStore.isSuper).toBe(false)
   })
 
-  it('有 token 时 isLoggedIn 为 true，nickname 优先取昵称', () => {
+  it('有 token 时 isLoggedIn 为 true，nickname 取用户名', () => {
     const userStore = useUserStore()
 
     userStore.token = 'jwt-token'
-    userStore.userInfo = { id: 1, username: 'admin', nickname: '管理员' }
+    userStore.userInfo = { id: 1, username: 'admin', isSuper: 1 }
 
     expect(userStore.isLoggedIn).toBe(true)
-    expect(userStore.nickname).toBe('管理员')
+    expect(userStore.nickname).toBe('admin')
+    expect(userStore.isSuper).toBe(true)
   })
 
   it('userInfo 为空时 nickname 回退为空字符串', () => {
@@ -49,7 +54,7 @@ describe('user store', () => {
     const userStore = useUserStore()
 
     userStore.token = 'jwt-token'
-    userStore.userInfo = { id: 1, username: 'admin', nickname: '管理员' }
+    userStore.userInfo = { id: 1, username: 'admin' }
     userStore.reset()
 
     expect(userStore.token).toBe('')
@@ -57,22 +62,22 @@ describe('user store', () => {
     expect(userStore.isLoggedIn).toBe(false)
   })
 
-  it('login 成功：写入 token 与用户信息', async () => {
-    vi.mocked(loginApi).mockResolvedValue({ access_token: 'jwt-abc' })
-    vi.mocked(getProfileApi).mockResolvedValue(mockUserInfo)
+  it('login 成功：写入 token 与 me 用户信息', async () => {
+    vi.mocked(authLoginApi).mockResolvedValue({ token: 'jwt-abc', expires: 1793259307 })
+    vi.mocked(authMeApi).mockResolvedValue(mockMe)
 
     const userStore = useUserStore()
     await userStore.login({ username: 'admin', password: '123456' })
 
-    expect(loginApi).toHaveBeenCalledWith({ username: 'admin', password: '123456' })
+    expect(authLoginApi).toHaveBeenCalledWith({ user_name: 'admin', password: '123456' })
     expect(userStore.token).toBe('jwt-abc')
-    expect(userStore.userInfo).toEqual(mockUserInfo)
+    expect(userStore.userInfo).toEqual({ id: 1, username: 'admin', email: null, isSuper: 1 })
     expect(userStore.isLoggedIn).toBe(true)
   })
 
   it('login 时拉取用户信息失败不阻塞登录', async () => {
-    vi.mocked(loginApi).mockResolvedValue({ access_token: 'jwt-abc' })
-    vi.mocked(getProfileApi).mockRejectedValue(new Error('profile failed'))
+    vi.mocked(authLoginApi).mockResolvedValue({ token: 'jwt-abc', expires: 1793259307 })
+    vi.mocked(authMeApi).mockRejectedValue(new Error('me failed'))
 
     const userStore = useUserStore()
     await userStore.login({ username: 'admin', password: '123456' })
@@ -82,7 +87,7 @@ describe('user store', () => {
   })
 
   it('login 接口失败：保持未登录状态', async () => {
-    vi.mocked(loginApi).mockRejectedValue(new Error('用户名或密码错误'))
+    vi.mocked(authLoginApi).mockRejectedValue(new Error('用户名或密码错误'))
 
     const userStore = useUserStore()
 
@@ -94,21 +99,21 @@ describe('user store', () => {
   })
 
   it('logout：调用接口后清空登录态', async () => {
-    vi.mocked(logoutApi).mockResolvedValue(null)
+    vi.mocked(authLogoutApi).mockResolvedValue(null)
 
     const userStore = useUserStore()
     userStore.token = 'jwt-abc'
-    userStore.userInfo = mockUserInfo
+    userStore.userInfo = { id: 1, username: 'admin' }
 
     await userStore.logout()
 
-    expect(logoutApi).toHaveBeenCalled()
+    expect(authLogoutApi).toHaveBeenCalled()
     expect(userStore.token).toBe('')
     expect(userStore.userInfo).toBeNull()
   })
 
   it('logout：接口失败也强制清空本地登录态', async () => {
-    vi.mocked(logoutApi).mockRejectedValue(new Error('network down'))
+    vi.mocked(authLogoutApi).mockRejectedValue(new Error('network down'))
 
     const userStore = useUserStore()
     userStore.token = 'jwt-abc'

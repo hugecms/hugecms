@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use App\Api\Admin\Controllers\AuthController;
+use App\Api\Admin\Controllers\DashboardController;
 use App\Api\Admin\Controllers\MarketingPromotionFullController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('auth/login', [AuthController::class, 'login']);
 // 获取当前管理员信息
 Route::get('auth/me', [AuthController::class, 'me'])->name('auth.me');
+// 修改当前管理员密码
+Route::post('auth/changePassword', [AuthController::class, 'changePassword']);
 // 管理员退出登录
 Route::post('auth/logout', [AuthController::class, 'logout']);
+// 获取管理端待办计数
+Route::get('dashboard/todo', [DashboardController::class, 'todo'])->name('dashboard.todo');
 // 创建促销活动(含范围与档位)
 Route::post('marketingPromotionFull/create', [MarketingPromotionFullController::class, 'create']);
 // 更新促销活动(整体替换范围与档位)

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Api\Admin\Controllers;
 
+use App\Api\Admin\Requests\Auth\ChangePasswordRequest;
 use App\Api\Admin\Requests\Auth\LoginRequest;
 use App\Api\Admin\Responses\Auth\LoginResponse;
 use App\Api\Admin\Responses\Auth\MeResponse;
 use App\Enums\ErrorEnum;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Juling\Foundation\Exceptions\BusinessException;
@@ -77,6 +79,37 @@ class AuthController extends Controller
             Log::error($e->getMessage(), ['exception' => $e]);
 
             return $this->error(ErrorEnum::UNAUTHORIZED);
+        }
+    }
+
+    #[OA\Post(path: '/auth/changePassword', summary: '修改当前管理员密码', security: [['bearerAuth' => []]], tags: ['认证模块'])]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: ChangePasswordRequest::class))]
+    #[OA\Response(response: 200, description: 'OK')]
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    {
+        try {
+            $adminUser = $request->user('admin_user');
+            if ($adminUser === null) {
+                return $this->error(ErrorEnum::UNAUTHORIZED);
+            }
+
+            if (! Hash::check((string) $request->input(ChangePasswordRequest::getOldPassword), (string) $adminUser->password)) {
+                throw ValidationException::withMessages([
+                    ChangePasswordRequest::getOldPassword => '原密码错误',
+                ]);
+            }
+
+            $adminUser->forceFill([
+                'password' => (string) $request->input(ChangePasswordRequest::getNewPassword),
+            ])->save();
+
+            return $this->success();
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+
+            return $this->error('修改密码失败');
         }
     }
 
