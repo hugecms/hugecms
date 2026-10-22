@@ -83,9 +83,10 @@ function go(path: string): void {
 }
 
 .secondary-nav__item {
-  padding: 9px 12px;
-  margin-bottom: 2px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
   font-size: 13px;
+  line-height: 1.5;
   color: var(--app-secondary-nav-text);
   cursor: pointer;
   border-radius: 4px;

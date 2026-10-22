@@ -65,10 +65,10 @@ function resolveIcon(name: string | undefined) {
 .primary-nav__item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
-  height: 56px;
+  height: 60px;
   color: var(--app-primary-nav-text);
   cursor: pointer;
   transition: background 0.15s;
@@ -85,7 +85,7 @@ function resolveIcon(name: string | undefined) {
 
 .primary-nav__label {
   font-size: 12px;
-  line-height: 1;
+  line-height: 1.2;
   white-space: nowrap;
 }
 
