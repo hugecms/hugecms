@@ -165,8 +165,11 @@
 **目录**
 ```
 views/<一级组>/<二级页>/index.vue      // 与路由 path 一一对应
-components/                            // 跨页复用组件（RefreshButton 等）
-composables/useCrudTable.ts            // 标准列表页数据逻辑
+components/PageContainer.vue           // 四区骨架（search/toolbar/default/pagination 插槽）
+components/ErrorState.vue              // 列表错误态 + 重试
+components/RefreshButton.vue           // 弱化刷新（icon + tooltip）
+composables/useCrudTable.ts            // 标准列表页数据逻辑（含 error/retry）
+composables/useFormGuard.ts            // 表单离开保护（路由/刷新）
 utils/export.ts                        // CSV 导出
 ```
 
@@ -184,31 +187,36 @@ const { loading, list, total, page, pageSize, searchForm, selectedIds,
 </script>
 
 <template>
-  <el-card shadow="never">
-    <el-form inline @submit.prevent>
+  <PageContainer>
+    <template #search>
+      <el-form inline @submit.prevent>
       <!-- 筛选条件 -->
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
         <el-button @click="handleReset">重置</el-button>
       </el-form-item>
-    </el-form>
+      </el-form>
+    </template>
 
-    <div class="toolbar">
+    <template #toolbar>
       <el-button type="primary" @click="openCreate">新增</el-button>
       <el-button type="danger" plain :disabled="selectedIds.length === 0" @click="handleDelete(selectedIds)">
         批量删除
       </el-button>
       <RefreshButton class="toolbar__refresh" @click="refresh" />
-    </div>
+    </template>
 
-    <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
+    <ErrorState v-if="error" @retry="retry" />
+    <el-table v-else v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <!-- 列 -->
     </el-table>
 
-    <el-pagination class="pagination" layout="total, sizes, prev, pager, next, jumper"
-      :total="total" :current-page="page" :page-size="pageSize" :page-sizes="[10, 20, 50]"
-      @current-change="handleCurrentChange" @size-change="handleSizeChange" />
-  </el-card>
+    <template #pagination>
+      <el-pagination layout="total, sizes, prev, pager, next, jumper"
+        :total="total" :current-page="page" :page-size="pageSize" :page-sizes="[10, 20, 50]"
+        @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+    </template>
+  </PageContainer>
 </template>
 ```
 
@@ -216,6 +224,9 @@ const { loading, list, total, page, pageSize, searchForm, selectedIds,
 - 删除：`ElMessageBox.confirm` 二次确认；批量删除显示选中数。
 - 提交：按钮 `:loading`；成功 `ElMessage.success`；失败不重复弹错。
 - 刷新：页面内用 `RefreshButton`（右对齐）；Header 的刷新仅用于整页重建。
+- 列表失败：`useCrudTable` 暴露 `error`，页面用 `<ErrorState @retry="retry" />` 替换表格，提供重试入口。
+- 表单保护：编辑页调用 `useFormGuard(isDirty)`（对话框打开且表单与初始快照不同即视为脏），路由切换/关闭标签/刷新前提示。
+- 布局：最小工作宽度 1280px；<1440px 自动收起二级导航。
 - 导出：`exportCsv(filename, columns, rows)`；列 `key` 与行数据字段一致。
 
 ---
@@ -239,6 +250,8 @@ const { loading, list, total, page, pageSize, searchForm, selectedIds,
 - [ ] 状态标签颜色符合第 5 节映射
 - [ ] 金额右对齐、价格使用强调色
 - [ ] 空态为 `el-empty`，加载为 `v-loading`
-- [ ] 使用 `useCrudTable`（列表页）与 `RefreshButton`
+- [ ] 使用 `PageContainer` 四区插槽、`useCrudTable`（含 `error/retry`）与 `RefreshButton`
+- [ ] 列表失败展示 `ErrorState` 并可重试
+- [ ] 编辑表单接入 `useFormGuard`（有修改时离开提示）
 - [ ] 目录为 `views/<组>/<页>/index.vue`
 - [ ] `vue-tsc`、`vitest`、`vite build` 通过

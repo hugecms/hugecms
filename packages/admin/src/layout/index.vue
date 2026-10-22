@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import { buildMenus } from '@/layout/menus'
@@ -15,6 +16,17 @@ const route = useRoute()
 
 /** 折叠：隐藏二级导航（一级 icon 栏常驻） */
 const collapsed = ref(false)
+/** 窄屏（<1440）自动收起二级导航，给内容区让出宽度；用户仍可手动展开 */
+const isNarrow = useMediaQuery('(max-width: 1439px)')
+watch(
+  isNarrow,
+  (narrow) => {
+    if (narrow) {
+      collapsed.value = true
+    }
+  },
+  { immediate: true },
+)
 /** 内容区重建 key（header 刷新按钮递增） */
 const refreshKey = ref(0)
 
@@ -86,6 +98,8 @@ function handlePrimarySelect(group: MenuGroup): void {
 <style scoped>
 .layout {
   height: 100%;
+  /* 后台最小工作宽度：低于此宽度整体横向滚动，避免表格被挤压 */
+  min-width: 1280px;
 }
 
 .layout-aside {
@@ -105,6 +119,7 @@ function handlePrimarySelect(group: MenuGroup): void {
 }
 
 .layout-main {
+  overflow-x: auto;
   background: var(--app-content-bg);
 }
 </style>

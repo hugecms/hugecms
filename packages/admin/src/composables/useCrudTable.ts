@@ -25,6 +25,7 @@ export function useCrudTable<TQuery extends object, TRow extends CrudTableRow>(
   options: CrudTableOptions<TQuery, TRow>,
 ) {
   const loading = ref(false)
+  const error = ref(false)
   const list = shallowRef<TRow[]>([])
   const total = ref(0)
   const page = ref(1)
@@ -36,15 +37,17 @@ export function useCrudTable<TQuery extends object, TRow extends CrudTableRow>(
 
   async function fetchList(targetPage: number): Promise<void> {
     loading.value = true
+    error.value = false
     try {
       const result = await options.searchApi(targetPage, pageSize.value, { ...searchForm } as TQuery)
       list.value = result.data
       total.value = result.total
       page.value = targetPage
     } catch {
-      // 拦截器已提示错误；兜底复位避免脏数据残留
+      // 拦截器已提示错误；兜底复位并暴露错误态，供页面展示重试
       list.value = []
       total.value = 0
+      error.value = true
     } finally {
       loading.value = false
     }
@@ -79,6 +82,11 @@ export function useCrudTable<TQuery extends object, TRow extends CrudTableRow>(
     void fetchList(page.value)
   }
 
+  /** 加载失败后重试当前页 */
+  function retry(): void {
+    void fetchList(page.value)
+  }
+
   /** 删除（单行传 [row.id]，批量传选中 ids）：确认 → 调接口 → 当前页保留刷新 */
   async function handleDelete(ids: number[]): Promise<void> {
     if (!options.destroyApi || ids.length === 0) {
@@ -108,6 +116,7 @@ export function useCrudTable<TQuery extends object, TRow extends CrudTableRow>(
 
   return {
     loading,
+    error,
     list,
     total,
     page,
@@ -123,5 +132,6 @@ export function useCrudTable<TQuery extends object, TRow extends CrudTableRow>(
     handleSelectionChange,
     handleDelete,
     refresh,
+    retry,
   }
 }

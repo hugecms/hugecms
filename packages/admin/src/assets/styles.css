@@ -27,6 +27,55 @@ a {
 }
 
 /* ============================================================
+ * 字体：国内用户系统字体栈（零 Webfont，按 英文 → 中文 → 兜底 排序）
+ * 参考 Ant Design 中后台字体规范；中文不加载 Webfont（单文件 5-20MB）
+ * ============================================================ */
+:root {
+  --el-font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑',
+    'Noto Sans CJK SC', 'Source Han Sans SC', 'WenQuanYi Micro Hei', sans-serif;
+
+  /* 字号层级：标题 18 / 区块 15 / 正文 14 / 辅助 12 */
+  --app-font-size-title: 18px;
+  --app-font-size-section: 15px;
+  --app-font-size-body: 14px;
+  --app-font-size-small: 12px;
+  --app-line-height: 1.5715; /* 14px × 1.5715 ≈ 22px */
+}
+
+body {
+  font-family: var(--el-font-family);
+  font-size: var(--app-font-size-body);
+  line-height: var(--app-line-height);
+  color: var(--el-text-color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 表单控件必须显式继承，否则浏览器使用自身系统字体 */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* 表格/金额数字等宽，保证纵向对比对齐 */
+.el-table,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 代码/ID 使用等宽字体 */
+code,
+pre,
+.font-mono {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+/* ============================================================
  * 主题变量（方案 A：深蓝侧栏 + Ant 蓝主色）
  * Element Plus 按需引入同样读取这些 CSS 变量，覆盖 :root 即可生效
  * ============================================================ */

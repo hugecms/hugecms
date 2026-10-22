@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import RefreshButton from '@/components/RefreshButton.vue'
 import type { IProductCategoryQueryRequest, IProductCategoryResponse } from '@/types/productCategory'
 import {
   productCategoryDestroyApi,
@@ -9,6 +8,10 @@ import {
   productCategoryStoreApi,
   productCategoryUpdateApi,
 } from '@/api/productCategory'
+import { useFormGuard } from '@/composables/useFormGuard'
+import PageContainer from '@/components/PageContainer.vue'
+import ErrorState from '@/components/ErrorState.vue'
+import RefreshButton from '@/components/RefreshButton.vue'
 
 defineOptions({ name: 'ProductCategoryPage' })
 
@@ -17,6 +20,7 @@ interface CategoryNode extends IProductCategoryResponse {
 }
 
 const loading = ref(false)
+const error = ref(false)
 const list = ref<CategoryNode[]>([])
 const treeMap = ref<Map<number, CategoryNode>>(new Map())
 
@@ -24,10 +28,12 @@ const dialogVisible = ref(false)
 const editingId = ref<number | null>(null)
 const submitting = ref(false)
 const dialogForm = reactive({ parentId: 0, name: '', sort: 0, status: 1, isRecommend: 0 })
+const formSnapshot = ref('')
 
 /** 全量拉取 + 前端建树（sort 升序） */
 async function fetchTree(): Promise<void> {
   loading.value = true
+  error.value = false
   try {
     const query: IProductCategoryQueryRequest = {}
     const result = await productCategorySearchApi(1, 1000, query)
@@ -51,11 +57,24 @@ async function fetchTree(): Promise<void> {
     list.value = roots
     treeMap.value = map
   } catch {
-    // 拦截器已提示错误
+    // 拦截器已提示错误；暴露错误态供重试
+    list.value = []
+    treeMap.value = new Map()
+    error.value = true
   } finally {
     loading.value = false
   }
 }
+
+function snapshot(): string {
+  return JSON.stringify(dialogForm)
+}
+
+function isDirty(): boolean {
+  return dialogVisible.value && snapshot() !== formSnapshot.value
+}
+
+useFormGuard(isDirty)
 
 /** 收集自身与全部后代 ID（编辑时禁选父级） */
 function collectSelfAndDescendantIds(id: number): number[] {
@@ -89,6 +108,7 @@ const parentOptions = computed(() => {
 function openCreate(parentId = 0): void {
   editingId.value = null
   Object.assign(dialogForm, { parentId, name: '', sort: 0, status: 1, isRecommend: 0 })
+  formSnapshot.value = snapshot()
   dialogVisible.value = true
 }
 
@@ -101,6 +121,7 @@ function openEdit(row: IProductCategoryResponse): void {
     status: row.status,
     isRecommend: row.isRecommend,
   })
+  formSnapshot.value = snapshot()
   dialogVisible.value = true
 }
 
@@ -159,90 +180,82 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="page">
-    <el-card shadow="never">
-      <div class="toolbar">
-        <el-button type="primary" @click="openCreate(0)">新增顶级分类</el-button>
-        <RefreshButton class="toolbar__refresh" @click="fetchTree" />
-      </div>
+  <PageContainer>
+    <template #toolbar>
+      <el-button type="primary" @click="openCreate(0)">新增顶级分类</el-button>
+      <RefreshButton class="toolbar__refresh" @click="fetchTree" />
+    </template>
 
-      <el-table
-        v-loading="loading"
-        :data="list"
-        row-key="id"
-        :tree-props="{ children: 'children' }"
-        default-expand-all
-      >
-        <el-table-column prop="name" label="分类名称" min-width="220" />
-        <el-table-column prop="sort" label="排序" width="80" />
-        <el-table-column label="首页推荐" width="100">
-          <template #default="{ row }">
-            <el-tag v-if="row.isRecommend === 1" type="warning">推荐</el-tag>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" width="90">
-          <template #default="{ row }">
-            <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
-          <template #default="{ row }">
-            <el-button link type="primary" @click="openCreate(row.id)">添加子级</el-button>
-            <el-button link type="primary" @click="openEdit(row)">编辑</el-button>
-            <el-button link type="danger" @click="handleRowDelete(row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-
-    <!-- 新增/编辑对话框 -->
-    <el-dialog
-      v-model="dialogVisible"
-      :title="editingId === null ? '新增分类' : '编辑分类'"
-      width="480px"
-      destroy-on-close
+    <ErrorState v-if="error" @retry="fetchTree" />
+    <el-table
+      v-else
+      v-loading="loading"
+      :data="list"
+      row-key="id"
+      :tree-props="{ children: 'children' }"
+      default-expand-all
     >
-      <el-form label-width="90px">
-        <el-form-item label="父级分类" required>
-          <el-tree-select
-            v-model="dialogForm.parentId"
-            :data="parentOptions"
-            check-strictly
-            :render-after-expand="false"
-            style="width: 100%"
-          />
-        </el-form-item>
-        <el-form-item label="分类名称" required>
-          <el-input v-model="dialogForm.name" maxlength="50" placeholder="分类名称" />
-        </el-form-item>
-        <el-form-item label="排序">
-          <el-input-number v-model="dialogForm.sort" :min="0" />
-        </el-form-item>
-        <el-form-item label="首页推荐">
-          <el-switch v-model="dialogForm.isRecommend" :active-value="1" :inactive-value="0" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-switch v-model="dialogForm.status" :active-value="1" :inactive-value="0" active-text="启用" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitting" @click="handleSubmit">确定</el-button>
-      </template>
-    </el-dialog>
-  </div>
+      <el-table-column prop="name" label="分类名称" min-width="220" />
+      <el-table-column prop="sort" label="排序" width="80" />
+      <el-table-column label="首页推荐" width="100">
+        <template #default="{ row }">
+          <el-tag v-if="row.isRecommend === 1" type="warning">推荐</el-tag>
+          <span v-else>-</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" width="90">
+        <template #default="{ row }">
+          <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="200" fixed="right">
+        <template #default="{ row }">
+          <el-button link type="primary" @click="openCreate(row.id)">添加子级</el-button>
+          <el-button link type="primary" @click="openEdit(row)">编辑</el-button>
+          <el-button link type="danger" @click="handleRowDelete(row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </PageContainer>
+
+  <el-dialog
+    v-model="dialogVisible"
+    :title="editingId === null ? '新增分类' : '编辑分类'"
+    width="480px"
+    destroy-on-close
+    @closed="formSnapshot = ''"
+  >
+    <el-form label-width="90px">
+      <el-form-item label="父级分类" required>
+        <el-tree-select
+          v-model="dialogForm.parentId"
+          :data="parentOptions"
+          check-strictly
+          :render-after-expand="false"
+          style="width: 100%"
+        />
+      </el-form-item>
+      <el-form-item label="分类名称" required>
+        <el-input v-model="dialogForm.name" maxlength="50" placeholder="分类名称" />
+      </el-form-item>
+      <el-form-item label="排序">
+        <el-input-number v-model="dialogForm.sort" :min="0" />
+      </el-form-item>
+      <el-form-item label="首页推荐">
+        <el-switch v-model="dialogForm.isRecommend" :active-value="1" :inactive-value="0" />
+      </el-form-item>
+      <el-form-item label="状态">
+        <el-switch v-model="dialogForm.status" :active-value="1" :inactive-value="0" active-text="启用" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button type="primary" :loading="submitting" @click="handleSubmit">确定</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>
-.toolbar {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-/* 刷新为辅助操作：最右侧、icon 弱化 */
 .toolbar__refresh {
   margin-left: auto;
 }
