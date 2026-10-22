@@ -44,6 +44,7 @@ return new class extends Migration
             $table->unsignedInteger('category_id')->comment('分类ID');
             $table->unsignedInteger('brand_id')->nullable()->comment('品牌ID');
             $table->unsignedInteger('type_id')->nullable()->comment('商品类型ID,关联属性体系');
+            $table->unsignedInteger('freight_template_id')->nullable()->comment('运费模板ID,关联shipping_methods,空=按默认配送方式计费');
             $table->string('name', 200)->comment('商品名称');
             $table->string('sn', 50)->nullable()->comment('商品编码');
             $table->string('subtitle', 200)->nullable()->comment('副标题');

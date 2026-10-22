@@ -1,6 +1,6 @@
 # 数据表设计技术文档
 
-> 全库现状：17 个迁移文件（4 个框架 + 13 个业务域）/ 116 张业务表 + 1 视图（另有 8 张 Laravel 框架表），`migrate:fresh` 全部通过。
+> 全库现状：17 个迁移文件（4 个框架 + 13 个业务域）/ 117 张业务表 + 1 视图（另有 8 张 Laravel 框架表），`migrate:fresh` 全部通过。
 > 数据库蓝本：ECShop 2.7.3（逐表映射见 [ecshop-2.7.3-tables-domain-mapping.md](ecshop-2.7.3-tables-domain-mapping.md)），并按现代电商与微信私域场景重构扩展。
 
 ## 一、业务域全景
@@ -90,5 +90,5 @@
 
 - **配置分层**：`.env`（基础设施）→ `system_apps`（应用身份/密钥）→ `payment_channels`（按端支付配置）→ `system_settings`（全局运营配置）。
 - **统计分层**：明细在各业务表，`site_daily_statistics` 只做每日汇总加速层，口径变更可重算。
-- **归因闭环**：带参二维码（wechat_qrcodes）记扫码/注册双计数 → 分销绑定（relations 快照）→ 佣金流水（commissions），渠道 ROI 可算。
+- **归因闭环**：带参二维码（wechat_qrcodes）记扫码/注册双计数 → 分享行为（marketing_share_records，只追加）→ 分销绑定（relations 快照）→ 订单归因（orders.attributed_user_id/attribution_type）→ 佣金流水（commissions），分享转化与渠道 ROI 可算。
 - **审计完备**：订单日志、售后协商日志、操作日志、支付回调、库存流水、秒杀流水——事后一切可解释。

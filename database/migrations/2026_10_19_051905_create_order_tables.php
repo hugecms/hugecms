@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('order_no', 30)->comment('订单号');
             $table->string('request_token', 64)->nullable()->comment('下单请求幂等令牌,客户端生成,唯一约束防重复下单');
             $table->string('order_channel', 20)->default('')->comment('下单渠道:web=PC网站,h5=移动网页,wechat_miniapp=微信小程序,wechat_official=微信公众号,app=原生应用');
+            $table->unsignedInteger('attributed_user_id')->nullable()->comment('归因用户ID:分享者/分销员,佣金与ROI归因依据');
+            $table->string('attribution_type', 20)->nullable()->comment('归因类型:share=分享,distributor=分销,channel=渠道投放');
             $table->unsignedInteger('user_id')->comment('下单用户ID');
             $table->decimal('total_amount', 10, 2)->comment('商品总额');
             $table->decimal('freight_amount', 10, 2)->default(0)->comment('运费');
@@ -37,17 +39,20 @@ return new class extends Migration
             $table->string('receiver_district_code', 20)->nullable()->comment('区县行政区划码');
             $table->string('receiver_address', 255)->comment('详细地址');
             $table->string('buyer_remark', 255)->nullable()->comment('买家备注');
+            $table->string('seller_remark', 255)->nullable()->comment('商家备注,客服/发货协作');
             $table->dateTime('pay_time')->nullable()->comment('支付时间');
             $table->dateTime('deliver_time')->nullable()->comment('发货时间');
             $table->dateTime('finish_time')->nullable()->comment('完成时间');
             $table->dateTime('cancel_time')->nullable()->comment('取消时间');
             $table->string('cancel_reason', 255)->nullable()->comment('取消原因');
+            $table->tinyInteger('cancel_type')->nullable()->comment('取消类型:1=用户取消,2=超时未支付,3=商家/系统取消');
             $table->timestamps();
             $table->softDeletes();
             $table->unique('order_no', 'uk_orders_order_no');
             $table->unique('request_token', 'uk_orders_request_token');
             $table->index(['user_id', 'status'], 'idx_orders_user_status');
             $table->index(['order_channel', 'created_at'], 'idx_orders_channel_time');
+            $table->index(['attributed_user_id', 'created_at'], 'idx_orders_attributed_user_time');
         });
 
         // 订单明细表：商品信息快照，防商品改价/改名影响历史订单
@@ -115,6 +120,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2)->comment('退款金额');
             $table->string('reason', 255)->nullable()->comment('退款原因');
             $table->string('admin_note', 255)->nullable()->comment('商家审核备注/拒绝原因');
+            $table->dateTime('audit_time')->nullable()->comment('审核时间');
+            $table->unsignedInteger('operator_id')->nullable()->comment('审核操作人ID,关联admin_users');
             $table->json('images')->nullable()->comment('申请凭证图片(JSON数组)');
             $table->string('return_express_company', 50)->nullable()->comment('退货物流公司,退货退款时填写');
             $table->string('return_express_no', 50)->nullable()->comment('退货物流单号');

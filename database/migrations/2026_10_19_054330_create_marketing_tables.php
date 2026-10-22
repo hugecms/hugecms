@@ -14,6 +14,7 @@ return new class extends Migration
      * 保护期内退款置失效，已结算退款走负额冲销记录（reversal_of_id 回指，唯一索引允许多 NULL 即原始记录互不冲突）；提现走 user_withdraw_orders 状态机
      * 裂变三件套：拼团（团员 uk(team,user)+uk(order_no) 双重唯一防一单多团）、助力（参与 uk(activity,user) 一人一条，发奖完成态幂等，奖励对接券/积分流水）、
      * 砍价（current_price 条件更新防并发超砍，uk(order_no) NULL 不参与约束即未下单互不冲突）；助力/帮砍入口挂风控黑名单检查
+     * 分享行为记录（marketing_share_records）只追加，是订单归因（orders.attributed_user_id）的判定来源
      */
     public function up(): void
     {
@@ -358,6 +359,20 @@ return new class extends Migration
             $table->unique(['record_id', 'helper_user_id'], 'uk_marketing_bargain_helpers_record_helper');
             $table->index('helper_user_id', 'idx_marketing_bargain_helpers_helper_user_id');
         });
+
+        // 分享行为记录表：只追加，分享/海报/口令的行为留痕，订单归因（orders.attributed_user_id）的判定来源
+        Schema::create('marketing_share_records', function (Blueprint $table) {
+            $table->comment('分享行为记录表');
+            $table->id();
+            $table->unsignedInteger('sharer_user_id')->comment('分享者用户ID');
+            $table->unsignedInteger('spu_id')->nullable()->comment('分享对象商品SPU ID,NULL=整店/页面分享');
+            $table->tinyInteger('share_channel')->comment('分享渠道:1=小程序卡片,2=海报图片,3=复制链接,4=朋友圈/社群');
+            $table->string('scene_value', 64)->default('')->comment('小程序场景值,落地追踪');
+            $table->string('share_code', 16)->default('')->comment('使用的推广码,关联users.share_code');
+            $table->timestamp('create_time')->useCurrent()->comment('分享时间,归因窗口起点');
+            $table->index(['sharer_user_id', 'create_time'], 'idx_marketing_share_records_sharer_time');
+            $table->index(['spu_id', 'create_time'], 'idx_marketing_share_records_spu_time');
+        });
     }
 
     /**
@@ -365,6 +380,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('marketing_share_records');
         Schema::dropIfExists('marketing_bargain_helpers');
         Schema::dropIfExists('marketing_bargain_records');
         Schema::dropIfExists('marketing_bargain_items');
