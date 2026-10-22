@@ -10,8 +10,6 @@ export interface IProductCreateRequest {
   content: string, // 商品详情
   price: string, // 售价,多规格时为最低规格价
   marketPrice: string, // 市场价
-  stock: number, // 库存,单规格商品有效
-  lockedStock: number, // 锁定库存(下单未支付),可售=stock-locked_stock
   sales: number, // 销量
   status: number, // 状态:0=下架,1=上架
   sort: number, // 排序
@@ -42,8 +40,6 @@ export interface IProductUpdateRequest {
   content: string, // 商品详情
   price: string, // 售价,多规格时为最低规格价
   marketPrice: string, // 市场价
-  stock: number, // 库存,单规格商品有效
-  lockedStock: number, // 锁定库存(下单未支付),可售=stock-locked_stock
   sales: number, // 销量
   status: number, // 状态:0=下架,1=上架
   sort: number, // 排序
@@ -82,8 +78,6 @@ export interface IProductResponse {
   content: string, // 商品详情
   price: string, // 售价,多规格时为最低规格价
   marketPrice: string, // 市场价
-  stock: number, // 库存,单规格商品有效
-  lockedStock: number, // 锁定库存(下单未支付),可售=stock-locked_stock
   sales: number, // 销量
   status: number, // 状态:0=下架,1=上架
   sort: number, // 排序

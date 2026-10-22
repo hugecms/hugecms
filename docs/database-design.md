@@ -39,8 +39,8 @@
 
 ### 1. 库存与防超卖
 
-- 常规商品：`可售 = stock - locked_stock`；下单锁定用条件更新（`where stock - locked_stock >= n`）防并发超卖，支付成功核减、取消/超时释放；`product_stock_logs` 保留全量事后追溯。
-- 秒杀：`sold_stock` 原子自增（`where sold_stock + n <= total_stock`），订单取消/超时回补；`marketing_flash_sale_logs` 记 before/after 与订单号，超卖纠纷可审计。
+- 常规商品：**库存唯一真相在 SKU**（`product_skus.stock/locked_stock`），可售 = stock - locked_stock；下单锁定用条件更新（`where stock - locked_stock >= n`）防并发超卖，支付成功核减、取消/超时释放；`product_stock_logs` 保留全量事后追溯。所有商品至少一条 SKU（单规格商品建默认 SKU），SPU 不存库存。
+- 秒杀：**双层校验**——活动配额 `sold_stock` 原子自增（`where sold_stock + n <= total_stock`）同时锁定 SKU 真实库存（`where stock - locked_stock >= n`），任一失败整单回滚；支付成功核减 SKU `stock` 并释放 `locked_stock`，订单取消/超时回补 `sold_stock` 与 `locked_stock`。活动创建时校验 `total_stock <= SKU 可售库存`；`marketing_flash_sale_logs` 记 before/after 与订单号，超卖纠纷可审计。
 - 到货提醒：`product_stock_reminders` 一用户一 SKU 一条（唯一键 upsert），补货后走触达降级链路。
 
 ### 2. 支付幂等（三层）

@@ -52,8 +52,6 @@ return new class extends Migration
             $table->longText('content')->nullable()->comment('商品详情');
             $table->decimal('price', 10, 2)->comment('售价,多规格时为最低规格价');
             $table->decimal('market_price', 10, 2)->nullable()->comment('市场价');
-            $table->unsignedInteger('stock')->default(0)->comment('库存,单规格商品有效');
-            $table->unsignedInteger('locked_stock')->default(0)->comment('锁定库存(下单未支付),可售=stock-locked_stock');
             $table->unsignedInteger('sales')->default(0)->comment('销量');
             $table->tinyInteger('status')->default(0)->comment('状态:0=下架,1=上架');
             $table->integer('sort')->default(0)->comment('排序');
@@ -78,7 +76,6 @@ return new class extends Migration
             $table->decimal('cost_price', 10, 2)->default(0)->comment('成本价,毛利核算');
             $table->decimal('weight', 10, 3)->default(0)->comment('重量(kg),运费计算');
             $table->unsignedInteger('stock')->default(0)->comment('库存');
-            $table->unsignedInteger('locked_stock')->default(0)->comment('锁定库存(下单未支付),可售=stock-locked_stock');
             $table->unsignedInteger('warn_stock')->default(0)->comment('库存预警线,库存<=该值触发预警,0=不预警');
             $table->tinyInteger('status')->default(1)->comment('状态:0=禁用,1=启用');
             $table->timestamps();
@@ -93,7 +90,7 @@ return new class extends Migration
             $table->comment('库存流水表');
             $table->id();
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格商品');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->string('change_type', 20)->comment('变动类型:order=下单占用,cancel=取消释放,refund=退货回补,adjust=人工调整');
             $table->integer('change_quantity')->comment('变动数量,正数入库负数出库');
             $table->integer('before_stock')->comment('变动前库存');
@@ -174,7 +171,7 @@ return new class extends Migration
             $table->unsignedInteger('order_id')->comment('订单ID,已购验证依据');
             $table->unsignedInteger('order_item_id')->comment('订单明细ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->unsignedInteger('user_id')->comment('评价用户ID');
             $table->tinyInteger('rating')->comment('评分:1-5星');
             $table->string('content', 1000)->nullable()->comment('评价内容');
@@ -198,7 +195,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('user_id')->comment('登记用户ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格/不限规格');
+            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=不限规格');
             $table->tinyInteger('status')->default(0)->comment('状态:0=待提醒,1=已提醒,2=已取消');
             $table->dateTime('notified_at')->nullable()->comment('提醒时间');
             $table->timestamps();

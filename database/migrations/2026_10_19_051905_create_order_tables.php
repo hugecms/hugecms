@@ -56,7 +56,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('order_id')->comment('订单ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->string('product_name', 200)->comment('商品名称快照');
             $table->string('sku_specs', 500)->nullable()->comment('规格快照');
             $table->string('sku_no', 64)->nullable()->comment('SKU编号快照');
@@ -93,7 +93,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('user_id')->comment('用户ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->string('product_name', 200)->comment('商品名称快照');
             $table->string('image', 255)->nullable()->comment('商品图快照');
             $table->decimal('price', 10, 2)->comment('加购时价格快照');
@@ -161,7 +161,7 @@ return new class extends Migration
             $table->unsignedInteger('shipment_id')->comment('发货单ID');
             $table->unsignedInteger('order_item_id')->comment('订单明细ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->unsignedInteger('quantity')->comment('发货数量');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');
             $table->index('shipment_id', 'idx_order_shipment_items_shipment_id');
@@ -175,7 +175,7 @@ return new class extends Migration
             $table->unsignedInteger('refund_id')->comment('退款单ID');
             $table->unsignedInteger('order_item_id')->comment('订单明细ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->unsignedInteger('quantity')->comment('退货数量');
             $table->decimal('amount', 10, 2)->comment('退款金额');
             $table->timestamp('create_time')->useCurrent()->comment('创建时间');

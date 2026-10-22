@@ -109,7 +109,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('sale_id')->comment('秒杀活动ID');
             $table->unsignedInteger('product_id')->comment('商品ID');
-            $table->unsignedInteger('sku_id')->default(0)->comment('SKU ID,0=单规格');
+            $table->unsignedInteger('sku_id')->comment('SKU ID,关联product_skus');
             $table->decimal('original_price', 10, 2)->comment('原价快照');
             $table->decimal('price', 10, 2)->comment('秒杀价');
             $table->unsignedInteger('total_stock')->comment('秒杀总量');
